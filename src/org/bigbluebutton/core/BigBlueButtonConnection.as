@@ -107,6 +107,9 @@ package org.bigbluebutton.core
 				_conferenceParameters.externUserID,
 				_conferenceParameters.internalUserID
 			];
+			if (_conferenceParameters.isGuestDefined()) {
+				connectParams.push(_conferenceParameters.guest);
+			}
 			/*
 			_baseConnection.connect(uri, 
 					_conferenceParameters.username, 

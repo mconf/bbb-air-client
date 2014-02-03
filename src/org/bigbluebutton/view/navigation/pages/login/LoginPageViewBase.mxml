@@ -17,6 +17,7 @@
 			public static const STATE_CHECKSUM_ERROR:String = "ChecksumError";
 			public static const STATE_INVALID_PASSWORD:String = "InvalidPassword";
 			public static const STATE_GENERIC_ERROR:String = "GenericError";
+			public static const STATE_ACCESS_DENIED:String = "AccessDenied";
 		]]>
 	</fx:Script>
 	<view:states>
@@ -26,20 +27,23 @@
 		<s:State name="ChecksumError"/>
 		<s:State name="InvalidPassword"/>
 		<s:State name="GenericError"/>
+		<s:State name="AccessDenied"/>
 	</view:states>
 	<s:Group id="mainshell" width="100%" height="100%" styleName="mainshell">
 		<s:Image horizontalCenter="0" source="@Embed('assets/res/drawable-xxhdpi/ic_launcher.png')"
 				 verticalCenter="0"
+				 verticalCenter.AccessDenied="-83"
 				 verticalCenter.ChecksumError="-83"
 				 verticalCenter.GenericError="-83"
 				 verticalCenter.InvalidMeetingIdentifier="-83"
 				 verticalCenter.InvalidPassword="-83"
 				 verticalCenter.NoRedirect="-83"/>
 		<s:Label id="messageText0"
-				 includeIn="ChecksumError,GenericError,InvalidMeetingIdentifier,InvalidPassword,NoRedirect"
+				 includeIn="AccessDenied,ChecksumError,GenericError,InvalidMeetingIdentifier,InvalidPassword,NoRedirect"
 				 width="90%" height="168" fontSize="20" horizontalCenter="0"
 				 textAlign="center"
 				 verticalCenter="51"
+				 text.AccessDenied="{resourceManager.getString('resources', 'login.error.accessDenied')}"
 				 text.ChecksumError="{resourceManager.getString('resources', 'login.error.checksumError')}"
 				 text.GenericError="{resourceManager.getString('resources', 'login.error.genericError')}"
 				 text.InvalidMeetingIdentifier="{resourceManager.getString('resources', 'login.error.invalidMeetingIdentifier')}"
