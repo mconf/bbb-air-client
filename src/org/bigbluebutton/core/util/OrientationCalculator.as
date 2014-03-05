@@ -51,6 +51,10 @@ package org.bigbluebutton.core.util {
 		}
 		
 		public function set active(val:Boolean):void {
+			if (!Accelerometer.isSupported) {
+				return;
+			}
+			
 			if (val==true) {
 				if (!_accl.hasEventListener(AccelerometerEvent.UPDATE)){
 					_accl.addEventListener(AccelerometerEvent.UPDATE, getAcceleromOrientation);
