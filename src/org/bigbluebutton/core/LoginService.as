@@ -39,8 +39,6 @@ package org.bigbluebutton.core
 		protected function fail(reason:String):void { 
 			trace("Login failed. " + reason);
 			unsuccessJoinedSignal.dispatch(reason);
-			
-			//TODO: show message to user saying that the meeting identifier is invalid 
 		}			
 		
 		public function load(joinUrl:String):void {
@@ -56,7 +54,7 @@ package org.bigbluebutton.core
 			_urlRequest = urlRequest;
 			
 			var configSubservice:ConfigService = new ConfigService();
-			configSubservice.successSignal.add(afterConfig);
+			configSubservice.successSignal.add(onConfigResponse);
 			configSubservice.unsuccessSignal.add(fail);
 			configSubservice.getConfig(getServerUrl(responseUrl), _urlRequest);
 		}
@@ -66,54 +64,18 @@ package org.bigbluebutton.core
 			return parser.protocol + "://" + parser.host + ":" + parser.port;
 		}
 		
-		protected function afterConfig(xml:XML):void {
+		protected function onConfigResponse(xml:XML):void {
 			var config:Config = new Config(xml);
 			successGetConfigSignal.dispatch(config);
 			
 			var enterSubservice:EnterService = new EnterService();
-			enterSubservice.successSignal.add(afterEnter);
+			enterSubservice.successSignal.add(onEnterResponse);
 			enterSubservice.unsuccessSignal.add(fail);
 			enterSubservice.enter(config.application.host, _urlRequest);
 		}
 		
-		protected function afterEnter(xml:XML):void {
-			if (xml.returncode == 'SUCCESS') {
-				trace("Join SUCCESS");
-				var user:Object = {
-					username:xml.fullname, 
-						conference:xml.conference, 
-						conferenceName:xml.confname,
-						externMeetingID:xml.externMeetingID,
-						meetingID:xml.meetingID, 
-						externUserID:xml.externUserID, 
-						internalUserId:xml.internalUserID,
-						role:xml.role, 
-						room:xml.room, 
-						authToken:xml.room, 
-						record:xml.record, 
-						webvoiceconf:xml.webvoiceconf, 
-						dialnumber:xml.dialnumber,
-						voicebridge:xml.voicebridge, 
-						mode:xml.mode, 
-						welcome:xml.welcome, 
-						logoutUrl:xml.logoutUrl, 
-						defaultLayout:xml.defaultLayout, 
-						avatarURL:xml.avatarURL,
-						guest:xml.guest };
-				user.customdata = new Object();
-				if(xml.customdata)
-				{
-					for each(var cdnode:XML in xml.customdata.elements()){
-						trace("checking user customdata: "+cdnode.name() + " = " + cdnode);
-						user.customdata[cdnode.name()] = cdnode.toString();
-					}
-				}
-				successJoinedSignal.dispatch(user);
-			} else {
-				trace("Join FAILED");
-				
-				unsuccessJoinedSignal.dispatch("Add some reason here!");
-			}
+		protected function onEnterResponse(user:Object):void {
+			successJoinedSignal.dispatch(user);
 		}
 	}
 }

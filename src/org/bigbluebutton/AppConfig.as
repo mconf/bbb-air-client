@@ -1,11 +1,13 @@
 package org.bigbluebutton
 {
-	import org.bigbluebutton.command.ConnectCommand;
-	import org.bigbluebutton.command.ConnectSignal;
-	import org.bigbluebutton.command.JoinVoiceCommand;
-	import org.bigbluebutton.command.JoinVoiceSignal;
 	import org.bigbluebutton.command.CameraEnableCommand;
 	import org.bigbluebutton.command.CameraEnableSignal;
+	import org.bigbluebutton.command.ConnectCommand;
+	import org.bigbluebutton.command.ConnectSignal;
+	import org.bigbluebutton.command.ConnectVideoCommand;
+	import org.bigbluebutton.command.ConnectVideoSignal;
+	import org.bigbluebutton.command.JoinVoiceCommand;
+	import org.bigbluebutton.command.JoinVoiceSignal;
 	import org.bigbluebutton.core.BigBlueButtonConnection;
 	import org.bigbluebutton.core.ChatMessageReceiver;
 	import org.bigbluebutton.core.ChatMessageSender;
@@ -65,6 +67,7 @@ package org.bigbluebutton
 			injector.map(IChatMessageSender).toSingleton(ChatMessageSender);
 			
 			signalCommandMap.map(ConnectSignal).toCommand(ConnectCommand);
+			signalCommandMap.map(ConnectVideoSignal).toCommand(ConnectVideoCommand);
 			signalCommandMap.map(JoinVoiceSignal).toCommand(JoinVoiceCommand);
 			signalCommandMap.map(CameraEnableSignal).toCommand(CameraEnableCommand);
 		}

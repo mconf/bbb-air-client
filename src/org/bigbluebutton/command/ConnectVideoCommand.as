@@ -12,7 +12,7 @@ package org.bigbluebutton.command
 	
 	import robotlegs.bender.bundles.mvcs.Command;
 	
-	public class ConnectCommand extends Command
+	public class ConnectVideoCommand extends Command
 	{		
 		[Inject]
 		public var userSession: IUserSession;
@@ -24,42 +24,28 @@ package org.bigbluebutton.command
 		public var conferenceParameters: IConferenceParameters;
 		
 		[Inject]
-		public var connection: IBigBlueButtonConnection;
+		public var joinVoiceSignal: JoinVoiceSignal;
 		
 		[Inject]
-		public var connectVideoSignal: ConnectVideoSignal;
+		public var videoConnection: IVideoConnection;
 		
-		[Inject]
-		public var uri: String;
-		
-		[Inject]
-		public var usersService: IUsersService;
-		
-		[Inject]
-		public var chatService: IChatMessageService;
-
-
 		override public function execute():void {
-			connection.uri = uri;
+			videoConnection.uri = userSession.config.getConfigFor("VideoConfModule").@uri + "/" + conferenceParameters.room;
 			
-			connection.successConnected.add(successConnected)
-			connection.unsuccessConnected.add(unsuccessConnected)
+			//TODO use proper callbacks
+			//TODO see if videoConnection.successConnected is dispatched when it's connected properly
+			videoConnection.successConnected.add(successConnected)
+			videoConnection.unsuccessConnected.add(unsuccessConnected)
 
-			connection.connect(conferenceParameters);
+			videoConnection.connect();
 		}
 
 		private function successConnected():void {
 			Log.getLogger("org.bigbluebutton").info(String(this) + ":successConnected()");
 			
-			userSession.mainConnection = connection;
-			userSession.userId = connection.userId;
+			userSession.videoConnection = videoConnection;
 			
-			usersService.connectUsers(uri);
-			usersService.connectListeners(uri);
-			
-			chatService.getPublicChatMessages();
-			
-			connectVideoSignal.dispatch();
+			joinVoiceSignal.dispatch();
 		}
 		
 		private function unsuccessConnected(reason:String):void {

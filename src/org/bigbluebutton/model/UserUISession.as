@@ -17,7 +17,7 @@ package org.bigbluebutton.model
 		/**
 		 * Dispatched when the application is loading something
 		 */
-		private var _unsuccessJoined: Signal = new Signal();
+		private var _unsuccessJoined: ISignal = new Signal();
 		
 		public function get unsuccessJoined(): ISignal
 		{
@@ -27,7 +27,7 @@ package org.bigbluebutton.model
 		/**
 		 * Dispatched when the application is loading something
 		 */
-		private var _loadingSignal: Signal = new Signal();
+		private var _loadingSignal: ISignal = new Signal();
 		
 		public function get loadingSignal(): ISignal
 		{
@@ -37,7 +37,7 @@ package org.bigbluebutton.model
 		/**
 		 * Dispatched a transition between pages starts
 		 */
-		private var _pageTransitionStartSignal: Signal = new Signal();
+		private var _pageTransitionStartSignal: ISignal = new Signal();
 		
 		public function get pageTransitionStartSignal(): ISignal
 		{
@@ -47,7 +47,7 @@ package org.bigbluebutton.model
 		/**
 		 * Dispatched when there is a page change
 		 */
-		private var _pageChangedSignal: Signal = new Signal();
+		private var _pageChangedSignal: ISignal = new Signal();
 		
 		public function get pageChangedSignal(): ISignal
 		{
@@ -57,7 +57,7 @@ package org.bigbluebutton.model
 		/**
 		 * Holds the page's names used on ViewNavigator
 		 */ 
-		protected var _listPages:ArrayList = new ArrayList([]);
+		protected var _listPages:ArrayList = new ArrayList();
 		
 		public function get currentPage():String
 		{

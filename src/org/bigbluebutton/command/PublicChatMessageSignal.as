@@ -4,9 +4,9 @@ package org.bigbluebutton.command
 	
 	import org.bigbluebutton.model.chat.ChatMessage;
 	
-	public class PublicChatMessage extends Signal
+	public class PublicChatMessageSignal extends Signal
 	{
-		public function PublicChatMessage()
+		public function PublicChatMessageSignal()
 		{
 			/**
 			 * @1 
