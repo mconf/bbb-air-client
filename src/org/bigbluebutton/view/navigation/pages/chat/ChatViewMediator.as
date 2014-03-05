@@ -96,8 +96,11 @@ package org.bigbluebutton.view.navigation.pages.chat
 		}
 				
 		private function scrollUpdate(e:Event):void
-		{
-			list.dataGroup.verticalScrollPosition = list.dataGroup.contentHeight - list.dataGroup.height;
+		{		
+			if (list.dataGroup.contentHeight > list.dataGroup.height)
+			{
+				list.dataGroup.verticalScrollPosition = list.dataGroup.contentHeight - list.dataGroup.height;
+			}
 		}
 				
 		private function onSendButtonClick(e:MouseEvent):void
@@ -111,7 +114,7 @@ package org.bigbluebutton.view.navigation.pages.chat
 			var m:ChatMessageVO = new ChatMessageVO();
 			
 			m.fromUserID = userSession.userId;
-			m.fromUsername = userSession.userlist.getUser(userSession.userId).name;
+			m.fromUsername = userSession.userList.getUser(userSession.userId).name;
 			m.fromColor = "0";
 			m.fromTime = currentDate.time;
 			m.fromTimezoneOffset = currentDate.timezoneOffset;

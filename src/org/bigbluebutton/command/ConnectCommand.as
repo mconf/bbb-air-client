@@ -2,12 +2,11 @@ package org.bigbluebutton.command
 {
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
 	import org.bigbluebutton.core.IChatMessageService;
+	import org.bigbluebutton.core.IPresentationService;
 	import org.bigbluebutton.core.IUsersService;
-	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.osmf.logging.Log;
 	
 	import robotlegs.bender.bundles.mvcs.Command;
@@ -38,6 +37,8 @@ package org.bigbluebutton.command
 		[Inject]
 		public var chatService: IChatMessageService;
 
+		[Inject]
+		public var presentationService: IPresentationService;
 
 		override public function execute():void {
 			connection.uri = uri;
@@ -59,6 +60,8 @@ package org.bigbluebutton.command
 			
 			chatService.getPublicChatMessages();
 			
+			presentationService.connectPresent(uri);
+
 			connectVideoSignal.dispatch();
 		}
 		
