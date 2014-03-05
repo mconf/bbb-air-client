@@ -87,7 +87,7 @@ package org.bigbluebutton.command
 			
 			chatService.getPublicChatMessages();
 			
-			presentationService.connectPresent(uri);
+			// presentationService.connectPresent(uri);
 
 			connectVideoSignal.dispatch();
 		}

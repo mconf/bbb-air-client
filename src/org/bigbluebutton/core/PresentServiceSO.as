@@ -165,7 +165,7 @@ package org.bigbluebutton.core {
 		 * 
 		 */
 		public function moveCallback(xOffset:Number, yOffset:Number, widthRatio:Number, heightRatio:Number):void{
-			trace("moveCallback recieved");
+			trace("moveCallback received");
 			/*
 			var e:MoveEvent = new MoveEvent(MoveEvent.MOVE);
 			e.xOffset = xOffset;
