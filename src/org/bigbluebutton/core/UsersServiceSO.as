@@ -77,7 +77,7 @@ package org.bigbluebutton.core
 			trace("New user joined [" + ObjectUtil.toString(user) + "]");
 			trace(ObjectUtil.toString(joinedUser));
 			
-			userSession.userlist.addUser(user);
+			userSession.userList.addUser(user);
 			
 			participantStatusChange(user.userID, "hasStream", joinedUser.status.hasStream);
 			participantStatusChange(user.userID, "presenter", joinedUser.status.presenter);
@@ -87,7 +87,7 @@ package org.bigbluebutton.core
 		public function participantLeft(userID:String):void { 			
 			trace("Notify others that user [" + userID + "] is leaving!!!!");
 			
-			userSession.userlist.removeUser(userID);
+			userSession.userList.removeUser(userID);
 		}
 		
 		/**
@@ -99,17 +99,17 @@ package org.bigbluebutton.core
 			switch (status) {
 				case "presenter":
 					if (Boolean(value) == true)
-						userSession.userlist.assignPresenter(userID);
+						userSession.userList.assignPresenter(userID);
 					break;
 				case "hasStream":
 					var streamInfo:Array = String(value).split(/,/); 
 					
-					userSession.userlist.userStreamChange(userID,
+					userSession.userList.userStreamChange(userID,
 						(String(streamInfo[0]).toUpperCase() == "TRUE" ? true : false),
 						String(streamInfo[1]).split(/=/)[1]);
 					break;
 				case "raiseHand":
-					userSession.userlist.raiseHandChange(userID, value as Boolean);
+					userSession.userList.raiseHandChange(userID, value as Boolean);
 					break;
 			}
 		}
@@ -120,7 +120,7 @@ package org.bigbluebutton.core
 		public function assignPresenterCallback(userID:String, name:String, assignedBy:String):void {
 			trace("**** assignPresenterCallback [" + userID + "," + name + "," + assignedBy + "]");
 			
-			userSession.userlist.assignPresenter(userID);
+			userSession.userList.assignPresenter(userID);
 		}
 		
 		public function kickUserCallback(userid:String):void {
@@ -190,7 +190,7 @@ package org.bigbluebutton.core
 		public function guestEntrance(userId:String, name:String):void {
 			Log.getLogger("org.bigbluebutton").info(String(this) + ":guestEntrance() userId: " + userId + " name: " + name);
 			
-			if (userSession.userlist.me.isModerator()) {
+			if (userSession.userList.me.isModerator()) {
 				trace("User " + name + " trying to join");
 				allowAllIfNoOtherModerator([userId]);
 			}
@@ -205,17 +205,17 @@ package org.bigbluebutton.core
 		}
 		
 		private function amITheOnlyModerator(excludeUserIdArray:Array):Boolean {
-			for each (var user:User in userSession.userlist.users) {
+			for each (var user:User in userSession.userList.users) {
 				// user is moderator
 				// user is not in the exclude list
 				// user is not me
-				if (user.isModerator() && excludeUserIdArray.indexOf(user.userID) == -1 && user.userID != userSession.userlist.me.userID) {
+				if (user.isModerator() && excludeUserIdArray.indexOf(user.userID) == -1 && user.userID != userSession.userList.me.userID) {
 					trace("I'm not the only moderator");
 					return false;
 				}
 			}
-			trace("amITheOnlyModerator? " + userSession.userlist.me.isModerator());
-			return userSession.userlist.me.isModerator();
+			trace("amITheOnlyModerator? " + userSession.userList.me.isModerator());
+			return userSession.userList.me.isModerator();
 		}
 		
 		public function guestPolicyChanged(guestPolicy:String):void {
@@ -257,7 +257,7 @@ package org.bigbluebutton.core
 		public function guestWaitingForModerator(userId:String, info:String):void {
 			Log.getLogger("org.bigbluebutton").info(String(this) + ":guestWaitingForModerator() userId: " + userId + " info: " + info);
 
-			if (userSession.userlist.me.isModerator() && userSession.userlist.me.userID == userId) {
+			if (userSession.userList.me.isModerator() && userSession.userList.me.userID == userId) {
 				if (info.length > 0) {
 					var infoArray:Array = info.split("!1");
 					var userIdArray:Array = new Array();
@@ -307,7 +307,7 @@ package org.bigbluebutton.core
 			nc.call(
 				restoreFunctionName,
 				responder,
-				userSession.userlist.me.userID
+				userSession.userList.me.userID
 			);
 		}
 	}

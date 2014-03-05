@@ -30,12 +30,6 @@ package org.bigbluebutton.command
 		[Inject]
 		public var voiceConnection: IVoiceConnection;
 		
-		[Inject]
-		public var mainConnection: IBigBlueButtonConnection;
-		
-		[Inject]
-		public var usersService: IUsersService;
-
 		override public function execute():void
 		{
 			voiceConnection.uri = userSession.config.getConfigFor("PhoneModule").@uri;
@@ -53,10 +47,16 @@ package org.bigbluebutton.command
 			manager.play(voiceConnection.connection, playName);
 			manager.publish(voiceConnection.connection, publishName, codec);			
 			userSession.voiceStreamManager = manager;
+
+			userUISession.loading = false;
+			userUISession.pushPage(PagesENUM.PARTICIPANTS);
 		}
 		
 		private function mediaUnsuccessConnected(reason:String):void {
 			Log.getLogger("org.bigbluebutton").info(String(this) + ":mediaUnsuccessConnected()");
+
+			userUISession.loading = false;
+			userUISession.unsuccessJoined.dispatch("connectionFailed");
 		}
 	}
 }

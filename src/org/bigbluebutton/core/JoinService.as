@@ -50,7 +50,7 @@ package org.bigbluebutton.core
 					return;
 				}
 			} catch (e:Error) {
-				trace("The response is probably not a XML, continuing");
+				// this is the expected result, since the data should contain the client HTML instead of an error XML
 			}
 			successSignal.dispatch(urlRequest, responseUrl);
 		}
