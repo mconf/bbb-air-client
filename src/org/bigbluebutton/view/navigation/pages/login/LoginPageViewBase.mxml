@@ -30,8 +30,8 @@
 		<s:State name="AccessDenied"/>
 	</view:states>
 	<s:Group id="mainshell" width="100%" height="100%" styleName="mainshell">
-		<s:Image horizontalCenter="0" source="@Embed('assets/res/drawable-xxhdpi/ic_launcher.png')"
-				 verticalCenter="0"
+		<s:Image horizontalCenter="0" source="@Embed('assets/icons/artwork-source.png')"
+				 verticalCenter="0" width="144" height="144"
 				 verticalCenter.AccessDenied="-83"
 				 verticalCenter.ChecksumError="-83"
 				 verticalCenter.GenericError="-83"
