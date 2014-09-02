@@ -8,6 +8,7 @@ package org.bigbluebutton.command
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserSettings;
 	import org.bigbluebutton.model.IUserUISession;
+	import org.bigbluebutton.model.VideoProfileManager;
 	import org.bigbluebutton.view.ui.ILoginButton;
 	import org.osmf.logging.Log;
 	
@@ -37,23 +38,29 @@ package org.bigbluebutton.command
 		{
 			loginService.successJoinedSignal.add(successJoined);
 			loginService.successGetConfigSignal.add(successConfig);
+			loginService.successGetProfilesSignal.add(sucessProfiles);
 			loginService.unsuccessJoinedSignal.add(unsuccessJoined);
 			
 			userUISession.loading = true;
 
 			loginService.load(url);
+			
 		}
 
 		protected function successJoined(userObject:Object):void {
 			Log.getLogger("org.bigbluebutton").info(String(this) + ":successJoined()");
 			
 			conferenceParameters.load(userObject);
-			
+						
 			connectSignal.dispatch(new String(userSession.config.application.uri));
 		}
 		
 		protected function successConfig(config:Config):void {
 			userSession.config = config;
+		}
+		
+		protected function sucessProfiles(profiles:VideoProfileManager):void{
+			userSession.videoProfileManager = profiles;
 		}
 		
 		protected function unsuccessJoined(reason:String):void {

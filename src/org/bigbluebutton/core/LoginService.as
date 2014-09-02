@@ -14,12 +14,14 @@ package org.bigbluebutton.core
 	import org.bigbluebutton.model.Config;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
+	import org.bigbluebutton.model.VideoProfileManager;
 
 	public class LoginService implements ILoginService
 	{
 		protected var _urlRequest:URLRequest = null;
 		protected var _successJoinedSignal:Signal = new Signal();
 		protected var _successGetConfigSignal:Signal = new Signal();
+		protected var _successGetProfilesSignal:Signal = new Signal();
 		protected var _unsuccessJoinedSignal:Signal = new Signal();
 		protected var _joinUrl:String;
 		
@@ -34,6 +36,11 @@ package org.bigbluebutton.core
 		public function get successGetConfigSignal():ISignal
 		{
 			return _successGetConfigSignal;
+		}
+		
+		public function get successGetProfilesSignal():ISignal
+		{
+			return _successGetProfilesSignal;
 		}
 		
 		protected function fail(reason:String):void { 
@@ -57,6 +64,12 @@ package org.bigbluebutton.core
 			configSubservice.successSignal.add(onConfigResponse);
 			configSubservice.unsuccessSignal.add(fail);
 			configSubservice.getConfig(getServerUrl(responseUrl), _urlRequest);
+			
+			var profilesService:ProfilesService = new ProfilesService();
+			profilesService.successSignal.add(onProfilesResponse);
+			profilesService.unsuccessSignal.add(fail);
+			profilesService.getProfiles(getServerUrl(responseUrl), _urlRequest);
+			
 		}
 		
 		protected function getServerUrl(url:String):String {
@@ -72,6 +85,13 @@ package org.bigbluebutton.core
 			enterSubservice.successSignal.add(onEnterResponse);
 			enterSubservice.unsuccessSignal.add(fail);
 			enterSubservice.enter(config.application.host, _urlRequest);
+		}
+		
+		protected function onProfilesResponse(xml:XML):void {
+			var prof:VideoProfileManager = new VideoProfileManager(xml);
+			prof.getProfileTypes();
+			successGetProfilesSignal.dispatch(prof);
+						
 		}
 		
 		protected function onEnterResponse(user:Object):void {

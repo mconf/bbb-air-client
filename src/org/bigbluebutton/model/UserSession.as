@@ -27,7 +27,19 @@ package org.bigbluebutton.model
 		protected var _publicChat:ChatMessages;
 		protected var _presentationList:PresentationList;
 		protected var _guestSignal:ISignal = new Signal();
-
+		protected var _videoProfileManager:VideoProfileManager = null;
+		
+				
+		public function get videoProfileManager():VideoProfileManager
+		{
+			return _videoProfileManager;
+		}
+		
+		public function set videoProfileManager(value:VideoProfileManager):void
+		{
+			_videoProfileManager = value;
+		}
+		
 		public function get netconnection():NetConnection
 		{
 			return _netconnection;
@@ -110,7 +122,7 @@ package org.bigbluebutton.model
 			_publicChat = new ChatMessages();
 			_presentationList = new PresentationList();
 		}
-		
+				
 		public function get publicChat():ChatMessages
 		{
 			return _publicChat;

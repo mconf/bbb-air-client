@@ -14,6 +14,7 @@ package org.bigbluebutton.command
 	import org.bigbluebutton.model.IUserSettings;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
+	import org.bigbluebutton.core.VideoProfile;
 	import org.osmf.logging.Log;
 	
 	import robotlegs.bender.bundles.mvcs.Command;
@@ -32,6 +33,10 @@ package org.bigbluebutton.command
 		[Inject]
 		public var userSettings: IUserSettings;
 		
+		//Alan
+		[Inject]
+		private var videoQuality:String;
+		
 		override public function execute():void {
 			if (enabled) {
 				enableCamera();
@@ -44,8 +49,16 @@ package org.bigbluebutton.command
 			var d:Date = new Date();
 			var curTime:Number = d.getTime();	
 			var uid:String = userSession.userId;
-			var res:String = camWidth + "x" + camHeight;
+			
+			var videoProfile:VideoProfile = userSession.videoProfileManager.getProfileWithLowerResolution();
+			
+			
+			//var res:String = camWidth + "x" + camHeight;
+			var res:String = videoProfile.id;
 			return res.concat("-" + uid) + "-" + curTime;
+			// 320x240-userid-timestamp
+			// low-userid-timestamp
+			
 		}
 		
 		private function setupCamera():Camera 

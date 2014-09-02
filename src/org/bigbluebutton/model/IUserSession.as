@@ -32,5 +32,7 @@ package org.bigbluebutton.model
 		function get publicChat():ChatMessages
 		function get presentationList():PresentationList
 		function get guestSignal():ISignal
+		function get videoProfileManager():VideoProfileManager
+		function set videoProfileManager(value:VideoProfileManager):void;
 	}
 }
