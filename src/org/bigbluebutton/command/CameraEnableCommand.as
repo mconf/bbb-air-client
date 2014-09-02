@@ -33,10 +33,6 @@ package org.bigbluebutton.command
 		[Inject]
 		public var userSettings: IUserSettings;
 		
-		//Alan
-		[Inject]
-		private var videoQuality:String;
-		
 		override public function execute():void {
 			if (enabled) {
 				enableCamera();

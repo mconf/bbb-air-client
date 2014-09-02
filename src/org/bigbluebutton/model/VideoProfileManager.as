@@ -24,43 +24,6 @@ package org.bigbluebutton.model
 		{
 			_profileXML = profileXML;
 		}
-	/*	
-		public function loadProfiles():void {
-			var urlLoader:URLLoader = new URLLoader();
-			urlLoader.addEventListener(Event.COMPLETE, handleComplete);
-			var date:Date = new Date();
-			//var localeReqURL:String = buildRequestURL() + "?a=" + date.time;
-			////////////////////////////////////////////////////////////////////
-			//var JoinMeeting:JoinMeetingCommand;
-			//var url:String = JoinMeeting.url;
-			//var parser:URLParser = new URLParser(url);
-			//return parser.protocol + "://" + parser.host + ":" + parser.port;
-			/////////////////////////////////////////////////////////////////////
-			
-			var localeReqURL:String = "http://143.54.10.151/client/conf/profiles.xml";
-			trace("VideoProfileManager::loadProfiles [" + localeReqURL + "]");
-			urlLoader.load(new URLRequest(localeReqURL));
-		}       
-		
-		private function buildRequestURL():String {
-			var swfURL:String = FlexGlobals.topLevelApplication.url;
-			var protocol:String = URLUtil.getProtocol(swfURL);
-			var serverName:String = URLUtil.getServerNameWithPort(swfURL);
-			return protocol + "://" + serverName + "/" + PROFILES_XML;
-		} 
-		
-		private function handleComplete(e:Event):void{
-			trace("VideoProfileManager::handleComplete [" + new XML(e.target.data) + "]");
-			
-			// first clear the array
-			_profiles.splice(0);
-			
-			var profiles:XML = new XML(e.target.data);
-			var fallbackLocale:String = profiles.@fallbackLocale != undefined? profiles.@fallbackLocale.toString(): DEFAULT_FALLBACK_LOCALE;
-			for each (var profile:XML in profiles.children()) {
-				_profiles.push(new VideoProfile(profile, fallbackLocale));
-			}
-		} */
 		
 		public function getProfileTypes():void{
 			// first clear the array
@@ -104,12 +67,12 @@ package org.bigbluebutton.model
 			
 		public function get fallbackVideoProfile():VideoProfile {
 			return new VideoProfile(
-				<profile id="4L7344ZoBYGTocbHOIvzXsrGiBGoohFv" default="true">
+				<profile id="160x120" default="true">
 					<locale>
 						<en_US>Fallback profile</en_US>
 					</locale>
-					<width>320</width>
-					<height>240</height>
+					<width>160</width>
+					<height>120</height>
 					<keyFrameInterval>5</keyFrameInterval>
 					<modeFps>10</modeFps>
 					<qualityBandwidth>0</qualityBandwidth>

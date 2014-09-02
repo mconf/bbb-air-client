@@ -80,8 +80,8 @@ package org.bigbluebutton.view.navigation.pages.login
 			
 			if(Capabilities.isDebugger)
 			{
-				//url = "bigbluebutton://test-install.blindsidenetworks.com/bigbluebutton/api/join?fullName=Air&meetingID=Demo+Meeting&password=ap&checksum=512620179852dadd6fe0665a48bcb852a3c0afac";
-				url = "bigbluebutton://143.54.10.151/bigbluebutton/api/join?fullName=Air+Client&meetingID=Test+room+1&password=prof123&checksum=455e790006555196b896e5e9c58bc50b47373b66"
+				url = "bigbluebutton://test-install.blindsidenetworks.com/bigbluebutton/api/join?fullName=Air&meetingID=Demo+Meeting&password=ap&checksum=512620179852dadd6fe0665a48bcb852a3c0afac";
+				//url = "bigbluebutton://lab1.mconf.org/bigbluebutton/api/join?fullName=Air+client&meetingID=Test+room+4&password=prof123&checksum=5805753edd08fbf9af50f9c28bb676c7e5241349"
 			}
 			
 			if (url.lastIndexOf("://") != -1)
@@ -94,9 +94,8 @@ package org.bigbluebutton.view.navigation.pages.login
 			{
 				
 			}
+			
 			joinMeetingSignal.dispatch(url);
-			
-			
 		}
 		
 		/**
