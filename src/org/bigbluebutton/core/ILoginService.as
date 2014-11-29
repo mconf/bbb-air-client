@@ -5,7 +5,6 @@ package org.bigbluebutton.core
 	import flash.events.IOErrorEvent;
 	
 	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
 
 	public interface ILoginService
 	{

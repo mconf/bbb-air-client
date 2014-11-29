@@ -9,12 +9,12 @@ package org.bigbluebutton.command
 	import org.bigbluebutton.core.IChatMessageService;
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.core.IVideoConnection;
+	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserSettings;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
-	import org.bigbluebutton.core.VideoProfile;
 	import org.osmf.logging.Log;
 	
 	import robotlegs.bender.bundles.mvcs.Command;
@@ -43,18 +43,12 @@ package org.bigbluebutton.command
 		
 		private function buildStreamName(camWidth:int, camHeight:int, userId:String):String {
 			var d:Date = new Date();
-			var curTime:Number = d.getTime();	
+			var curTime:Number = d.getTime();
 			var uid:String = userSession.userId;
-			
 			var videoProfile:VideoProfile = userSession.videoProfileManager.getProfileWithLowerResolution();
-			
-			
-			//var res:String = camWidth + "x" + camHeight;
 			var res:String = videoProfile.id;
+			// streamName format is 'low-userid-timestamp'
 			return res.concat("-" + uid) + "-" + curTime;
-			// 320x240-userid-timestamp
-			// low-userid-timestamp
-			
 		}
 		
 		private function setupCamera():Camera 

@@ -1,7 +1,6 @@
 package org.bigbluebutton.view.navigation.pages.videochat
 {
 	import flash.display.DisplayObject;
-	import flash.net.URLLoader;
 	
 	import mx.collections.ArrayCollection;
 	import mx.utils.ObjectUtil;
@@ -163,33 +162,26 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			}
 		}
 		
-		
 		protected function getVideoResolution(stream:String):Object {
-			var pattern:RegExp = new RegExp("(\\d+x\\d+)-([A-Za-z0-9]+)-\\d+", "");
-			var newPattern:RegExp = new RegExp("([A-Za-z]+)-([A-Za-z0-9]+)-\\d+", "");
-			if (pattern.test(stream)) {
+			var resolutionPattern:RegExp = new RegExp("(\\d+x\\d+)-([A-Za-z0-9]+)-\\d+", "");
+			var profilePattern:RegExp = new RegExp("([A-Za-z]+)-([A-Za-z0-9]+)-\\d+", "");
+			if (resolutionPattern.test(stream)) {
 				trace("The stream name is well formatted [" + stream + "]");
-				trace("Stream resolution is [" + pattern.exec(stream)[1] + "]");
-				trace("Userid [" + pattern.exec(stream)[2] + "]");
-				return {userID: pattern.exec(stream)[2], dimensions:pattern.exec(stream)[1].split("x")};
-			} else {  
-				if(newPattern.test(stream)){
-					trace("The stream name is well formatted [" + stream + "]");
-					//now it has to  get the resolution
-					trace("Stream resolution is [" + newPattern.exec(stream)[1] + "]");
-					trace("Userid [" + newPattern.exec(stream)[2] + "]");
-					var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileById(newPattern.exec(stream)[1]);
-					var width:int = videoProfile.width;
-					var height:int = videoProfile.height;
-					return {userID: newPattern.exec(stream)[2], dimensions: new Array(width.toString(), height.toString())};
-					
-				}
-				else {
-					trace("The stream name doesn't follow the pattern <width>x<height>-<userId>-<timestamp>. However, the video resolution will be set to 320x240");
-					return null;
-				}
+				trace("Stream resolution is [" + resolutionPattern.exec(stream)[1] + "]");
+				trace("Userid [" + resolutionPattern.exec(stream)[2] + "]");
+				return {userID: resolutionPattern.exec(stream)[2], dimensions:resolutionPattern.exec(stream)[1].split("x")};
+			} else if (profilePattern.test(stream)) {
+				trace("The stream name is well formatted [" + stream + "]");
+				trace("Stream pattern is [" + profilePattern.exec(stream)[1] + "]");
+				trace("Userid [" + profilePattern.exec(stream)[2] + "]");
+				var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileById(profilePattern.exec(stream)[1]);
+				var width:int = videoProfile.width;
+				var height:int = videoProfile.height;
+				return {userID: profilePattern.exec(stream)[2], dimensions: new Array(width.toString(), height.toString())};
+			} else {
+				trace("The stream name doesn't follow the pattern <width>x<height>-<userId>-<timestamp>. However, the video resolution will be set to 320x240");
+				return null;
 			}
 		}
-		
 	}
 }

@@ -44,14 +44,13 @@ package org.bigbluebutton.command
 			userUISession.loading = true;
 
 			loginService.load(url);
-			
 		}
 
 		protected function successJoined(userObject:Object):void {
 			Log.getLogger("org.bigbluebutton").info(String(this) + ":successJoined()");
 			
 			conferenceParameters.load(userObject);
-						
+			
 			connectSignal.dispatch(new String(userSession.config.application.uri));
 		}
 		

@@ -12,9 +12,9 @@ package org.bigbluebutton.core
 	
 	import org.bigbluebutton.core.util.URLParser;
 	import org.bigbluebutton.model.Config;
+	import org.bigbluebutton.model.VideoProfileManager;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	import org.bigbluebutton.model.VideoProfileManager;
 
 	public class LoginService implements ILoginService
 	{
@@ -69,7 +69,6 @@ package org.bigbluebutton.core
 			profilesService.successSignal.add(onProfilesResponse);
 			profilesService.unsuccessSignal.add(fail);
 			profilesService.getProfiles(getServerUrl(responseUrl), _urlRequest);
-			
 		}
 		
 		protected function getServerUrl(url:String):String {
@@ -91,7 +90,6 @@ package org.bigbluebutton.core
 			var prof:VideoProfileManager = new VideoProfileManager(xml);
 			prof.getProfileTypes();
 			successGetProfilesSignal.dispatch(prof);
-						
 		}
 		
 		protected function onEnterResponse(user:Object):void {
