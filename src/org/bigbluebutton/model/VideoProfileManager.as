@@ -86,8 +86,11 @@ package org.bigbluebutton.model
 		
 		
 		public function getProfileWithLowerResolution():VideoProfile {
-			var lower:VideoProfile = this.fallbackVideoProfile;
+			if (_profiles.lenth <= 0) {
+				return fallbackVideoProfile;
+			}
 			
+			var lower:VideoProfile = _profiles[0];
 			for each (var profile:VideoProfile in _profiles) {
 				if (((profile.width)*(profile.height)) < ((lower.width)*(lower.height))) {
 					lower = profile;
@@ -95,8 +98,6 @@ package org.bigbluebutton.model
 			}
 			return lower;
 		}
-		
-		
 	} 
 }
 
