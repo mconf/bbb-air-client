@@ -13,24 +13,39 @@ package org.bigbluebutton.core
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	import org.osmf.logging.Log;
-
+	
 	public class VideoConnection extends DefaultConnectionCallback implements IVideoConnection
 	{
+		[Inject]
+		public var baseConnection:IBaseConnection;
+		
 		private var _ns:NetStream;
+		private var _cameraPosition:String;
 		
 		protected var _successConnected:ISignal = new Signal();
 		protected var _unsuccessConnected:ISignal = new Signal();
 		
-		protected var _baseConnection:BaseConnection;
 		protected var _applicationURI:String;
 		
+		private var _camera:Camera;
+		
+		private var _selectedCameraQuality:int;
+		
+		public static var CAMERA_QUALITY_LOW:int = 0;
+		public static var CAMERA_QUALITY_MEDIUM:int = 1;
+		public static var CAMERA_QUALITY_HIGH:int = 2;
+	
 		public function VideoConnection()
 		{
 			Log.getLogger("org.bigbluebutton").info(String(this));
-			
-			_baseConnection = new BaseConnection(this);
-			_baseConnection.successConnected.add(onConnectionSuccess);
-			_baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
+		}
+		
+		[PostConstruct]
+		public function init():void
+		{
+			baseConnection.init(this);
+			baseConnection.successConnected.add(onConnectionSuccess);
+			baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
 		}
 		
 		private function onConnectionUnsuccess(reason:String):void
@@ -40,7 +55,7 @@ package org.bigbluebutton.core
 		
 		private function onConnectionSuccess():void
 		{
-			_ns = new NetStream(_baseConnection.connection);
+			_ns = new NetStream(baseConnection.connection);
 			successConnected.dispatch();
 		}
 		
@@ -63,11 +78,70 @@ package org.bigbluebutton.core
 		}
 		
 		public function get connection():NetConnection {
-			return _baseConnection.connection;
+			return baseConnection.connection;
 		}
 		
 		public function connect():void {
-			_baseConnection.connect(uri);
+			baseConnection.connect(uri);
+		}
+		
+		public function get cameraPosition():String
+		{
+			return _cameraPosition;
+		}
+		
+		public function set cameraPosition(position:String):void
+		{
+			_cameraPosition = position;
+		}
+		
+		public function get camera():Camera
+		{
+			return _camera;
+		}
+		
+		public function set camera(value:Camera):void
+		{
+			_camera = value;
+		}
+		
+		public function get selectedCameraQuality():int
+		{
+			return _selectedCameraQuality;
+		}
+		
+		public function set selectedCameraQuality(value:int):void
+		{
+			_selectedCameraQuality = value;
+		}
+		
+		/**
+		 * Set video quality based on the user selection
+		 **/
+		public function selectCameraQuality(value:int):void
+		{
+			switch (value) {
+				case CAMERA_QUALITY_LOW:
+					camera.setMode(160, 120, 10); 
+					camera.setQuality(camera.bandwidth, 50);
+					selectedCameraQuality = CAMERA_QUALITY_LOW;
+					break;
+				case CAMERA_QUALITY_MEDIUM:
+					camera.setMode(320, 240, 10); 
+					camera.setQuality(camera.bandwidth, 50);
+					selectedCameraQuality = CAMERA_QUALITY_MEDIUM;
+					break;
+				case CAMERA_QUALITY_HIGH:
+					camera.setMode(640, 480, 10); 
+					camera.setQuality(camera.bandwidth, 75);
+					selectedCameraQuality = CAMERA_QUALITY_HIGH;
+					break;		
+				default:
+					camera.setMode(320, 240, 10); 
+					camera.setQuality(camera.bandwidth, 50);
+					selectedCameraQuality = CAMERA_QUALITY_MEDIUM;
+					break;
+			}
 		}
 		
 		public function startPublishing(camera:Camera, streamName:String):void {
@@ -96,7 +170,7 @@ package org.bigbluebutton.core
 				_ns.attachCamera(null);
 				_ns.close();
 				_ns = null;
-				_ns = new NetStream(_baseConnection.connection);
+				_ns = new NetStream(baseConnection.connection);
 			}
 		}
 	}

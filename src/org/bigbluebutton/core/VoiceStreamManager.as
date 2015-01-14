@@ -136,7 +136,7 @@ package org.bigbluebutton.core
 		protected function onMicStatusEvent(event:StatusEvent):void
 		{
 			trace("New microphone status event");
-			trace(ObjectUtil.toString(event));
+			//trace(ObjectUtil.toString(event));
 			switch(event.code) {
 				case "Microphone.Muted":
 					break;
@@ -149,18 +149,25 @@ package org.bigbluebutton.core
 		
 		public function close():void {
 			if (_incomingStream) {
+				_incomingStream.removeEventListener(NetDataEvent.MEDIA_TYPE_DATA, onNetDataEvent);
+				_incomingStream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatusEvent);
+				_incomingStream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEvent);
 				_incomingStream.close();
+				_incomingStream = null;
 			}
 			
 			if (_outgoingStream) {
+				_outgoingStream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatusEvent);
+				_outgoingStream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEvent);
 				_outgoingStream.attachAudio(null);
 				_outgoingStream.close();
+				_outgoingStream = null;
 			}
 		}
 
 		protected function onNetStatusEvent(event:NetStatusEvent):void
 		{
-//			trace(ObjectUtil.toString(event));
+			trace("VoiceStreamManager: onNetStatusEvent - " + event.info.code);
 
 			switch(event.info.code) {
 				case "NetStream.Play.Reset":

@@ -5,6 +5,7 @@ package org.bigbluebutton.view.navigation.pages.profile
 	import spark.components.Button;
 	import spark.components.Group;
 	import spark.components.Label;
+	import spark.components.RadioButtonGroup;
 	
 	public class ProfileView extends ProfileViewBase implements IProfileView
 	{
@@ -12,30 +13,50 @@ package org.bigbluebutton.view.navigation.pages.profile
 		{
 			super.childrenCreated();
 		}
-
+		
 		public function dispose():void
 		{
-			
+
 		}
 		
-		public function get userNameText():Label
+		public function get userNameButton():Button
 		{
-			return userName;
-		}
-
-		public function get cameraButton():Button
-		{
-			return cameraButton0;
-		}
-
-		public function get cameraOnOFFText():Label
-		{
-			return cameraOnOFFText0;
+			return userName0;
 		}
 		
-		public function get cameraStatus():Group
+		public function get shareCameraButton():Button
 		{
-			return cameraStatus0;
+			return shareCameraBtn0;
 		}
+				
+		public function get shareCameraBtnLabel():String
+		{
+			return shareCameraBtn0.label;
+		}
+		
+		public function get shareMicButton():Button
+		{
+			return shareMicBtn0;
+		}
+
+		public function get shareMicBtnLabel():String
+		{
+			return shareMicBtn0.label;
+		}
+		
+		public function get raiseHandBtnLabel():String
+		{
+			return raiseHandButton0.label;
+		}
+		
+		public function get raiseHandButton():Button
+		{
+			return raiseHandButton0;
+		}
+		
+		public function get logoutButton():Button
+		{
+			return logoutButton0;
+		}			
 	}
 }

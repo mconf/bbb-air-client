@@ -2,8 +2,8 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
 				xmlns:s="library://ns.adobe.com/flex/spark"
 				xmlns:mx="library://ns.adobe.com/flex/mx"
-				xmlns:assets="assets.*"
-				width="500" height="50">
+				styleName="participantItemStyle"
+				>
 	
 	<fx:Script>
 		<![CDATA[
@@ -13,63 +13,75 @@
 			
 			override public function set data(obj:Object):void {
 				super.data = obj;
-				var user:User = data as User;
+				if (obj)
+				{					
+					presentationIcon.visible = presentationIcon.includeInLayout = obj.presenter && !obj.raiseHand;
+					profileIcon.visible = profileIcon.includeInLayout = ((obj.role == User.MODERATOR) && (!obj.presenter) && !obj.raiseHand);
+										
+					cameraIcon.visible = obj.hasStream;
 				
-				if (user) {
-					presentationIcon.visible = user.presenter;
-					profileIcon.visible = ((user.role == User.MODERATOR) && (!user.presenter));
-					cameraIcon.visible = user.hasStream;
-					handIcon.visible = user.raiseHand; 
+					micIcon.visible = micIcon.includeInLayout = (obj.voiceJoined && !obj.muted);
+					micOffIcon.visible = micOffIcon.includeInLayout = (obj.voiceJoined && obj.muted);
+					listenOnlyIcon.visible = listenOnlyIcon.includeInLayout = (!obj.voiceJoined && obj.listenOnly);
+					soundIcon.visible = obj.talking;
 					
-					micIcon.visible = (user.voiceJoined && !user.muted);
-					micOffIcon.visible = (user.voiceJoined && user.muted);
+					if(obj.me)
+					{
+						labelDisplay.text = obj.name + " " + resourceManager.getString('resources', 'userDetail.you');
+					}
+					else
+					{
+						labelDisplay.text = obj.name;
+					}
 					
-					soundIcon.visible = user.talking;
-					labelDisplay.text = user.name; 
+					if(obj.presenter)
+					{
+						handIcon.visible = handIcon.includeInLayout = obj.raiseHand;
+						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
+						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.presenter');
+					}
+					else if(obj.role == "MODERATOR")
+					{
+						handIcon.visible = handIcon.includeInLayout = obj.raiseHand;
+						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
+						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.moderator');
+					}
+					else
+					{
+						handIcon.visible = obj.raiseHand;
+						handIcon.includeInLayout = true;
+						subLabelDisplay.visible = subLabelDisplay.includeInLayout = false;
+					}
+					
 				}
 			}
 			
 		]]>
 	</fx:Script>
-	<s:layout>
-		<s:HorizontalLayout gap="0"
-						  paddingBottom="0"
-						  paddingLeft="0"
-						  paddingRight="0"
-						  paddingTop="0"
-						  />
-	</s:layout>
-	<s:Group y="0" left="0" width="90" height="50">
-		<s:layout>
-			<s:HorizontalLayout gap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" />
-		</s:layout>
-		<s:Group y="0" left="0" width="50%" height="100%">
-			<assets:ProfileIcon id="profileIcon" horizontalCenter="0" verticalCenter="0"/>
-			<assets:PresentationIcon id="presentationIcon" horizontalCenter="0" verticalCenter="0"/>
-		</s:Group>
-		<s:Group y="0" left="0" width="50%" height="100%">
-			<assets:HandSp id="handIcon" horizontalCenter="0" verticalCenter="0"/>
-		</s:Group>
+	<s:Group width="100%" height="{getStyle('itemHeight')}">
+			<s:layout>
+				<s:HorizontalLayout  verticalAlign="middle" paddingLeft="{getStyle('itemPaddingLeft')}" paddingRight="{getStyle('itemPaddingRight')}"/>
+			</s:layout>
+			<s:Image id="profileIcon" styleName="iconStyle moderatorIconStyle" height="100%"/>
+			<s:Image id="presentationIcon" styleName="iconStyle presentationIconStyle" height="100%"/>
+			<s:Image id="handIcon" styleName="iconStyle handIconStyle" height="100%"/>
+			<s:Group width="70%">
+				<s:layout>
+					<s:VerticalLayout/>
+				</s:layout>
+				<s:Label id="labelDisplay" width="100%"  height="100%" styleName="participantNameStyle contentFontSize"/>
+				<s:Label id="subLabelDisplay" width="100%"  height="100%" styleName="participantStatusStyle subContentFontSize"/>
+			</s:Group>
+			<s:Image id="cameraIcon" styleName="iconStyle cameraIconStyle" height="100%"/>
+			<s:Image id="micIcon" styleName="iconStyle micIconStyle" height="100%"/>
+			<s:Image id="micOffIcon" styleName="iconStyle micOffIconStyle"  height="100%"/>
+			<s:Image id="listenOnlyIcon" styleName="iconStyle listenOnlyIconStyle"  height="100%"/>
+			<s:Image id="soundIcon" styleName="iconStyle soundIconStyle" height="100%" />
 	</s:Group>
-	<s:Label id="labelDisplay" x="79" width="60%" height="51" fontWeight="bold"
-			 text="Lucas Jones&#xd;" textAlign="left" verticalCenter="0"/>
-	<s:Group y="0" right="0" width="30%" height="49">
-		<s:layout>
-			<s:HorizontalLayout gap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" />
-		</s:layout>
-		<s:Group y="0" left="0" width="34%" height="100%">
-			<assets:CameraIcon id="cameraIcon" x="23" y="12" horizontalCenter="0"/>	
-		</s:Group>
-		<s:Group y="0" left="0" width="33%" height="100%">
-			<assets:MicIcon id="micIcon" y="12" horizontalCenter="0"/>
-			<assets:MicOffIcon id="micOffIcon" visible="false" y="12" horizontalCenter="0"/>
-		</s:Group>
-		<s:Group x="0" y="0" width="33%" height="100%">
-			<assets:SoundIcon id="soundIcon" y="12" horizontalCenter="0"/>
-		</s:Group>
-		<s:Group x="0" y="0" width="33%" height="100%">
-			<assets:ArrowRight y="12" horizontalCenter="0"/>
-		</s:Group>
-	</s:Group>
+	<s:Line width="100%">
+		<s:stroke>
+			<s:SolidColorStroke color="{getStyle('lineColor')}" weight="{getStyle('lineWeight')}" />
+		</s:stroke>
+	</s:Line>
 
 </s:ItemRenderer>

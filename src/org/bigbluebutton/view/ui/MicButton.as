@@ -2,31 +2,14 @@ package org.bigbluebutton.view.ui
 {
 	import flash.events.MouseEvent;
 	
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
+	import mx.events.FlexEvent;
+	import mx.states.SetStyle;
+	import mx.states.State;
 	
-	public class MicButton extends MicButtonBase implements IMicButton
+	import spark.components.Button;
+	
+	public class MicButton extends Button implements IMicButton
 	{
-		/**
-		 * Dispatched when the user click the button to turn on the microphone
-		 */		
-		private var _turnOnMicSignal: Signal = new Signal();
-		
-		public function get turnOnMicSignal(): ISignal
-		{
-			return _turnOnMicSignal;
-		}
-
-		/**
-		 * Dispatched when the user click the button to turn off the microphone
-		 */
-		private var _turnOffMicSignal: Signal = new Signal();
-		
-		public function get turnOffMicSignal(): ISignal
-		{
-			return _turnOffMicSignal;
-		}
-		
 		public function MicButton()
 		{
 			super();
@@ -35,42 +18,38 @@ package org.bigbluebutton.view.ui
 		override protected function childrenCreated():void
 		{
 			super.childrenCreated();
-			
-			this.addEventListener(MouseEvent.CLICK, change);
-		}
-		
-		protected function change(e:MouseEvent):void
-		{
-			if(this.selected)
-			{
-				turnOffMicSignal.dispatch();
-			}
-			else
-			{
-				turnOnMicSignal.dispatch();
-			}
-		}		
+			var muted:State = new State({name : "muted"});
+			var unmuted:State = new State({name : "unmuted"});
+			muted.overrides = [new SetStyle(this,"gradientColorTop", this.getStyle('selectedGradientColorTop') ),
+								new SetStyle(this,"gradientColorBottom", this.getStyle('selectedGradientColorBottom') ),
+								new SetStyle(this,"backgroundImage", this.getStyle('mutedBackgroundImage') )];
+			this.states.push(muted);
+			this.states.push(unmuted);
+		}	
 		
 		public function dispose():void
 		{
-			_turnOnMicSignal.removeAll();
-			_turnOffMicSignal.removeAll();
 			
-			this.removeEventListener(MouseEvent.CLICK, change);
 		}
 		
-		protected var _selected:Boolean = false;
-		
-		public function set selected(b:Boolean):void
-		{
-			_selected = b;
-			if(_selected) currentState = "selected";
-			else currentState = "unselected";
+		public function setVisibility(val:Boolean):void {
+			this.visible = val;
 		}
 		
-		public function get selected():Boolean
+		protected var _muted:Boolean = false;
+		
+		public function set muted(b:Boolean):void
 		{
-			return _selected;
+			_muted = b;
+			if(_muted){
+				currentState = "muted";
+			}
+			else currentState = "unmuted";
+		}
+		
+		public function get muted():Boolean
+		{
+			return _muted;
 		}
 	}
 }

@@ -1,13 +1,17 @@
 package org.bigbluebutton.view.navigation.pages.profile
 {
-	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	
+	import mx.core.FlexGlobals;
+	import mx.events.ItemClickEvent;
 	import mx.resources.ResourceManager;
 	
-	import org.bigbluebutton.command.CameraEnableSignal;
+	import org.bigbluebutton.command.DisconnectUserSignal;
+	import org.bigbluebutton.command.RaiseHandSignal;
 	import org.bigbluebutton.model.IUserSession;
-	import org.bigbluebutton.model.IUserSettings;
+	import org.bigbluebutton.model.User;
+	import org.bigbluebutton.model.UserList;
+	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
 	import org.osmf.logging.Log;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
@@ -20,42 +24,58 @@ package org.bigbluebutton.view.navigation.pages.profile
 		[Inject]
 		public var userSession: IUserSession;
 		
-		[Inject]
-		public var userSettings: IUserSettings;
+		[Inject] 
+		public var raiseHandSignal: RaiseHandSignal;
 		
 		[Inject]
-		public var cameraEnabledSignal: CameraEnableSignal;
-
+		public var disconnectUserSignal: DisconnectUserSignal;
+			
 		override public function initialize():void
 		{
 			Log.getLogger("org.bigbluebutton").info(String(this));
 			
-			userSettings.cameraChangeSignal.add(onCameraSettingChange)
+			userSession.userList.userChangeSignal.add(userChangeHandler);
 			
-			view.userNameText.text = userSession.userList.getUser(userSession.userId).name;
+			var userMe:User = userSession.userList.me;		
 			
-			view.cameraOnOFFText.text = ResourceManager.getInstance().getString('resources', userSettings.cameraEnabled? 'profile.settings.camera.on':'profile.settings.camera.off'); 
-						
-			view.cameraButton.addEventListener(MouseEvent.CLICK, onCameraClick);
+			view.userNameButton.label = userMe.name;
+			view.raiseHandButton.label = ResourceManager.getInstance().getString('resources', userMe.raiseHand ?'profile.settings.handLower' : 'profile.settings.handRaise');
+			view.raiseHandButton.addEventListener(MouseEvent.CLICK, onRaiseHandClick);
+			view.logoutButton.addEventListener(MouseEvent.CLICK, logoutClick);
+			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
+			FlexGlobals.topLevelApplication.profileBtn.visible = false;
+			FlexGlobals.topLevelApplication.backBtn.visible = true;			
 		}
 		
-		private function onCameraSettingChange(cameraEnabled:Boolean):void
+		private function userChangeHandler(user:User, type:int):void
 		{
-			view.cameraOnOFFText.text = ResourceManager.getInstance().getString('resources', cameraEnabled? 'profile.settings.camera.on':'profile.settings.camera.off'); 
+			if (user.me && type == UserList.RAISE_HAND) 
+			{
+				view.raiseHandButton.label = ResourceManager.getInstance().getString('resources', user.raiseHand ?'profile.settings.handLower' : 'profile.settings.handRaise');
+			}
 		}
 		
-		protected function onCameraClick(event:MouseEvent):void
+		protected function onRaiseHandClick(event:MouseEvent):void
+		{			
+			raiseHandSignal.dispatch(userSession.userId, !userSession.userList.me.raiseHand);
+		}
+		
+		
+		/**
+		 * User pressed log out button
+		 */ 
+		public function logoutClick(event:MouseEvent):void
 		{
-			cameraEnabledSignal.dispatch(!userSettings.cameraEnabled);
+			disconnectUserSignal.dispatch(DisconnectEnum.CONNECTION_STATUS_USER_LOGGED_OUT);
 		}
 		
 		override public function destroy():void
 		{
 			super.destroy();
 			
-			userSettings.cameraChangeSignal.remove(onCameraSettingChange)
-			
-			view.cameraButton.removeEventListener(MouseEvent.CLICK, onCameraClick);
+			userSession.userList.userChangeSignal.remove(userChangeHandler);			
+			view.raiseHandButton.removeEventListener(MouseEvent.CLICK, onRaiseHandClick);
+			view.logoutButton.removeEventListener(MouseEvent.CLICK, logoutClick);
 			
 			view.dispose();
 			view = null;

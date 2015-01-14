@@ -1,45 +1,36 @@
 package org.bigbluebutton.view.navigation.pages.videochat
 {
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.net.NetConnection;
 	
-	import mx.charts.renderers.WedgeItemRenderer;
-	import mx.collections.ArrayCollection;
-	import mx.graphics.SolidColor;
-	import mx.graphics.SolidColorStroke;
+	import mx.core.FlexGlobals;
 	
+	import spark.components.Group;
 	import spark.components.Label;
-	import spark.primitives.Rect;
+	import spark.components.List;
 	
 	public class VideoChatView extends VideoChatViewBase implements IVideoChatView
 	{
-		private var webcam:WebcamView;
-
-		public function VideoChatView():void	
-		{
-			
-		}		
+		private var webcam:VideoChatVideoView;
 		
 		override protected function childrenCreated():void
 		{
 			super.childrenCreated();
 		}
-
-		public function startStream(connection:NetConnection, name:String, streamName:String, userID:String, width:Number, height:Number):void 
+		
+		public function startStream(connection:NetConnection, name:String, streamName:String, userID:String, width:Number, height:Number, screenHeight:Number, screenWidth:Number):void 
 		{
 			if (webcam) stopStream();
 			
-			webcam = new WebcamView();
+			webcam = new VideoChatVideoView();
 			webcam.percentWidth = 100;
 			webcam.percentHeight = 100;
-			webcam.startStream(connection, name, streamName, userID, width, height);		
 			this.videoGroup.addElement(webcam);
-			
-			//invalidateDisplayList();
+			var topActionBarHeight : Number = FlexGlobals.topLevelApplication.topActionBar.height;
+			var bottomMenuHeight : Number = FlexGlobals.topLevelApplication.bottomMenu.height;
+			webcam.startStream(connection, name, streamName, userID, width, height, screenHeight, screenWidth,topActionBarHeight, bottomMenuHeight);			
+			webcam.setVideoPosition(name);
 		}
-				
+		
 		public function stopStream():void 
 		{
 			if(webcam)
@@ -55,6 +46,10 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			}
 		}
 		
+		public function get videoGroup():Group
+		{
+			return videoGroup0;
+		}
 		
 		public function dispose():void
 		{
@@ -66,6 +61,11 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			return noVideoMessage0;
 		}
 		
+		public function get streamlist():List
+		{
+			return videoStreamsList;
+		}
+		
 		public function getDisplayedUserID():String {
 			if (webcam != null) {
 				return webcam.userID;
@@ -73,5 +73,6 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				return null;
 			}
 		}
+		
 	}
 }

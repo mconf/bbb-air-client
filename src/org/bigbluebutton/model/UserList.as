@@ -11,6 +11,14 @@ package org.bigbluebutton.model
 	
 	public class UserList
 	{
+		public static const HAS_STREAM:int = 1;
+		public static const PRESENTER:int = 2;
+		public static const JOIN_AUDIO:int = 3;
+		public static const MUTE:int = 4;
+		public static const RAISE_HAND:int = 5;
+		public static const LOCKED:int = 6;
+		public static const LISTEN_ONLY:int = 7;
+		
 		private var _users:ArrayCollection;	
 		
 		[Bindable]
@@ -47,7 +55,16 @@ package org.bigbluebutton.model
 			_users.sort = _sort;
 		}
 		
+		/**
+		 * Dispatched when all participants are added
+		 */
+		private var _allUsersAddedSignal: Signal = new Signal();
 		
+		public function get allUsersAddedSignal(): ISignal
+		{
+			return _allUsersAddedSignal;
+		}
+				
 		/**
 		 * Dispatched when a participant is added
 		 */
@@ -155,11 +172,23 @@ package org.bigbluebutton.model
 					// if we don't set _me to the just added user, _me won't get any update ever, it wouldn't be
 					// possible to use me.isModerator(), for instance
 					_me = newuser;
-				}						
-				
-				newuser.signal = _userChangeSignal;
+				}
+
 				_users.addItem(newuser);
 				_users.refresh();
+
+				if(newuser.hasStream) {
+					userChangeSignal.dispatch(newuser, HAS_STREAM);
+				}				
+				if(newuser.presenter) {
+					userChangeSignal.dispatch(newuser, PRESENTER);
+				}
+				if(newuser.raiseHand) {
+					userChangeSignal.dispatch(newuser, RAISE_HAND);
+				}
+				if(newuser.listenOnly) {
+					userChangeSignal.dispatch(newuser, LISTEN_ONLY);
+				}
 				
 				userAddedSignal.dispatch(newuser);
 			}					
@@ -183,7 +212,7 @@ package org.bigbluebutton.model
 			return null;				
 		}
 		
-		public function getUserByVoiceUserId(voiceUserId:Number):User {
+		public function getUserByVoiceUserId(voiceUserId:String):User {
 			var aUser:User;
 			
 			for (var i:int = 0; i < _users.length; i++) {
@@ -232,7 +261,7 @@ package org.bigbluebutton.model
 			if (u.presenter) {
 				u.presenter = false;
 				
-				userChangeSignal.dispatch(u);
+				userChangeSignal.dispatch(u, PRESENTER);
 				
 				if (u.me)
 					_me.presenter = false;
@@ -249,13 +278,13 @@ package org.bigbluebutton.model
 				
 				user.presenter = true;
 				
-				userChangeSignal.dispatch(user);
+				userChangeSignal.dispatch(user, PRESENTER);
 				
 				if (user.me)
 					_me.presenter = true;
 			}
 		}
-		
+
 		private function clearPresenter():void
 		{
 			for each(var user:User in _users)
@@ -268,13 +297,12 @@ package org.bigbluebutton.model
 			var p:Object = getUserIndex(userID);
 			
 			if (p) {
-				p.participant.hasStream = hasStream;
-				p.participant.streamName = streamName;
+				var user:User = p.participant as User;
 				
-				if (p.participant.me)
-					_me.hasStream = hasStream;
+				user.hasStream = hasStream;
+				user.streamName = streamName;
 				
-				userChangeSignal.dispatch(p.participant, "hasStream");
+				userChangeSignal.dispatch(user, HAS_STREAM);
 			}
 		}
 		
@@ -282,19 +310,80 @@ package org.bigbluebutton.model
 			var p:Object = getUserIndex(userID);
 			
 			if (p) {
+				var user:User = p.participant as User;
+				
 				p.participant.raiseHand = value;
 				
-				userChangeSignal.dispatch(p.participant);
+				userChangeSignal.dispatch(p.participant, RAISE_HAND);
+			}
+		}
+		
+		public function userJoinAudio(userID:String, voiceUserID:String, muted:Boolean, talking:Boolean, locked:Boolean):void {
+			var p:Object = getUserIndex(userID);
+			
+			if (p != null) {
+				var user:User = p.participant as User;
 				
-				if (p.participant.me)
-					_me.raiseHand = value;
+				user.voiceUserId = voiceUserID;
+				user.voiceJoined = true;
+				user.muted = muted;
+				user.talking = talking;
+				user.locked = locked;
+				
+				userChangeSignal.dispatch(user, JOIN_AUDIO);
+			} else {
+				trace("UserList: User join audio failed - user not found");
+			}
+		}
+		
+		public function userLeaveAudio(userID:String):void {
+			var user:User = getUser(userID);
+			if(user != null) {
+				user.talking = false;
+				user.voiceJoined = false;
+				
+				userChangeSignal.dispatch(user, JOIN_AUDIO);
+			} else {
+				trace("UserList: User leave audio failed - user not found");
+			}
+		}
+		
+		public function userMuteChange(voiceUserID:String, mute:Boolean):void {
+			var user:User = getUserByVoiceUserId(voiceUserID);
+			
+			if (user != null) {
+				user.muted = mute;
+				
+				if (mute) {
+					user.talking = false;
+				}
+				
+				userChangeSignal.dispatch(user, MUTE);
+			}
+		}
+		
+		public function userLockedChange(voiceUserID:String, locked:Boolean):void {
+			var user:User = getUserByVoiceUserId(voiceUserID);
+			
+			if (user != null) {
+				user.locked = locked;
+				
+				userChangeSignal.dispatch(user, LOCKED);
+			}
+		}
+		
+		public function userTalkingChange(voiceUserID:String, talking:Boolean):void {
+			var user:User = getUserByVoiceUserId(voiceUserID);
+			
+			if (user != null) {
+				user.talking = talking;
 			}
 		}
 		
 		/**
-		 * Get the index number of the participant with the specific userid 
-		 * @param userid
-		 * @return -1 if participant not found
+		 * Get the an object containing the index and User object for a specific userid 
+		 * @param userID
+		 * @return null if userID id not found
 		 * 
 		 */		
 		private function getUserIndex(userID:String):Object {
@@ -309,6 +398,15 @@ package org.bigbluebutton.model
 			}				
 			
 			return null;
+		}
+		
+		public function listenOnlyChange(userID:String, listenOnly:Boolean):void {
+			var user:User = getUser(userID);
+			
+			if(user != null) {
+				user.listenOnly = listenOnly;
+				userChangeSignal.dispatch(user, LISTEN_ONLY);
+			}
 		}
 	}
 }

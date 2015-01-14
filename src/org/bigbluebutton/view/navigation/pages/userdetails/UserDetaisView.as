@@ -2,6 +2,8 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 {
 	import flash.events.MouseEvent;
 	
+	import mx.core.FlexGlobals;
+	
 	import org.bigbluebutton.model.User;
 	
 	import spark.components.Button;
@@ -30,14 +32,34 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		
 		public function update():void
 		{
-			if(user != null && mainshell != null)
-			{
-				userNameText.text = _user.name;
-				statusText.text = _user.role;
-				cameraIcon.visible = _user.hasStream;
-				micIcon.visible = (_user.voiceJoined && !_user.muted);
-				micOffIcon.visible = (_user.voiceJoined && _user.muted);
-				soundIcon.visible = user.talking; 
+			if(user != null && FlexGlobals.topLevelApplication.mainshell != null)
+			{			
+				if(_user.me)
+				{
+					userNameText.text = _user.name + " " +resourceManager.getString('resources', 'userDetail.you');
+				}
+				else
+				{
+					userNameText.text = _user.name;
+				}
+				
+				if(_user.presenter)
+				{
+					statusText.text = resourceManager.getString('resources', 'participants.status.presenter');
+				}
+				else if(_user.role == "MODERATOR")
+				{
+					statusText.text = resourceManager.getString('resources', 'participants.status.moderator');
+				}
+				else
+				{
+					statusText.text = "";
+				}
+				
+				cameraIcon.visible = cameraIcon.includeInLayout = _user.hasStream;
+				micIcon.visible = micIcon.includeInLayout = (_user.voiceJoined && !_user.muted);
+				micOffIcon.visible = micOffIcon.includeInLayout = (_user.voiceJoined && _user.muted);
+				noMediaText.visible = noMediaText.includeInLayout = (!_user.voiceJoined && !_user.hasStream);
 				
 				//TODO: buttons
 				showCameraButton0.includeInLayout = _user.hasStream;
@@ -50,7 +72,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		
 		public function dispose():void
 		{
-			
+
 		}
 
 		public function get showCameraButton():Button

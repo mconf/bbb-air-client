@@ -3,12 +3,19 @@ package org.bigbluebutton.core
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.chat.ChatMessageVO;
-
-	public class ChatMessageReceiver implements IChatMessageReceiver, IMessageListener
-	{
-		[Inject]
+	import org.bigbluebutton.model.chat.IChatMessagesSession;
+	
+	public class ChatMessageReceiver implements IMessageListener
+	{		
 		public var userSession: IUserSession;
-
+		
+		public var chatMessagesSession: IChatMessagesSession;
+		
+		public function ChatMessageReceiver(userSession:IUserSession, chatMessagesSession:IChatMessagesSession) {
+			this.userSession = userSession;
+			this.chatMessagesSession = chatMessagesSession ;
+		}
+		
 		public function onMessage(messageName:String, message:Object):void
 		{
 			switch (messageName) {
@@ -24,7 +31,7 @@ package org.bigbluebutton.core
 				default:
 					//   LogUtil.warn("Cannot handle message [" + messageName + "]");
 			}
-		}
+ 		}
 		
 		private function handleChatRequestMessageHistoryReply(message:Object):void {
 			var msgCount:Number = message.count as Number;
@@ -47,7 +54,7 @@ package org.bigbluebutton.core
 			msg.toUsername = message.toUsername;
 			msg.message = message.message;
 			
-			userSession.publicChat.newChatMessage(msg);
+			chatMessagesSession.publicChat.newChatMessage(msg);
 		}
 		
 		private function handleChatReceivePrivateMessageCommand(message:Object):void {
@@ -65,7 +72,9 @@ package org.bigbluebutton.core
 			msg.message = message.message;
 			
 			var userId:String = (msg.fromUserID == userSession.userId? msg.toUserID: msg.fromUserID);
-			userSession.userList.getUser(userId).privateChat.newChatMessage(msg);
+			var userName:String = (msg.fromUserID == userSession.userId? msg.toUsername: msg.fromUsername);
+			
+			chatMessagesSession.newPrivateMessage(userId, userName,  msg);
 		}
 	}
 }

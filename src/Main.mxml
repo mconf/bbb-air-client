@@ -2,14 +2,16 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:top="org.bigbluebutton.top.view.*"
-			   xmlns:ui="org.bigbluebutton.view.navigation.ui.*"
 			   xmlns:navigation="org.bigbluebutton.view.navigation.*" 
 			   xmlns:presentation="org.bigbluebutton.view.navigation.pages.presentation.*" 
+			   xmlns:ui="org.bigbluebutton.view.ui.*" 
+			   xmlns:common="org.bigbluebutton.view.navigation.pages.common.*" 
 			   xmlns:loading="org.bigbluebutton.view.ui.loading.*"
+			   styleName="mainshellStyle"
 			   preinitialize="preinitializeHandler(event)" 
 			   creationComplete="creationCompleteHandler(event)"
-			   applicationComplete="applicationCompleteHandler(event)"
-			   applicationDPI="160"
+			   applicationComplete="applicationCompleteHandler(event)" 	
+			   runtimeDPIProvider = "CustomRuntimeDPIProvider"
 			   >
 	<fx:Style source="Default.css"/>
 	
@@ -21,16 +23,26 @@
 		<![CDATA[
 			import com.adobe.utils.LocaleUtil;
 			
+			import flash.system.Capabilities;
+			
 			import mx.events.FlexEvent;
 			import mx.resources.ResourceManager;
 			
 			import org.bigbluebutton.AppConfig;
 			import org.bigbluebutton.core.util.OrientationCalculator;
 			import org.bigbluebutton.core.view.NoTabView;
+			import org.bigbluebutton.model.UserSession;
 			import org.bigbluebutton.util.BigBlueButtonLoggerFactory;
 			import org.bigbluebutton.view.navigation.PagesNavigatorConfig;
+			import org.bigbluebutton.view.navigation.pages.PagesENUM;
+			import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
+			import org.bigbluebutton.view.navigation.pages.audiosettings.AudioSettingsConfig;
+			import org.bigbluebutton.view.navigation.pages.camerasettings.CameraSettingsConfig;
 			import org.bigbluebutton.view.navigation.pages.chat.ChatConfig;
 			import org.bigbluebutton.view.navigation.pages.chatrooms.ChatRoomsConfig;
+			import org.bigbluebutton.view.navigation.pages.common.MenuButtonsConfig;
+			import org.bigbluebutton.view.navigation.pages.deskshare.DeskshareConfig;
+			import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageConfig;
 			import org.bigbluebutton.view.navigation.pages.login.LoginPageConfig;
 			import org.bigbluebutton.view.navigation.pages.participants.ParticipantsConfig;
 			import org.bigbluebutton.view.navigation.pages.presentation.PresentationConfig;
@@ -38,10 +50,10 @@
 			import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantConfig;
 			import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisConfig;
 			import org.bigbluebutton.view.navigation.pages.videochat.VideoChatConfig;
-			import org.bigbluebutton.view.ui.LoginButtonConfig;
 			import org.bigbluebutton.view.ui.MicButtonConfig;
-			import org.bigbluebutton.view.ui.MicStatusConfig;
 			import org.bigbluebutton.view.ui.NavigationButtonConfig;
+			import org.bigbluebutton.view.ui.RecordingStatusConfig;
+			import org.bigbluebutton.view.ui.SwapCameraConfig;
 			import org.bigbluebutton.view.ui.loading.LoadingScreenConfig;
 			import org.osmf.logging.Log;
 			import org.osmf.logging.Logger;
@@ -51,18 +63,18 @@
 			import robotlegs.bender.extensions.signalCommandMap.SignalCommandMapExtension;
 			import robotlegs.bender.framework.api.IContext;
 			import robotlegs.bender.framework.api.LogLevel;
-			import robotlegs.bender.framework.impl.Context;
+			import robotlegs.bender.framework.impl.Context;		
 			
 			protected var context: IContext;
 			
 			private var _orientationCalc:OrientationCalculator;
 			public var currentOrientation:String;
 			
+			
 			protected function preinitializeHandler(event:FlexEvent):void
 			{
 				setupContext();
 				setupLogger();
-				
 				resizeForSoftKeyboard = true;
 				
 				//NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvokeEvent);
@@ -72,21 +84,21 @@
 			/*
 			public function onInvokeEvent(invocation:InvokeEvent):void 
 			{
-				var traceString:String = "";
-				
-				var arguments:Array = invocation.arguments;
-				var currentDir:File = invocation.currentDirectory;
-				var reason:String = invocation.reason;
-				traceString += "-----InvokeEvent.INVOKE----\n";
-				traceString += "arguments: "+arguments.toString()+"\n\n";
-				traceString += "currentDir: "+currentDir+"\n\n";
-				traceString += "reason: "+reason+"\n\n";
-				
-				var url:String = arguments.toString().replace('bigbluebutton://', 'http://');
-				
-				traceString += "url: "+url+"\n\n";
-				
-				traceText.text += traceString;
+			var traceString:String = "";
+			
+			var arguments:Array = invocation.arguments;
+			var currentDir:File = invocation.currentDirectory;
+			var reason:String = invocation.reason;
+			traceString += "-----InvokeEvent.INVOKE----\n";
+			traceString += "arguments: "+arguments.toString()+"\n\n";
+			traceString += "currentDir: "+currentDir+"\n\n";
+			traceString += "reason: "+reason+"\n\n";
+			
+			var url:String = arguments.toString().replace('bigbluebutton://', 'http://');
+			
+			traceString += "url: "+url+"\n\n";
+			
+			traceText.text += traceString;
 			}
 			*/
 			/**
@@ -96,24 +108,27 @@
 			{
 				context = new Context()
 					.install(MVCSBundle, SignalCommandMapExtension)
-									.configure(AppConfig)
-									.configure(LoadingScreenConfig)
-									
-									.configure(PagesNavigatorConfig)
-										.configure(PresentationConfig)
-										.configure(LoginPageConfig)
-										.configure(ChatConfig)
-										.configure(ChatRoomsConfig)
-										.configure(VideoChatConfig)
-										.configure(ProfileConfig)
-										.configure(UserDetaisConfig)
-										.configure(ParticipantsConfig)
-										.configure(SelectParticipantConfig)	
-									
-									.configure(MicButtonConfig)
-									.configure(MicStatusConfig)
-									.configure(LoginButtonConfig)
-									.configure(NavigationButtonConfig)
+					.configure(AppConfig)
+					
+					.configure(LoadingScreenConfig)
+					.configure(PagesNavigatorConfig)
+					.configure(PresentationConfig)
+					.configure(LoginPageConfig)
+					.configure(ChatConfig)
+					.configure(ChatRoomsConfig)
+					.configure(VideoChatConfig)
+					.configure(ProfileConfig)
+					.configure(UserDetaisConfig)
+					.configure(ParticipantsConfig)
+					.configure(SelectParticipantConfig)		
+					.configure(MicButtonConfig)
+					.configure(NavigationButtonConfig)
+					.configure(SwapCameraConfig)
+					.configure(DisconnectPageConfig)
+					.configure(DeskshareConfig)
+					.configure(RecordingStatusConfig)
+					.configure(CameraSettingsConfig)
+					.configure(AudioSettingsConfig)
 					
 					.configure(new ContextView(this));
 				
@@ -143,7 +158,7 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				
+
 			}
 			
 			protected function applicationCompleteHandler(event:FlexEvent):void
@@ -175,14 +190,35 @@
 				currentOrientation = _orientationCalc.currentOrientation;
 				(pagesNavigatorView.activeView as NoTabView).rotationHandler(_orientationCalc.currentOrientation);
 			}
+
 		]]>
 	</fx:Script>
-
+	
 	<fx:Metadata>
 		[ResourceBundle("resources")]
 	</fx:Metadata> 
+	
+	<loading:LoadingScreen width="100%" height="100%"/>
+	
+	<s:Group width="100%" height="100%" id="mainshell" visible="false">
+		<s:layout>
+			<s:VerticalLayout gap="0"/>
+		</s:layout>
+		<s:SkinnableContainer id="topActionBar" width="100%" height="{getStyle('toolBarHeight')}" styleName="topToolBarStyle"  verticalCenter="0">
+			<s:HGroup width="100%" height="100%">
+				<s:Group>
+					<ui:NavigationButton id="profileBtn" styleName="profileButtonStyle topButtonStyle"
+										 navigateTo="{[PagesENUM.PROFILE]}" transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}"/>
+					<ui:NavigationButton id="backBtn" styleName="backButtonStyle topButtonStyle"
+										 navigateTo="{[PagesENUM.LAST]}" transitionAnimation="{TransitionAnimationENUM.SLIDE_RIGHT}"/>
+				</s:Group>
+				<s:Label id="pageName" styleName="pageNameStyle" width="100%" height="100%"/>
+				<ui:RecordingStatus id="recordingStatus" styleName="recordingStatusIconStyle topButtonStyle"/>
+				<ui:MicButton id="microphoneBtn" styleName="micButtonStyle topButtonStyle"/>
+			</s:HGroup>
+		</s:SkinnableContainer>
 
-	<navigation:PagesNavigatorView id="pagesNavigatorView" width="100%" height="100%"/>
-	<loading:LoadingScreen width="100%" height="100%" />
-	<!--<s:TextArea id="traceText" x="10" y="10" height="488"/>-->
+		<navigation:PagesNavigatorView id="pagesNavigatorView" width="100%" height="100%"/>
+    	<common:MenuButtonsView id="bottomMenu" width="100%" height="{getStyle('bottomToolBarHeight')}"/>
+	</s:Group>	
 </s:Application>
