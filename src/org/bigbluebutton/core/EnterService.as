@@ -28,6 +28,7 @@ package org.bigbluebutton.core
 		
 		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest):void {
 			var result : Object = JSON.parse(data as String);
+			//TODO invalid JSON parse input
 			successSignal.dispatch(result.response);
 		}
 		

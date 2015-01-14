@@ -35,6 +35,19 @@ package org.bigbluebutton.model
 		protected var _recordingStatusChangedSignal:ISignal = new Signal();
 		protected var _logoutSignal:Signal = new Signal();
 
+		protected var _videoProfileManager:VideoProfileManager = null;
+		
+		
+		public function get videoProfileManager():VideoProfileManager
+		{
+			return _videoProfileManager;
+		}
+		
+		public function set videoProfileManager(value:VideoProfileManager):void
+		{
+			_videoProfileManager = value;
+		}
+		
 		public function get userList():UserList
 		{
 			return _userList;

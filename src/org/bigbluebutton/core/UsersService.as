@@ -138,5 +138,9 @@ package org.bigbluebutton.core
 			usersMessageSender.sendJoinMeetingMessage(conferenceParameters.internalUserID);
 		}
 		
+		public function askToEnter():void {
+			usersMessageSender.askToEnter(userSession.userList.me.userID);
+					}
+		
 	}
 }

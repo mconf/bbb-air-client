@@ -157,5 +157,17 @@ package org.bigbluebutton.core
 			userSession.mainConnection.sendMessage("joinMeeting", defaultSuccessResponse, defaultFailureResponse, internalUserID);
 		}
 		
+		public function askToEnter(userId:String):void {
+//						var nc:NetConnection = userSession.mainConnection.connection;
+//						var restoreFunctionName:String = "participants.askingToEnter";
+//			
+//						nc.call(
+//								restoreFunctionName,
+//								responder,
+//								userId
+//							);
+			//TODO implement this function in the new way of handling messages
+		}
+		
 	}
 }
