@@ -112,6 +112,10 @@ package org.bigbluebutton.core
 				_conferenceParameters.internalUserID
 			];
 			
+			if (_conferenceParameters.isGuestDefined()) {
+				connectParams.push(_conferenceParameters.guest);
+			}
+			
 			baseConnection.connect.apply(null, new Array(uri).concat(connectParams));
 		}
 		
