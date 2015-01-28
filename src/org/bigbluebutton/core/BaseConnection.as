@@ -65,11 +65,12 @@ package org.bigbluebutton.core
 			// are not implemented in the mobile client, so parameters[7] and parameters[8]
 			// are "faked" in order to connect (without them, I couldn't get the connect 
 			// call to work...) - Adam
-			parameters[7] = false;
+			//parameters[7] = false;
 			parameters[8] = false;
 			
 			try {
 				trace("Trying to connect to [" + uri +  "] ...");
+				
 				// passing an array to a method that expects a variable number of parameters
 				// http://stackoverflow.com/a/3852920
 				_netConnection.connect.apply(null, new Array(uri).concat(parameters));

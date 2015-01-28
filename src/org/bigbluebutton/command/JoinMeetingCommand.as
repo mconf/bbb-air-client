@@ -37,7 +37,7 @@ package org.bigbluebutton.command
 		{
 			loginService.successJoinedSignal.add(successJoined);
 			loginService.successGetConfigSignal.add(successConfig);
-			loginService.successGetProfilesSignal.add(sucessProfiles);
+			//loginService.successGetProfilesSignal.add(sucessProfiles);
 			loginService.unsuccessJoinedSignal.add(unsuccessJoined);
 			
 			userUISession.loading = true;
@@ -47,9 +47,9 @@ package org.bigbluebutton.command
 
 		protected function successJoined(userObject:Object):void {
 			Log.getLogger("org.bigbluebutton").info(String(this) + ":successJoined()");
-			
+
 			conferenceParameters.load(userObject);
-			
+			trace(conferenceParameters.username);
 			connectSignal.dispatch(new String(userSession.config.application.uri));
 		}
 		

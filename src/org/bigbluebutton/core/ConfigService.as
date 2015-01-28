@@ -38,11 +38,9 @@ package org.bigbluebutton.core
 		}
 		
 		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest):void {
-			try {
-				successSignal.dispatch(new XML(data));
-			} catch (e:Error) {
-				onUnsuccess("invalidXml");
-			}
+			
+			successSignal.dispatch(new XML(data));
+			
 		}
 		
 		protected function onUnsuccess(reason:String):void {

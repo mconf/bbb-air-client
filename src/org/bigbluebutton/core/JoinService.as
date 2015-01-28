@@ -51,6 +51,7 @@ package org.bigbluebutton.core
 		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest):void {
 			try {
 				var xml:XML = new XML(data);
+				
 				if (xml.returncode == XML_RETURN_CODE_FAILED) {
 					onUnsuccess(xml.messageKey);
 					return;

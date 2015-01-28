@@ -138,7 +138,7 @@ package org.bigbluebutton.core
 		
 		public function connect():void
 		{
-			baseConnection.connect(applicationURI);
+			//baseConnection.connect(applicationURI);
 		}
 		
 		public function get isStreaming():Boolean

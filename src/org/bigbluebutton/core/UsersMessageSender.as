@@ -158,6 +158,7 @@ package org.bigbluebutton.core
 		}
 		
 		public function askToEnter(userId:String):void {
+			trace("reaching here?");
 //						var nc:NetConnection = userSession.mainConnection.connection;
 //						var restoreFunctionName:String = "participants.askingToEnter";
 //			
