@@ -60,6 +60,7 @@ package org.bigbluebutton.core.util
 		
 		private function handleComplete(e:Event):void {
 			successSignal.dispatch(e.target.data, _responseUrl, _urlRequest);
+			
 		}
 		
 		private function ioErrorHandler(e:IOErrorEvent):void {

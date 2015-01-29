@@ -70,6 +70,33 @@ package org.bigbluebutton.command
 			userSession.mainConnection = connection;
 			userSession.userId = connection.userId;
 			
+			if (conferenceParameters.isGuestDefined() && conferenceParameters.guest) {
+				// I'm a guest, let's ask to enter
+				userSession.guestSignal.add(onGuestResponse);
+			} else {
+				connectAfterGuest();
+			}
+		}
+		
+		private function onGuestResponse(allowed:Boolean):void {
+			if (allowed) {
+				Log.getLogger("org.bigbluebutton").info(String(this) + ":onGuestResponse() allowed to join");
+				
+				connectAfterGuest();
+			} else {
+				Log.getLogger("org.bigbluebutton").info(String(this) + ":onGuestResponse() not allowed to join");
+				
+				//TODO disconnect from all connections, not only the main one
+				connection.unsuccessConnected.remove(unsuccessConnected);
+				connection.disconnect(true);
+				
+				userUISession.loading = false;
+				userUISession.unsuccessJoined.dispatch("accessDenied");
+			}
+		}
+		
+		private function connectAfterGuest():void {
+			
 			// Set up users message sender in order to send the "joinMeeting" message:
 			usersService.setupMessageSenderReceiver();
 			

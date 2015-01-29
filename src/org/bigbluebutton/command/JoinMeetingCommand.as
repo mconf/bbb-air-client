@@ -49,7 +49,6 @@ package org.bigbluebutton.command
 			Log.getLogger("org.bigbluebutton").info(String(this) + ":successJoined()");
 
 			conferenceParameters.load(userObject);
-			trace(conferenceParameters.username);
 			connectSignal.dispatch(new String(userSession.config.application.uri));
 		}
 		

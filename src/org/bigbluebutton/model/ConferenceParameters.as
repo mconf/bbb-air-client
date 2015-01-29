@@ -228,10 +228,10 @@ package org.bigbluebutton.model
 		}
 		
 		public function load(obj:Object):void {
-			_meetingName = obj.conferenceName;
+			_meetingName = obj.confname;
 			_externMeetingID = obj.externMeetingID;
 			_conference = obj.conference;
-			_username = obj.username;
+			_username = obj.fullname;
 			_role = obj.role;
 			_room = obj.room;
 			_webvoiceconf = obj.webvoiceconf;
@@ -239,7 +239,7 @@ package org.bigbluebutton.model
 			_welcome = obj.welcome;
 			_meetingID = obj.meetingID;
 			_externUserID = obj.externUserID;
-			_internalUserID = obj.internalUserId;
+			_internalUserID = obj.internalUserID;
 			_logoutUrl = obj.logoutUrl;
 			_record = !(obj.record == "false");
 			_guest = (obj.guest == "true");

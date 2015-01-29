@@ -109,15 +109,15 @@ package org.bigbluebutton.core
 				_conferenceParameters.voicebridge, 
 				_conferenceParameters.record, 
 				_conferenceParameters.externUserID,
-				_conferenceParameters.internalUserID
+				_conferenceParameters.internalUserID,
+				//false, //_conferenceParameters.lockOnStart
+				false //muteOnStart
 			];
 			
 			if (_conferenceParameters.isGuestDefined()) {
 				connectParams.push(_conferenceParameters.guest);
 			}
-			//TODO problem with lack of userID in the connectParams
-			connectParams[0]="Airclient";
-			connectParams[6]=connectParams[5];
+			
 			trace(connectParams);
 			
 			baseConnection.connect.apply(null, new Array(uri).concat(connectParams));

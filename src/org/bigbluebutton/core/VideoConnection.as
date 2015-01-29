@@ -10,6 +10,8 @@ package org.bigbluebutton.core
 	
 	import mx.utils.ObjectUtil;
 	
+	import org.bigbluebutton.model.ConferenceParameters;
+	import org.bigbluebutton.model.IConferenceParameters;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	import org.osmf.logging.Log;
@@ -18,6 +20,9 @@ package org.bigbluebutton.core
 	{
 		[Inject]
 		public var baseConnection:IBaseConnection;
+		
+		[Inject] 
+		public var conferenceParameters:IConferenceParameters;
 		
 		private var _ns:NetStream;
 		private var _cameraPosition:String;
@@ -82,7 +87,7 @@ package org.bigbluebutton.core
 		}
 		
 		public function connect():void {
-			baseConnection.connect(uri);
+			baseConnection.connect(uri, conferenceParameters.externMeetingID, conferenceParameters.username);
 		}
 		
 		public function get cameraPosition():String

@@ -66,8 +66,8 @@ package org.bigbluebutton.core
 			// are "faked" in order to connect (without them, I couldn't get the connect 
 			// call to work...) - Adam
 			//parameters[7] = false;
-			parameters[8] = false;
-			
+			//parameters[8] = false;
+			trace("BaseConnection parameters"+parameters);
 			try {
 				trace("Trying to connect to [" + uri +  "] ...");
 				
