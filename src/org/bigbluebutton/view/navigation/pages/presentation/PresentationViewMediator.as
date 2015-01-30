@@ -39,6 +39,7 @@ package org.bigbluebutton.view.navigation.pages.presentation
 		}
 		
 		private function displaySlide():void {
+
 			if (_currentSlide != null) {
 				_currentSlide.slideLoadedSignal.remove(slideLoadedHandler);
 			}

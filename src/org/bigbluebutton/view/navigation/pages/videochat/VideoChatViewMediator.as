@@ -203,20 +203,24 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				var quality:String = String(resolution.dimensions)
 				var width:Number;
 				var length:Number;
-				if(quality=="low")
-				{
+				switch(quality) {
+				case "low" :
 					width = 160;
 					length = 120;
-				}
-				else if(quality == "medium")
-				{
+					break;
+				case "medium":
 					width = 320;
 					length = 240;
-				}
-				else if(quality=="high")
-				{
+					break;
+				case "high":
 					width = 640;
 					length = 480;
+					break;
+				default:
+					trace("Unknown quality, setting to low quality");
+					width = 160;
+					length = 120;
+					break;
 				}
 				
 				if (view) 

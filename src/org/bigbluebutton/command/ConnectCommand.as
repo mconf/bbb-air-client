@@ -60,7 +60,6 @@ package org.bigbluebutton.command
 			
 			connection.successConnected.add(successConnected);
 			connection.unsuccessConnected.add(unsuccessConnected);
-			trace(conferenceParameters.username);
 			connection.connect(conferenceParameters);
 		}
 		
