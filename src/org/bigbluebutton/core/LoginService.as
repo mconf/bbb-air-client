@@ -87,6 +87,7 @@ package org.bigbluebutton.core
 		}
 		
 		protected function onProfilesResponse(xml:XML):void {
+			trace("sucess video profile");
 			var prof:VideoProfileManager = new VideoProfileManager(xml);
 			prof.getProfileTypes();
 			successGetProfilesSignal.dispatch(prof);

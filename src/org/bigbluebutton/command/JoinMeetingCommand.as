@@ -37,7 +37,7 @@ package org.bigbluebutton.command
 		{
 			loginService.successJoinedSignal.add(successJoined);
 			loginService.successGetConfigSignal.add(successConfig);
-			//loginService.successGetProfilesSignal.add(sucessProfiles);
+			loginService.successGetProfilesSignal.add(sucessProfiles);
 			loginService.unsuccessJoinedSignal.add(unsuccessJoined);
 			
 			userUISession.loading = true;

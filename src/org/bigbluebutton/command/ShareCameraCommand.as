@@ -45,6 +45,8 @@ package org.bigbluebutton.command
 			var d:Date = new Date();
 			var curTime:Number = d.getTime();
 			var uid:String = userSession.userId;
+			if(userSession.videoProfileManager == null)
+				trace("null video profile manager");
 			var videoProfile:VideoProfile = userSession.videoProfileManager.getProfileWithLowerResolution();
 			var res:String = videoProfile.id;
 			// streamName format is 'low-userid-timestamp'
@@ -98,7 +100,8 @@ package org.bigbluebutton.command
 			for (var i:uint = 0; i < Camera.names.length; ++i)
 			{
 				var cam:Camera = Camera.getCamera(String(i));
-				if (cam.position == position) return cam;
+				if (cam.position == position) 
+					return cam;
 			}
 			return Camera.getCamera();
 		}

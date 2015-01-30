@@ -200,8 +200,25 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			if (resolution) 
 			{
 				trace(ObjectUtil.toString(resolution));
-				var width:Number = Number(String(resolution.dimensions[0]));
-				var length:Number = Number(String(resolution.dimensions[1]));
+				var quality:String = String(resolution.dimensions)
+				var width:Number;
+				var length:Number;
+				if(quality=="low")
+				{
+					width = 160;
+					length = 120;
+				}
+				else if(quality == "medium")
+				{
+					width = 320;
+					length = 240;
+				}
+				else if(quality=="high")
+				{
+					width = 640;
+					length = 480;
+				}
+				
 				if (view) 
 				{
 					view.startStream(userSession.videoConnection.connection, name, streamName, resolution.userID, width, length, view.videoGroup.height, view.videoGroup.width);
@@ -310,17 +327,18 @@ package org.bigbluebutton.view.navigation.pages.videochat
 		
 		protected function getVideoResolution(stream:String):Object
 		{
-			var pattern:RegExp = new RegExp("(\\d+x\\d+)-([A-Za-z0-9]+)-\\d+", "");
+			trace(stream);
+			var pattern:RegExp = new RegExp("([a-z]+)-([A-Za-z0-9]+)-\\d+", "");
 			if (pattern.test(stream))
 			{
 				trace("The stream name is well formatted [" + stream + "]");
 				trace("Stream resolution is [" + pattern.exec(stream)[1] + "]");
 				trace("Userid [" + pattern.exec(stream)[2] + "]");
-				return {userID: pattern.exec(stream)[2], dimensions:pattern.exec(stream)[1].split("x")};
+				return {userID: pattern.exec(stream)[2], dimensions:pattern.exec(stream)[1]};
 			}
 			else
 			{
-				trace("The stream name doesn't follow the pattern <width>x<height>-<userId>-<timestamp>. However, the video resolution will be set to 320x240");
+				trace("The stream name doesn't follow the pattern <quality>-<userId>-<timestamp>. However, the video resolution will be set to 320x240");
 				return null;
 			}
 		}
