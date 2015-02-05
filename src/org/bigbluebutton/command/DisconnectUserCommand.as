@@ -26,7 +26,7 @@ package org.bigbluebutton.command
 		{
 			userUISession.pushPage(PagesENUM.DISCONNECT, disconnectionStatusCode);	
 			userSession.mainConnection.connection.close();
-			//userSession.videoConnection.connection.close();
+			userSession.videoConnection.connection.close();
 			userSession.voiceConnection.connection.close();
 		}
 	}
