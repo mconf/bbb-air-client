@@ -69,9 +69,28 @@ package org.bigbluebutton.core
 				case "meetingEnded":
 					handleLogout(message);
 					break;
+				case "participantStatusChange":
+					handleStatusChange(message);
+					break;
 				default:
 					break;
 			}
+		}
+		
+		private function handleStatusChange(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("UsersMessageReceiver::handleStatusChange() -- user [" + + msg.userID + "," + msg.value + "] ");	
+			var value:String = msg.value;
+			switch (value.substr(0, value.indexOf(","))){
+				case "RAISE_HAND":
+					userSession.userList.raiseHandChange(msg.userID, true);
+					break;
+				case "CLEAR_STATUS":
+					userSession.userList.raiseHandChange(msg.userID, false);
+					break;
+			}
+
+				
 		}
 		
 		private function handleVoiceUserTalking(m:Object):void {

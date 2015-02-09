@@ -70,7 +70,7 @@ package org.bigbluebutton.core
 		
 		public function raiseHand():void
 		{
-			usersMessageSender.raiseHand();
+			usersMessageSender.raiseHand(userSession.userList.me.userID);
 		}
 		
 		public function lowerHand(userID:String, loweredBy:String):void

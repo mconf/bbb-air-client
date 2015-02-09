@@ -96,7 +96,8 @@ package org.bigbluebutton.command
 			for (var i:uint = 0; i < Camera.names.length; ++i)
 			{
 				var cam:Camera = Camera.getCamera(String(i));
-				if (cam.position == position) return cam;
+				if (cam.position == position)
+					return cam;
 			}
 			return Camera.getCamera();
 		}

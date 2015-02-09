@@ -43,10 +43,13 @@ package org.bigbluebutton.core
 			userSession.mainConnection.sendMessage("participants.assignPresenter", defaultSuccessResponse, defaultFailureResponse, message);
 		}
 		
-		public function raiseHand():void {
+		public function raiseHand(userID:String):void {
 				trace("UsersMessageSender::raiseHand() -- Sending [participants.userRaiseHand] message to server");
-				
-				userSession.mainConnection.sendMessage("participants.userRaiseHand", defaultSuccessResponse, defaultFailureResponse);
+				var message:Object = new Object();
+				message["userID"] = userID;
+				message["status"] = "mood";
+				message["value"] = "RAISE_HAND";
+				userSession.mainConnection.sendMessage("participants.setParticipantStatus", defaultSuccessResponse, defaultFailureResponse, message);
 		}
 
 		
@@ -56,6 +59,7 @@ package org.bigbluebutton.core
 			var message:Object = new Object();
 			message["userId"] = userID;
 			message["loweredBy"] = loweredBy;
+			
 			
 			userSession.mainConnection.sendMessage("participants.lowerHand", defaultSuccessResponse, defaultFailureResponse, message);
 		}
