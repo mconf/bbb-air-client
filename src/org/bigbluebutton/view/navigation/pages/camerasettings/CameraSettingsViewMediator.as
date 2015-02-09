@@ -123,15 +123,17 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		/**
 		 * Raised on button click, will send signal to swap camera source  
 		 **/
-		//TODO close old stream on swap
+		//close old stream on swap
 		private function mouseClickHandler(e:MouseEvent):void
 		{
 			if (String(userSession.videoConnection.cameraPosition) == CameraPosition.FRONT)
 			{
+				shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.FRONT);
 				shareCameraSignal.dispatch(userSession.userList.me.hasStream, CameraPosition.BACK);
 			}
 			else if (String(userSession.videoConnection.cameraPosition) == CameraPosition.BACK)
 			{
+				shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.BACK);
 				shareCameraSignal.dispatch(userSession.userList.me.hasStream, CameraPosition.FRONT);
 			}
 		}
