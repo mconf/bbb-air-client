@@ -44,7 +44,7 @@ package org.bigbluebutton.core
 		}
 		
 		public function raiseHand(userID:String):void {
-				trace("UsersMessageSender::raiseHand() -- Sending [participants.userRaiseHand] message to server");
+				trace("UsersMessageSender::raiseHand() -- Sending participants.setParticipantStatus] message to server with raise hand status");
 				var message:Object = new Object();
 				message["userID"] = userID;
 				message["status"] = "mood";
@@ -54,14 +54,15 @@ package org.bigbluebutton.core
 
 		
 		public function lowerHand(userID:String, loweredBy:String):void {
-			trace("UsersMessageSender::raiseHand() -- Sending [participants.lowerHand] message to server with message: [userId:" + userID + ", loweredBy:" + userID+ "]");
+			trace("UsersMessageSender::raiseHand() -- Sending [participants.setParticipantStatus] message to server with message: [userId:" + userID + ", Status: CLEAR_STATUS]");
 			
 			var message:Object = new Object();
-			message["userId"] = userID;
-			message["loweredBy"] = loweredBy;
+			message["userID"] = userID;
+			message["status"] = "mood";
+			message["value"] = "CLEAR_STATUS";
 			
 			
-			userSession.mainConnection.sendMessage("participants.lowerHand", defaultSuccessResponse, defaultFailureResponse, message);
+			userSession.mainConnection.sendMessage("participants.setParticipantStatus", defaultSuccessResponse, defaultFailureResponse, message);
 		}
 		
 		public function addStream(userID:String, streamName:String):void {
