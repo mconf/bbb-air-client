@@ -102,6 +102,16 @@ package org.bigbluebutton.model
 			verifyUserStatus();
 		}
 		
+		private var _agree:Boolean = false;
+		
+		public function get agree():Boolean {
+			return _agree;
+		}
+		public function set agree(r:Boolean):void {
+			_agree = r;
+			verifyUserStatus();
+		}
+		
 		private var _hasStream:Boolean = false;
 		[Bindable]
 		public function get hasStream():Boolean {

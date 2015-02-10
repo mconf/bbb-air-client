@@ -37,12 +37,14 @@
 					if(obj.presenter)
 					{
 						handIcon.visible = handIcon.includeInLayout = obj.raiseHand;
+						agreeIcon.visible = agreeIcon.includeInLayout = obj.agree;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
 						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.presenter');
 					}
 					else if(obj.role == "MODERATOR")
 					{
 						handIcon.visible = handIcon.includeInLayout = obj.raiseHand;
+						agreeIcon.visible = agreeIcon.includeInLayout = obj.agree;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
 						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.moderator');
 					}
@@ -65,6 +67,7 @@
 			<s:Image id="profileIcon" styleName="iconStyle moderatorIconStyle" height="100%"/>
 			<s:Image id="presentationIcon" styleName="iconStyle presentationIconStyle" height="100%"/>
 			<s:Image id="handIcon" styleName="iconStyle handIconStyle" height="100%"/>
+			<s:Image id="agreeIcon" styleName="iconStyle agreeIconStyle" height="100%"/>
 			<s:Group width="70%">
 				<s:layout>
 					<s:VerticalLayout/>

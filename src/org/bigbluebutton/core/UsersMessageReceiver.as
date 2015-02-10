@@ -90,6 +90,9 @@ package org.bigbluebutton.core
 				case "CLEAR_STATUS":
 					userSession.userList.raiseHandChange(msg.userID, false);
 					break;
+				case "AGREE":
+					userSession.userList.agreeChange(msg.userID, true);
+					break;
 			}
 
 				

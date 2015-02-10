@@ -18,6 +18,7 @@ package org.bigbluebutton.model
 		public static const RAISE_HAND:int = 5;
 		public static const LOCKED:int = 6;
 		public static const LISTEN_ONLY:int = 7;
+		public static const AGREE:int = 8;
 		
 		private var _users:ArrayCollection;	
 		
@@ -315,6 +316,18 @@ package org.bigbluebutton.model
 				p.participant.raiseHand = value;
 				
 				userChangeSignal.dispatch(p.participant, RAISE_HAND);
+			}
+		}
+		
+		public function agreeChange(userID:String, value:Boolean):void {
+			var p:Object = getUserIndex(userID);
+			
+			if (p) {
+				var user:User = p.participant as User;
+				
+				p.participant.agree = value;
+				
+				userChangeSignal.dispatch(p.participant, AGREE);
 			}
 		}
 		

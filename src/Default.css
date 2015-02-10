@@ -423,6 +423,11 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/hand.png");
 	}
 	
+	s|Image.agreeIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/agree.png");
+	}
+	
 	s|Image.arrowRightStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/arrowRight.png");
@@ -740,6 +745,8 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/hand.png");
 	}
 	
+	
+	
 	s|Image.arrowRightStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/arrowRight.png");
@@ -1055,6 +1062,7 @@ global
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/hand.png");
 	}
+	
 	
 	s|Image.arrowRightStyle
 	{
