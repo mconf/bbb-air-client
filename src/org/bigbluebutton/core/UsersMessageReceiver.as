@@ -72,10 +72,12 @@ package org.bigbluebutton.core
 				case "participantStatusChange":
 					handleStatusChange(message);
 					break;
+				
 				default:
 					break;
 			}
 		}
+		
 		
 		private function handleStatusChange(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
