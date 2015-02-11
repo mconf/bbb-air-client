@@ -19,6 +19,7 @@ package org.bigbluebutton.model
 		public static const LOCKED:int = 6;
 		public static const LISTEN_ONLY:int = 7;
 		public static const AGREE:int = 8;
+		public static const NO_STATUS:int = 9;
 		
 		private var _users:ArrayCollection;	
 		
@@ -133,11 +134,11 @@ package org.bigbluebutton.model
 				return -1;
 			else if (bu.role == User.MODERATOR)
 				return 1;
-			else if (au.raiseHand && bu.raiseHand) {
+			else if ((au.status==User.RAISE_HAND) && (bu.status==User.RAISE_HAND)) {
 				// do nothing go to the end and check names
-			} else if (au.raiseHand)
+			} else if ((au.status==User.RAISE_HAND))
 				return -1;
-			else if (bu.raiseHand)
+			else if ((bu.status==User.RAISE_HAND))
 				return 1;
 			else if (au.phoneUser && bu.phoneUser) {
 				
@@ -184,8 +185,14 @@ package org.bigbluebutton.model
 				if(newuser.presenter) {
 					userChangeSignal.dispatch(newuser, PRESENTER);
 				}
-				if(newuser.raiseHand) {
+				if(newuser.status==User.RAISE_HAND) {
 					userChangeSignal.dispatch(newuser, RAISE_HAND);
+				}
+				if(newuser.status==User.AGREE) {
+					userChangeSignal.dispatch(newuser, AGREE);
+				}
+				if(newuser.status==User.NO_STATUS) {
+					userChangeSignal.dispatch(newuser, NO_STATUS);
 				}
 				if(newuser.listenOnly) {
 					userChangeSignal.dispatch(newuser, LISTEN_ONLY);
@@ -307,29 +314,28 @@ package org.bigbluebutton.model
 			}
 		}
 		
-		public function raiseHandChange(userID:String, value:Boolean):void {
+		public function statusChange(userID:String, value:String):void {
 			var p:Object = getUserIndex(userID);
 			
 			if (p) {
 				var user:User = p.participant as User;
 				
-				p.participant.raiseHand = value;
+				p.participant.status = value;
+				switch (value){
+					case User.RAISE_HAND:
+						userChangeSignal.dispatch(p.participant, RAISE_HAND);
+						break;
+					case User.AGREE:
+						userChangeSignal.dispatch(p.participant, AGREE);
+						break;
+					case User.NO_STATUS:
+						userChangeSignal.dispatch(p.participant, NO_STATUS);
+				}
 				
-				userChangeSignal.dispatch(p.participant, RAISE_HAND);
 			}
 		}
 		
-		public function agreeChange(userID:String, value:Boolean):void {
-			var p:Object = getUserIndex(userID);
-			
-			if (p) {
-				var user:User = p.participant as User;
-				
-				p.participant.agree = value;
-				
-				userChangeSignal.dispatch(p.participant, AGREE);
-			}
-		}
+		
 		
 		public function userJoinAudio(userID:String, voiceUserID:String, muted:Boolean, talking:Boolean, locked:Boolean):void {
 			var p:Object = getUserIndex(userID);

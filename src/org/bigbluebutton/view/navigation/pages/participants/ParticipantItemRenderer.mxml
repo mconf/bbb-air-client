@@ -15,8 +15,8 @@
 				super.data = obj;
 				if (obj)
 				{					
-					presentationIcon.visible = presentationIcon.includeInLayout = obj.presenter && !obj.raiseHand;
-					profileIcon.visible = profileIcon.includeInLayout = ((obj.role == User.MODERATOR) && (!obj.presenter) && !obj.raiseHand);
+					presentationIcon.visible = presentationIcon.includeInLayout = obj.presenter && (obj.status==User.NO_STATUS);
+					profileIcon.visible = profileIcon.includeInLayout = ((obj.role == User.MODERATOR) && (!obj.presenter) && (obj.status==User.NO_STATUS));
 										
 					cameraIcon.visible = obj.hasStream;
 				
@@ -36,22 +36,22 @@
 					
 					if(obj.presenter)
 					{
-						handIcon.visible = handIcon.includeInLayout = obj.raiseHand;
-						agreeIcon.visible = agreeIcon.includeInLayout = obj.agree;
+						handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
+						agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
 						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.presenter');
 					}
 					else if(obj.role == "MODERATOR")
 					{
-						handIcon.visible = handIcon.includeInLayout = obj.raiseHand;
-						agreeIcon.visible = agreeIcon.includeInLayout = obj.agree;
+						handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
+						agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
 						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.moderator');
 					}
 					else
 					{
-						handIcon.visible = obj.raiseHand;
-						handIcon.includeInLayout = true;
+						handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
+						agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = false;
 					}
 					

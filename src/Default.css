@@ -740,6 +740,11 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/presentation.png");
 	}
 	
+	s|Image.agreeIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/agree.png");
+	}
+	
 	s|Image.handIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/hand.png");
@@ -1058,6 +1063,11 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/presentation.png");
 	}
 	
+	s|Image.agreeIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/agree.png");
+	}
+	
 	s|Image.handIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/hand.png");
@@ -1373,6 +1383,11 @@ global
 	s|Image.presentationIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/presentation.png");
+	}
+	
+	s|Image.agreeIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/agree.png");
 	}
 	
 	s|Image.handIconStyle

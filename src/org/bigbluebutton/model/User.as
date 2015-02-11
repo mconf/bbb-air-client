@@ -8,9 +8,12 @@ package org.bigbluebutton.model
 		public static const MODERATOR:String = "MODERATOR";
 		public static const VIEWER:String = "VIEWER";
 		public static const PRESENTER:String = "PRESENTER";
-		
-		
+				
 		public static const UNKNOWN_USER:String = "UNKNOWN USER";
+		
+		public static const NO_STATUS:String = "NO_STATUS";
+		public static const AGREE:String = "AGREE";
+		public static const RAISE_HAND:String = "RAISE_HAND";
 		
 		/**
 		 * Flag to tell that user is in the process of leaving the meeting.
@@ -92,25 +95,17 @@ package org.bigbluebutton.model
 			verifyUserStatus();
 		}
 		
-		private var _raiseHand:Boolean = false;
+		private var _status:String = User.NO_STATUS;
 
-		public function get raiseHand():Boolean {
-			return _raiseHand;
+		public function get status():String {
+			return _status;
 		}
-		public function set raiseHand(r:Boolean):void {
-			_raiseHand = r;
+		public function set status(s:String):void {
+			_status = s;
 			verifyUserStatus();
 		}
 		
-		private var _agree:Boolean = false;
 		
-		public function get agree():Boolean {
-			return _agree;
-		}
-		public function set agree(r:Boolean):void {
-			_agree = r;
-			verifyUserStatus();
-		}
 		
 		private var _hasStream:Boolean = false;
 		[Bindable]

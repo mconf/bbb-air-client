@@ -45,12 +45,12 @@ package org.bigbluebutton.core
 				case "voiceUserMuted":
 					handleVoiceUserMuted(message);
 					break;
-				case "userRaisedHand":
+				/*case "userRaisedHand":
 					handleUserRaisedHand(message);
 					break;
 				case "userLoweredHand":
 					handleUserLoweredHand(message);
-					break;
+					break;*/
 				case "recordingStatusChanged":
 					handleRecordingStatusChanged(message);
 					break;
@@ -85,13 +85,13 @@ package org.bigbluebutton.core
 			var value:String = msg.value;
 			switch (value.substr(0, value.indexOf(","))){
 				case "RAISE_HAND":
-					userSession.userList.raiseHandChange(msg.userID, true);
+					userSession.userList.statusChange(msg.userID, User.RAISE_HAND);
 					break;
 				case "CLEAR_STATUS":
-					userSession.userList.raiseHandChange(msg.userID, false);
+					userSession.userList.statusChange(msg.userID, User.NO_STATUS);
 					break;
 				case "AGREE":
-					userSession.userList.agreeChange(msg.userID, true);
+					userSession.userList.statusChange(msg.userID, User.AGREE);
 					break;
 			}
 
@@ -130,7 +130,6 @@ package org.bigbluebutton.core
 			user.name = newUser.name;
 			user.phoneUser = newUser.phoneUser;
 			user.presenter = newUser.presenter;
-			user.raiseHand = newUser.raiseHand;
 			user.role = newUser.role;
 			user.userID = newUser.userId;
 			user.voiceJoined = newUser.voiceUser.joined;
@@ -138,6 +137,21 @@ package org.bigbluebutton.core
 			user.isLeavingFlag = false;
 			user.listenOnly = newUser.listenOnly;
 			user.muted = newUser.voiceUser.muted;
+			
+			var mood:String = newUser.mood;
+			switch (mood.substr(0, mood.indexOf(","))){
+				case "AGREE":
+					user.status = User.AGREE;
+					break;
+				case "RAISE_HAND":
+					user.status = User.RAISE_HAND;
+					break;
+				case "":
+				case "CLEAR_STATUS":
+					user.status = User.NO_STATUS;
+					break;
+				}
+			
 			userSession.userList.addUser(user);
 			
 			// The following properties are 'special', in that they have view changes associated with them.
@@ -195,7 +209,7 @@ package org.bigbluebutton.core
 			userSession.userList.userMuteChange(msg.voiceUserId, msg.muted);
 		}
 		
-		private function handleUserRaisedHand(m:Object):void {
+		/*private function handleUserRaisedHand(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			trace("UsersMessageReceiver::handleUserRaisedHand() -- user [" + msg.userId + "]'s hand was raised");
 			userSession.userList.raiseHandChange(msg.userId, true);
@@ -205,7 +219,7 @@ package org.bigbluebutton.core
 			var msg:Object = JSON.parse(m.msg);
 			trace("UsersMessageReceiver::handleUserLoweredHand() -- user [" + msg.userId + "]'s hand was lowered");
 			userSession.userList.raiseHandChange(msg.userId, false);
-		}
+		}*/
 		private function handleMeetingHasEnded(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			trace("UsersMessageReceiver::handleMeetingHasEnded() -- meeting has ended");
