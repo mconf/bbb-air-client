@@ -9,6 +9,7 @@ package org.bigbluebutton.core
 		function kickUser(userID:String):void;
 		function queryForParticipants():void;
 		function assignPresenter(userid:String, name:String, assignedBy:String):void;
+		function changeMood(mood:String):void
 		function raiseHand():void;
 		function lowerHand(userID:String, loweredBy:String):void; 
 		function addStream(userID:String, streamName:String):void;

@@ -5,6 +5,7 @@ package org.bigbluebutton.view.navigation.pages.profile
 	import spark.components.Button;
 	import spark.components.Group;
 	import spark.components.Label;
+	import spark.components.SpinnerList;
 	import spark.components.RadioButtonGroup;
 	
 	public class ProfileView extends ProfileViewBase implements IProfileView
@@ -44,15 +45,21 @@ package org.bigbluebutton.view.navigation.pages.profile
 			return shareMicBtn0.label;
 		}
 		
+		public function get moodList():SpinnerList
+		{
+			return moodList0;
+		}
+		
 		public function get raiseHandBtnLabel():String
 		{
 			return raiseHandButton0.label;
 		}
 		
-		public function get raiseHandButton():Button
+		public function get raiseHandButton():Object
 		{
 			return raiseHandButton0;
 		}
+		
 		
 		public function get logoutButton():Button
 		{

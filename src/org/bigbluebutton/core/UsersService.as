@@ -68,6 +68,11 @@ package org.bigbluebutton.core
 			userSession.mainConnection.disconnect(onUserAction);
 		}
 		
+		public function changeMood(mood:String):void
+		{
+			usersMessageSender.changeMood(userSession.userList.me.userID, mood);
+		}
+		
 		public function raiseHand():void
 		{
 			usersMessageSender.raiseHand(userSession.userList.me.userID);

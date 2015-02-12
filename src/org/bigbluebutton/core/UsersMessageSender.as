@@ -43,6 +43,15 @@ package org.bigbluebutton.core
 			userSession.mainConnection.sendMessage("participants.assignPresenter", defaultSuccessResponse, defaultFailureResponse, message);
 		}
 		
+		public function changeMood(userID:String, mood:String):void {
+			trace("UsersMessageSender::changeMood() -- Sending participants.setParticipantStatus] message to server with "+mood+" status");
+			var message:Object = new Object();
+			message["userID"] = userID;
+			message["status"] = "mood";
+			message["value"] = mood;
+			userSession.mainConnection.sendMessage("participants.setParticipantStatus", defaultSuccessResponse, defaultFailureResponse, message);
+		}
+		
 		public function raiseHand(userID:String):void {
 				trace("UsersMessageSender::raiseHand() -- Sending participants.setParticipantStatus] message to server with raise hand status");
 				var message:Object = new Object();

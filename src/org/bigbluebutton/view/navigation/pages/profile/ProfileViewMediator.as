@@ -7,6 +7,7 @@ package org.bigbluebutton.view.navigation.pages.profile
 	import mx.resources.ResourceManager;
 	
 	import org.bigbluebutton.command.DisconnectUserSignal;
+	import org.bigbluebutton.command.MoodSignal;
 	import org.bigbluebutton.command.RaiseHandSignal;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
@@ -15,6 +16,8 @@ package org.bigbluebutton.view.navigation.pages.profile
 	import org.osmf.logging.Log;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
+	
+	import spark.events.IndexChangeEvent;
 	
 	public class ProfileViewMediator extends Mediator
 	{
@@ -26,6 +29,9 @@ package org.bigbluebutton.view.navigation.pages.profile
 		
 		[Inject] 
 		public var raiseHandSignal: RaiseHandSignal;
+		
+		[Inject] 
+		public var moodSignal: MoodSignal;
 		
 		[Inject]
 		public var disconnectUserSignal: DisconnectUserSignal;
@@ -40,7 +46,8 @@ package org.bigbluebutton.view.navigation.pages.profile
 			
 			view.userNameButton.label = userMe.name;
 			view.raiseHandButton.label = ResourceManager.getInstance().getString('resources', (userMe.status==User.RAISE_HAND) ?'profile.settings.handLower' : 'profile.settings.handRaise');
-			view.raiseHandButton.addEventListener(MouseEvent.CLICK, onRaiseHandClick);
+			//view.raiseHandButton.addEventListener(MouseEvent.CLICK, onRaiseHandClick);
+			view.moodList.addEventListener(IndexChangeEvent.CHANGE, onMoodChange);
 			view.logoutButton.addEventListener(MouseEvent.CLICK, logoutClick);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
@@ -53,6 +60,13 @@ package org.bigbluebutton.view.navigation.pages.profile
 			{
 				view.raiseHandButton.label = ResourceManager.getInstance().getString('resources', (user.status==User.RAISE_HAND) ?'profile.settings.handLower' : 'profile.settings.handRaise');
 			}
+		}
+		
+		protected function onMoodChange(event:IndexChangeEvent):void
+		{			
+			var obj:Object;
+			obj = view.moodList.selectedItem;
+			moodSignal.dispatch( view.moodList.selectedItem.signal);
 		}
 		
 		protected function onRaiseHandClick(event:MouseEvent):void
@@ -74,7 +88,7 @@ package org.bigbluebutton.view.navigation.pages.profile
 			super.destroy();
 			
 			userSession.userList.userChangeSignal.remove(userChangeHandler);			
-			view.raiseHandButton.removeEventListener(MouseEvent.CLICK, onRaiseHandClick);
+			//view.raiseHandButton.removeEventListener(MouseEvent.CLICK, onRaiseHandClick);
 			view.logoutButton.removeEventListener(MouseEvent.CLICK, logoutClick);
 			
 			view.dispose();

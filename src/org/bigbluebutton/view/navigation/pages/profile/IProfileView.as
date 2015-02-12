@@ -5,6 +5,7 @@ package org.bigbluebutton.view.navigation.pages.profile
 	import spark.components.Button;
 	import spark.components.Group;
 	import spark.components.Label;
+	import spark.components.SpinnerList;
 	import spark.components.RadioButtonGroup;
 
 	public interface IProfileView extends IView
@@ -14,8 +15,9 @@ package org.bigbluebutton.view.navigation.pages.profile
 		function get shareCameraBtnLabel():String;
 		function get shareMicButton():Button;
 		function get shareMicBtnLabel():String;
+		function get moodList():SpinnerList;
 		function get raiseHandBtnLabel():String;
-		function get raiseHandButton():Button;
+		function get raiseHandButton():Object;
 		function get logoutButton():Button;
 	}
 }
