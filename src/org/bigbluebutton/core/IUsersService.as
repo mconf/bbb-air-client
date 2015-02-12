@@ -10,8 +10,6 @@ package org.bigbluebutton.core
 		function queryForParticipants():void;
 		function assignPresenter(userid:String, name:String, assignedBy:String):void;
 		function changeMood(mood:String):void
-		function raiseHand():void;
-		function lowerHand(userID:String, loweredBy:String):void; 
 		function addStream(userID:String, streamName:String):void;
 		function askToEnter():void
 		function removeStream(userID:String, streamName:String):void;

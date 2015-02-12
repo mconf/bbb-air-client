@@ -6,9 +6,6 @@ package org.bigbluebutton.view.navigation.pages.profile
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
 	
-	import org.bigbluebutton.command.RaiseHandCommand;
-	import org.bigbluebutton.command.RaiseHandSignal;
-	
 	import org.bigbluebutton.command.MoodCommand;
 	import org.bigbluebutton.command.MoodSignal;
 
@@ -54,7 +51,6 @@ package org.bigbluebutton.view.navigation.pages.profile
 		 */
 		private function signals(): void
 		{
-			signalCommandMap.map(RaiseHandSignal).toCommand(RaiseHandCommand);  
 			signalCommandMap.map(MoodSignal).toCommand(MoodCommand);
 			//signalCommandMap.map(ButtonTestSignal).toCommand(ButtonTestCommand);
 		}	

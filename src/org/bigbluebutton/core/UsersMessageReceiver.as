@@ -81,13 +81,13 @@ package org.bigbluebutton.core
 		
 		private function handleStatusChange(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
-			trace("UsersMessageReceiver::handleStatusChange() -- user [" + + msg.userID + "," + msg.value + "] ");	
+			trace("UsersMessageReceiver::handleStatusChange() -- user [" +  msg.userID + "," + msg.value + "] ");	
 			var value:String = msg.value;
 			switch (value.substr(0, value.indexOf(","))){
 				case "RAISE_HAND":
 					userSession.userList.statusChange(msg.userID, User.RAISE_HAND);
 					break;
-				case "CLEAR_STATUS":
+				case "CLEAR_MOOD":
 					userSession.userList.statusChange(msg.userID, User.NO_STATUS);
 					break;
 				case "AGREE":
@@ -147,7 +147,7 @@ package org.bigbluebutton.core
 					user.status = User.RAISE_HAND;
 					break;
 				case "":
-				case "CLEAR_STATUS":
+				case "CLEAR_MOOD":
 					user.status = User.NO_STATUS;
 					break;
 				}
@@ -209,17 +209,6 @@ package org.bigbluebutton.core
 			userSession.userList.userMuteChange(msg.voiceUserId, msg.muted);
 		}
 		
-		/*private function handleUserRaisedHand(m:Object):void {
-			var msg:Object = JSON.parse(m.msg);
-			trace("UsersMessageReceiver::handleUserRaisedHand() -- user [" + msg.userId + "]'s hand was raised");
-			userSession.userList.raiseHandChange(msg.userId, true);
-		}
-		
-		private function handleUserLoweredHand(m:Object):void {
-			var msg:Object = JSON.parse(m.msg);
-			trace("UsersMessageReceiver::handleUserLoweredHand() -- user [" + msg.userId + "]'s hand was lowered");
-			userSession.userList.raiseHandChange(msg.userId, false);
-		}*/
 		private function handleMeetingHasEnded(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			trace("UsersMessageReceiver::handleMeetingHasEnded() -- meeting has ended");

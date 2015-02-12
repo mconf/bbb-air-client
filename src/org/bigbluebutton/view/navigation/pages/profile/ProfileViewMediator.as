@@ -8,7 +8,6 @@ package org.bigbluebutton.view.navigation.pages.profile
 	
 	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.command.MoodSignal;
-	import org.bigbluebutton.command.RaiseHandSignal;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
@@ -28,9 +27,6 @@ package org.bigbluebutton.view.navigation.pages.profile
 		public var userSession: IUserSession;
 		
 		[Inject] 
-		public var raiseHandSignal: RaiseHandSignal;
-		
-		[Inject] 
 		public var moodSignal: MoodSignal;
 		
 		[Inject]
@@ -45,8 +41,6 @@ package org.bigbluebutton.view.navigation.pages.profile
 			var userMe:User = userSession.userList.me;		
 			
 			view.userNameButton.label = userMe.name;
-			view.raiseHandButton.label = ResourceManager.getInstance().getString('resources', (userMe.status==User.RAISE_HAND) ?'profile.settings.handLower' : 'profile.settings.handRaise');
-			//view.raiseHandButton.addEventListener(MouseEvent.CLICK, onRaiseHandClick);
 			view.moodList.addEventListener(IndexChangeEvent.CHANGE, onMoodChange);
 			view.logoutButton.addEventListener(MouseEvent.CLICK, logoutClick);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
@@ -69,11 +63,6 @@ package org.bigbluebutton.view.navigation.pages.profile
 			moodSignal.dispatch( view.moodList.selectedItem.signal);
 		}
 		
-		protected function onRaiseHandClick(event:MouseEvent):void
-		{			
-			raiseHandSignal.dispatch(userSession.userId, !(userSession.userList.me.status == User.RAISE_HAND));
-		}
-		
 		
 		/**
 		 * User pressed log out button
@@ -88,7 +77,7 @@ package org.bigbluebutton.view.navigation.pages.profile
 			super.destroy();
 			
 			userSession.userList.userChangeSignal.remove(userChangeHandler);			
-			//view.raiseHandButton.removeEventListener(MouseEvent.CLICK, onRaiseHandClick);
+			view.moodList.removeEventListener(IndexChangeEvent.CHANGE, onMoodChange);
 			view.logoutButton.removeEventListener(MouseEvent.CLICK, logoutClick);
 			
 			view.dispose();

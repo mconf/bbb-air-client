@@ -73,16 +73,6 @@ package org.bigbluebutton.core
 			usersMessageSender.changeMood(userSession.userList.me.userID, mood);
 		}
 		
-		public function raiseHand():void
-		{
-			usersMessageSender.raiseHand(userSession.userList.me.userID);
-		}
-		
-		public function lowerHand(userID:String, loweredBy:String):void
-		{
-			usersMessageSender.lowerHand(userID, loweredBy);
-		}
-		
 		public function kickUser(userID:String):void {
 			usersMessageSender.kickUser(userID);
 		}
