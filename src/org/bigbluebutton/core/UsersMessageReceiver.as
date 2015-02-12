@@ -45,12 +45,6 @@ package org.bigbluebutton.core
 				case "voiceUserMuted":
 					handleVoiceUserMuted(message);
 					break;
-				/*case "userRaisedHand":
-					handleUserRaisedHand(message);
-					break;
-				case "userLoweredHand":
-					handleUserLoweredHand(message);
-					break;*/
 				case "recordingStatusChanged":
 					handleRecordingStatusChanged(message);
 					break;
@@ -88,10 +82,17 @@ package org.bigbluebutton.core
 					userSession.userList.statusChange(msg.userID, User.RAISE_HAND);
 					break;
 				case "CLEAR_MOOD":
+				case "CLEAR_STATUS":
 					userSession.userList.statusChange(msg.userID, User.NO_STATUS);
 					break;
 				case "AGREE":
 					userSession.userList.statusChange(msg.userID, User.AGREE);
+					break;
+				case "DISAGREE":
+					userSession.userList.statusChange(msg.userID, User.DISAGREE);
+					break;
+				case "SAD":
+					userSession.userList.statusChange(msg.userID, User.SAD);
 					break;
 			}
 
@@ -142,6 +143,12 @@ package org.bigbluebutton.core
 			switch (mood.substr(0, mood.indexOf(","))){
 				case "AGREE":
 					user.status = User.AGREE;
+					break;
+				case "DISAGREE":
+					user.status = User.DISAGREE;
+					break;
+				case "SAD":
+					user.status = User.SAD;
 					break;
 				case "RAISE_HAND":
 					user.status = User.RAISE_HAND;

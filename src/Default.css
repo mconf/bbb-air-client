@@ -428,6 +428,16 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/agree.png");
 	}
 	
+	s|Image.disagreeIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/disagree.png");
+	}
+	
+	s|Image.sadIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/sad.png");
+	}
+	
 	s|Image.arrowRightStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/arrowRight.png");
@@ -750,7 +760,15 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/hand.png");
 	}
 	
+	s|Image.disagreeIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/disagree.png");
+	}
 	
+	s|Image.sadIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/sad.png");
+	}
 	
 	s|Image.arrowRightStyle
 	{
@@ -1073,6 +1091,15 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/hand.png");
 	}
 	
+	s|Image.disagreeIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/disagree.png");
+	}
+	
+	s|Image.sadIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/sad.png");
+	}
 	
 	s|Image.arrowRightStyle
 	{
@@ -1393,6 +1420,16 @@ global
 	s|Image.handIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/hand.png");
+	}
+	
+	s|Image.disagreeIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/disagree.png");
+	}
+	
+	s|Image.sadIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/sad.png");
 	}
 	
 	s|Image.arrowRightStyle

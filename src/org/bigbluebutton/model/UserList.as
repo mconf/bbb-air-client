@@ -20,6 +20,8 @@ package org.bigbluebutton.model
 		public static const LISTEN_ONLY:int = 7;
 		public static const AGREE:int = 8;
 		public static const NO_STATUS:int = 9;
+		public static const DISAGREE:int = 10;
+		public static const SAD:int = 11;
 		
 		private var _users:ArrayCollection;	
 		
@@ -191,6 +193,12 @@ package org.bigbluebutton.model
 				if(newuser.status==User.AGREE) {
 					userChangeSignal.dispatch(newuser, AGREE);
 				}
+				if(newuser.status==User.DISAGREE) {
+					userChangeSignal.dispatch(newuser, DISAGREE);
+				}
+				if(newuser.status==User.SAD) {
+					userChangeSignal.dispatch(newuser, SAD);
+				}
 				if(newuser.status==User.NO_STATUS) {
 					userChangeSignal.dispatch(newuser, NO_STATUS);
 				}
@@ -327,6 +335,12 @@ package org.bigbluebutton.model
 						break;
 					case User.AGREE:
 						userChangeSignal.dispatch(p.participant, AGREE);
+						break;
+					case User.DISAGREE:
+						userChangeSignal.dispatch(p.participant, DISAGREE);
+						break;
+					case User.SAD:
+						userChangeSignal.dispatch(p.participant, SAD);
 						break;
 					case User.NO_STATUS:
 						userChangeSignal.dispatch(p.participant, NO_STATUS);

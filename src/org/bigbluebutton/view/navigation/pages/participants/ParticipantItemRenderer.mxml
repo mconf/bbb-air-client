@@ -38,6 +38,8 @@
 					{
 						handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
 						agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
+						disagreeIcon.visible = disagreeIcon.includeInLayout = obj.status==User.DISAGREE;
+						sadIcon.visible = sadIcon.includeInLayout = obj.status==User.SAD;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
 						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.presenter');
 					}
@@ -45,6 +47,8 @@
 					{
 						handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
 						agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
+						disagreeIcon.visible = disagreeIcon.includeInLayout = obj.status==User.DISAGREE;
+						sadIcon.visible = sadIcon.includeInLayout = obj.status==User.SAD;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
 						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.moderator');
 					}
@@ -52,6 +56,8 @@
 					{
 						handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
 						agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
+						disagreeIcon.visible = disagreeIcon.includeInLayout = obj.status==User.DISAGREE;
+						sadIcon.visible = sadIcon.includeInLayout = obj.status==User.SAD;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = false;
 					}
 					
@@ -68,6 +74,8 @@
 			<s:Image id="presentationIcon" styleName="iconStyle presentationIconStyle" height="100%"/>
 			<s:Image id="handIcon" styleName="iconStyle handIconStyle" height="100%"/>
 			<s:Image id="agreeIcon" styleName="iconStyle agreeIconStyle" height="100%"/>
+			<s:Image id="disagreeIcon" styleName="iconStyle disagreeIconStyle" height="100%"/>
+			<s:Image id="sadIcon" styleName="iconStyle sadIconStyle" height="100%"/>
 			<s:Group width="70%">
 				<s:layout>
 					<s:VerticalLayout/>

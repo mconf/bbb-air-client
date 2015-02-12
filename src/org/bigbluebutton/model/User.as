@@ -14,6 +14,8 @@ package org.bigbluebutton.model
 		public static const NO_STATUS:String = "NO_STATUS";
 		public static const AGREE:String = "AGREE";
 		public static const RAISE_HAND:String = "RAISE_HAND";
+		public static const DISAGREE:String = "DISAGREE";
+		public static const SAD:String = "SAD";
 		
 		/**
 		 * Flag to tell that user is in the process of leaving the meeting.
