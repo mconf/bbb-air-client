@@ -66,12 +66,35 @@ package org.bigbluebutton.core
 				case "participantStatusChange":
 					handleStatusChange(message);
 					break;
-				
+				case "response_to_guest":
+					handleGuestResponse(message);
+					break;
+				case "get_guest_policy_reply":
+					handleGuestPolicy(message);
+					break;
 				default:
 					break;
 			}
 		}
 		
+		private function handleGuestPolicy(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("guestPolicy");
+			if(msg.guestPolicy=="ALWAYS_ACCEPT"){
+				userSession.guestSignal.dispatch(true);
+			} else if(msg.guestPolicy=="ALWAYS_DENY"){
+				userSession.guestSignal.dispatch(false);
+			}
+			
+		}
+		
+		private function handleGuestResponse(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("GuestResponse: "+msg);
+			if (msg.userID == userSession.userId) {
+				userSession.guestSignal.dispatch(msg.allowed);
+			}
+		}
 		
 		private function handleStatusChange(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);

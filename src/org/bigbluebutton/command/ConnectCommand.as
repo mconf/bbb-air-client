@@ -69,9 +69,15 @@ package org.bigbluebutton.command
 			userSession.mainConnection = connection;
 			userSession.userId = connection.userId;
 			
+			// Set up users message sender in order to send the "joinMeeting" message:
+			usersService.setupMessageSenderReceiver();
+			
 			if (conferenceParameters.isGuestDefined() && conferenceParameters.guest) {
 				// I'm a guest, let's ask to enter
 				userSession.guestSignal.add(onGuestResponse);
+				usersService.getWaitingGuests();
+				usersService.askToEnter();
+				usersService.getGuestPolicy();
 			} else {
 				connectAfterGuest();
 			}
@@ -96,8 +102,7 @@ package org.bigbluebutton.command
 		
 		private function connectAfterGuest():void {
 			
-			// Set up users message sender in order to send the "joinMeeting" message:
-			usersService.setupMessageSenderReceiver();
+			
 			
 			// Send the join meeting message, then wait for the reponse
 			userSession.successJoiningMeetingSignal.add(successJoiningMeeting);

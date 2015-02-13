@@ -12,6 +12,8 @@ package org.bigbluebutton.core
 		function changeMood(mood:String):void
 		function addStream(userID:String, streamName:String):void;
 		function askToEnter():void
+		function getWaitingGuests(): void
+		function getGuestPolicy(): void	
 		function removeStream(userID:String, streamName:String):void;
 		function queryForRecordingStatus():void;
 		function changeRecordingStatus(userID:String, recording:Boolean):void;

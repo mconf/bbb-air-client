@@ -149,18 +149,22 @@ package org.bigbluebutton.core
 			userSession.mainConnection.sendMessage("joinMeeting", defaultSuccessResponse, defaultFailureResponse, internalUserID);
 		}
 		
-		public function askToEnter(userId:String):void {
-			trace("reaching here?");
-//						var nc:NetConnection = userSession.mainConnection.connection;
-//						var restoreFunctionName:String = "participants.askingToEnter";
-//			
-//						nc.call(
-//								restoreFunctionName,
-//								responder,
-//								userId
-//							);
+		public function askToEnter(name:String, userId:String):void {
 			//TODO implement this function in the new way of handling messages
+			userSession.mainConnection.sendMessage("participants.askingToEnter", defaultSuccessResponse, defaultFailureResponse);
+		
+		}
+		public function getWaitingGuests(userId:String):void {
+			trace("retrieveWaitingGuests()");
+			var message:Object = new Object();
+			message["userId"] = userId;
+			userSession.mainConnection.sendMessage("participants.getGuestsWaiting", defaultSuccessResponse, defaultFailureResponse);
 		}
 		
+		public function getGuestPolicy():void {
+			trace("getGuestPolicy");
+			
+			userSession.mainConnection.sendMessage("participants.getGuestPolicy", defaultSuccessResponse, defaultFailureResponse);
+		}
 	}
 }
