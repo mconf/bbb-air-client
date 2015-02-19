@@ -8,6 +8,7 @@ package org.bigbluebutton.core
 	public class UsersMessageReceiver implements IMessageListener
 	{
 		public var userSession: IUserSession;
+		public var userService: IUsersService;
 		
 		public function UsersMessageReceiver() {
 
@@ -80,11 +81,18 @@ package org.bigbluebutton.core
 		private function handleGuestPolicy(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			trace("guestPolicy");
-			if(msg.guestPolicy=="ALWAYS_ACCEPT"){
-				userSession.guestSignal.dispatch(true);
-			} else if(msg.guestPolicy=="ALWAYS_DENY"){
-				userSession.guestSignal.dispatch(false);
+			switch (msg.guestPolicy){
+				case "ALWAYS_DENY":
+					userSession.guestSignal.dispatch(false);
+					break;
+				case "ALWAYS_ACCEPT":
+					userSession.guestSignal.dispatch(true);
+					break;
+				default:
+					userService.askToEnter();
+					break;
 			}
+			
 			
 		}
 		

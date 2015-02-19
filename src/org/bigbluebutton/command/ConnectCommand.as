@@ -75,8 +75,6 @@ package org.bigbluebutton.command
 			if (conferenceParameters.isGuestDefined() && conferenceParameters.guest) {
 				// I'm a guest, let's ask to enter
 				userSession.guestSignal.add(onGuestResponse);
-				usersService.getWaitingGuests();
-				usersService.askToEnter();
 				usersService.getGuestPolicy();
 			} else {
 				connectAfterGuest();
