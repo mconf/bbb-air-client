@@ -134,11 +134,11 @@ package org.bigbluebutton.core
 		}
 		
 		public function askToEnter():void {
-			usersMessageSender.askToEnter(userSession.userList.me.name, userSession.userList.me.userID);
+			usersMessageSender.askToEnter();
 		}
 		
 		public function getWaitingGuests(): void{
-			usersMessageSender.getWaitingGuests(userSession.userList.me.userID);
+			usersMessageSender.getWaitingGuests();
 		}
 		
 		public function getGuestPolicy(): void{

@@ -149,15 +149,14 @@ package org.bigbluebutton.core
 			userSession.mainConnection.sendMessage("joinMeeting", defaultSuccessResponse, defaultFailureResponse, internalUserID);
 		}
 		
-		public function askToEnter(name:String, userId:String):void {
+		public function askToEnter():void {
 			//TODO implement this function in the new way of handling messages
 			userSession.mainConnection.sendMessage("participants.askingToEnter", defaultSuccessResponse, defaultFailureResponse);
 		
 		}
-		public function getWaitingGuests(userId:String):void {
+		public function getWaitingGuests():void {
 			trace("retrieveWaitingGuests()");
-			var message:Object = new Object();
-			message["userId"] = userId;
+			
 			userSession.mainConnection.sendMessage("participants.getGuestsWaiting", defaultSuccessResponse, defaultFailureResponse);
 		}
 		

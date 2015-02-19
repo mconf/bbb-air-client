@@ -112,9 +112,11 @@ package org.bigbluebutton.core
 				_conferenceParameters.internalUserID,
 				//false, //_conferenceParameters.lockOnStart
 				false //muteOnStart
+				
 			];
 			
 			if (_conferenceParameters.isGuestDefined()) {
+				trace(_conferenceParameters.guest);
 				connectParams.push(_conferenceParameters.guest);
 			}
 			

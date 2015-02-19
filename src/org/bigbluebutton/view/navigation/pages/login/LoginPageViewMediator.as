@@ -88,9 +88,9 @@ package org.bigbluebutton.view.navigation.pages.login
 			if(Capabilities.isDebugger)
 			{
 				//as guest
-				//url = "http://143.54.10.186/bigbluebutton/api/join?fullName=Air+Client&guest=true&meetingID=Test+room+1&password=student123&checksum=6c18203334f43492b703628f68e18083df996c2b";
+				//url = "http://192.168.0.171/bigbluebutton/api/join?fullName=Air+Client&guest=true&meetingID=Test+room+1&password=student123&checksum=93c264a0290828f99cd3e706f9a280474c360122";
 			 	
-				url = "http://143.54.10.186/bigbluebutton/api/join?fullName=Air+Client&guest=true&meetingID=Test+room+1&password=prof123&checksum=ffa74ff0932dd5f8f5f350faefc14339549016ae"
+				url = "http://143.54.10.186/bigbluebutton/api/join?fullName=Air+Client&guest=true&meetingID=Test+room+1&password=student123&checksum=6c18203334f43492b703628f68e18083df996c2b"
 				//url = "bigbluebutton://lab1.mconf.org/bigbluebutton/api/join?fullName=Air+client&meetingID=Test+room+4&password=prof123&checksum=5805753edd08fbf9af50f9c28bb676c7e5241349"
 				
 				//as moderator
