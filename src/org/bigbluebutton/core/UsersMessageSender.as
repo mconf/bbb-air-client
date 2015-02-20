@@ -151,6 +151,7 @@ package org.bigbluebutton.core
 		
 		public function askToEnter():void {
 			//TODO implement this function in the new way of handling messages
+			trace("askToEnter - userID:[" + userSession.userId + "]");
 			userSession.mainConnection.sendMessage("participants.askingToEnter", defaultSuccessResponse, defaultFailureResponse);
 		
 		}

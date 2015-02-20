@@ -4,11 +4,17 @@ package org.bigbluebutton.core
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
 	import org.osflash.signals.Signal;
+	import mx.utils.ObjectUtil;
+	
+	import org.osflash.signals.ISignal;
+	import org.osmf.logging.Log;
 	
 	public class UsersMessageReceiver implements IMessageListener
 	{
 		public var userSession: IUserSession;
-		public var userService: IUsersService;
+		
+		[Inject]
+		public var usersService: IUsersService;
 		
 		public function UsersMessageReceiver() {
 
@@ -89,7 +95,7 @@ package org.bigbluebutton.core
 					userSession.guestSignal.dispatch(true);
 					break;
 				default:
-					userService.askToEnter();
+					//usersService.askToEnter(); can't inject the usersService class here, don't know why
 					break;
 			}
 			

@@ -102,6 +102,13 @@ package org.bigbluebutton.core
 			_tried_tunneling = tunnel;
 			
 			var uri:String = _applicationURI + "/" + _conferenceParameters.room;
+			var lockSettings:Object = {
+					disableCam: false,
+					disableMic: false,
+					disablePrivateChat: false,
+					disablePublicChat: false,
+					lockedLayout: false
+			};
 			var connectParams:Array = [
 				_conferenceParameters.username, 
 				_conferenceParameters.role,
@@ -110,9 +117,9 @@ package org.bigbluebutton.core
 				_conferenceParameters.record, 
 				_conferenceParameters.externUserID,
 				_conferenceParameters.internalUserID,
-				//false, //_conferenceParameters.lockOnStart
-				false //muteOnStart
-				
+				false, //_conferenceParameters.lockOnStart
+				false,	 //muteOnStart
+				lockSettings				
 			];
 			
 			if (_conferenceParameters.isGuestDefined()) {

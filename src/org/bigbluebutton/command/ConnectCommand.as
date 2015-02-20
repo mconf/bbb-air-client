@@ -76,6 +76,7 @@ package org.bigbluebutton.command
 				// I'm a guest, let's ask to enter
 				userSession.guestSignal.add(onGuestResponse);
 				usersService.getGuestPolicy();
+				usersService.askToEnter();
 			} else {
 				connectAfterGuest();
 			}
