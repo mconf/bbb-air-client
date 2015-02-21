@@ -87,14 +87,10 @@ package org.bigbluebutton.view.navigation.pages.login
 
 			if(Capabilities.isDebugger)
 			{
-				//as guest
-				//url = "http://192.168.0.171/bigbluebutton/api/join?fullName=Air+Client&guest=true&meetingID=Test+room+1&password=student123&checksum=93c264a0290828f99cd3e706f9a280474c360122";
-			 	
-				url = "http://143.54.10.186/bigbluebutton/api/join?fullName=Air+Client&guest=true&meetingID=Test+room+1&password=student123&checksum=6c18203334f43492b703628f68e18083df996c2b"
+				// test-install server no longer works with 0.9 mobile client
+
+				//url = "bigbluebutton://test-install.blindsidenetworks.com/bigbluebutton/api/join?fullName=Air&meetingID=Demo+Meeting&password=ap&checksum=512620179852dadd6fe0665a48bcb852a3c0afac";
 				//url = "bigbluebutton://lab1.mconf.org/bigbluebutton/api/join?fullName=Air+client&meetingID=Test+room+4&password=prof123&checksum=5805753edd08fbf9af50f9c28bb676c7e5241349"
-				
-				//as moderator
-				//url = "http://143.54.10.186/bigbluebutton/api/join?fullName=Airclient&meetingID=Test+room+1&password=prof123&checksum=d09ad4b3b8bc18043df10bdd2c46b2a571e26b4a"
 			}
 
 			if (url.lastIndexOf("://") != -1)
