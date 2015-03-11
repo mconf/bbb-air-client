@@ -166,5 +166,11 @@ package org.bigbluebutton.core
 			
 			userSession.mainConnection.sendMessage("participants.getGuestPolicy", defaultSuccessResponse, defaultFailureResponse);
 		}
+		
+		public function validateToken(internalUserID:String):void {
+			trace("validateToken");
+			
+			userSession.mainConnection.sendMessage("validateToken", defaultSuccessResponse, defaultFailureResponse, internalUserID);
+		}
 	}
 }

@@ -34,7 +34,8 @@ package org.bigbluebutton.model
 		function get deskshareConnection():IDeskshareConnection;
 		function set deskshareConnection(value:IDeskshareConnection):void;
 		function get presentationList():PresentationList;
-		function get guestSignal():ISignal;
+		function get guestPolicySignal():ISignal;
+		function get guestEntranceSignal():ISignal;
 		function get successJoiningMeetingSignal():ISignal;
 		function get unsuccessJoiningMeetingSignal():ISignal;
 		function get logoutSignal():Signal;
@@ -43,5 +44,6 @@ package org.bigbluebutton.model
 		function recordingStatusChanged(recording:Boolean):void;
 		function get videoProfileManager():VideoProfileManager
 		function set videoProfileManager(value:VideoProfileManager):void;
+		function get authTokenSignal():ISignal
 	}
 }

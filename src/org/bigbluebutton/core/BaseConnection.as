@@ -147,6 +147,7 @@ package org.bigbluebutton.core
 		
 		protected function sendConnectionFailedEvent(reason:String):void 
 		{
+			trace(NAME + " sendConnectionFailedEvent reason=" + reason);
 			//unsuccessConnected.dispatch(reason);
 			disconnectUserSignal.dispatch(DisconnectEnum.CONNECTION_STATUS_CONNECTION_DROPPED);
 		}

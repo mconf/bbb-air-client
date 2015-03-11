@@ -18,6 +18,10 @@ package org.bigbluebutton.model
 	
 	public class UserSession implements IUserSession
 	{
+		public static const GUEST_POLICY_ASK_MODERATOR:String = "ASK_MODERATOR";
+		public static const GUEST_POLICY_ALWAYS_DENY:String = "ALWAYS_DENY";
+		public static const GUEST_POLICY_ALWAYS_ACCEPT:String = "ALWAYS_ACCEPT";
+		
 		protected var _config:Config;
 		protected var _userId:String;
 		protected var _mainConnection:IBigBlueButtonConnection;
@@ -29,14 +33,15 @@ package org.bigbluebutton.model
 		protected var _presentationList:PresentationList;
 		protected var _recording:Boolean;
 		
-		protected var _guestSignal:ISignal = new Signal();
+		protected var _guestPolicySignal:ISignal = new Signal();
+		protected var _guestEntranceSignal:ISignal = new Signal();
 		protected var _successJoiningMeetingSignal:ISignal = new Signal();
 		protected var _unsuccessJoiningMeetingSignal:ISignal = new Signal();
 		protected var _recordingStatusChangedSignal:ISignal = new Signal();
 		protected var _logoutSignal:Signal = new Signal();
+		protected var _authTokenSignal:ISignal = new Signal();
 
-		protected var _videoProfileManager:VideoProfileManager = null;
-		
+		protected var _videoProfileManager:VideoProfileManager = null;	
 		
 		public function get videoProfileManager():VideoProfileManager
 		{
@@ -135,9 +140,14 @@ package org.bigbluebutton.model
 			return _presentationList
 		}
 		
-		public function get guestSignal():ISignal
+		public function get guestEntranceSignal():ISignal
 		{
-			return _guestSignal;
+			return _guestEntranceSignal;
+		}
+		
+		public function get guestPolicySignal():ISignal
+		{
+			return _guestPolicySignal;
 		}
 		
 		public function get successJoiningMeetingSignal():ISignal
@@ -170,6 +180,10 @@ package org.bigbluebutton.model
 		public function recordingStatusChanged(recording:Boolean):void {
 			_recording = recording;
 			recordingStatusChangedSignal.dispatch(recording);
+		}
+		
+		public function get authTokenSignal():ISignal {
+			return _authTokenSignal;
 		}
 	}
 }

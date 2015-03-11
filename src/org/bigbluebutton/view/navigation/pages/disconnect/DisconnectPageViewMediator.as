@@ -39,7 +39,7 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 		}
 		
 		/**
-		 * Sets the disconnect status based on disconnectionStatusCode recieved from DisconnectUserCommand
+		 * Sets the disconnect status based on disconnectionStatusCode received from DisconnectUserCommand
 		 */ 
 		public function changeConnectionStatus(disconnectionStatusCode:int):void
 		{
@@ -56,6 +56,9 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 					break;
 				case DisconnectEnum.CONNECTION_STATUS_USER_LOGGED_OUT:
 					view.currentState = DisconnectType.CONNECTION_STATUS_USER_LOGGED_OUT_STRING;
+					break;
+				case DisconnectEnum.CONNECTION_STATUS_MODERATOR_DENIED:
+					view.currentState = DisconnectType.CONNECTION_STATUS_MODERATOR_DENIED_STRING;
 					break;
 			}	
 		}

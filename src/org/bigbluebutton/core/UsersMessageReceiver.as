@@ -1,20 +1,18 @@
 package org.bigbluebutton.core
 {
+	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
-	import org.osflash.signals.Signal;
-	import mx.utils.ObjectUtil;
-	
+	import org.bigbluebutton.model.UserSession;
 	import org.osflash.signals.ISignal;
+	import org.osflash.signals.Signal;
 	import org.osmf.logging.Log;
 	
 	public class UsersMessageReceiver implements IMessageListener
 	{
 		public var userSession: IUserSession;
-		
-		[Inject]
-		public var usersService: IUsersService;
 		
 		public function UsersMessageReceiver() {
 
@@ -79,6 +77,9 @@ package org.bigbluebutton.core
 				case "get_guest_policy_reply":
 					handleGuestPolicy(message);
 					break;
+				case "validateAuthTokenReply":
+					handleValidateAuthTokenReply(message);
+					break;
 				default:
 					break;
 			}
@@ -87,26 +88,14 @@ package org.bigbluebutton.core
 		private function handleGuestPolicy(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			trace("guestPolicy");
-			switch (msg.guestPolicy){
-				case "ALWAYS_DENY":
-					userSession.guestSignal.dispatch(false);
-					break;
-				case "ALWAYS_ACCEPT":
-					userSession.guestSignal.dispatch(true);
-					break;
-				default:
-					//usersService.askToEnter(); can't inject the usersService class here, don't know why
-					break;
-			}
-			
-			
+			userSession.guestPolicySignal.dispatch(msg.guestPolicy);
 		}
 		
 		private function handleGuestResponse(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
-			trace("GuestResponse: "+msg);
-			if (msg.userID == userSession.userId) {
-				userSession.guestSignal.dispatch(msg.allowed);
+			trace("GuestResponse: "+ObjectUtil.toString(msg));
+			if (msg.userId == userSession.userId) {
+				userSession.guestEntranceSignal.dispatch(msg.response);
 			}
 		}
 		
@@ -281,6 +270,12 @@ package org.bigbluebutton.core
 			trace("UsersMessageReceiver::handleGetRecordingStatusReply() -- recording status");
 			var msg:Object = JSON.parse(m.msg);
 			userSession.recordingStatusChanged(msg.recording);
+		}
+		
+		private function handleValidateAuthTokenReply(m:Object):void {
+			trace("UsersMessageReceiver::handleValidateAuthTokenReply()");
+			var msg:Object = JSON.parse(m.msg);
+			userSession.authTokenSignal.dispatch(msg.valid);
 		}
 	}
 }

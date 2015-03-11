@@ -15,6 +15,7 @@ package org.bigbluebutton.command
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
+	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.osmf.logging.Log;
 	
@@ -72,37 +73,59 @@ package org.bigbluebutton.command
 			// Set up users message sender in order to send the "joinMeeting" message:
 			usersService.setupMessageSenderReceiver();
 			
-			if (conferenceParameters.isGuestDefined() && conferenceParameters.guest) {
-				// I'm a guest, let's ask to enter
-				userSession.guestSignal.add(onGuestResponse);
-				usersService.getGuestPolicy();
-				usersService.askToEnter();
+			userSession.authTokenSignal.add(onAuthTokenReply);
+			usersService.validateToken();
+		}
+		
+		private function onAuthTokenReply(tokenValid:Boolean):void {
+			Log.getLogger("org.bigbluebutton").info(String(this) + ":onAuthTokenReply() tokenValid=" + tokenValid);
+			if (tokenValid) {
+				if (conferenceParameters.isGuestDefined() && conferenceParameters.guest) {
+					userSession.guestPolicySignal.add(onGuestPolicyResponse);
+					usersService.getGuestPolicy();
+				} else {
+					connectAfterGuest();
+				}
 			} else {
-				connectAfterGuest();
+				// TODO disconnect
 			}
 		}
 		
-		private function onGuestResponse(allowed:Boolean):void {
+		private function onGuestAllowed():void {
+			connectAfterGuest();
+		}
+		
+		private function onGuestDenied():void {
+			//TODO disconnect from all connections, not only the main one
+			connection.unsuccessConnected.remove(unsuccessConnected);
+			connection.disconnect(true);
+			
+			userUISession.loading = false;
+			userUISession.unsuccessJoined.dispatch("accessDenied");
+		}
+		
+		private function onGuestPolicyResponse(policy:String):void {
+			Log.getLogger("org.bigbluebutton").info(String(this) + ":onGuestPolicyResponse() policy=" + policy);
+			if (policy == UserSession.GUEST_POLICY_ALWAYS_ACCEPT) {
+				onGuestAllowed();
+			} else if (policy == UserSession.GUEST_POLICY_ALWAYS_DENY) {
+				onGuestDenied();
+			} else if (policy == UserSession.GUEST_POLICY_ASK_MODERATOR) {
+				userSession.guestEntranceSignal.add(onGuestEntranceResponse);
+				usersService.askToEnter();
+			}
+		}
+		
+		private function onGuestEntranceResponse(allowed:Boolean):void {
+			Log.getLogger("org.bigbluebutton").info(String(this) + ":onGuestEntranceResponse() allowed=" + allowed);
 			if (allowed) {
-				Log.getLogger("org.bigbluebutton").info(String(this) + ":onGuestResponse() allowed to join");
-				
-				connectAfterGuest();
+				onGuestAllowed();
 			} else {
-				Log.getLogger("org.bigbluebutton").info(String(this) + ":onGuestResponse() not allowed to join");
-				
-				//TODO disconnect from all connections, not only the main one
-				connection.unsuccessConnected.remove(unsuccessConnected);
-				connection.disconnect(true);
-				
-				userUISession.loading = false;
-				userUISession.unsuccessJoined.dispatch("accessDenied");
+				onGuestDenied();
 			}
 		}
 		
 		private function connectAfterGuest():void {
-			
-			
-			
 			// Send the join meeting message, then wait for the reponse
 			userSession.successJoiningMeetingSignal.add(successJoiningMeeting);
 			userSession.unsuccessJoiningMeetingSignal.add(unsuccessJoiningMeeting);
@@ -114,7 +137,6 @@ package org.bigbluebutton.command
 		}
 		
 		private function successJoiningMeeting():void {
-			
 			// Set up remaining message sender and receivers:
 			chatService.setupMessageSenderReceiver();
 			presentationService.setupMessageSenderReceiver();

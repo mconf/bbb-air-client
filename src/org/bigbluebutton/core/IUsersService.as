@@ -1,6 +1,7 @@
 package org.bigbluebutton.core
 {
 	import org.bigbluebutton.model.User;
+	import org.osflash.signals.ISignal;
 
 	public interface IUsersService
 	{
@@ -30,5 +31,6 @@ package org.bigbluebutton.core
 		function unmuteMe():void;
 		function mute(user:User):void;
 		function unmute(user:User):void;
+		function validateToken():void
 	}
 }
