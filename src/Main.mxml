@@ -47,6 +47,7 @@
 			import org.bigbluebutton.view.navigation.pages.participants.ParticipantsConfig;
 			import org.bigbluebutton.view.navigation.pages.presentation.PresentationConfig;
 			import org.bigbluebutton.view.navigation.pages.profile.ProfileConfig;
+			import org.bigbluebutton.view.navigation.pages.status.StatusConfig;
 			import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantConfig;
 			import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisConfig;
 			import org.bigbluebutton.view.navigation.pages.videochat.VideoChatConfig;
@@ -118,6 +119,7 @@
 					.configure(ChatRoomsConfig)
 					.configure(VideoChatConfig)
 					.configure(ProfileConfig)
+					.configure(StatusConfig)
 					.configure(UserDetaisConfig)
 					.configure(ParticipantsConfig)
 					.configure(SelectParticipantConfig)		

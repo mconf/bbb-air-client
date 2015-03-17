@@ -11,6 +11,7 @@ package org.bigbluebutton.core
 		function queryForParticipants():void;
 		function assignPresenter(userid:String, name:String, assignedBy:String):void;
 		function changeMood(mood:String):void
+		function clearUserStatus(userID:String):void
 		function addStream(userID:String, streamName:String):void;
 		function askToEnter():void
 		function getWaitingGuests(): void

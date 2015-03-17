@@ -75,6 +75,11 @@ package org.bigbluebutton.core
 			usersMessageSender.changeMood(userSession.userList.me.userID, mood);
 		}
 		
+		public function clearUserStatus(userID:String):void
+		{
+			usersMessageSender.changeMood(userID, User.NO_STATUS);
+		}
+		
 		public function kickUser(userID:String):void {
 			usersMessageSender.kickUser(userID);
 		}

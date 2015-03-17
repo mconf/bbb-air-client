@@ -5,6 +5,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 	import mx.core.FlexGlobals;
 	
 	import org.bigbluebutton.model.User;
+	import org.bigbluebutton.model.IUserSession;
 	
 	import spark.components.Button;
 	
@@ -15,13 +16,18 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 				
 		}	
 		
-		
-		
 		protected var _user:User;
+		protected var _userMe:User;
 		
 		public function set user(u:User):void
 		{
 			_user = u;
+			update();
+		}
+		
+		public function set userMe(u:User):void
+		{
+			_userMe = u;
 			update();
 		}
 		
@@ -30,9 +36,14 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 			return _user;
 		}
 		
+		public function get userMe():User
+		{
+			return _userMe;
+		}
+		
 		public function update():void
 		{
-			if(user != null && FlexGlobals.topLevelApplication.mainshell != null)
+			if(user != null && FlexGlobals.topLevelApplication.mainshell != null && userMe != null)
 			{			
 				if(_user.me)
 				{
@@ -54,6 +65,15 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 				else
 				{
 					statusText.text = "";
+				}
+				
+				if(_user.status != User.NO_STATUS && _userMe.role == "MODERATOR"){
+					clearStatusButton.includeInLayout = true;
+					clearStatusButton.visible = true;
+				}
+				else {
+					clearStatusButton.includeInLayout = false;
+					clearStatusButton.visible = false;
 				}
 				
 				cameraIcon.visible = cameraIcon.includeInLayout = _user.hasStream;
@@ -83,6 +103,11 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		public function get showPrivateChat():Button
 		{
 			return showPrivateChat0;
+		}
+		
+		public function get clearStatusButton():Button
+		{
+			return clearStatusButton0;
 		}
 		
 		

@@ -6,8 +6,8 @@ package org.bigbluebutton.view.navigation.pages.profile
 	import mx.events.ItemClickEvent;
 	import mx.resources.ResourceManager;
 	
-	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.command.MoodSignal;
+	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
@@ -36,31 +36,54 @@ package org.bigbluebutton.view.navigation.pages.profile
 		{
 			Log.getLogger("org.bigbluebutton").info(String(this));
 			
-			userSession.userList.userChangeSignal.add(userChangeHandler);
-			
 			var userMe:User = userSession.userList.me;		
 			
 			view.userNameButton.label = userMe.name;
-			view.moodList.addEventListener(IndexChangeEvent.CHANGE, onMoodChange);
+			
+			switch(userMe.status){
+				case User.RAISE_HAND:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.handRaise');
+					break;
+				case User.AGREE:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.agree');
+					break;
+				case User.DISAGREE:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.disagree');
+					break;
+				case User.SPEAK_LOUDER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakLouder');
+					break;
+				case User.SPEAK_LOWER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSofter');
+					break;
+				case User.SPEAK_FASTER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakFaster');
+					break;
+				case User.SPEAK_SLOWER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSlower');
+					break;
+				case User.BE_RIGHT_BACK:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.beRightBack');
+					break;
+				case User.LAUGHTER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.laughter');
+					break;
+				case User.SAD:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.sad');
+					break;
+				case User.NO_STATUS:
+					view.userStatusButton.visible = false;
+					view.clearStatusButton.visible = false;
+					view.userStatusButton.includeInLayout = false;
+					view.clearStatusButton.includeInLayout = false;
+					break;
+			}
+			
 			view.logoutButton.addEventListener(MouseEvent.CLICK, logoutClick);
+			view.clearStatusButton.addEventListener(MouseEvent.CLICK, clearStatusClick);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;			
-		}
-		
-		private function userChangeHandler(user:User, type:int):void
-		{
-			if (user.me && type == UserList.RAISE_HAND) 
-			{
-				view.raiseHandButton.label = ResourceManager.getInstance().getString('resources', (user.status==User.RAISE_HAND) ?'profile.settings.handLower' : 'profile.settings.handRaise');
-			}
-		}
-		
-		protected function onMoodChange(event:IndexChangeEvent):void
-		{			
-			var obj:Object;
-			obj = view.moodList.selectedItem;
-			moodSignal.dispatch( view.moodList.selectedItem.signal);
 		}
 		
 		
@@ -72,13 +95,27 @@ package org.bigbluebutton.view.navigation.pages.profile
 			disconnectUserSignal.dispatch(DisconnectEnum.CONNECTION_STATUS_USER_LOGGED_OUT);
 		}
 		
+		/**
+		 * User pressed clean status button
+		 */ 
+		public function clearStatusClick(event:MouseEvent):void
+		{
+			var obj:Object;
+			obj = User.NO_STATUS;
+			moodSignal.dispatch(User.NO_STATUS);
+			view.userStatusButton.visible = false;
+			view.clearStatusButton.visible = false;
+			view.userStatusButton.includeInLayout = false;
+			view.clearStatusButton.includeInLayout = false;
+			userSession.userList.me.status = User.NO_STATUS;
+		}
+		
 		override public function destroy():void
 		{
 			super.destroy();
 			
-			userSession.userList.userChangeSignal.remove(userChangeHandler);			
-			view.moodList.removeEventListener(IndexChangeEvent.CHANGE, onMoodChange);
 			view.logoutButton.removeEventListener(MouseEvent.CLICK, logoutClick);
+			view.clearStatusButton.removeEventListener(MouseEvent.CLICK, clearStatusClick);
 			
 			view.dispose();
 			view = null;
