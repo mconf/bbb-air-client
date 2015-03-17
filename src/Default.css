@@ -433,6 +433,36 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/disagree.png");
 	}
 	
+	s|Image.speakLouderIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/speakLouder.png");
+	}
+	
+	s|Image.speakSofterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/speakSofter.png");
+	}
+	
+	s|Image.speakFasterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/speakFaster.png");
+	}
+	
+	s|Image.speakSlowerIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/speakSlower.png");
+	}
+	
+	s|Image.beRightBackIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/beRightBack.png");
+	}
+	
+	s|Image.laughterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/laughter.png");
+	}
+	
 	s|Image.sadIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/sad.png");
@@ -763,6 +793,36 @@ global
 	s|Image.disagreeIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/disagree.png");
+	}
+	
+	s|Image.speakLouderIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/speakLouder.png");
+	}
+	
+	s|Image.speakSofterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/speakSofter.png");
+	}
+	
+	s|Image.speakFasterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/speakFaster.png");
+	}
+	
+	s|Image.speakSlowerIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/speakSlower.png");
+	}
+	
+	s|Image.beRightBackIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/beRightBack.png");
+	}
+	
+	s|Image.laughterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/laughter.png");
 	}
 	
 	s|Image.sadIconStyle
@@ -1096,6 +1156,36 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/disagree.png");
 	}
 	
+	s|Image.speakLouderIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/speakLouder.png");
+	}
+	
+	s|Image.speakSofterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/speakSofter.png");
+	}
+	
+	s|Image.speakFasterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/speakFaster.png");
+	}
+	
+	s|Image.speakSlowerIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/speakSlower.png");
+	}
+	
+	s|Image.beRightBackIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/beRightBack.png");
+	}
+	
+	s|Image.laughterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/laughter.png");
+	}
+	
 	s|Image.sadIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/sad.png");
@@ -1425,6 +1515,36 @@ global
 	s|Image.disagreeIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/disagree.png");
+	}
+	
+	s|Image.speakLouderIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/speakLouder.png");
+	}
+	
+	s|Image.speakSofterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/speakSofter.png");
+	}
+	
+	s|Image.speakFasterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/speakFaster.png");
+	}
+	
+	s|Image.speakSlowerIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/speakSlower.png");
+	}
+		
+	s|Image.beRightBackIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/beRightBack.png");
+	}
+	
+	s|Image.laughterIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/laughter.png");
 	}
 	
 	s|Image.sadIconStyle

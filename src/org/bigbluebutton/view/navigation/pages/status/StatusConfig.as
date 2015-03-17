@@ -1,15 +1,15 @@
-package org.bigbluebutton.view.navigation.pages.userdetails
+package org.bigbluebutton.view.navigation.pages.status
 {
 	
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
+	
+	import org.bigbluebutton.command.MoodCommand;
+	import org.bigbluebutton.command.MoodSignal;
 
-	import org.bigbluebutton.command.ClearUserStatusCommand;
-	import org.bigbluebutton.command.ClearUserStatusSignal;
-
-	public class UserDetaisConfig implements IConfig
+	public class StatusConfig implements IConfig
 	{
 		[Inject]
 		public var injector: IInjector;
@@ -42,8 +42,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		 */
 		private function mediators(): void
 		{
-			mediatorMap.map(IUserDetaisView).toMediator(UserDetaisViewMediator);
-			signalCommandMap.map(ClearUserStatusSignal).toCommand(ClearUserStatusCommand);
+			mediatorMap.map(IStatusView).toMediator(StatusViewMediator);
 		}
 		
 		/**
@@ -51,7 +50,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		 */
 		private function signals(): void
 		{
-			//signalCommandMap.map(ButtonTestSignal).toCommand(ButtonTestCommand);
+			signalCommandMap.map(MoodSignal).toCommand(MoodCommand);
 		}	
 	}
 }

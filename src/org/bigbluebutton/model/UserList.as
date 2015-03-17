@@ -21,7 +21,14 @@ package org.bigbluebutton.model
 		public static const AGREE:int = 8;
 		public static const NO_STATUS:int = 9;
 		public static const DISAGREE:int = 10;
-		public static const SAD:int = 11;
+		public static const SPEAK_LOUDER:int = 11;
+		public static const SPEAK_LOWER:int = 12;
+		public static const SPEAK_FASTER:int = 13;
+		public static const SPEAK_SLOWER:int = 14;
+		public static const BE_RIGHT_BACK:int = 15;
+		public static const LAUGHTER:int = 16;
+		public static const SAD:int = 17;
+		
 		
 		private var _users:ArrayCollection;	
 		
@@ -196,6 +203,24 @@ package org.bigbluebutton.model
 				if(newuser.status==User.DISAGREE) {
 					userChangeSignal.dispatch(newuser, DISAGREE);
 				}
+				if(newuser.status==User.SPEAK_LOUDER) {
+					userChangeSignal.dispatch(newuser, SPEAK_LOUDER);
+				}
+				if(newuser.status==User.SPEAK_LOWER) {
+					userChangeSignal.dispatch(newuser, SPEAK_LOWER);
+				}
+				if(newuser.status==User.SPEAK_FASTER) {
+					userChangeSignal.dispatch(newuser, SPEAK_FASTER);
+				}
+				if(newuser.status==User.SPEAK_SLOWER) {
+					userChangeSignal.dispatch(newuser, SPEAK_SLOWER);
+				}
+				if(newuser.status==User.BE_RIGHT_BACK) {
+					userChangeSignal.dispatch(newuser, BE_RIGHT_BACK);
+				}
+				if(newuser.status==User.LAUGHTER) {
+					userChangeSignal.dispatch(newuser, LAUGHTER);
+				}
 				if(newuser.status==User.SAD) {
 					userChangeSignal.dispatch(newuser, SAD);
 				}
@@ -338,6 +363,24 @@ package org.bigbluebutton.model
 						break;
 					case User.DISAGREE:
 						userChangeSignal.dispatch(p.participant, DISAGREE);
+						break;
+					case User.SPEAK_LOUDER:
+						userChangeSignal.dispatch(p.participant, SPEAK_LOUDER);
+						break;
+					case User.SPEAK_LOWER:
+						userChangeSignal.dispatch(p.participant, SPEAK_LOWER);
+						break;
+					case User.SPEAK_FASTER:
+						userChangeSignal.dispatch(p.participant, SPEAK_FASTER);
+						break;
+					case User.SPEAK_SLOWER:
+						userChangeSignal.dispatch(p.participant, SPEAK_SLOWER);
+						break;
+					case User.BE_RIGHT_BACK:
+						userChangeSignal.dispatch(p.participant, BE_RIGHT_BACK);
+						break;
+					case User.LAUGHTER:
+						userChangeSignal.dispatch(p.participant, LAUGHTER);
 						break;
 					case User.SAD:
 						userChangeSignal.dispatch(p.participant, SAD);

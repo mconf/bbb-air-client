@@ -117,12 +117,30 @@ package org.bigbluebutton.core
 				case "DISAGREE":
 					userSession.userList.statusChange(msg.userID, User.DISAGREE);
 					break;
+				case "SPEAK_LOUDER":
+					userSession.userList.statusChange(msg.userID, User.SPEAK_LOUDER);
+					break;
+				case "SPEAK_LOWER":
+					userSession.userList.statusChange(msg.userID, User.SPEAK_LOWER);
+					break;
+				case "SPEAK_FASTER":
+					userSession.userList.statusChange(msg.userID, User.SPEAK_FASTER);
+					break;
+				case "SPEAK_SLOWER":
+					userSession.userList.statusChange(msg.userID, User.SPEAK_SLOWER);
+					break;
+				case "BE_RIGHT_BACK":
+					userSession.userList.statusChange(msg.userID, User.BE_RIGHT_BACK);
+					break;
+				case "LAUGHTER":
+					userSession.userList.statusChange(msg.userID, User.LAUGHTER);
+					break;
 				case "SAD":
 					userSession.userList.statusChange(msg.userID, User.SAD);
 					break;
 			}
 
-				
+			
 		}
 		
 		private function handleVoiceUserTalking(m:Object):void {
@@ -172,6 +190,24 @@ package org.bigbluebutton.core
 					break;
 				case "DISAGREE":
 					user.status = User.DISAGREE;
+					break;
+				case "SPEAK_LOUDER":
+					user.status = User.SPEAK_LOUDER;
+					break;
+				case "SPEAK_LOWER":
+					user.status = User.SPEAK_LOWER;
+					break;
+				case "SPEAK_FASTER":
+					user.status = User.SPEAK_FASTER;
+					break;
+				case "SPEAK_SLOWER":
+					user.status = User.SPEAK_SLOWER;
+					break;
+				case "BE_RIGHT_BACK":
+					user.status = User.BE_RIGHT_BACK;
+					break;
+				case "LAUGHTER":
+					user.status = User.LAUGHTER;
 					break;
 				case "SAD":
 					user.status = User.SAD;

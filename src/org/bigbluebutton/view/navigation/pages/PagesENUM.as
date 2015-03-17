@@ -12,6 +12,7 @@ package org.bigbluebutton.view.navigation.pages
 	import org.bigbluebutton.view.navigation.pages.participants.ParticipantsView;
 	import org.bigbluebutton.view.navigation.pages.presentation.PresentationView;
 	import org.bigbluebutton.view.navigation.pages.profile.ProfileView;
+	import org.bigbluebutton.view.navigation.pages.status.StatusView;
 	import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantView;
 	import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisView;
 	import org.bigbluebutton.view.navigation.pages.videochat.VideoChatView;
@@ -21,6 +22,7 @@ package org.bigbluebutton.view.navigation.pages
 		public static const PRESENTATION:String = "presentation";
 		public static const LOGIN:String = "login";
 		public static const PROFILE:String = "profile";
+		public static const STATUS:String = "status";
 		public static const USER_DETAIS:String = "userdetais";
 		public static const VIDEO_CHAT:String = "videochat";
 		public static const CHATROOMS:String = "chatrooms";
@@ -44,6 +46,7 @@ package org.bigbluebutton.view.navigation.pages
 				dic[PRESENTATION] = PresentationView;
 				dic[LOGIN] = LoginPageView;
 				dic[PROFILE] = ProfileView;
+				dic[STATUS] = StatusView;
 				dic[USER_DETAIS] = UserDetaisView;
 				dic[VIDEO_CHAT] = VideoChatView;
 				dic[CHATROOMS] = ChatRoomsView;

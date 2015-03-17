@@ -34,30 +34,29 @@
 						labelDisplay.text = obj.name;
 					}
 					
+					handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
+					agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
+					disagreeIcon.visible = disagreeIcon.includeInLayout = obj.status==User.DISAGREE;
+					speakLouderIcon.visible = speakLouderIcon.includeInLayout = obj.status==User.SPEAK_LOUDER;
+					speakSofterIcon.visible = speakSofterIcon.includeInLayout = obj.status==User.SPEAK_LOWER;
+					speakFasterIcon.visible = speakFasterIcon.includeInLayout = obj.status==User.SPEAK_FASTER;
+					speakSlowerIcon.visible = speakSlowerIcon.includeInLayout = obj.status==User.SPEAK_SLOWER;
+					beRightBackIcon.visible = beRightBackIcon.includeInLayout = obj.status==User.BE_RIGHT_BACK;
+					laughterIcon.visible = laughterIcon.includeInLayout = obj.status==User.LAUGHTER;
+					sadIcon.visible = sadIcon.includeInLayout = obj.status==User.SAD;
+					
 					if(obj.presenter)
 					{
-						handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
-						agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
-						disagreeIcon.visible = disagreeIcon.includeInLayout = obj.status==User.DISAGREE;
-						sadIcon.visible = sadIcon.includeInLayout = obj.status==User.SAD;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
 						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.presenter');
 					}
 					else if(obj.role == "MODERATOR")
-					{
-						handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
-						agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
-						disagreeIcon.visible = disagreeIcon.includeInLayout = obj.status==User.DISAGREE;
-						sadIcon.visible = sadIcon.includeInLayout = obj.status==User.SAD;
+					{	
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
 						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.moderator');
 					}
 					else
 					{
-						handIcon.visible = handIcon.includeInLayout = obj.status==User.RAISE_HAND;
-						agreeIcon.visible = agreeIcon.includeInLayout = obj.status==User.AGREE;
-						disagreeIcon.visible = disagreeIcon.includeInLayout = obj.status==User.DISAGREE;
-						sadIcon.visible = sadIcon.includeInLayout = obj.status==User.SAD;
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = false;
 					}
 					
@@ -75,7 +74,14 @@
 			<s:Image id="handIcon" styleName="iconStyle handIconStyle" height="100%"/>
 			<s:Image id="agreeIcon" styleName="iconStyle agreeIconStyle" height="100%"/>
 			<s:Image id="disagreeIcon" styleName="iconStyle disagreeIconStyle" height="100%"/>
+			<s:Image id="speakLouderIcon" styleName="iconStyle speakLouderIconStyle" height="100%"/>
+			<s:Image id="speakSofterIcon" styleName="iconStyle speakSofterIconStyle" height="100%"/>
+			<s:Image id="speakFasterIcon" styleName="iconStyle speakFasterIconStyle" height="100%"/>
+			<s:Image id="speakSlowerIcon" styleName="iconStyle speakSlowerIconStyle" height="100%"/>
+			<s:Image id="beRightBackIcon" styleName="iconStyle beRightBackIconStyle" height="100%"/>
+			<s:Image id="laughterIcon" styleName="iconStyle laughterIconStyle" height="100%"/>
 			<s:Image id="sadIcon" styleName="iconStyle sadIconStyle" height="100%"/>
+			
 			<s:Group width="70%">
 				<s:layout>
 					<s:VerticalLayout/>
