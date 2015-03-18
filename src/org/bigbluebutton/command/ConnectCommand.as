@@ -2,6 +2,7 @@ package org.bigbluebutton.command
 {
 	import flash.media.Camera;
 	
+	import mx.core.FlexGlobals;
 	import mx.messaging.management.Attribute;
 	import mx.utils.ObjectUtil;
 	
@@ -83,6 +84,8 @@ package org.bigbluebutton.command
 				if (conferenceParameters.isGuestDefined() && conferenceParameters.guest) {
 					userSession.guestPolicySignal.add(onGuestPolicyResponse);
 					usersService.getGuestPolicy();
+					userUISession.pushPage(PagesENUM.GUEST);
+					userUISession.loading = false;
 				} else {
 					connectAfterGuest();
 				}
@@ -185,6 +188,11 @@ package org.bigbluebutton.command
 		
 		private function successUsersAdded():void
 		{
+			// remove guest page (if it is there)
+			userUISession.popPage();
+			FlexGlobals.topLevelApplication.topActionBar.visible = true;
+			FlexGlobals.topLevelApplication.bottomMenu.visible = true;
+			
 			userUISession.loading = false;
 			userUISession.pushPage(PagesENUM.PARTICIPANTS);
 			
