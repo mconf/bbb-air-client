@@ -49,6 +49,10 @@
 					{
 						subLabelDisplay.visible = subLabelDisplay.includeInLayout = true;
 						subLabelDisplay.text = resourceManager.getString('resources', 'participants.status.presenter');
+						if(obj.role == "MODERATOR")
+						{
+							subLabelDisplay.text += "/" + resourceManager.getString('resources', 'participants.status.moderator');
+						}
 					}
 					else if(obj.role == "MODERATOR")
 					{	
