@@ -383,8 +383,6 @@ global
 	
 	s|Image.userDetailIconStyle
 	{
-		width: 60;
-		height: 60;
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/user_detail.png");
 	}
 	
@@ -745,8 +743,6 @@ global
 	
 	s|Image.userDetailIconStyle
 	{
-		width: 90;
-		height: 90;
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/user_detail.png");
 	}
 	
@@ -1106,8 +1102,6 @@ global
 	
 	s|Image.userDetailIconStyle
 	{
-		width: 120;
-		height: 120;
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/user_detail.png");
 	}
 	
@@ -1467,8 +1461,6 @@ global
 	
 	s|Image.userDetailIconStyle
 	{
-		width: 180;
-		height: 180;
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/user_detail.png");
 	}
 	
