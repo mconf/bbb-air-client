@@ -372,8 +372,8 @@ global
 	
 	s|Image.iconStyle
 	{
-		width: 30;
-		height: 30;
+		width: 32;
+		height: 32;
 	}
 	
 	s|Image.cameraIconStyle
@@ -395,7 +395,7 @@ global
 	
 	s|Image.listenOnlyIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/listenOnly.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_headset.png");
 	}
 	
 	s|Image.micOffIconStyle
@@ -420,52 +420,52 @@ global
 	
 	s|Image.handIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/hand.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/icon-3-high-five.png");
 	}
 	
 	s|Image.agreeIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/agree.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/icon-6-thumb-up.png");
 	}
 	
 	s|Image.disagreeIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/disagree.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/icon-7-thumb-down.png");
 	}
 	
 	s|Image.speakLouderIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/speakLouder.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_volume_up.png");
 	}
 	
 	s|Image.speakSofterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/speakSofter.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_volume_down.png");
 	}
 	
 	s|Image.speakFasterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/speakFaster.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_fast_forward.png");
 	}
 	
 	s|Image.speakSlowerIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/speakSlower.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_fast_rewind.png");
 	}
 	
 	s|Image.beRightBackIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/beRightBack.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_access_time.png");
 	}
 	
 	s|Image.laughterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/laughter.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/icon-6-smiling-face.png");
 	}
 	
 	s|Image.sadIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/sad.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/icon-7-sad-face.png");
 	}
 	
 	s|Image.arrowRightStyle
@@ -734,8 +734,8 @@ global
 	
 	s|Image.iconStyle
 	{
-		width: 45;
-		height: 45;
+		width: 48;
+		height: 48;
 	}
 	
 	s|Image.cameraIconStyle
@@ -762,7 +762,7 @@ global
 	
 	s|Image.listenOnlyIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/listenOnly.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_headset.png");
 	}
 	
 	s|Image.soundIconStyle
@@ -782,52 +782,52 @@ global
 	
 	s|Image.agreeIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/agree.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/icon-6-thumb-up.png");
 	}
 	
 	s|Image.handIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/hand.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/icon-3-high-five.png");
 	}
 	
 	s|Image.disagreeIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/disagree.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/icon-7-thumb-down.png");
 	}
 	
 	s|Image.speakLouderIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/speakLouder.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_volume_up.png");
 	}
 	
 	s|Image.speakSofterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/speakSofter.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_volume_down.png");
 	}
 	
 	s|Image.speakFasterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/speakFaster.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_fast_forward.png");
 	}
 	
 	s|Image.speakSlowerIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/speakSlower.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_fast_rewind.png");
 	}
 	
 	s|Image.beRightBackIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/beRightBack.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_access_time.png");
 	}
 	
 	s|Image.laughterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/laughter.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/icon-6-smiling-face.png");
 	}
 	
 	s|Image.sadIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/sad.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/icon-7-sad-face.png");
 	}
 	
 	s|Image.arrowRightStyle
@@ -1095,8 +1095,8 @@ global
 	
 	s|Image.iconStyle
 	{
-		width: 60;
-		height: 60;
+		width: 64;
+		height: 64;
 	}
 	
 	s|Image.cameraIconStyle
@@ -1123,7 +1123,7 @@ global
 	
 	s|Image.listenOnlyIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/listenOnly.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_headset.png");
 	}
 	
 	s|Image.soundIconStyle
@@ -1143,52 +1143,52 @@ global
 	
 	s|Image.agreeIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/agree.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/icon-6-thumb-up.png");
 	}
 	
 	s|Image.handIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/hand.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/icon-3-high-five.png");
 	}
 	
 	s|Image.disagreeIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/disagree.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/icon-7-thumb-down.png");
 	}
 	
 	s|Image.speakLouderIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/speakLouder.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_volume_up.png");
 	}
 	
 	s|Image.speakSofterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/speakSofter.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_volume_down.png");
 	}
 	
 	s|Image.speakFasterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/speakFaster.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_fast_forward.png");
 	}
 	
 	s|Image.speakSlowerIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/speakSlower.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_fast_rewind.png");
 	}
 	
 	s|Image.beRightBackIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/beRightBack.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_access_time.png");
 	}
 	
 	s|Image.laughterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/laughter.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/icon-6-smiling-face.png");
 	}
 	
 	s|Image.sadIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/sad.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/icon-7-sad-face.png");
 	}
 	
 	s|Image.arrowRightStyle
@@ -1456,8 +1456,8 @@ global
 	
 	s|Image.iconStyle
 	{
-		width: 90;
-		height: 90;
+		width: 96;
+		height: 96;
 	}
 	
 	s|Image.cameraIconStyle
@@ -1484,7 +1484,7 @@ global
 	
 	s|Image.listenOnlyIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/listenOnly.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_headset.png");
 	}
 	
 	s|Image.soundIconStyle
@@ -1504,52 +1504,52 @@ global
 	
 	s|Image.agreeIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/agree.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/icon-6-thumb-up.png");
 	}
 	
 	s|Image.handIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/hand.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/icon-3-high-five.png");
 	}
 	
 	s|Image.disagreeIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/disagree.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/icon-7-thumb-down.png");
 	}
 	
 	s|Image.speakLouderIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/speakLouder.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_volume_up.png");
 	}
 	
 	s|Image.speakSofterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/speakSofter.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_volume_down.png");
 	}
 	
 	s|Image.speakFasterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/speakFaster.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_fast_forward.png");
 	}
 	
 	s|Image.speakSlowerIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/speakSlower.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_fast_rewind.png");
 	}
 		
 	s|Image.beRightBackIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/beRightBack.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_access_time.png");
 	}
 	
 	s|Image.laughterIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/laughter.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/icon-6-smiling-face.png");
 	}
 	
 	s|Image.sadIconStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/sad.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/icon-7-sad-face.png");
 	}
 	
 	s|Image.arrowRightStyle
