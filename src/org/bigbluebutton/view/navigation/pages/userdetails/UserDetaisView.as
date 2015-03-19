@@ -56,15 +56,19 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 				
 				if(_user.presenter)
 				{
-					statusText.text = resourceManager.getString('resources', 'participants.status.presenter');
+					roleText.text = resourceManager.getString('resources', 'participants.status.presenter');
+					if (_user.role == "MODERATOR")
+					{
+						roleText.text += "/" + resourceManager.getString('resources', 'participants.status.moderator');
+					}
 				}
 				else if(_user.role == "MODERATOR")
 				{
-					statusText.text = resourceManager.getString('resources', 'participants.status.moderator');
+					roleText.text = resourceManager.getString('resources', 'participants.status.moderator');
 				}
 				else
 				{
-					statusText.text = "";
+					roleText.text = "";
 				}
 				
 				if(_user.status != User.NO_STATUS && _userMe.role == "MODERATOR"){
