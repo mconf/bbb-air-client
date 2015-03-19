@@ -23,7 +23,7 @@
 				</s:layout>
 				<s:Image id="userDetailIcon" styleName="iconStyle userDetailIconStyle"/>	
 				<s:Label id="userNameText" width="100%" textAlign="center" styleName="userDetailsNameStyle contentFontSize" />
-				<s:Label id="statusText" width="100%" textAlign="center" styleName="userDetailsStatusStyle subContentFontSize" />
+				<s:Label id="roleText" width="100%" textAlign="center" styleName="userDetailsStatusStyle subContentFontSize" />
 			</s:Group>
 		</s:Group>
 		
