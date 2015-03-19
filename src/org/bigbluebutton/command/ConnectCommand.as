@@ -6,6 +6,7 @@ package org.bigbluebutton.command
 	import mx.messaging.management.Attribute;
 	import mx.utils.ObjectUtil;
 	
+	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
 	import org.bigbluebutton.core.IChatMessageService;
 	import org.bigbluebutton.core.IDeskshareConnection;
@@ -18,6 +19,7 @@ package org.bigbluebutton.command
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
+	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
 	import org.osmf.logging.Log;
 	
 	import robotlegs.bender.bundles.mvcs.Command;
@@ -56,6 +58,9 @@ package org.bigbluebutton.command
 		
 		[Inject]
 		public var presentationService: IPresentationService;
+		
+		[Inject]
+		public var disconnectUserSignal: DisconnectUserSignal;
 		
 		override public function execute():void {
 			connection.uri = uri;
@@ -99,12 +104,8 @@ package org.bigbluebutton.command
 		}
 		
 		private function onGuestDenied():void {
-			//TODO disconnect from all connections, not only the main one
-			connection.unsuccessConnected.remove(unsuccessConnected);
-			connection.disconnect(true);
-			
 			userUISession.loading = false;
-			userUISession.unsuccessJoined.dispatch("accessDenied");
+			disconnectUserSignal.dispatch(DisconnectEnum.CONNECTION_STATUS_MODERATOR_DENIED);
 		}
 		
 		private function onGuestPolicyResponse(policy:String):void {
