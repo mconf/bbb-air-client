@@ -188,7 +188,7 @@ package org.bigbluebutton.view.navigation.pages.participants
 		{
 			if(dataProvider != null)
 			{
-				FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'participants.title') + "(" + dataProvider.length + ")";
+				FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'participants.title') + " (" + dataProvider.length + ")";
 			}
 		}
 			

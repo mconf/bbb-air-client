@@ -16,8 +16,9 @@
 				if (obj)
 				{					
 					presentationIcon.visible = presentationIcon.includeInLayout = obj.presenter && (obj.status==User.NO_STATUS);
-					profileIcon.visible = profileIcon.includeInLayout = ((obj.role == User.MODERATOR) && (!obj.presenter) && (obj.status==User.NO_STATUS));
-										
+					profileIcon.visible =((obj.role == User.MODERATOR) && (!obj.presenter) && (obj.status==User.NO_STATUS));
+					profileIcon.includeInLayout = (!obj.presenter) && (obj.status==User.NO_STATUS);
+					
 					cameraIcon.visible = obj.hasStream;
 				
 					micIcon.visible = micIcon.includeInLayout = (obj.voiceJoined && !obj.muted);
