@@ -167,6 +167,23 @@ package org.bigbluebutton.core
 			userSession.mainConnection.sendMessage("participants.getGuestPolicy", defaultSuccessResponse, defaultFailureResponse);
 		}
 		
+		public function responseToGuest(userId:String, response:Boolean):void {
+			trace("responseToGuest - guestID:[" + userId + "] response:[" + response + "]");
+			
+			var message:Object = new Object();
+			message["guestID"] = userId;
+			message["response"] = response;
+			
+			userSession.mainConnection.sendMessage("participants.responseToGuest",	defaultSuccessResponse,	defaultFailureResponse, message);
+		}
+		
+		public function responseToAllGuests(response:Boolean):void {
+			trace("responseToAllGuests - response:[" + response + "]");
+			
+			userSession.mainConnection.sendMessage("participants.responseToAllGuests",	defaultSuccessResponse,	defaultFailureResponse, response);
+		}
+
+		
 		public function validateToken(internalUserID:String):void {
 			trace("validateToken");
 			

@@ -35,6 +35,7 @@ package org.bigbluebutton.view.navigation.pages.selectparticipant
 		protected var dataProvider:ArrayCollection;
 		protected var dicUserIdtoUser:Dictionary
 		protected var usersSignal:ISignal; 
+		protected var guestsSignal:ISignal;
 		
 		override public function initialize():void
 		{

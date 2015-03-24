@@ -17,6 +17,17 @@ s|Button.sendButtonStyle
 	skinClass: ClassReference("org.bigbluebutton.view.skins.SendMsgBtnSkin");
 }
 
+s|Button.guestResponseButtonStyle
+{
+	height: 50;
+	weight: 0.1;
+	radiusX:2;
+	radiusY:2;
+	backgroundColor:#F4F4F4;
+	onClickBackgroundColor:#DBDBDB;
+	skinClass: ClassReference("org.bigbluebutton.view.skins.GuestResponseBtnSkin");
+}
+
 s|SkinnableContainer.topToolBarStyle
 {
 	gradientColorTop: #4A4C58;
@@ -192,6 +203,16 @@ global
 	{
 		paddingBottom:40;
 		paddingTop:40;
+	}
+	
+	s|Button.allowButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_thumb_up.png");
+	}
+	
+	s|Button.denyButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_thumb_down.png");
 	}
 	
 	s|Button.cameraSettingsStartButtonStyle
@@ -554,6 +575,15 @@ global
 	{
 		paddingBottom: 60;
 		paddingTop:60;
+	}
+	s|Button.allowButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_thumb_up.png");
+	}
+	
+	s|Button.denyButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_thumb_down.png");
 	}
 	
 	s|Button.cameraSettingsStartButtonStyle
@@ -929,6 +959,16 @@ global
 		paddingRight:80;
 	}
 	
+	s|Button.allowButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_thumb_up.png");
+	}
+	
+	s|Button.denyButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_thumb_down.png");
+	}
+	
 	s|Button.cameraSettingsStartButtonStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/video.png");
@@ -1296,6 +1336,16 @@ global
 		bottomAlign:6;
 		rightAlign:6;
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/sendMsgIcon.png");
+	}
+	
+	s|Button.allowButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_thumb_up.png");
+	}
+	
+	s|Button.denyButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_thumb_down.png");
 	}
 	
 	s|Button.cameraSettingsStartButtonStyle

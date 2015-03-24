@@ -16,6 +16,8 @@ package org.bigbluebutton.core
 		function askToEnter():void
 		function getWaitingGuests(): void
 		function getGuestPolicy(): void	
+		function responseToGuest(userID:String, response:Boolean): void
+		function responseToAllGuests(response:Boolean): void
 		function removeStream(userID:String, streamName:String):void;
 		function queryForRecordingStatus():void;
 		function changeRecordingStatus(userID:String, recording:Boolean):void;

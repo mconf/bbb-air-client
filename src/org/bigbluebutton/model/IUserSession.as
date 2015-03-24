@@ -1,6 +1,7 @@
 package org.bigbluebutton.model
 {
 	import flash.net.NetConnection;
+	import mx.collections.ArrayCollection;
 	
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
 	import org.bigbluebutton.core.IVideoConnection;
@@ -23,6 +24,7 @@ package org.bigbluebutton.model
 		function get userId():String;
 		function set userId(value:String):void;		
 		function get userList():UserList;
+		function get guestList():GuestList;
 		function get voiceConnection():IVoiceConnection;
 		function set voiceConnection(value:IVoiceConnection):void;
 		function get mainConnection():IBigBlueButtonConnection;

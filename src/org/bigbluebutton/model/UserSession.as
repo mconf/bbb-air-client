@@ -3,6 +3,7 @@ package org.bigbluebutton.model
 	import flash.net.NetConnection;
 	
 	import mx.collections.ArrayList;
+	import mx.collections.ArrayCollection;
 	
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
 	import org.bigbluebutton.core.IDeskshareConnection;
@@ -30,6 +31,7 @@ package org.bigbluebutton.model
 		protected var _videoConnection:IVideoConnection;
 		protected var _deskshareConnection:IDeskshareConnection;
 		protected var _userList:UserList;
+		protected var _guestList:GuestList;
 		protected var _presentationList:PresentationList;
 		protected var _recording:Boolean;
 		
@@ -57,6 +59,12 @@ package org.bigbluebutton.model
 		{
 			return _userList;
 		}
+		
+		public function get guestList():GuestList
+		{
+			return _guestList;
+		}
+
 
 		public function get config():Config
 		{
@@ -132,6 +140,7 @@ package org.bigbluebutton.model
 		public function UserSession()
 		{
 			_userList = new UserList();
+			_guestList = new GuestList();
 			_presentationList = new PresentationList();
 		}
 		

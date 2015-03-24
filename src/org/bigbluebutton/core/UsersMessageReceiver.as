@@ -2,6 +2,7 @@ package org.bigbluebutton.core
 {
 	import mx.utils.ObjectUtil;
 	
+	import org.bigbluebutton.model.Guest;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
@@ -19,6 +20,7 @@ package org.bigbluebutton.core
 		}
 		
 		public function onMessage(messageName:String, message:Object):void {
+			
 			switch(messageName) {
 				case "voiceUserTalking":
 					handleVoiceUserTalking(message);
@@ -80,6 +82,10 @@ package org.bigbluebutton.core
 				case "validateAuthTokenReply":
 					handleValidateAuthTokenReply(message);
 					break;
+				case "user_requested_to_enter":
+					handleUserRequestToEnter(message);
+				case "get_guests_waiting_reply":
+					handleGetGuestsWaitingReply(message);
 				default:
 					break;
 			}
@@ -94,9 +100,34 @@ package org.bigbluebutton.core
 		private function handleGuestResponse(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			trace("GuestResponse: "+ObjectUtil.toString(msg));
+			userSession.guestList.removeGuest(msg.userId);
 			if (msg.userId == userSession.userId) {
 				userSession.guestEntranceSignal.dispatch(msg.response);
 			}
+		}
+		private function handleGetGuestsWaitingReply(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			if(msg.hasOwnProperty("guestsWaiting")){
+				var guests:Array = msg.guestsWaiting.split(",");
+				for (var i:int = 0; i<guests.length; i++) {
+					if(guests[i].length > 0){
+						var guestInfo:Array = guests[i].split(":");
+						var guest:Guest = new Guest();
+						guest.name = guestInfo[1];
+						guest.userID = guestInfo[0];
+						userSession.guestList.addGuest(guest);
+					}
+				}
+			}
+		}
+		
+		private function handleUserRequestToEnter(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("UserRequestToEnter: "+ObjectUtil.toString(msg));
+			var guest:Guest = new Guest();
+			guest.name = msg.name;
+			guest.userID = msg.userId;
+			userSession.guestList.addGuest(guest);
 		}
 		
 		private function handleStatusChange(m:Object):void {
@@ -231,6 +262,7 @@ package org.bigbluebutton.core
 			var msg:Object = JSON.parse(m.msg);
 			trace("UsersMessageReceiver::handleParticipantLeft() -- user [" + msg.user.userId + "] has left the meeting");
 			userSession.userList.removeUser(msg.user.userId);
+			userSession.guestList.removeGuest(msg.user.userId);
 		}
 
 		private function handleAssignPresenterCallback(m:Object):void {
