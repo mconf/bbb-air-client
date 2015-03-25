@@ -25,7 +25,7 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 		override public function initialize():void
 		{
 			// If operating system is iOS, don't show exit button because there is no way to exit application:
-			if(Capabilities.os.search("iPhone") >= 0) {
+			if(Capabilities.version.indexOf('IOS') >= 0) {
 				view.exitButton.visible = false;
 			}
 			else {
