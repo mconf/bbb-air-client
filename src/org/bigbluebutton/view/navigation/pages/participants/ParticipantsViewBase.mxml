@@ -4,6 +4,7 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:view="org.bigbluebutton.core.view.*" 
 				xmlns:participants="org.bigbluebutton.view.navigation.pages.participants.*" xmlns:guests="org.bigbluebutton.view.navigation.pages.participants.guests.*"
+				styleName="participantsViewStyle"
 				>
 	<s:Group width="100%" height="100%">
 		<s:layout>
@@ -11,11 +12,19 @@
 		</s:layout>	
 		<participants:ParticipantsList id="participantslist" width="100%" height="100%" />
 		
-		<s:SkinnableContainer includeInLayout="false" visible="false" id="allguests" width="100%" height="{getStyle('itemHeight')}" styleName="topToolBarStyle"  verticalCenter="0">
-			<s:HGroup width="100%" height="100%">
+		<s:SkinnableContainer includeInLayout="false" visible="false" id="allguests"  width="100%" height="{getStyle('toolBarHeight')}" styleName="topToolBarStyle"  verticalCenter="0">
+			<s:HGroup width="100%" height="100%" verticalAlign="middle" paddingRight="{getStyle('itemPaddingRight')}" paddingLeft="{getStyle('itemPaddingLeft')}">
+				
+				<s:Group width="70%">
+					<s:layout>
+						<s:VerticalLayout/>
+					</s:layout>
 				<s:Label id="guestsLabel" text="{resourceManager.getString('resources', 'participants.guests')}" width="100%"  height="100%" styleName="pageNameStyle"/>
-				<s:Button id="allowAllButton0" width="50%" styleName="allowButtonStyle guestResponseButtonStyle"/>
-				<s:Button id="denyAllButton0" width="50%" styleName="denyButtonStyle guestResponseButtonStyle"/>
+				</s:Group>
+					
+				<s:Button id="allowAllButton0" width="20%" styleName="allowButtonStyle guestResponseButtonStyle"/>
+				<mx:Spacer width="3%"/>
+				<s:Button id="denyAllButton0" width="20%" styleName="denyButtonStyle guestResponseButtonStyle" />
 			</s:HGroup>
 		</s:SkinnableContainer>
 		

@@ -25,6 +25,8 @@ s|Button.guestResponseButtonStyle
 	radiusY:2;
 	backgroundColor:#F4F4F4;
 	onClickBackgroundColor:#DBDBDB;
+	strokeColor: #CCCCCC;
+	strokeWeight: 0.2;
 	skinClass: ClassReference("org.bigbluebutton.view.skins.GuestResponseBtnSkin");
 }
 
@@ -154,6 +156,13 @@ global
 	{
 		toolBarHeight:48;
 		bottomToolBarHeight:48;
+	}
+	
+	s|View.participantsViewStyle
+	{
+		toolBarHeight:48;
+		itemPaddingLeft:6;
+		itemPaddingRight:6;
 	}
 	
 	s|Button.recordingStatusIconStyle
@@ -528,6 +537,13 @@ global
 		bottomToolBarHeight:72;
 	}
 	
+	s|View.participantsViewStyle
+	{
+		toolBarHeight:72;
+		itemPaddingLeft:9;
+		itemPaddingRight:9;
+	}
+	
 	s|Button.recordingStatusIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/media_record.png");
@@ -896,6 +912,13 @@ global
 	{
 		toolBarHeight:96;
 		bottomToolBarHeight:96;
+	}
+	
+	s|View.participantsViewStyle
+	{
+		toolBarHeight:72;
+		itemPaddingLeft:12;
+		itemPaddingRight:12;
 	}
 	
 	s|Button.recordingStatusIconStyle
@@ -1267,6 +1290,13 @@ global
 	{
 		toolBarHeight:144;
 		bottomToolBarHeight:144;
+	}
+	
+	s|View.participantsViewStyle
+	{
+		toolBarHeight:144;
+		itemPaddingLeft:18;
+		itemPaddingRight:18;
 	}
 	
 	s|Button.recordingStatusIconStyle
