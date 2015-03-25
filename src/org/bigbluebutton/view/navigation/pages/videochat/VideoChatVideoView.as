@@ -15,6 +15,7 @@ package org.bigbluebutton.view.navigation.pages.videochat
 	import flash.text.TextFormat;
 	
 	import mx.core.FlexGlobals;
+	import mx.utils.ObjectUtil;
 	
 	import org.bigbluebutton.view.navigation.pages.common.VideoView;
 
@@ -123,6 +124,11 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			_loader.y = (screenHeight-_loader.content.height)/2;
 			_loader.alpha = 0.5;
 			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onImageLoaded);
+		}
+		
+		public function onMetaData(... rest):void
+		{
+			trace("onMetaData() " + ObjectUtil.toString(rest));
 		}
 	}
 }

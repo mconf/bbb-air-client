@@ -5,6 +5,7 @@ package org.bigbluebutton.view.navigation.pages.common
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
+	import flash.system.Capabilities;
 	
 	import spark.components.Group;
 	
@@ -54,7 +55,13 @@ package org.bigbluebutton.view.navigation.pages.common
 			video.smoothing = true;
 			video.attachNetStream(ns);
 			
-			ns.play(streamName);
+			// Users on iOS devices cannot watch H.264 video, http://dev.mconf.org/redmine/issues/1483
+			if(Capabilities.version.indexOf('IOS') >= 0) {
+				ns.play("h263/" + streamName);
+			}
+			else {
+				ns.play(streamName);
+			}
 		}
 		
 		public function initializeScreenSizeValues(screenHeight0:Number, screenWidth0:Number, topMenuBarHeight0:Number, bottomMenuBarHeight0:Number, originalVideoWidth0:Number, originalVideoHeight0:Number):void
