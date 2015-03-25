@@ -146,10 +146,11 @@ package org.bigbluebutton.view.navigation.pages.participants
 			dicUserIdtoGuest[guest.userID] = null;
 			
 			if(dataProviderGuests.length == 0){
-				view.guestsList.visible = false;
+				
 				view.guestsList.includeInLayout = false;
-				view.allGuests.visible = false;
+				view.guestsList.visible = false;
 				view.allGuests.includeInLayout = false;
+				view.allGuests.visible = false;
 			}
 		}
 		
