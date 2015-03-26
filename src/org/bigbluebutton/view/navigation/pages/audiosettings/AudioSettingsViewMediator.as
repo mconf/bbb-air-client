@@ -54,6 +54,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings
 		{
 			var audioOptions:Object = new Object();
 			audioOptions.listenOnly = !userSession.userList.me.listenOnly;
+			userSession.userList.me.listenOnly = !userSession.userList.me.listenOnly
 			audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
 			shareMicrophoneSignal.dispatch(audioOptions);
 		}
