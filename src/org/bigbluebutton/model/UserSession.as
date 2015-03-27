@@ -35,6 +35,8 @@ package org.bigbluebutton.model
 		protected var _presentationList:PresentationList;
 		protected var _recording:Boolean;
 		
+		protected var _phoneAutoJoin:Boolean;
+		protected var _videoAutoStart:Boolean;
 		protected var _guestPolicySignal:ISignal = new Signal();
 		protected var _guestEntranceSignal:ISignal = new Signal();
 		protected var _successJoiningMeetingSignal:ISignal = new Signal();
@@ -64,7 +66,26 @@ package org.bigbluebutton.model
 		{
 			return _guestList;
 		}
+		
+		public function get phoneAutoJoin():Boolean
+		{
+			return _phoneAutoJoin;
+		}
+		
+		public function set phoneAutoJoin(value:Boolean):void
+		{
+			_phoneAutoJoin = value;
+		}
 
+		public function get videoAutoStart():Boolean
+		{
+			return _videoAutoStart;
+		}
+		
+		public function set videoAutoStart(value:Boolean):void
+		{
+			_videoAutoStart = value;
+		}
 
 		public function get config():Config
 		{

@@ -19,6 +19,10 @@ package org.bigbluebutton.model
 
 	public interface IUserSession
 	{
+		function get phoneAutoJoin():Boolean;
+		function set phoneAutoJoin(value:Boolean):void;
+		function get videoAutoStart():Boolean;
+		function set videoAutoStart(value:Boolean):void;
 		function get config():Config;
 		function set config(value:Config):void;
 		function get userId():String;

@@ -8,6 +8,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings
 	
 	import org.bigbluebutton.command.ShareMicrophoneSignal;
 	import org.bigbluebutton.model.IUserSession;
+	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
 	import org.osmf.logging.Log;
@@ -23,7 +24,12 @@ package org.bigbluebutton.view.navigation.pages.audiosettings
 		public var userSession: IUserSession;
 		
 		[Inject]
+		public var userUISession: IUserUISession;
+		
+		[Inject]
 		public var shareMicrophoneSignal: ShareMicrophoneSignal;
+		
+		private var autoJoined: Boolean;
 		
 		override public function initialize():void
 		{
@@ -48,6 +54,11 @@ package org.bigbluebutton.view.navigation.pages.audiosettings
 			audioOptions.shareMic = userSession.userList.me.voiceJoined = !userSession.userList.me.voiceJoined;
 			audioOptions.listenOnly = userSession.userList.me.listenOnly = false;
 			shareMicrophoneSignal.dispatch(audioOptions);			
+			
+			if(userSession.phoneAutoJoin){
+				userSession.phoneAutoJoin = false;
+				userUISession.popPage();
+			}
 		}
 		
 		private function onListenOnlyClick(event:MouseEvent):void
@@ -57,6 +68,11 @@ package org.bigbluebutton.view.navigation.pages.audiosettings
 			userSession.userList.me.listenOnly = !userSession.userList.me.listenOnly
 			audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
 			shareMicrophoneSignal.dispatch(audioOptions);
+			
+			if(userSession.phoneAutoJoin){
+				userSession.phoneAutoJoin = false;
+				userUISession.popPage();
+			}
 		}
 		
 		private function userChangeHandler(user:User, type:int):void
