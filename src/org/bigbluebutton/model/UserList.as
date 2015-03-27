@@ -392,6 +392,16 @@ package org.bigbluebutton.model
 			}
 		}
 		
+		public function roleChange(userID:String, role:String):void {
+			var p:Object = getUserIndex(userID);
+			
+			if (p) {
+				var user:User = p.participant as User;
+				
+				p.participant.role = role;
+				userChangeSignal.dispatch(p.participant, role);
+			}
+		}
 		
 		
 		public function userJoinAudio(userID:String, voiceUserID:String, muted:Boolean, talking:Boolean, locked:Boolean):void {

@@ -86,9 +86,17 @@ package org.bigbluebutton.core
 					handleUserRequestToEnter(message);
 				case "get_guests_waiting_reply":
 					handleGetGuestsWaitingReply(message);
+				case "participantRoleChange":
+					handleParticipantRoleChange(message);
 				default:
 					break;
 			}
+		}
+		
+		private function handleParticipantRoleChange(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("ParticipantRoleChange: "+ObjectUtil.toString(msg));
+			userSession.userList.roleChange(msg.userID, msg.role);
 		}
 		
 		private function handleGuestPolicy(m:Object):void {

@@ -50,6 +50,8 @@ package org.bigbluebutton.view.navigation.pages.participants
 		protected var dicUserIdtoGuest:Dictionary
 		protected var usersSignal:ISignal; 
 		
+		private var _userMe:User;
+		
 		override public function initialize():void
 		{
 			Log.getLogger("org.bigbluebutton").info(String(this));
@@ -61,12 +63,11 @@ package org.bigbluebutton.view.navigation.pages.participants
 			dicUserIdtoUser = new Dictionary();
 			
 			var users:ArrayCollection = userSession.userList.users;
-			var userMe:User;
 			for each (var user:User in users)
 			{
 				addUser(user);
 				if (user.me){
-					userMe = user;
+					_userMe = user;
 				}
 			}
 			
@@ -78,32 +79,31 @@ package org.bigbluebutton.view.navigation.pages.participants
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			
-			if (userMe.role == "MODERATOR"){
-				dataProviderGuests = new ArrayCollection();
-				view.guestsList.dataProvider = dataProviderGuests;
-				
-				view.guestsList.addEventListener(GuestResponseEvent.GUEST_RESPONSE, onSelectGuest);
-				view.allowAllButton.addEventListener(MouseEvent.CLICK, allowAllGuests);
-				view.denyAllButton.addEventListener(MouseEvent.CLICK, denyAllGuests);
-				
-				dicUserIdtoGuest = new Dictionary();
-				
-				usersService.getWaitingGuests();
-				var guests:ArrayCollection = userSession.guestList.guests;
-				for each (var guest:Guest in guests)
-				{
-					addGuest(guest);
-				}
-				
-				if(dataProviderGuests.length > 0){
+			
+			dataProviderGuests = new ArrayCollection();
+			view.guestsList.dataProvider = dataProviderGuests;
+			
+			view.guestsList.addEventListener(GuestResponseEvent.GUEST_RESPONSE, onSelectGuest);
+			view.allowAllButton.addEventListener(MouseEvent.CLICK, allowAllGuests);
+			view.denyAllButton.addEventListener(MouseEvent.CLICK, denyAllGuests);
+			
+			dicUserIdtoGuest = new Dictionary();
+			
+			usersService.getWaitingGuests();
+			var guests:ArrayCollection = userSession.guestList.guests;
+			for each (var guest:Guest in guests)
+			{
+				addGuest(guest);
+			}
+			
+			userSession.guestList.guestAddedSignal.add(addGuest);
+			userSession.guestList.guestRemovedSignal.add(guestRemoved);
+			
+			if (_userMe.role == "MODERATOR" && dataProviderGuests.length > 0){
 					view.guestsList.visible = true;
 					view.guestsList.includeInLayout = true;
 					view.allGuests.visible = true;
 					view.allGuests.includeInLayout = true;
-				}
-				
-				userSession.guestList.guestAddedSignal.add(addGuest);
-				userSession.guestList.guestRemovedSignal.add(guestRemoved);
 			}
 		}
 		
@@ -121,7 +121,7 @@ package org.bigbluebutton.view.navigation.pages.participants
 			dataProviderGuests.refresh();
 			dicUserIdtoGuest[guest.userID] = guest;
 			
-			if(dataProviderGuests.length > 0){
+			if(_userMe.role == "MODERATOR" && dataProviderGuests.length > 0){
 				view.guestsList.visible = true;
 				view.guestsList.includeInLayout = true;
 				view.allGuests.visible = true;
@@ -145,7 +145,7 @@ package org.bigbluebutton.view.navigation.pages.participants
 			dataProviderGuests.removeItemAt(index);
 			dicUserIdtoGuest[guest.userID] = null;
 			
-			if(dataProviderGuests.length == 0){
+			if(_userMe.role == "MODERATOR" && dataProviderGuests.length == 0 && view.guestsList != null){
 				
 				view.guestsList.includeInLayout = false;
 				view.guestsList.visible = false;
@@ -157,6 +157,19 @@ package org.bigbluebutton.view.navigation.pages.participants
 		private function userChanged(user:User, property:String = null):void
 		{
 			dataProvider.refresh();
+			
+			if (_userMe.role == "MODERATOR" && dataProviderGuests.length > 0){
+				view.guestsList.visible = true;
+				view.guestsList.includeInLayout = true;
+				view.allGuests.visible = true;
+				view.allGuests.includeInLayout = true;
+			}
+			else{
+				view.guestsList.visible = false;
+				view.guestsList.includeInLayout = false;
+				view.allGuests.visible = false;
+				view.allGuests.includeInLayout = false;
+			}
 		}
 		
 		protected function onSelectParticipant(event:IndexChangeEvent):void

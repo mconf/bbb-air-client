@@ -83,7 +83,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		
 		private function userChanged(user:User, type:int):void
 		{
-			if(_user.userID == user.userID)
+			if(_user.userID == user.userID || user.me )
 			{
 				view.update();
 			}
