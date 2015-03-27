@@ -2,6 +2,8 @@ package org.bigbluebutton.core
 {
 	import flash.utils.Dictionary;
 	
+	import mx.resources.ResourceManager;
+	
 	public class VideoProfile
 	{
 		private var _fallbackLanguage:String;
@@ -101,7 +103,7 @@ package org.bigbluebutton.core
 		}
 		
 		public function get name():String {
-			var locale:String = "en_US";//ResourceUtil.getInstance().getCurrentLanguageCode();
+			var locale:String = ResourceManager.getInstance().localeChain[0];//"en_US";//ResourceUtil.getInstance().getCurrentLanguageCode();
 			if (_name.hasOwnProperty(locale)) {
 				return _name[locale];
 			} else if (_name.hasOwnProperty(_fallbackLanguage)) {

@@ -4,20 +4,26 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 	import flash.media.Camera;
 	import flash.media.CameraPosition;
 	
+	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
+	import mx.events.IndexChangedEvent;
 	import mx.events.ItemClickEvent;
 	import mx.resources.ResourceManager;
 	
 	import org.bigbluebutton.command.CameraQualitySignal;
 	import org.bigbluebutton.command.ShareCameraSignal;
 	import org.bigbluebutton.core.VideoConnection;
+	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
+	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.view.ui.SwapCameraButton;
 	import org.osmf.logging.Log;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
+	
+	import spark.events.IndexChangeEvent;
 
 	public class CameraSettingsViewMediator extends Mediator
 	{
@@ -33,10 +39,15 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		[Inject]
 		public var changeQualitySignal : CameraQualitySignal;
 		
+		protected var dataProvider:ArrayCollection;
 	
 		override public function initialize():void
 		{
 			Log.getLogger("org.bigbluebutton").info(String(this));
+			
+			dataProvider = new ArrayCollection();
+			view.cameraProfilesList.dataProvider = dataProvider;
+			displayCameraProfiles();
 			
 			userSession.userList.userChangeSignal.add(userChangeHandler);
 			var userMe:User = userSession.userList.me;
@@ -65,10 +76,22 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 				userSession.userList.userChangeSignal.add(userChangeHandler);
 			}
 			view.startCameraButton.addEventListener(MouseEvent.CLICK, onShareCameraClick);
-			view.cameraQualityRadioGroup.addEventListener(ItemClickEvent.ITEM_CLICK, onCameraQualityRadioGroupClick);
-			view.setCameraQuality(userSession.videoConnection.selectedCameraQuality);
-			setRadioGroupEnable(userMe.hasStream);
+			view.cameraProfilesList.addEventListener(IndexChangeEvent.CHANGE, onCameraQualitySelected);
+			setCameraProfilesEnable(userMe.hasStream);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'cameraSettings.title');
+		}
+		
+		private function displayCameraProfiles(){
+			var videoProfiles : Array = userSession.videoProfileManager.profiles;
+			for each (var profile:VideoProfile in videoProfiles){
+				trace("prof:: " + profile);
+				dataProvider.addItem(profile);
+			}
+			dataProvider.refresh();
+			
+			if(userSession.videoConnection.selectedCameraQuality != VideoConnection.CAMERA_QUALITY_NOT_SET){
+				view.cameraProfilesList.selectedIndex = userSession.videoConnection.selectedCameraQuality;
+			}
 		}
 		
 		private function userChangeHandler(user:User, type:int):void
@@ -76,7 +99,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			if (user.me) {
 				if (type == UserList.HAS_STREAM) {
 					view.startCameraButton.label  = ResourceManager.getInstance().getString('resources', user.hasStream ? 'profile.settings.camera.on' : 'profile.settings.camera.off');
-					setRadioGroupEnable(user.hasStream);
+					setCameraProfilesEnable(user.hasStream);
 					if(Camera.names.length > 1)
 					{
 						setSwapCameraButtonEnable(user.hasStream)
@@ -87,14 +110,19 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		
 		protected function onShareCameraClick(event:MouseEvent):void
 		{
-			view.setCameraQuality(VideoConnection.CAMERA_QUALITY_MEDIUM);
-			userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_MEDIUM;	
+			if(userSession.videoConnection.selectedCameraQuality != VideoConnection.CAMERA_QUALITY_NOT_SET){
+				view.cameraProfilesList.selectedIndex = userSession.videoConnection.selectedCameraQuality;
+			}
+			else {
+				userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_MEDIUM;
+				view.cameraProfilesList.selectedIndex = VideoConnection.CAMERA_QUALITY_MEDIUM;
+			}
 			shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.FRONT);
 		}
 		
-		protected function setRadioGroupEnable(enabled:Boolean):void
+		protected function setCameraProfilesEnable(enabled:Boolean):void
 		{
-			view.cameraQualityRadioGroup.enabled=enabled;
+			view.cameraProfilesList.enabled=enabled;
 		}
 		
 		protected function setSwapCameraButtonEnable(enabled:Boolean):void
@@ -102,21 +130,23 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			view.swapCameraButton.enabled = enabled;
 		}
 		
-		protected function onCameraQualityRadioGroupClick(event:ItemClickEvent):void
+		protected function onCameraQualitySelected(event:IndexChangeEvent):void
 		{
-			switch(event.index)
-			{
-				case 0:
-					changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_LOW);	
-					break;
-				case 1:
-					changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);
-					break;
-				case 2:
-					changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_HIGH);	
-					break;
-				default:
-					changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);	
+			if (event.newIndex >= 0) {
+				var profile:VideoProfile = dataProvider.getItemAt(event.newIndex) as VideoProfile;
+				switch(profile.id){
+					case "low":
+						changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_LOW);
+						break;
+					case "medium":
+						changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);
+						break;
+					case "high":
+						changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_HIGH);
+						break;
+					default:
+						changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);
+				}
 			}
 		}
 		
@@ -148,7 +178,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			{
 				view.swapCameraButton.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 			}
-			view.cameraQualityRadioGroup.removeEventListener(ItemClickEvent.ITEM_CLICK, onCameraQualityRadioGroupClick);			
+			view.cameraProfilesList.removeEventListener(ItemClickEvent.ITEM_CLICK, onCameraQualitySelected);			
 			view.dispose();
 			view = null;
 		}

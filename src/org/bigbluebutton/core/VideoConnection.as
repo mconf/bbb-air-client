@@ -36,6 +36,7 @@ package org.bigbluebutton.core
 		
 		private var _selectedCameraQuality:int;
 		
+		public static var CAMERA_QUALITY_NOT_SET:int = -1;
 		public static var CAMERA_QUALITY_LOW:int = 0;
 		public static var CAMERA_QUALITY_MEDIUM:int = 1;
 		public static var CAMERA_QUALITY_HIGH:int = 2;
@@ -51,6 +52,7 @@ package org.bigbluebutton.core
 			baseConnection.init(this);
 			baseConnection.successConnected.add(onConnectionSuccess);
 			baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
+			_selectedCameraQuality = CAMERA_QUALITY_NOT_SET;
 		}
 		
 		private function onConnectionUnsuccess(reason:String):void
