@@ -83,8 +83,10 @@ package org.bigbluebutton.view.navigation.pages.login
 
 		public function onInvokeEvent(invocation:InvokeEvent):void 
 		{
-			var url:String = invocation.arguments.toString();
-
+			var url:String = "";
+			if(invocation.arguments.length > 0){
+				url = invocation.arguments[0].toString();
+			}
 			if(Capabilities.isDebugger)
 			{
 				// test-install server no longer works with 0.9 mobile client
