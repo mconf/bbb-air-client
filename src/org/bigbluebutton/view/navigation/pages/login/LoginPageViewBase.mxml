@@ -31,7 +31,7 @@
 			<s:VerticalLayout horizontalAlign="center" verticalAlign="middle"/>
 		</s:layout>
 		<s:Image  styleName="bbbLogoStyle" includeIn="ChecksumError,GenericError,InvalidMeetingIdentifier,InvalidPassword,NoRedirect,InvalidURL"/>
-		<s:Label id="messageText0" width="90%"
+		<s:Label id="messageText0" width="90%" textAlign="center"
 				 includeIn="AccessDenied,ChecksumError,GenericError,InvalidMeetingIdentifier,InvalidPassword,NoRedirect,InvalidURL"
 				 text.AccessDenied="{resourceManager.getString('resources', 'login.error.accessDenied')}"
 				 text.ChecksumError="{resourceManager.getString('resources', 'login.error.checksumError')}"
