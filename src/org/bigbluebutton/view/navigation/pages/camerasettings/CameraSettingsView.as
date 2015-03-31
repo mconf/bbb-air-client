@@ -1,8 +1,11 @@
 package org.bigbluebutton.view.navigation.pages.camerasettings
 {
 	import spark.components.Button;
+	import spark.components.Group;
+	import spark.components.Label;
 	import spark.components.List;
 	import spark.components.RadioButtonGroup;
+	import spark.components.VideoDisplay;
 
 	public class CameraSettingsView extends CameraSettingsViewBase implements ICameraSettingsView
 	{
@@ -24,6 +27,21 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		public function get cameraProfilesList():List
 		{
 			return cameraprofileslist;
+		}
+		
+		public function get previewVideo():VideoDisplay
+		{
+			return previewvideo;
+		}
+		
+		public function get videoGroup():Group
+		{
+			return videoGroup0;
+		}
+		
+		public function get noVideoMessage():Label
+		{
+			return noVideoMessage0;
 		}
 		
 		public function get swapCameraButton():Button

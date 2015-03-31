@@ -3,6 +3,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 	import flash.events.MouseEvent;
 	import flash.media.Camera;
 	import flash.media.CameraPosition;
+	import flash.media.Video;
 	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
@@ -15,6 +16,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 	import org.bigbluebutton.core.VideoConnection;
 	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.model.IUserSession;
+	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.model.UserSession;
@@ -32,6 +34,9 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		
 		[Inject]
 		public var userSession: IUserSession;
+		
+		[Inject]
+		public var userUISession: IUserUISession;
 		
 		[Inject]
 		public var shareCameraSignal: ShareCameraSignal;			
@@ -68,17 +73,13 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			}
 			else
 			{
-				if(!userMe.hasStream)
-				{
-					setSwapCameraButtonEnable(false);
-				}
 				view.swapCameraButton.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 				userSession.userList.userChangeSignal.add(userChangeHandler);
 			}
 			view.startCameraButton.addEventListener(MouseEvent.CLICK, onShareCameraClick);
 			view.cameraProfilesList.addEventListener(IndexChangeEvent.CHANGE, onCameraQualitySelected);
-			setCameraProfilesEnable(userMe.hasStream);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'cameraSettings.title');
+			displayPreviewCamera();
 		}
 		
 		private function displayCameraProfiles(){
@@ -99,10 +100,9 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			if (user.me) {
 				if (type == UserList.HAS_STREAM) {
 					view.startCameraButton.label  = ResourceManager.getInstance().getString('resources', user.hasStream ? 'profile.settings.camera.on' : 'profile.settings.camera.off');
-					setCameraProfilesEnable(user.hasStream);
 					if(Camera.names.length > 1)
 					{
-						setSwapCameraButtonEnable(user.hasStream)
+						setSwapCameraButtonEnable(true)
 					}
 				}
 			}
@@ -117,12 +117,12 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 				userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_MEDIUM;
 				view.cameraProfilesList.selectedIndex = VideoConnection.CAMERA_QUALITY_MEDIUM;
 			}
-			shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.FRONT);
-		}
-		
-		protected function setCameraProfilesEnable(enabled:Boolean):void
-		{
-			view.cameraProfilesList.enabled=enabled;
+			shareCameraSignal.dispatch(!userSession.userList.me.hasStream, userSession.videoConnection.cameraPosition);
+			displayPreviewCamera();
+			if(userSession.videoAutoStart){
+				userSession.videoAutoStart = false;
+				userUISession.popPage();
+			}
 		}
 		
 		protected function setSwapCameraButtonEnable(enabled:Boolean):void
@@ -136,18 +136,84 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 				var profile:VideoProfile = dataProvider.getItemAt(event.newIndex) as VideoProfile;
 				switch(profile.id){
 					case "low":
-						changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_LOW);
+						if(userSession.userList.me.hasStream){
+							changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_LOW);
+						}
+						else {
+							userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_LOW;
+						}
 						break;
 					case "medium":
-						changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);
+						if(userSession.userList.me.hasStream){
+							changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);
+						}
+						else {
+							userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_MEDIUM;
+						}
 						break;
 					case "high":
-						changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_HIGH);
+						if(userSession.userList.me.hasStream){
+							changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_HIGH);
+						}
+						else {
+							userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_HIGH;
+						}
 						break;
 					default:
-						changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);
+						if(userSession.userList.me.hasStream){
+							changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);
+						}
+						else {
+							userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_MEDIUM;
+						}
+						break;
 				}
+				displayPreviewCamera();
 			}
+		}
+		
+		private function displayPreviewCamera():void{
+			var width:int;
+			var height:int;
+			
+			switch(userSession.videoConnection.selectedCameraQuality){
+				case VideoConnection.CAMERA_QUALITY_LOW:
+					width = 160;
+					height = 120;
+					break;
+				case VideoConnection.CAMERA_QUALITY_MEDIUM:
+					width = 320;
+					height = 240;
+					break;
+				case VideoConnection.CAMERA_QUALITY_HIGH:
+					width = 640;
+					height = 480;
+					break;
+				default:
+					width = 320;
+					height = 240;
+			}
+			var camera:Camera = getCamera(userSession.videoConnection.cameraPosition);
+			if (camera) {
+				camera.setMode(width, height, 10);
+				var myCam:Video = new Video(view.videoGroup.width,view.videoGroup.height);
+				myCam.attachCamera(camera);
+				view.previewVideo.removeChildren();
+				view.previewVideo.addChild(myCam);
+			} else {
+				view.noVideoMessage.visible = true;
+			}
+		}
+		
+		private function getCamera(position:String):Camera
+		{
+			for (var i:uint = 0; i < Camera.names.length; ++i)
+			{
+				var cam:Camera = Camera.getCamera(String(i));
+				if (cam.position == position) 
+					return cam;
+			}
+			return Camera.getCamera();
 		}
 		
 		/**
@@ -156,16 +222,29 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		//close old stream on swap
 		private function mouseClickHandler(e:MouseEvent):void
 		{
-			if (String(userSession.videoConnection.cameraPosition) == CameraPosition.FRONT)
-			{
-				shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.FRONT);
-				shareCameraSignal.dispatch(userSession.userList.me.hasStream, CameraPosition.BACK);
+			if(!userSession.userList.me.hasStream){
+				if (String(userSession.videoConnection.cameraPosition) == CameraPosition.FRONT)
+				{
+					userSession.videoConnection.cameraPosition = CameraPosition.BACK;
+				}
+				else
+				{
+					userSession.videoConnection.cameraPosition = CameraPosition.FRONT;
+				}
 			}
-			else if (String(userSession.videoConnection.cameraPosition) == CameraPosition.BACK)
-			{
-				shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.BACK);
-				shareCameraSignal.dispatch(userSession.userList.me.hasStream, CameraPosition.FRONT);
+			else {
+				if (String(userSession.videoConnection.cameraPosition) == CameraPosition.FRONT)
+				{
+					shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.FRONT);
+					shareCameraSignal.dispatch(userSession.userList.me.hasStream, CameraPosition.BACK);
+				}
+				else if (String(userSession.videoConnection.cameraPosition) == CameraPosition.BACK)
+				{
+					shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.BACK);
+					shareCameraSignal.dispatch(userSession.userList.me.hasStream, CameraPosition.FRONT);
+				}
 			}
+			displayPreviewCamera();
 		}
 		
 		override public function destroy():void
