@@ -300,7 +300,7 @@ package org.bigbluebutton.core
 		
 		private function handleUserUnsharedWebcam(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
-			trace("UsersMessageReceiver::handleUserUnsharedWebcam() -- user [" + msg.userId + "] has unshared their webcam");
+			trace("UsersMessageReceiver::handleUserUnsharedWebcam() -- user [" + msg.userId + "] has unshared their webcam with stream ["+ msg.webcamStream +"]");
 			userSession.userList.userStreamChange(msg.userId, false, "");
 		}
 		
