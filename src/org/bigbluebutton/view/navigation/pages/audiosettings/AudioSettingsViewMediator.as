@@ -94,6 +94,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings
 			super.destroy();
 			view.shareMicButton.removeEventListener(MouseEvent.CLICK, onShareMicClick);
 			view.listenOnlyButton.removeEventListener(MouseEvent.CLICK, onListenOnlyClick);
+			userSession.phoneAutoJoin = false;
 		}
 	}
 }

@@ -16,11 +16,11 @@ package org.bigbluebutton.core
 		function set cameraPosition(position:String):void
 		function get camera():Camera;
 		function set camera(value:Camera):void
-		function get selectedCameraQuality():int;
-		function set selectedCameraQuality(value:int):void
+		function get selectedCameraQuality():VideoProfile;
+		function set selectedCameraQuality(profile:VideoProfile):void
 		function connect():void 
 		function startPublishing(camera:Camera, streamName:String):void
 		function stopPublishing():void
-		function selectCameraQuality(value:int):void
+		function selectCameraQuality(profile:VideoProfile):void
 	}
 }

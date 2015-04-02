@@ -2,6 +2,7 @@ package org.bigbluebutton.command
 {
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.core.VideoConnection;
+	import org.bigbluebutton.core.VideoProfile;
 	
 	import robotlegs.bender.bundles.mvcs.Command;
 	import flash.utils.Timer;
@@ -13,7 +14,7 @@ package org.bigbluebutton.command
 		public var userSession:IUserSession;
 		
 		[Inject]
-		public var cameraQualitySelected:int;
+		public var cameraQualitySelected:VideoProfile;
 		
 		public function CameraQualityCommand()
 		{

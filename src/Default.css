@@ -292,7 +292,7 @@ global
 	
 	s|ItemRenderer.cameraProfileItemStyle
 	{
-		itemHeight:32;
+		itemHeight:48;
 		lineColor: #F2F2F2;
 		lineWeight:0.5;
 		itemPaddingLeft:6;
@@ -685,7 +685,7 @@ global
 	
 	s|ItemRenderer.cameraProfileItemStyle
 	{
-		itemHeight:48;
+		itemHeight:72;
 		lineColor: #F2F2F2;
 		lineWeight:0.75;
 		itemPaddingLeft:9;
@@ -1072,7 +1072,7 @@ global
 	
 	s|ItemRenderer.cameraProfileItemStyle
 	{
-		itemHeight:64;
+		itemHeight:96;
 		lineColor: #F2F2F2;
 		lineWeight:1;
 		itemPaddingLeft:12;
@@ -1453,7 +1453,7 @@ global
 	
 	s|ItemRenderer.cameraProfileItemStyle
 	{
-		itemHeight:96;
+		itemHeight:144;
 		lineColor: #F2F2F2;
 		lineWeight:1.5;
 		itemPaddingLeft:18;

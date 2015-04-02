@@ -16,7 +16,7 @@
 				super.data = obj;
 				if (obj)
 				{					
-					quality.text = "(" + obj.width + "x" + obj.height + ") " + obj.name;	
+					quality.text = obj.name;	
 				}
 			}
 			

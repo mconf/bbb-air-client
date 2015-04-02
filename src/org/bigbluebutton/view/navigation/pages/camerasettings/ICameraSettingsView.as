@@ -7,6 +7,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 	import spark.components.Label;
 	import spark.components.List;
 	import spark.components.RadioButtonGroup;
+	import spark.components.Scroller;
 	import spark.components.VideoDisplay;
 
 	public interface ICameraSettingsView extends IView
@@ -17,5 +18,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		function get previewVideo():VideoDisplay;
 		function get noVideoMessage():Label;
 		function get videoGroup():Group;
+		function get settingsGroup():Group;
+		function get cameraSettingsScroller():Scroller;
 	}
 }

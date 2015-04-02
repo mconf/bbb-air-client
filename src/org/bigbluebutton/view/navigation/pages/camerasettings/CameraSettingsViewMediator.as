@@ -82,17 +82,13 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			displayPreviewCamera();
 		}
 		
-		private function displayCameraProfiles(){
+		private function displayCameraProfiles():void{
 			var videoProfiles : Array = userSession.videoProfileManager.profiles;
 			for each (var profile:VideoProfile in videoProfiles){
-				trace("prof:: " + profile);
 				dataProvider.addItem(profile);
 			}
 			dataProvider.refresh();
-			
-			if(userSession.videoConnection.selectedCameraQuality != VideoConnection.CAMERA_QUALITY_NOT_SET){
-				view.cameraProfilesList.selectedIndex = userSession.videoConnection.selectedCameraQuality;
-			}
+			view.cameraProfilesList.selectedIndex = dataProvider.getItemIndex(userSession.videoConnection.selectedCameraQuality);
 		}
 		
 		private function userChangeHandler(user:User, type:int):void
@@ -110,13 +106,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		
 		protected function onShareCameraClick(event:MouseEvent):void
 		{
-			if(userSession.videoConnection.selectedCameraQuality != VideoConnection.CAMERA_QUALITY_NOT_SET){
-				view.cameraProfilesList.selectedIndex = userSession.videoConnection.selectedCameraQuality;
-			}
-			else {
-				userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_MEDIUM;
-				view.cameraProfilesList.selectedIndex = VideoConnection.CAMERA_QUALITY_MEDIUM;
-			}
+			view.cameraProfilesList.selectedIndex = dataProvider.getItemIndex(userSession.videoConnection.selectedCameraQuality);
 			shareCameraSignal.dispatch(!userSession.userList.me.hasStream, userSession.videoConnection.cameraPosition);
 			displayPreviewCamera();
 			if(userSession.videoAutoStart){
@@ -134,72 +124,39 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		{
 			if (event.newIndex >= 0) {
 				var profile:VideoProfile = dataProvider.getItemAt(event.newIndex) as VideoProfile;
-				switch(profile.id){
-					case "low":
-						if(userSession.userList.me.hasStream){
-							changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_LOW);
-						}
-						else {
-							userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_LOW;
-						}
-						break;
-					case "medium":
-						if(userSession.userList.me.hasStream){
-							changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);
-						}
-						else {
-							userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_MEDIUM;
-						}
-						break;
-					case "high":
-						if(userSession.userList.me.hasStream){
-							changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_HIGH);
-						}
-						else {
-							userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_HIGH;
-						}
-						break;
-					default:
-						if(userSession.userList.me.hasStream){
-							changeQualitySignal.dispatch(VideoConnection.CAMERA_QUALITY_MEDIUM);
-						}
-						else {
-							userSession.videoConnection.selectedCameraQuality = VideoConnection.CAMERA_QUALITY_MEDIUM;
-						}
-						break;
+				if(userSession.userList.me.hasStream){
+					changeQualitySignal.dispatch(profile);
+				}
+				else {
+					userSession.videoConnection.selectedCameraQuality = profile;
 				}
 				displayPreviewCamera();
 			}
 		}
 		
 		private function displayPreviewCamera():void{
-			var width:int;
-			var height:int;
-			
-			switch(userSession.videoConnection.selectedCameraQuality){
-				case VideoConnection.CAMERA_QUALITY_LOW:
-					width = 160;
-					height = 120;
-					break;
-				case VideoConnection.CAMERA_QUALITY_MEDIUM:
-					width = 320;
-					height = 240;
-					break;
-				case VideoConnection.CAMERA_QUALITY_HIGH:
-					width = 640;
-					height = 480;
-					break;
-				default:
-					width = 320;
-					height = 240;
-			}
+			var profile:VideoProfile = userSession.videoConnection.selectedCameraQuality
 			var camera:Camera = getCamera(userSession.videoConnection.cameraPosition);
 			if (camera) {
-				camera.setMode(width, height, 10);
-				var myCam:Video = new Video(view.videoGroup.width,view.videoGroup.height);
+				camera.setMode(profile.width, profile.height, profile.modeFps);
+				var camAspectRatio:Number = FlexGlobals.topLevelApplication.width/view.cameraSettingsScroller.height;
+				var camWidth:Number;
+				var camHeight:Number;
+				if (camAspectRatio > 1){
+					camHeight = view.cameraSettingsScroller.height;
+					camWidth =  profile.width * view.cameraSettingsScroller.height/profile.height;
+				}
+				else {
+					camWidth = FlexGlobals.topLevelApplication.width;
+					camHeight = profile.height * FlexGlobals.topLevelApplication.width/profile.width;
+				}
+				var myCam:Video = new Video(camWidth, camHeight);
 				myCam.attachCamera(camera);
 				view.previewVideo.removeChildren();
 				view.previewVideo.addChild(myCam);
+				view.settingsGroup.y = myCam.height;
+				myCam.x = (FlexGlobals.topLevelApplication.width - myCam.width)/2;
+				
 			} else {
 				view.noVideoMessage.visible = true;
 			}
@@ -238,7 +195,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 					shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.FRONT);
 					shareCameraSignal.dispatch(userSession.userList.me.hasStream, CameraPosition.BACK);
 				}
-				else if (String(userSession.videoConnection.cameraPosition) == CameraPosition.BACK)
+				else
 				{
 					shareCameraSignal.dispatch(!userSession.userList.me.hasStream, CameraPosition.BACK);
 					shareCameraSignal.dispatch(userSession.userList.me.hasStream, CameraPosition.FRONT);
@@ -260,6 +217,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			view.cameraProfilesList.removeEventListener(ItemClickEvent.ITEM_CLICK, onCameraQualitySelected);			
 			view.dispose();
 			view = null;
+			userSession.videoAutoStart = false;
 		}
 	}
 }

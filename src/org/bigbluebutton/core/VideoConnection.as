@@ -12,6 +12,7 @@ package org.bigbluebutton.core
 	
 	import org.bigbluebutton.model.ConferenceParameters;
 	import org.bigbluebutton.model.IConferenceParameters;
+	import org.bigbluebutton.model.IUserSession;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	import org.osmf.logging.Log;
@@ -24,6 +25,9 @@ package org.bigbluebutton.core
 		[Inject] 
 		public var conferenceParameters:IConferenceParameters;
 		
+		[Inject]
+		public var userSession: IUserSession;
+		
 		private var _ns:NetStream;
 		private var _cameraPosition:String;
 		
@@ -34,12 +38,7 @@ package org.bigbluebutton.core
 		
 		private var _camera:Camera;
 		
-		private var _selectedCameraQuality:int;
-		
-		public static var CAMERA_QUALITY_NOT_SET:int = -1;
-		public static var CAMERA_QUALITY_LOW:int = 0;
-		public static var CAMERA_QUALITY_MEDIUM:int = 1;
-		public static var CAMERA_QUALITY_HIGH:int = 2;
+		private var _selectedCameraQuality:VideoProfile;
 	
 		public function VideoConnection()
 		{
@@ -52,7 +51,7 @@ package org.bigbluebutton.core
 			baseConnection.init(this);
 			baseConnection.successConnected.add(onConnectionSuccess);
 			baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
-			_selectedCameraQuality = CAMERA_QUALITY_NOT_SET;
+			_selectedCameraQuality = userSession.videoProfileManager.defaultVideoProfile;
 		}
 		
 		private function onConnectionUnsuccess(reason:String):void
@@ -112,43 +111,24 @@ package org.bigbluebutton.core
 			_camera = value;
 		}
 		
-		public function get selectedCameraQuality():int
+		public function get selectedCameraQuality():VideoProfile
 		{
 			return _selectedCameraQuality;
 		}
 		
-		public function set selectedCameraQuality(value:int):void
+		public function set selectedCameraQuality(profile:VideoProfile):void
 		{
-			_selectedCameraQuality = value;
+			_selectedCameraQuality = profile;
 		}
 		
 		/**
 		 * Set video quality based on the user selection
 		 **/
-		public function selectCameraQuality(value:int):void
+		public function selectCameraQuality(profile:VideoProfile):void
 		{
-			switch (value) {
-				case CAMERA_QUALITY_LOW:
-					camera.setMode(160, 120, 10); 
-					camera.setQuality(camera.bandwidth, 50);
-					selectedCameraQuality = CAMERA_QUALITY_LOW;
-					break;
-				case CAMERA_QUALITY_MEDIUM:
-					camera.setMode(320, 240, 10); 
-					camera.setQuality(camera.bandwidth, 50);
-					selectedCameraQuality = CAMERA_QUALITY_MEDIUM;
-					break;
-				case CAMERA_QUALITY_HIGH:
-					camera.setMode(640, 480, 10); 
-					camera.setQuality(camera.bandwidth, 75);
-					selectedCameraQuality = CAMERA_QUALITY_HIGH;
-					break;		
-				default:
-					camera.setMode(320, 240, 10); 
-					camera.setQuality(camera.bandwidth, 50);
-					selectedCameraQuality = CAMERA_QUALITY_MEDIUM;
-					break;
-			}
+			camera.setMode(profile.width, profile.height, profile.modeFps); 
+			camera.setQuality(profile.qualityBandwidth, profile.qualityPicture);
+			selectedCameraQuality = profile;
 		}
 		
 		public function startPublishing(camera:Camera, streamName:String):void {
