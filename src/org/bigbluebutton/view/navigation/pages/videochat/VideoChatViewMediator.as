@@ -54,10 +54,14 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			{
 				if(u.hasStream && !dataProvider.contains(u))
 				{
-					dataProvider.addItem(u);
-					if(view && view.getDisplayedUserID() == u.userID)
-					{
-						view.streamlist.selectedIndex = dataProvider.getItemIndex(u);
+					var streamNames:Array = u.streamName.split("|");
+					for each (var streamName:String in streamNames){
+						u.streamName = streamName;
+						dataProvider.addItem(u);
+						if(view && view.getDisplayedUserID() == u.userID)
+						{
+							view.streamlist.selectedIndex = dataProvider.getItemIndex(u);
+						}
 					}
 				}
 			}		
@@ -151,10 +155,17 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			if(dataProvider.length==0)
 			{
 				view.noVideoMessage.visible = true;
+				view.noVideoMessage.includeInLayout = true;
+				view.streamListScroller.visible = false;
+				view.streamListScroller.includeInLayout = false;
+				
 			}
 			else
 			{
 				view.noVideoMessage.visible = false;
+				view.noVideoMessage.includeInLayout = false;
+				view.streamListScroller.visible = true;
+				view.streamListScroller.includeInLayout = true;
 			}			
 		}
 		
@@ -184,10 +195,16 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				if(dataProvider.length==0)
 				{
 					view.noVideoMessage.visible = true;
+					view.noVideoMessage.includeInLayout = true;
+					view.streamListScroller.visible = false;
+					view.streamListScroller.includeInLayout = false;
 				}
 				else
 				{
 					view.noVideoMessage.visible = false;
+					view.noVideoMessage.includeInLayout = false;
+					view.streamListScroller.visible = true;
+					view.streamListScroller.includeInLayout = true;
 					view.streamlist.selectedIndex = dataProvider.getItemIndex(userSession.userList.getUserByUserId(view.getDisplayedUserID()));
 				}
 			}
@@ -225,7 +242,8 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				
 				if (view) 
 				{
-					view.startStream(userSession.videoConnection.connection, name, streamName, resolution.userID, width, length, view.videoGroup.height, view.videoGroup.width);
+					view.startStream(userSession.videoConnection.connection, name, streamName, resolution.userID, width, length, view.streamListScroller.height, view.streamListScroller.width);
+					view.videoGroup.height = view.video.height;
 				}
 			}
 		}
@@ -325,6 +343,9 @@ package org.bigbluebutton.view.navigation.pages.videochat
 					if (view) view.stopStream();	
 					startStream(newUser.name, newUser.streamName);
 					view.noVideoMessage.visible = false;
+					view.noVideoMessage.includeInLayout = false;
+					view.streamListScroller.visible = true;
+					view.streamListScroller.includeInLayout = true;
 				}	
 			}
 		}

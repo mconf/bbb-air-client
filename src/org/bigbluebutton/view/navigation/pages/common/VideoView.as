@@ -12,7 +12,7 @@ package org.bigbluebutton.view.navigation.pages.common
 	public class VideoView extends Group
 	{
 		protected var ns:NetStream;
-		protected var video:Video;
+		public var video:Video;
 		protected var streamName:String;
 		protected var aspectRatio:Number = 0;
 		
@@ -196,9 +196,9 @@ package org.bigbluebutton.view.navigation.pages.common
 		}
 		
 		public function close():void{
-			if(video  && this.stage.contains(video) )
+			if(video  && video.parent)
 			{
-				this.stage.removeChild(video);
+				video.parent.removeChild(video);
 				video = null;
 			}
 			

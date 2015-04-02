@@ -1,5 +1,6 @@
 package org.bigbluebutton.view.navigation.pages.videochat
 {
+	import flash.media.Video;
 	import flash.net.NetConnection;
 	
 	import org.bigbluebutton.core.view.IView;
@@ -9,6 +10,7 @@ package org.bigbluebutton.view.navigation.pages.videochat
 	import spark.components.Label;
 	import spark.components.List;
 	import spark.components.Scroller;
+	import spark.components.VideoDisplay;
 
 	public interface IVideoChatView extends IView
 	{
@@ -18,5 +20,9 @@ package org.bigbluebutton.view.navigation.pages.videochat
 		function getDisplayedUserID():String
 		function get videoGroup():Group
 		function get streamlist():List
+		function get streamListScroller():Scroller
+		function get videoStreamsGroup():Group
+		function get videoStream():VideoDisplay
+		function get video():Video
 	}
 }

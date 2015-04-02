@@ -1,5 +1,6 @@
 package org.bigbluebutton.view.navigation.pages.videochat
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.display.InterpolationMethod;
@@ -27,20 +28,21 @@ package org.bigbluebutton.view.navigation.pages.videochat
 		
 		public function setVideoPosition(name:String):void
 		{
-			if (video && stage.contains(video))
+			if (video && video.parent)
 			{
-				stage.removeChild(video);
+				var videoParent:DisplayObjectContainer = video.parent;
+				video.parent.removeChild(video);
+			
+				resizeForPortrait();
+				var topActionBarHeight : Number = FlexGlobals.topLevelApplication.topActionBar.height;
+				video.x = (videoParent.width-video.width)/2;
+				addLoadingImage();
+				if(!videoParent.contains(_loader))
+				{
+					videoParent.addChild(_loader);
+				}
+				videoParent.addChild(video);
 			}
-			resizeForPortrait();
-			var topActionBarHeight : Number = FlexGlobals.topLevelApplication.topActionBar.height;
-			video.y = topActionBarHeight + (screenHeight - video.height)/2;
-			video.x = (stage.stageWidth-video.width)/2;
-			addLoadingImage();
-			if(!this.stage.contains(_loader))
-			{
-				this.stage.addChild(_loader);
-			}
-			this.stage.addChild(video);	
 			identifyVideoStream(video.x,video.height+video.y,name);
 		}
 		
@@ -87,26 +89,28 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			gradientGraphics.drawRect ( gradientOffsetX, gradientOffsetY, gradientDrawWidth ,gradientDrawHeight );
 			gradientGraphics.endFill ( );
 
-			this.stage.addChild(_shape);
-			this.stage.addChild(_userName);
+			video.parent.addChild(_shape);
+			video.parent.addChild(_userName);
 			
 		}
 	
 		override public function close():void
 		{
+			if(video){
+				if(_userName && video.parent.contains(_userName))
+				{
+					video.parent.removeChild(_userName);
+				}
+				if(_shape && video.parent.contains(_shape))
+				{
+					video.parent.removeChild(_shape);
+				}
+				if(_loader && video.parent.contains(_loader))
+				{
+					video.parent.removeChild(_loader);
+				}
+			}
 			super.close();
-			if(_userName && this.stage.contains(_userName))
-			{
-				this.stage.removeChild(_userName);
-			}
-			if(_shape && this.stage.contains(_shape))
-			{
-				this.stage.removeChild(_shape);
-			}
-			if(_loader && this.stage.contains(_loader))
-			{
-				this.stage.removeChild(_loader);
-			}
 		}
 		
 		private function addLoadingImage():void
@@ -121,7 +125,7 @@ package org.bigbluebutton.view.navigation.pages.videochat
 		private function onImageLoaded(e:Event):void
 		{
 			_loader.x= (screenWidth-_loader.content.width)/2;
-			_loader.y = (screenHeight-_loader.content.height)/2;
+			_loader.y = (video.height - _loader.height)/2;
 			_loader.alpha = 0.5;
 			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onImageLoaded);
 		}
