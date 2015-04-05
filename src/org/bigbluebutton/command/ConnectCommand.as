@@ -197,12 +197,12 @@ package org.bigbluebutton.command
 			userUISession.loading = false;
 			userUISession.pushPage(PagesENUM.PARTICIPANTS);
 			
-			userSession.phoneAutoJoin = userSession.config.getConfigFor("PhoneModule").@autoJoin;
+			userSession.phoneAutoJoin = (userSession.config.getConfigFor("PhoneModule").@autoJoin.toString().toUpperCase() == "TRUE") ? true : false;
 			if(userSession.phoneAutoJoin){
 				userUISession.pushPage(PagesENUM.AUDIOSETTINGS);
 			}
 			
-			userSession.videoAutoStart = userSession.config.getConfigFor("VideoconfModule").@autoStart;
+			userSession.videoAutoStart = (userSession.config.getConfigFor("VideoconfModule").@autoStart.toString().toUpperCase() == "TRUE") ? true : false;
 			if(userSession.videoAutoStart){
 				userUISession.pushPage(PagesENUM.CAMERASETTINGS);
 			}
