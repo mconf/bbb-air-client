@@ -40,6 +40,10 @@
 							<s:VerticalLayout verticalAlign="middle" horizontalAlign="center"/>
 						</s:layout>
 						<cameraprofiles:CameraProfilesList id="cameraprofileslist" width="90%" />
+					
+					<s:HGroup width="90%">
+						<s:Button width="100%" id="rotateCameraBtn0" styleName="cameraSettingsRotateButtonStyle videoAudioSettingStyle contentFontSize" label="{resourceManager.getString('resources', 'cameraSettings.rotate')}" />
+					</s:HGroup>
 					<s:Button id="swapCameraBtn0" styleName="cameraSettingsSwapButtonStyle videoAudioSettingStyle contentFontSize" width="90%" 
 							  label="{resourceManager.getString('resources', 'cameraSettings.swap')}" />
 					<s:Button id="startCameraButton0" styleName="cameraSettingsStartButtonStyle videoAudioSettingStyle contentFontSize" width="90%" 

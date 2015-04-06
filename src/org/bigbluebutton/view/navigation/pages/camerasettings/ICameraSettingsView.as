@@ -15,6 +15,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		function get cameraProfilesList():List;
 		function get startCameraButton():Button;
 		function get swapCameraButton():Button;
+		function get rotateCameraButton():Button;
 		function get previewVideo():VideoDisplay;
 		function get noVideoMessage():Label;
 		function get videoGroup():Group;

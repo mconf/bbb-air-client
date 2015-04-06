@@ -1,6 +1,8 @@
 package org.bigbluebutton.view.navigation.pages.camerasettings
 {
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.media.Camera;
 	import flash.media.CameraPosition;
 	import flash.media.Video;
@@ -77,6 +79,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 				userSession.userList.userChangeSignal.add(userChangeHandler);
 			}
 			view.startCameraButton.addEventListener(MouseEvent.CLICK, onShareCameraClick);
+			view.rotateCameraButton.addEventListener(MouseEvent.CLICK, onRotateCameraClick);
 			view.cameraProfilesList.addEventListener(IndexChangeEvent.CHANGE, onCameraQualitySelected);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'cameraSettings.title');
 			displayPreviewCamera();
@@ -115,6 +118,15 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			}
 		}
 		
+		protected function onRotateCameraClick(event:MouseEvent):void
+		{
+			userSession.videoConnection.selectedCameraRotation += 90;
+			if(userSession.videoConnection.selectedCameraRotation == 360){
+				userSession.videoConnection.selectedCameraRotation = 0;
+			}
+			displayPreviewCamera();
+		}
+		
 		protected function setSwapCameraButtonEnable(enabled:Boolean):void
 		{
 			view.swapCameraButton.enabled = enabled;
@@ -134,32 +146,74 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			}
 		}
 		
+		private function isCamRotatedSideways():Boolean
+		{
+			return (userSession.videoConnection.selectedCameraRotation == 90 || userSession.videoConnection.selectedCameraRotation == 270);
+		}
+		
 		private function displayPreviewCamera():void{
 			var profile:VideoProfile = userSession.videoConnection.selectedCameraQuality
 			var camera:Camera = getCamera(userSession.videoConnection.cameraPosition);
 			if (camera) {
 				camera.setMode(profile.width, profile.height, profile.modeFps);
+				var myCam:Video = new Video();
 				var camAspectRatio:Number = FlexGlobals.topLevelApplication.width/view.cameraSettingsScroller.height;
-				var camWidth:Number;
-				var camHeight:Number;
-				if (camAspectRatio > 1){
-					camHeight = view.cameraSettingsScroller.height;
-					camWidth =  profile.width * view.cameraSettingsScroller.height/profile.height;
+				if (camAspectRatio > 1){ //landscape
+					if(isCamRotatedSideways()){
+						//invert width/height. Maintain camera proportions
+						myCam.width =  view.cameraSettingsScroller.height;
+						myCam.height = profile.height * view.cameraSettingsScroller.height/profile.width;
+					}
+					else {
+						myCam.height = view.cameraSettingsScroller.height;
+						myCam.width =  profile.width * view.cameraSettingsScroller.height/profile.height;
+					}
 				}
-				else {
-					camWidth = FlexGlobals.topLevelApplication.width;
-					camHeight = profile.height * FlexGlobals.topLevelApplication.width/profile.width;
+				else { //portrait
+					if(isCamRotatedSideways()){
+						//invert width/height. Maintain camera proportions
+						myCam.width = profile.height * FlexGlobals.topLevelApplication.width/profile.width;
+						myCam.height = profile.height * myCam.width/profile.width;
+					}
+					else {
+						myCam.width = FlexGlobals.topLevelApplication.width;
+						myCam.height = profile.height * FlexGlobals.topLevelApplication.width/profile.width;
+					}
 				}
-				var myCam:Video = new Video(camWidth, camHeight);
+				rotateObjectAroundInternalPoint(myCam, myCam.x+myCam.width/2, myCam.y+myCam.height/2, userSession.videoConnection.selectedCameraRotation);
+				myCam.x = (FlexGlobals.topLevelApplication.width - myCam.width)/2;
+				
+				if(userSession.videoConnection.selectedCameraRotation == 90){
+					myCam.y = 0;
+					myCam.x = (FlexGlobals.topLevelApplication.width + myCam.width)/2;
+				}
+				else if(userSession.videoConnection.selectedCameraRotation == 270){
+					myCam.y = myCam.height;
+				}
+				else if(userSession.videoConnection.selectedCameraRotation == 180){
+					myCam.x = (FlexGlobals.topLevelApplication.width + myCam.width)/2;
+					myCam.y = myCam.height;
+				}		
 				myCam.attachCamera(camera);
 				view.previewVideo.removeChildren();
 				view.previewVideo.addChild(myCam);
 				view.settingsGroup.y = myCam.height;
-				myCam.x = (FlexGlobals.topLevelApplication.width - myCam.width)/2;
-				
 			} else {
 				view.noVideoMessage.visible = true;
 			}
+		}
+		
+		public static function rotateObjectAroundInternalPoint(ob:Object, x:Number, y:Number, angleDegrees:Number):void
+		{
+			var point:Point = new Point(x, y);
+			var m:Matrix=ob.transform.matrix; 
+			point = m.transformPoint(point);
+			m.tx -= point.x; 
+			m.ty -= point.y; 
+			m.rotate (angleDegrees*(Math.PI/180)); 
+			m.tx += point.x; 
+			m.ty += point.y; 
+			ob.transform.matrix=m; 
 		}
 		
 		private function getCamera(position:String):Camera

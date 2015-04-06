@@ -39,6 +39,7 @@ package org.bigbluebutton.core
 		private var _camera:Camera;
 		
 		private var _selectedCameraQuality:VideoProfile;
+		private var _selectedCameraRotation:int;
 	
 		public function VideoConnection()
 		{
@@ -119,6 +120,16 @@ package org.bigbluebutton.core
 		public function set selectedCameraQuality(profile:VideoProfile):void
 		{
 			_selectedCameraQuality = profile;
+		}
+		
+		public function get selectedCameraRotation():int
+		{
+			return _selectedCameraRotation;
+		}
+		
+		public function set selectedCameraRotation(rotation:int):void
+		{
+			_selectedCameraRotation = rotation;
 		}
 		
 		/**

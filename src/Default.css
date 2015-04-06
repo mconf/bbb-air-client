@@ -85,7 +85,7 @@ s|Button.profileSettingsButtonStyle,s|Button.audioSettingsShareMicButtonStyle, s
 	labelTextAlign:left;
 }
 
-s|Button.cameraSettingsStartButtonStyle,s|Button.cameraSettingsSwapButtonStyle
+s|Button.cameraSettingsStartButtonStyle,s|Button.cameraSettingsSwapButtonStyle, s|Button.cameraSettingsRotateButtonStyle
 {
 	labelTextAlign:center;
 }
@@ -232,6 +232,11 @@ global
 	s|Button.cameraSettingsStartButtonStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/video.png");
+	}
+	
+	s|Button.cameraSettingsRotateButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/rotateRight.png");
 	}
 	
 	s|Button.cameraSettingsSwapButtonStyle
@@ -619,6 +624,11 @@ global
 	s|Button.cameraSettingsStartButtonStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/video.png");
+	}
+	
+	s|Button.cameraSettingsRotateButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/rotateRight.png");
 	}
 	
 	s|Button.cameraSettingsSwapButtonStyle
@@ -1020,6 +1030,11 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/video.png");
 	}
 	
+	s|Button.cameraSettingsRotateButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/rotateRight.png");
+	}
+	
 	s|Button.cameraSettingsSwapButtonStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/SwapCamera_up.png");
@@ -1413,6 +1428,11 @@ global
 	s|Button.cameraSettingsStartButtonStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/video.png");
+	}
+	
+	s|Button.cameraSettingsRotateButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/rotateRight.png");
 	}
 	
 	s|Button.cameraSettingsSwapButtonStyle

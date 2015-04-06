@@ -60,5 +60,9 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			return swapCameraBtn0;
 		}
 		
+		public function get rotateCameraButton():Button
+		{
+			return rotateCameraBtn0;
+		}
 	}
 }
