@@ -21,8 +21,12 @@ package org.bigbluebutton.model
 	{
 		function get phoneAutoJoin():Boolean;
 		function set phoneAutoJoin(value:Boolean):void;
+		function get phoneSkipCheck():Boolean;
+		function set phoneSkipCheck(value:Boolean):void;
 		function get videoAutoStart():Boolean;
 		function set videoAutoStart(value:Boolean):void;
+		function get skipCamSettingsCheck():Boolean;
+		function set skipCamSettingsCheck(value:Boolean):void;
 		function get config():Config;
 		function set config(value:Config):void;
 		function get userId():String;

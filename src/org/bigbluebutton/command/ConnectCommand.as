@@ -69,6 +69,7 @@ package org.bigbluebutton.command
 		public var shareCameraSignal: ShareCameraSignal;
 		
 		override public function execute():void {
+			loadConfigOptions();
 			connection.uri = uri;
 			
 			connection.successConnected.add(successConnected);
@@ -165,6 +166,14 @@ package org.bigbluebutton.command
 			voiceConnection.uri = userSession.config.getConfigFor("PhoneModule").@uri;
 			userSession.voiceConnection = voiceConnection;
 			
+			if(userSession.phoneAutoJoin && userSession.phoneSkipCheck){
+				var forceListenOnly:Boolean = (userSession.config.getConfigFor("PhoneModule").@forceListenOnly.toString().toUpperCase() == "TRUE") ? true : false;
+				var audioOptions:Object = new Object();
+				audioOptions.shareMic = userSession.userList.me.voiceJoined = !forceListenOnly;
+				audioOptions.listenOnly = userSession.userList.me.listenOnly = forceListenOnly;
+				shareMicrophoneSignal.dispatch(audioOptions);
+			}
+			
 			deskshareConnection.applicationURI = userSession.config.getConfigFor("DeskShareModule").@uri;
 			deskshareConnection.room = conferenceParameters.room;
 			deskshareConnection.connect();
@@ -203,43 +212,21 @@ package org.bigbluebutton.command
 			userUISession.loading = false;
 			userUISession.pushPage(PagesENUM.PARTICIPANTS);
 			
-			configureAudioAndVideo();
+			if(userSession.phoneAutoJoin && !userSession.phoneSkipCheck){
+				userUISession.pushPage(PagesENUM.AUDIOSETTINGS);
+			}
+			if(userSession.videoAutoStart && !userSession.skipCamSettingsCheck ){
+				userUISession.pushPage(PagesENUM.CAMERASETTINGS);
+			}
 			
 			userSession.userList.allUsersAddedSignal.remove(successUsersAdded);
 		}
 		
-		private function configureAudioAndVideo():void{
-
+		private function loadConfigOptions():void{
 			userSession.phoneAutoJoin = (userSession.config.getConfigFor("PhoneModule").@autoJoin.toString().toUpperCase() == "TRUE") ? true : false;
-			if(userSession.phoneAutoJoin){
-				var phoneSkipCheck:Boolean = (userSession.config.getConfigFor("PhoneModule").@skipCheck.toString().toUpperCase() == "TRUE") ? true : false;
-				if(phoneSkipCheck){
-					var forceListenOnly:Boolean = (userSession.config.getConfigFor("PhoneModule").@forceListenOnly.toString().toUpperCase() == "TRUE") ? true : false;
-					var audioOptions:Object = new Object();
-					audioOptions.shareMic = userSession.userList.me.voiceJoined = !forceListenOnly;
-					audioOptions.listenOnly = userSession.userList.me.listenOnly = forceListenOnly;
-					shareMicrophoneSignal.dispatch(audioOptions);
-				}
-				else {
-					userUISession.pushPage(PagesENUM.AUDIOSETTINGS);
-				}
-			}
-			
+			userSession.phoneSkipCheck = (userSession.config.getConfigFor("PhoneModule").@skipCheck.toString().toUpperCase() == "TRUE") ? true : false;
 			userSession.videoAutoStart = (userSession.config.getConfigFor("VideoconfModule").@autoStart.toString().toUpperCase() == "TRUE") ? true : false;
-			if(userSession.videoAutoStart){
-				var skipCamSettingsCheck:Boolean = (userSession.config.getConfigFor("VideoconfModule").@skipCamSettingsCheck.toString().toUpperCase() == "TRUE") ? true : false;
-				if(skipCamSettingsCheck){
-					videoConnection.successConnected.add(shareCamera);
-				}
-				else{
-					userUISession.pushPage(PagesENUM.CAMERASETTINGS);
-				}
-			}
-		}
-		
-		private function shareCamera():void{
-			shareCameraSignal.dispatch(!userSession.userList.me.hasStream, userSession.videoConnection.cameraPosition);
-			videoConnection.successConnected.remove(shareCamera)
+			userSession.skipCamSettingsCheck = (userSession.config.getConfigFor("VideoconfModule").@skipCamSettingsCheck.toString().toUpperCase() == "TRUE") ? true : false;
 		}
 		
 		private function unsuccessConnected(reason:String):void {
@@ -254,6 +241,10 @@ package org.bigbluebutton.command
 		
 		private function successVideoConnected():void {
 			Log.getLogger("org.bigbluebutton").info(String(this) + ":successVideoConnected()");
+			
+			if(userSession.videoAutoStart && userSession.skipCamSettingsCheck){
+				shareCameraSignal.dispatch(!userSession.userList.me.hasStream, userSession.videoConnection.cameraPosition);
+			}
 			
 			videoConnection.successConnected.remove(successVideoConnected);
 			videoConnection.unsuccessConnected.remove(unsuccessVideoConnected);

@@ -36,7 +36,9 @@ package org.bigbluebutton.model
 		protected var _recording:Boolean;
 		
 		protected var _phoneAutoJoin:Boolean;
+		protected var _phoneSkipCheck:Boolean;
 		protected var _videoAutoStart:Boolean;
+		protected var _skipCamSettingsCheck:Boolean;
 		protected var _guestPolicySignal:ISignal = new Signal();
 		protected var _guestEntranceSignal:ISignal = new Signal();
 		protected var _successJoiningMeetingSignal:ISignal = new Signal();
@@ -76,6 +78,16 @@ package org.bigbluebutton.model
 		{
 			_phoneAutoJoin = value;
 		}
+		
+		public function get phoneSkipCheck():Boolean
+		{
+			return _phoneSkipCheck;
+		}
+		
+		public function set phoneSkipCheck(value:Boolean):void
+		{
+			_phoneSkipCheck = value;
+		}
 
 		public function get videoAutoStart():Boolean
 		{
@@ -85,6 +97,16 @@ package org.bigbluebutton.model
 		public function set videoAutoStart(value:Boolean):void
 		{
 			_videoAutoStart = value;
+		}
+		
+		public function get skipCamSettingsCheck():Boolean
+		{
+			return _skipCamSettingsCheck;
+		}
+		
+		public function set skipCamSettingsCheck(value:Boolean):void
+		{
+			_skipCamSettingsCheck = value;
 		}
 
 		public function get config():Config
