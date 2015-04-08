@@ -15,6 +15,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 	
 	import org.bigbluebutton.command.CameraQualitySignal;
 	import org.bigbluebutton.command.ShareCameraSignal;
+	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.core.VideoConnection;
 	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.model.IUserSession;
@@ -45,6 +46,9 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 		
 		[Inject]
 		public var changeQualitySignal : CameraQualitySignal;
+		
+		[Inject]
+		public var saveData: ISaveData;
 		
 		protected var dataProvider:ArrayCollection;
 	
@@ -124,6 +128,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			if(userSession.videoConnection.selectedCameraRotation == 360){
 				userSession.videoConnection.selectedCameraRotation = 0;
 			}
+			saveData.save("cameraRotation", userSession.videoConnection.selectedCameraRotation);
 			displayPreviewCamera();
 		}
 		
@@ -142,6 +147,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 				else {
 					userSession.videoConnection.selectedCameraQuality = profile;
 				}
+				saveData.save("cameraQuality", userSession.videoConnection.selectedCameraQuality.id);
 				displayPreviewCamera();
 			}
 		}
@@ -255,6 +261,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 					shareCameraSignal.dispatch(userSession.userList.me.hasStream, CameraPosition.FRONT);
 				}
 			}
+			saveData.save("cameraPosition", userSession.videoConnection.cameraPosition);
 			displayPreviewCamera();
 		}
 		

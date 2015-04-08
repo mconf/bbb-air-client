@@ -5,6 +5,7 @@ package org.bigbluebutton.core
 	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.media.Camera;
+	import flash.media.CameraPosition;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	
@@ -27,6 +28,9 @@ package org.bigbluebutton.core
 		
 		[Inject]
 		public var userSession: IUserSession;
+		
+		[Inject]
+		public var saveData: ISaveData;
 		
 		private var _ns:NetStream;
 		private var _cameraPosition:String;
@@ -52,7 +56,29 @@ package org.bigbluebutton.core
 			baseConnection.init(this);
 			baseConnection.successConnected.add(onConnectionSuccess);
 			baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
-			_selectedCameraQuality = userSession.videoProfileManager.defaultVideoProfile;
+			loadCameraSettings();
+		}
+		
+		private function loadCameraSettings():void{
+			
+			if(saveData.read("cameraQuality") != null){
+				_selectedCameraQuality = userSession.videoProfileManager.getVideoProfileById(saveData.read("cameraQuality") as String);
+			}
+			else {
+				_selectedCameraQuality = userSession.videoProfileManager.defaultVideoProfile;
+			}
+			if(saveData.read("cameraRotation") != null){
+				_selectedCameraRotation = saveData.read("cameraRotation") as int;
+			}
+			else {
+				_selectedCameraRotation = 270;
+			}
+			if(saveData.read("cameraPosition") != null){
+				_cameraPosition = saveData.read("cameraPosition") as String;
+			}
+			else {
+				_cameraPosition = CameraPosition.FRONT;
+			}
 		}
 		
 		private function onConnectionUnsuccess(reason:String):void
