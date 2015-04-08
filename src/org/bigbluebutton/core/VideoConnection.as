@@ -71,7 +71,7 @@ package org.bigbluebutton.core
 				_selectedCameraRotation = saveData.read("cameraRotation") as int;
 			}
 			else {
-				_selectedCameraRotation = 270;
+				_selectedCameraRotation = 0;
 			}
 			if(saveData.read("cameraPosition") != null){
 				_cameraPosition = saveData.read("cameraPosition") as String;
