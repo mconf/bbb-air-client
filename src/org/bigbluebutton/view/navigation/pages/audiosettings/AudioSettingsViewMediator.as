@@ -55,7 +55,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings
 			audioOptions.listenOnly = userSession.userList.me.listenOnly = false;
 			shareMicrophoneSignal.dispatch(audioOptions);			
 			
-			if(userSession.phoneAutoJoin){
+			if(userSession.phoneAutoJoin && !userSession.phoneSkipCheck){
 				userSession.phoneAutoJoin = false;
 				userUISession.popPage();
 			}

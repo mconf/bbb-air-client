@@ -116,7 +116,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings
 			view.cameraProfilesList.selectedIndex = dataProvider.getItemIndex(userSession.videoConnection.selectedCameraQuality);
 			shareCameraSignal.dispatch(!userSession.userList.me.hasStream, userSession.videoConnection.cameraPosition);
 			displayPreviewCamera();
-			if(userSession.videoAutoStart){
+			if(userSession.videoAutoStart && !userSession.skipCamSettingsCheck){
 				userSession.videoAutoStart = false;
 				userUISession.popPage();
 			}
