@@ -370,7 +370,7 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				// Priority state machine
 				
 				// if user was directly selected, show this user as a first priority
-				if (selectedUser && selectedUser.hasStream)
+				if (selectedUser && userSession.userList.hasUser(selectedUser.userID) && selectedUser.hasStream)
 				{
 					newUser = selectedUser;
 				}
@@ -380,12 +380,12 @@ package org.bigbluebutton.view.navigation.pages.videochat
 					newUser = presenter;
 				}
 					// current user is the third priority
-				else if (currentUser != null) 
+				else if (currentUser != null && currentUser.hasStream) 
 				{
 					newUser = currentUser;
 				}
 					// any user with camera is the last priority
-				else if (userWithCamera != null)
+				else if (userWithCamera != null && userWithCamera.hasStream)
 				{
 					newUser = userWithCamera;
 				}
@@ -398,21 +398,23 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				if (newUser)
 				{
 					var userStreamNames:Array = getUserStreamNamesByUserID(newUser.userID);
-					if (view) view.stopStream();	
 					var displayUserStreamName:UserStreamName = userStreamNames[0];
 					for each (var userStreamName:UserStreamName in userStreamNames){
-						if(userUISession.currentStreamName == userStreamName.streamName){
+						if(userStreamName.user.hasStream && userUISession.currentStreamName == userStreamName.streamName){
 							displayUserStreamName = userStreamName;
 							break;
 						}
 					}
-					view.streamlist.selectedIndex = dataProvider.getItemIndex(displayUserStreamName);
-					startStream(newUser.name, displayUserStreamName.streamName);
-					view.streamlist.selectedIndex = dataProvider.getItemIndex(userStreamNames[0]);
-					view.noVideoMessage.visible = false;
-					view.noVideoMessage.includeInLayout = false;
-					view.streamListScroller.visible = true;
-					view.streamListScroller.includeInLayout = true;
+					if (view){
+						view.stopStream();
+						view.streamlist.selectedIndex = dataProvider.getItemIndex(displayUserStreamName);
+						startStream(newUser.name, displayUserStreamName.streamName);
+						view.streamlist.selectedIndex = dataProvider.getItemIndex(userStreamNames[0]);
+						view.noVideoMessage.visible = false;
+						view.noVideoMessage.includeInLayout = false;
+						view.streamListScroller.visible = true;
+						view.streamListScroller.includeInLayout = true;
+					}
 				}	
 			}
 		}

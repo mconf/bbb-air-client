@@ -141,17 +141,19 @@ package org.bigbluebutton.view.navigation.pages.participants
 		private function guestRemoved(userID:String):void
 		{
 			var guest:Guest = dicUserIdtoGuest[userID] as Guest;
-			var index:uint = dataProviderGuests.getItemIndex(guest);
-			dataProviderGuests.removeItemAt(index);
-			dicUserIdtoGuest[guest.userID] = null;
-			
-			if(_userMe.role == "MODERATOR" && dataProviderGuests.length == 0 && view.guestsList != null){
-				
-				view.guestsList.includeInLayout = false;
-				view.guestsList.visible = false;
-				view.allGuests.includeInLayout = false;
-				view.allGuests.visible = false;
+			if(guest){
+				var index:uint = dataProviderGuests.getItemIndex(guest);
+				dataProviderGuests.removeItemAt(index);
+				dicUserIdtoGuest[guest.userID] = null;
+				if(_userMe.role == "MODERATOR" && dataProviderGuests.length == 0 && view && view.guestsList != null){
+					
+					view.guestsList.includeInLayout = false;
+					view.guestsList.visible = false;
+					view.allGuests.includeInLayout = false;
+					view.allGuests.visible = false;
+				}
 			}
+
 		}
 		
 		private function userChanged(user:User, property:String = null):void
