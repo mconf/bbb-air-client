@@ -15,19 +15,20 @@ package org.bigbluebutton.model
 		public static const PRESENTER:int = 2;
 		public static const JOIN_AUDIO:int = 3;
 		public static const MUTE:int = 4;
-		public static const RAISE_HAND:int = 5;
-		public static const LOCKED:int = 6;
-		public static const LISTEN_ONLY:int = 7;
-		public static const AGREE:int = 8;
-		public static const NO_STATUS:int = 9;
-		public static const DISAGREE:int = 10;
-		public static const SPEAK_LOUDER:int = 11;
-		public static const SPEAK_LOWER:int = 12;
-		public static const SPEAK_FASTER:int = 13;
-		public static const SPEAK_SLOWER:int = 14;
-		public static const BE_RIGHT_BACK:int = 15;
-		public static const LAUGHTER:int = 16;
-		public static const SAD:int = 17;
+		public static const TALKING:int = 5;
+		public static const RAISE_HAND:int = 6;
+		public static const LOCKED:int = 7;
+		public static const LISTEN_ONLY:int = 8;
+		public static const AGREE:int = 9;
+		public static const NO_STATUS:int = 10;
+		public static const DISAGREE:int = 11;
+		public static const SPEAK_LOUDER:int = 12;
+		public static const SPEAK_LOWER:int = 13;
+		public static const SPEAK_FASTER:int = 14;
+		public static const SPEAK_SLOWER:int = 15;
+		public static const BE_RIGHT_BACK:int = 16;
+		public static const LAUGHTER:int = 17;
+		public static const SAD:int = 18;
 		
 		
 		private var _users:ArrayCollection;	
@@ -334,14 +335,42 @@ package org.bigbluebutton.model
 			}
 		}
 		
-		public function userStreamChange(userID:String, hasStream:Boolean, streamName:String):void {
+		public function userStreamChange(userID:String, share:Boolean, streamName:String):void {
 			var p:Object = getUserIndex(userID);
 			
 			if (p) {
 				var user:User = p.participant as User;
 				
-				user.hasStream = hasStream;
-				user.streamName = streamName;
+				if(share){
+					user.hasStream = true;
+					if(user.streamName == ""){
+						user.streamName = streamName;
+					}
+					else {
+						user.streamName += "|" + streamName;
+					}
+				}
+				else {
+					var newStreamNAme:String = "";
+					var streamNames:Array = user.streamName.split("|");
+					for each(var sN:String in streamNames){
+						if(streamName != sN){
+							if(newStreamNAme == ""){
+								newStreamNAme += sN;
+							}
+							else {
+								newStreamNAme += "|" + sN;
+							}
+						}
+					}
+					user.streamName = newStreamNAme;
+					if(newStreamNAme != ""){
+						user.hasStream = true;
+					}
+					else{
+						user.hasStream = false;
+					}
+				}
 				
 				userChangeSignal.dispatch(user, HAS_STREAM);
 			}
@@ -464,6 +493,8 @@ package org.bigbluebutton.model
 			if (user != null) {
 				user.talking = talking;
 			}
+			
+			userChangeSignal.dispatch(user, TALKING);
 		}
 		
 		/**

@@ -16,6 +16,8 @@ package org.bigbluebutton.model
 		function pushPage(value:String, details:Object = null, animation:int = TransitionAnimationENUM.APPEAR):void;
 		function get currentPageDetails():Object;
 		function get loading():Boolean;
-		function set loading(value:Boolean):void;		
+		function set loading(value:Boolean):void;
+		function get currentStreamName():String
+		function set currentStreamName(value:String):void
 	}
 }

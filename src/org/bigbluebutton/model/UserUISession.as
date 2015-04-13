@@ -127,5 +127,20 @@ package org.bigbluebutton.model
 			_loading = value;
 			_loadingSignal.dispatch(_loading);
 		}
+		
+		/**
+		 * Should be set true when the application is loading data
+		 */ 
+		private var _currentStreamName:String = "";
+		
+		public function get currentStreamName():String
+		{
+			return _currentStreamName;
+		}
+		
+		public function set currentStreamName(value:String):void
+		{
+			_currentStreamName = value;
+		}
 	}
 }

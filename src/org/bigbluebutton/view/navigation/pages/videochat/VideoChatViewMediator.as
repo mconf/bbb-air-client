@@ -43,7 +43,6 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			userUISession.pageTransitionStartSignal.add(onPageTransitionStart);
 			view.streamlist.addEventListener(IndexChangeEvent.CHANGE, onSelectStream);
 			
-			checkVideo();
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'video.title');
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
@@ -54,17 +53,29 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			{
 				if(u.hasStream && !dataProvider.contains(u))
 				{
-					var streamNames:Array = u.streamName.split("|");
-					for each (var streamName:String in streamNames){
-						u.streamName = streamName;
-						dataProvider.addItem(u);
-						if(view && view.getDisplayedUserID() == u.userID)
-						{
-							view.streamlist.selectedIndex = dataProvider.getItemIndex(u);
-						}
+					addUserStreamNames(u);
+				}
+			}
+			checkVideo();
+		}
+		
+		private function addUserStreamNames(u:User):void{
+			
+			var existingStreamNames:Array = getUserStreamNamesByUserID(u.userID);
+			var streamNames:Array = u.streamName.split("|");
+			for each (var streamName:String in streamNames){
+				var addNew:Boolean = true;
+				for each (var existingUserStreamName:UserStreamName in existingStreamNames){
+					if(streamName == existingUserStreamName.streamName){
+						addNew = false;
 					}
 				}
-			}		
+				if (addNew){
+					var userStreamName:UserStreamName = new UserStreamName(streamName, u);
+					dataProvider.addItem(userStreamName);
+				}
+			}
+			dataProvider.refresh();
 		}
 		
 		protected function getUserWithCamera():User
@@ -102,14 +113,15 @@ package org.bigbluebutton.view.navigation.pages.videochat
 		{
 			if (event.newIndex >= 0) 
 			{
-				var user:User = dataProvider.getItemAt(event.newIndex) as User;
+				var userStreamName:UserStreamName = dataProvider.getItemAt(event.newIndex) as UserStreamName;
+				var user:User = userStreamName.user;
 				if(user.hasStream)
 				{
-					if(view && view.getDisplayedUserID() != null)
+					if(getDisplayedUser() != null)
 					{
-						stopStream(view.getDisplayedUserID());
+						stopStream(getDisplayedUser().userID);
 					}
-					startStream(user.name, user.streamName);
+					startStream(user.name, userStreamName.streamName);
 				}
 			}
 		}
@@ -132,24 +144,30 @@ package org.bigbluebutton.view.navigation.pages.videochat
 		{
 			if (user.hasStream)
 			{
-				checkVideo();
-				dataProvider.addItem(user);		
+				var streamNames:Array = user.streamName.split("|");
+				for each (var streamName:String in streamNames){
+					var userStreamName:UserStreamName = new UserStreamName(streamName, user);
+					dataProvider.addItem(userStreamName);
+				}
 			}
 		}
 		
 		private function userRemovedHandler(userID:String):void 
 		{
-			if (view.getDisplayedUserID() == userID) 
+			var displayedUser:User = getDisplayedUser();
+			if(displayedUser)
 			{
-				stopStream(userID);
-				checkVideo();
+				if (displayedUser.userID == userID) 
+				{
+					stopStream(userID);
+				}
 			}
 			for(var item:int; item<dataProvider.length; item++)
 			{
-				if((dataProvider.getItemAt(item) as User).userID == userID)
+				if((dataProvider.getItemAt(item).user as User).userID == userID)
 				{
-					dataProvider.removeItemAt(item);
-					break;
+					// -- in the end. see: http://stackoverflow.com/questions/4255226/how-to-remove-an-item-while-iterating-over-collection
+					dataProvider.removeItemAt(item--);
 				}
 			}
 			if(dataProvider.length==0)
@@ -166,29 +184,54 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				view.noVideoMessage.includeInLayout = false;
 				view.streamListScroller.visible = true;
 				view.streamListScroller.includeInLayout = true;
+				checkVideo();
 			}			
+		}
+		
+		private function getUserStreamNamesByUserID(userID:String):Array{
+			
+			var userStreamNames:Array = new Array();
+			
+			for each(var userStreamName:UserStreamName in dataProvider){
+				if(userStreamName.user.userID == userID){
+					userStreamNames.push(userStreamName);
+				}
+			}
+			
+			return userStreamNames;
 		}
 		
 		private function userChangeHandler(user:User, property:int):void 
 		{
 			if (property == UserList.HAS_STREAM)
 			{
-				if (user.userID == view.getDisplayedUserID() && !user.hasStream)
-				{
-					stopStream(user.userID);
-				}				
-				
-				if(dataProvider.contains(user) && !user.hasStream)
-				{
-					dataProvider.removeItemAt(dataProvider.getItemIndex(user));
-				}
-				else if(!dataProvider.contains(user) && user.hasStream)
-				{
-					dataProvider.addItem(user);
+				var displayedUser:User = getDisplayedUser();
+				if(displayedUser){
+					if (user.userID == displayedUser.userID && !user.hasStream)
+					{
+						stopStream(user.userID);
+					}				
 				}
 				
-				if(view.getDisplayedUserID()==null)
+				var userStreamNames:Array = getUserStreamNamesByUserID(user.userID);
+				
+				for each(var userStreamName:UserStreamName in userStreamNames){
+					if(!(userStreamName.user.streamName.indexOf(userStreamName.streamName) >= 0))
+					{
+						dataProvider.removeItem(userStreamName);
+						if(userUISession.currentStreamName == userStreamName.streamName){
+							userUISession.currentStreamName = "";
+							checkVideo();
+						}
+					}
+				}
+				
+				if(user.streamName.split("|").length > userStreamNames.length && user.streamName.length > 0)
 				{
+					addUserStreamNames(user);
+				}
+				
+				if(userUISession.currentStreamName == ""){
 					checkVideo();
 				}
 				
@@ -205,9 +248,10 @@ package org.bigbluebutton.view.navigation.pages.videochat
 					view.noVideoMessage.includeInLayout = false;
 					view.streamListScroller.visible = true;
 					view.streamListScroller.includeInLayout = true;
-					view.streamlist.selectedIndex = dataProvider.getItemIndex(userSession.userList.getUserByUserId(view.getDisplayedUserID()));
 				}
 			}
+			
+			dataProvider.refresh();
 		}
 		
 		private function startStream(name:String, streamName:String):void 
@@ -243,6 +287,7 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				if (view) 
 				{
 					view.startStream(userSession.videoConnection.connection, name, streamName, resolution.userID, width, length, view.streamListScroller.height, view.streamListScroller.width);
+					userUISession.currentStreamName = streamName;
 					view.videoGroup.height = view.video.height;
 				}
 			}
@@ -253,13 +298,24 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			if (view) 
 			{
 				view.stopStream();
+				userUISession.currentStreamName = "";
 			}
+		}
+		
+		private function getDisplayedUser():User{
+			for each(var userStreamName:UserStreamName in dataProvider){
+				if(userStreamName.streamName == userUISession.currentStreamName){
+					return userStreamName.user;
+				}
+			}
+			return null;
 		}
 		
 		private function checkVideo(changedUser:User = null):void 
 		{
+			
 			// get id of the user that is currently displayed
-			var currentUserID:String = view.getDisplayedUserID();
+			var currentUser:User = getDisplayedUser();
 			
 			// get user that was selected 
 			var selectedUser:User = userUISession.currentPageDetails as User;
@@ -274,34 +330,38 @@ package org.bigbluebutton.view.navigation.pages.videochat
 					
 			if (changedUser)
 			{
+				
+				var userStreamNames:Array = getUserStreamNamesByUserID(changedUser.userID);
+				
 				// Priority state machine
 				
 				if (selectedUser && selectedUser.hasStream && changedUser.userID == selectedUser.userID)
 				{
 					if (view) view.stopStream();	
-					startStream(changedUser.name, changedUser.streamName);
+					startStream(changedUser.name, userStreamNames[0].streamName);
 				}
 				else if (changedUser.presenter && changedUser.hasStream)
 				{
 					if (view) view.stopStream();	
-					startStream(changedUser.name, changedUser.streamName);
+					startStream(changedUser.name, userStreamNames[0].streamName);
 				}
-				else if (currentUserID && changedUser.userID == currentUserID)
+				else if (currentUser && changedUser.userID == currentUser.userID)
 				{
 					if (view) view.stopStream();	
-					startStream(changedUser.name, changedUser.streamName);
+					startStream(changedUser.name, userStreamNames[0].streamName);
 				}
 				else if (userWithCamera)
 				{
 					if (userWithCamera.userID == changedUser.userID)
 					{
 						if (view) view.stopStream();	
-						startStream(changedUser.name, changedUser.streamName);
+						startStream(changedUser.name, userStreamNames[0].streamName);
 					}
 					else if (!changedUser.hasStream && userWithCamera.me)
 					{
+						var userStreamNames:Array = getUserStreamNamesByUserID(userWithCamera.userID);
 						if (view) view.stopStream();	
-						startStream(userWithCamera.name, userWithCamera.streamName);
+						startStream(userWithCamera.name, userStreamNames[0].streamName);
 					}
 				}
 			}
@@ -320,12 +380,9 @@ package org.bigbluebutton.view.navigation.pages.videochat
 					newUser = presenter;
 				}
 					// current user is the third priority
-				else if (currentUserID != null) 
+				else if (currentUser != null) 
 				{
-					if (changedUser != null && currentUserID == changedUser.userID)
-					{
-						newUser = changedUser;
-					}
+					newUser = currentUser;
 				}
 					// any user with camera is the last priority
 				else if (userWithCamera != null)
@@ -340,8 +397,18 @@ package org.bigbluebutton.view.navigation.pages.videochat
 								
 				if (newUser)
 				{
+					var userStreamNames:Array = getUserStreamNamesByUserID(newUser.userID);
 					if (view) view.stopStream();	
-					startStream(newUser.name, newUser.streamName);
+					var displayUserStreamName:UserStreamName = userStreamNames[0];
+					for each (var userStreamName:UserStreamName in userStreamNames){
+						if(userUISession.currentStreamName == userStreamName.streamName){
+							displayUserStreamName = userStreamName;
+							break;
+						}
+					}
+					view.streamlist.selectedIndex = dataProvider.getItemIndex(displayUserStreamName);
+					startStream(newUser.name, displayUserStreamName.streamName);
+					view.streamlist.selectedIndex = dataProvider.getItemIndex(userStreamNames[0]);
 					view.noVideoMessage.visible = false;
 					view.noVideoMessage.includeInLayout = false;
 					view.streamListScroller.visible = true;

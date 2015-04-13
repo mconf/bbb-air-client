@@ -125,7 +125,9 @@ package org.bigbluebutton.view.navigation.pages.videochat
 		private function onImageLoaded(e:Event):void
 		{
 			_loader.x= (screenWidth-_loader.content.width)/2;
-			_loader.y = (video.height - _loader.height)/2;
+			if(video){
+				_loader.y = (video.height - _loader.height)/2;
+			}
 			_loader.alpha = 0.5;
 			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onImageLoaded);
 		}

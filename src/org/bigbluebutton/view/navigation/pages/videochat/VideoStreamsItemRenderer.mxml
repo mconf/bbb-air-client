@@ -13,11 +13,11 @@
 				super.data = obj;
 				if(obj)
 				{
-					title.text = obj.name;
-					micIcon.visible = micIcon.includeInLayout = (obj.voiceJoined && !obj.muted);
-					micOffIcon.visible = micOffIcon.includeInLayout = (obj.voiceJoined && obj.muted);
-					listenOnlyIcon.visible = listenOnlyIcon.includeInLayout = (!obj.voiceJoined && obj.listenOnly);
-					soundIcon.visible = obj.talking;
+					title.text = obj.user.name;
+					micIcon.visible = micIcon.includeInLayout = (obj.user.voiceJoined && !obj.user.muted);
+					micOffIcon.visible = micOffIcon.includeInLayout = (obj.user.voiceJoined && obj.user.muted);
+					listenOnlyIcon.visible = listenOnlyIcon.includeInLayout = (!obj.user.voiceJoined && obj.user.listenOnly);
+					soundIcon.visible = obj.user.talking;
 				}
 			}
 		]]>
