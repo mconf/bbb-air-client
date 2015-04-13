@@ -7,6 +7,7 @@ package org.bigbluebutton.view.navigation.pages.videochat
 	import mx.resources.ResourceManager;
 	import mx.utils.ObjectUtil;
 	
+	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
@@ -121,7 +122,7 @@ package org.bigbluebutton.view.navigation.pages.videochat
 					{
 						stopStream(getDisplayedUser().userID);
 					}
-					startStream(user.name, userStreamName.streamName);
+					startStream(user, userStreamName.streamName);
 				}
 			}
 		}
@@ -254,43 +255,15 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			dataProvider.refresh();
 		}
 		
-		private function startStream(name:String, streamName:String):void 
-		{
-			var resolution:Object = getVideoResolution(streamName);
-			
-			if (resolution) 
-			{
-				trace(ObjectUtil.toString(resolution));
-				var quality:String = String(resolution.dimensions)
-				var width:Number;
-				var length:Number;
-				switch(quality) {
-				case "low" :
-					width = 160;
-					length = 120;
-					break;
-				case "medium":
-					width = 320;
-					length = 240;
-					break;
-				case "high":
-					width = 640;
-					length = 480;
-					break;
-				default:
-					trace("Unknown quality, setting to low quality");
-					width = 160;
-					length = 120;
-					break;
-				}
-				
+		private function startStream(user:User, streamName:String):void 
+		{		
 				if (view) 
 				{
-					view.startStream(userSession.videoConnection.connection, name, streamName, resolution.userID, width, length, view.streamListScroller.height, view.streamListScroller.width);
+					var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(streamName);
+					view.startStream(userSession.videoConnection.connection, user.name, streamName, user.userID, videoProfile.width, videoProfile.height, view.streamListScroller.height, view.streamListScroller.width);
 					userUISession.currentStreamName = streamName;
 					view.videoGroup.height = view.video.height;
 				}
-			}
 		}
 		
 		private function stopStream(userID:String):void 
@@ -338,30 +311,30 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				if (selectedUser && selectedUser.hasStream && changedUser.userID == selectedUser.userID)
 				{
 					if (view) view.stopStream();	
-					startStream(changedUser.name, userStreamNames[0].streamName);
+					startStream(changedUser, userStreamNames[0].streamName);
 				}
 				else if (changedUser.presenter && changedUser.hasStream)
 				{
 					if (view) view.stopStream();	
-					startStream(changedUser.name, userStreamNames[0].streamName);
+					startStream(changedUser, userStreamNames[0].streamName);
 				}
 				else if (currentUser && changedUser.userID == currentUser.userID)
 				{
 					if (view) view.stopStream();	
-					startStream(changedUser.name, userStreamNames[0].streamName);
+					startStream(changedUser, userStreamNames[0].streamName);
 				}
 				else if (userWithCamera)
 				{
 					if (userWithCamera.userID == changedUser.userID)
 					{
 						if (view) view.stopStream();	
-						startStream(changedUser.name, userStreamNames[0].streamName);
+						startStream(changedUser, userStreamNames[0].streamName);
 					}
 					else if (!changedUser.hasStream && userWithCamera.me)
 					{
 						var userStreamNames:Array = getUserStreamNamesByUserID(userWithCamera.userID);
 						if (view) view.stopStream();	
-						startStream(userWithCamera.name, userStreamNames[0].streamName);
+						startStream(userWithCamera, userStreamNames[0].streamName);
 					}
 				}
 			}
@@ -408,7 +381,7 @@ package org.bigbluebutton.view.navigation.pages.videochat
 					if (view){
 						view.stopStream();
 						view.streamlist.selectedIndex = dataProvider.getItemIndex(displayUserStreamName);
-						startStream(newUser.name, displayUserStreamName.streamName);
+						startStream(newUser, displayUserStreamName.streamName);
 						view.streamlist.selectedIndex = dataProvider.getItemIndex(userStreamNames[0]);
 						view.noVideoMessage.visible = false;
 						view.noVideoMessage.includeInLayout = false;
@@ -416,24 +389,6 @@ package org.bigbluebutton.view.navigation.pages.videochat
 						view.streamListScroller.includeInLayout = true;
 					}
 				}	
-			}
-		}
-		
-		protected function getVideoResolution(stream:String):Object
-		{
-			trace(stream);
-			var pattern:RegExp = new RegExp("([a-z]+)-([A-Za-z0-9]+)-\\d+", "");
-			if (pattern.test(stream))
-			{
-				trace("The stream name is well formatted [" + stream + "]");
-				trace("Stream resolution is [" + pattern.exec(stream)[1] + "]");
-				trace("Userid [" + pattern.exec(stream)[2] + "]");
-				return {userID: pattern.exec(stream)[2], dimensions:pattern.exec(stream)[1]};
-			}
-			else
-			{
-				trace("The stream name doesn't follow the pattern <quality>-<userId>-<timestamp>. However, the video resolution will be set to 320x240");
-				return null;
 			}
 		}
 	}
