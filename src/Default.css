@@ -405,7 +405,7 @@ global
 	
 	s|Button.profileButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/participants.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/settings.png");
 	}
 	
 	s|Button.backButtonStyle
@@ -797,7 +797,7 @@ global
 	
 	s|Button.profileButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/participants.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/settings.png");
 	}
 	
 	s|Button.backButtonStyle
@@ -1189,7 +1189,7 @@ global
 
 	s|Button.profileButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/participants.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/settings.png");
 	}
 	
 	s|Button.backButtonStyle
@@ -1582,7 +1582,7 @@ global
 	
 	s|Button.profileButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/participants.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/settings.png");
 	}
 	
 	s|Button.backButtonStyle
