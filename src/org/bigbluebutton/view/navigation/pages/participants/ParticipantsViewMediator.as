@@ -89,7 +89,6 @@ package org.bigbluebutton.view.navigation.pages.participants
 			
 			dicUserIdtoGuest = new Dictionary();
 			
-			usersService.getWaitingGuests();
 			var guests:ArrayCollection = userSession.guestList.guests;
 			for each (var guest:Guest in guests)
 			{

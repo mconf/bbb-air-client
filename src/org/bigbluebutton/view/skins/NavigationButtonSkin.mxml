@@ -22,5 +22,6 @@
 			<s:SolidColor  color="{hostComponent.getStyle('backgroundColor')}" color.down="{hostComponent.getStyle('selectedBackgroundColor')}"/>
 		</s:fill>
 	</s:Rect>
-	<s:BitmapImage  source="{getStyle('backgroundImage')}" horizontalCenter="0" verticalCenter="0"/>
+	<s:Label id="labelDisplay" fontWeight="bold" left="{image.x + image.width}" top="{image.y}"/>
+	<s:BitmapImage id="image" source="{getStyle('backgroundImage')}" horizontalCenter="0" verticalCenter="0"/>
 </s:Skin>

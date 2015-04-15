@@ -133,6 +133,7 @@
 					.configure(RecordingStatusConfig)
 					.configure(CameraSettingsConfig)
 					.configure(AudioSettingsConfig)
+					.configure(MenuButtonsConfig)
 					
 					.configure(new ContextView(this));
 				
