@@ -7,6 +7,7 @@ package org.bigbluebutton.view.navigation.pages
 	import org.bigbluebutton.view.navigation.pages.chat.ChatView;
 	import org.bigbluebutton.view.navigation.pages.chatrooms.ChatRoomsView;
 	import org.bigbluebutton.view.navigation.pages.deskshare.DeskshareView;
+	import org.bigbluebutton.view.navigation.pages.exit.ExitPageView;
 	import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageView;
 	import org.bigbluebutton.view.navigation.pages.guest.GuestPageView;
 	import org.bigbluebutton.view.navigation.pages.login.LoginPageView;
@@ -35,6 +36,7 @@ package org.bigbluebutton.view.navigation.pages
 		public static const DESKSHARE:String = "Deskshare";
 		public static const CAMERASETTINGS:String = "CameraSettings";
 		public static const AUDIOSETTINGS:String = "AudioSettings";
+		public static const EXIT:String = "Exit";
 		
 		/**
 		 * Especials
@@ -60,6 +62,7 @@ package org.bigbluebutton.view.navigation.pages
 				dic[DESKSHARE] = DeskshareView;
 				dic[CAMERASETTINGS] = CameraSettingsView;
 				dic[AUDIOSETTINGS] = AudioSettingsView;
+				dic[EXIT] = ExitPageView;
 				dicInitiated = true;
 			}
 		}

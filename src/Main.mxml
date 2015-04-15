@@ -43,6 +43,7 @@
 			import org.bigbluebutton.view.navigation.pages.common.MenuButtonsConfig;
 			import org.bigbluebutton.view.navigation.pages.deskshare.DeskshareConfig;
 			import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageConfig;
+			import org.bigbluebutton.view.navigation.pages.exit.ExitPageConfig;
 			import org.bigbluebutton.view.navigation.pages.guest.GuestPageConfig;
 			import org.bigbluebutton.view.navigation.pages.login.LoginPageConfig;
 			import org.bigbluebutton.view.navigation.pages.participants.ParticipantsConfig;
@@ -127,6 +128,7 @@
 					.configure(MicButtonConfig)
 					.configure(NavigationButtonConfig)
 					.configure(SwapCameraConfig)
+					.configure(ExitPageConfig)
 					.configure(DisconnectPageConfig)
 					.configure(GuestPageConfig)
 					.configure(DeskshareConfig)

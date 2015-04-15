@@ -1,5 +1,9 @@
 package org.bigbluebutton.view.navigation
 {
+	import flash.desktop.NativeApplication;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
+	
 	import mx.events.FlexEvent;
 	
 	import org.bigbluebutton.model.IUserUISession;
@@ -23,15 +27,26 @@ package org.bigbluebutton.view.navigation
 		public var view: IPagesNavigatorView;
 			
 		[Inject]
-		public var userUISession: IUserUISession
+		public var userUISession: IUserUISession;
 		
 		override public function initialize():void
 		{
+			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown, false, 0, true)
 			Log.getLogger("org.bigbluebutton").info(String(this));
 			
 			userUISession.pageChangedSignal.add(changePage);
 			
 			userUISession.pushPage(PagesENUM.LOGIN);
+		}
+		
+		private function onKeyDown(event:KeyboardEvent):void
+		{
+			if( event.keyCode == Keyboard.BACK )
+			{
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				userUISession.pushPage(PagesENUM.EXIT);
+			}
 		}
 		
 		protected function changePage(pageName:String, pageRemoved:Boolean = false, animation:int = TransitionAnimationENUM.APPEAR, transition:ViewTransitionBase = null):void
