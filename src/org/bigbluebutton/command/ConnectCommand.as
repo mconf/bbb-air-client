@@ -187,6 +187,7 @@ package org.bigbluebutton.command
 			presentationService.getPresentationInfo();
 
 			userSession.userList.allUsersAddedSignal.add(successUsersAdded);
+			usersService.getWaitingGuests();
 			usersService.queryForParticipants();
 			usersService.queryForRecordingStatus();
 			

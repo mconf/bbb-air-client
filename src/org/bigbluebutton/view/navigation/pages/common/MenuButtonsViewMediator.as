@@ -59,7 +59,6 @@ package org.bigbluebutton.view.navigation.pages.common
 		{
 			if (!loading)
 			{
-				usersService.getWaitingGuests();
 				updateGuestsNotification();
 				
 				/*var users:ArrayCollection = userSession.userList.users;*/
