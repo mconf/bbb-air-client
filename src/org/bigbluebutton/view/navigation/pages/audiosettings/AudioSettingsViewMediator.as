@@ -69,7 +69,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings
 			audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
 			shareMicrophoneSignal.dispatch(audioOptions);
 			
-			if(userSession.phoneAutoJoin){
+			if(userSession.phoneAutoJoin && !userSession.phoneSkipCheck){
 				userSession.phoneAutoJoin = false;
 				userUISession.popPage();
 			}
