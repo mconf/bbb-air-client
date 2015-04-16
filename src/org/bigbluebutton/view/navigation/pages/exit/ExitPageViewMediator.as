@@ -41,8 +41,8 @@ package org.bigbluebutton.view.navigation.pages.exit
 			
 			changeConnectionStatus(userUISession.currentPageDetails as int);
 			FlexGlobals.topLevelApplication.pageName.text = "";
-			FlexGlobals.topLevelApplication.profileBtn.visible = true;
-			FlexGlobals.topLevelApplication.backBtn.visible = false;
+			FlexGlobals.topLevelApplication.topActionBar.visible = false;
+			FlexGlobals.topLevelApplication.bottomMenu.visible = false;
 		}
 		
 		/**
@@ -79,6 +79,12 @@ package org.bigbluebutton.view.navigation.pages.exit
 		private function backToApplication(event:Event):void
 		{
 			userUISession.popPage();
+		}
+		
+		public override function destroy():void
+		{
+			FlexGlobals.topLevelApplication.topActionBar.visible = true;
+			FlexGlobals.topLevelApplication.bottomMenu.visible = true;
 		}
 	}
 }
