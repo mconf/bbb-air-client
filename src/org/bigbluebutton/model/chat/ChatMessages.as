@@ -101,7 +101,6 @@ package org.bigbluebutton.model.chat
 		public function resetNewMessages():void
 		{
 			_newMessages = 0;
-			chatMessageChange();
 		}
 	}
 }

@@ -22,6 +22,12 @@
 			<s:SolidColor  color="{hostComponent.getStyle('backgroundColor')}" color.down="{hostComponent.getStyle('selectedBackgroundColor')}"/>
 		</s:fill>
 	</s:Rect>
-	<s:Label id="labelDisplay" fontWeight="bold" left="{image.x + image.width}" top="{image.y}"/>
 	<s:BitmapImage id="image" source="{getStyle('backgroundImage')}" horizontalCenter="0" verticalCenter="0"/>
+
+	<s:Ellipse id="notification" visible="false" height="{image.width/5}" width="{image.width/5}" left="{image.x + image.width - (notification.width * 1.5)}" top="{image.y + notification.height/2}">
+		<s:fill>
+			<s:SolidColor  color="#EE4C4C" />
+		</s:fill>
+	</s:Ellipse>
+
 </s:Skin>

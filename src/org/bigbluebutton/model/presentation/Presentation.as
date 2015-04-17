@@ -58,7 +58,6 @@ package org.bigbluebutton.model.presentation
 		
 		public function show():void {
 			_changePresentation(this);
-			_slideChangeSignal.dispatch();
 		}
 		
 		public function set currentSlideNum(n:int):void {

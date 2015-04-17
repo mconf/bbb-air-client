@@ -13,6 +13,8 @@ package org.bigbluebutton.model.chat
 		function get privateChats():ArrayCollection;
 		function get chatMessageChangeSignal():ISignal;
 		function set chatMessageChangeSignal(signal:ISignal):void;
+		function get newChatMessageSignal():ISignal;
+		function set newChatMessageSignal(signal:ISignal):void;
 		function chatMessageDispatchSignal(UserID:String):void
 	}
 }
