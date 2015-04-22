@@ -38,7 +38,7 @@ package org.bigbluebutton.view.navigation.pages.presentation
 		
 		public function setSlide(s:Slide):void {
 			if (s != null) {	
-				var context:LoaderContext = new LoaderContext();			
+				var context:LoaderContext = new LoaderContext(false, ApplicationDomain.currentDomain, null);			
 				context.allowCodeImport = true;
 				slide.loaderContext = context;
 				slide.source = s.SWFFile.source;
