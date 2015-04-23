@@ -8,6 +8,8 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 
 	import org.bigbluebutton.command.ClearUserStatusCommand;
 	import org.bigbluebutton.command.ClearUserStatusSignal;
+	import org.bigbluebutton.command.PresenterCommand;
+	import org.bigbluebutton.command.PresenterSignal;
 
 	public class UserDetaisConfig implements IConfig
 	{
@@ -51,6 +53,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		 */
 		private function signals(): void
 		{
+			signalCommandMap.map(PresenterSignal).toCommand(PresenterCommand);
 			//signalCommandMap.map(ButtonTestSignal).toCommand(ButtonTestCommand);
 		}	
 	}

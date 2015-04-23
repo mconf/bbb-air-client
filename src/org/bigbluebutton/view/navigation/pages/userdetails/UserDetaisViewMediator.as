@@ -15,6 +15,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 	import org.osmf.logging.Log;
 	
 	import org.bigbluebutton.command.ClearUserStatusSignal;
+	import org.bigbluebutton.command.PresenterSignal;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
@@ -31,6 +32,9 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		
 		[Inject] 
 		public var clearUserStatusSignal: ClearUserStatusSignal;
+		
+		[Inject] 
+		public var presenterSignal: PresenterSignal;
 		
 		protected var _user:User;
 		
@@ -49,6 +53,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 			view.showCameraButton.addEventListener(MouseEvent.CLICK, onShowCameraButton);
 			view.showPrivateChat.addEventListener(MouseEvent.CLICK, onShowPrivateChatButton);
 			view.clearStatusButton.addEventListener(MouseEvent.CLICK, onClearStatusButton);
+			view.makePresenterButton.addEventListener(MouseEvent.CLICK, onMakePresenterButton);
 			FlexGlobals.topLevelApplication.pageName.text = view.user.name;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
@@ -70,6 +75,12 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 			userSession.userList.getUser(_user.userID).status = User.NO_STATUS;
 			view.clearStatusButton.includeInLayout = false;
 			view.clearStatusButton.visible = false;
+			userUISession.popPage();
+		}
+		
+		protected function onMakePresenterButton(event:MouseEvent):void
+		{
+			presenterSignal.dispatch(_user, userSession.userList.me.userID);
 			userUISession.popPage();
 		}
 		

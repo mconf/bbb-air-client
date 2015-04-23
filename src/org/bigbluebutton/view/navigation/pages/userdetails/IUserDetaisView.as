@@ -15,5 +15,6 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		function get showCameraButton():Button
 		function get showPrivateChat():Button
 		function get clearStatusButton():Button;
+		function get makePresenterButton():Button;
 	}
 }

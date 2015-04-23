@@ -98,7 +98,7 @@ package org.bigbluebutton.view.navigation.pages.participants
 			userSession.guestList.guestAddedSignal.add(addGuest);
 			userSession.guestList.guestRemovedSignal.add(guestRemoved);
 			
-			if (_userMe.role == "MODERATOR" && dataProviderGuests.length > 0){
+			if (_userMe.role == User.MODERATOR && dataProviderGuests.length > 0){
 					view.guestsList.visible = true;
 					view.guestsList.includeInLayout = true;
 					view.allGuests.visible = true;
@@ -120,7 +120,7 @@ package org.bigbluebutton.view.navigation.pages.participants
 			dataProviderGuests.refresh();
 			dicUserIdtoGuest[guest.userID] = guest;
 			
-			if(_userMe.role == "MODERATOR" && dataProviderGuests.length > 0){
+			if(_userMe.role == User.MODERATOR && dataProviderGuests.length > 0){
 				view.guestsList.visible = true;
 				view.guestsList.includeInLayout = true;
 				view.allGuests.visible = true;
@@ -144,7 +144,7 @@ package org.bigbluebutton.view.navigation.pages.participants
 				var index:uint = dataProviderGuests.getItemIndex(guest);
 				dataProviderGuests.removeItemAt(index);
 				dicUserIdtoGuest[guest.userID] = null;
-				if(_userMe.role == "MODERATOR" && dataProviderGuests.length == 0 && view && view.guestsList != null){
+				if(_userMe.role == User.MODERATOR && dataProviderGuests.length == 0 && view && view.guestsList != null){
 					
 					view.guestsList.includeInLayout = false;
 					view.guestsList.visible = false;
@@ -159,7 +159,7 @@ package org.bigbluebutton.view.navigation.pages.participants
 		{
 			dataProvider.refresh();
 			
-			if (_userMe.role == "MODERATOR" && dataProviderGuests.length > 0){
+			if (_userMe.role == User.MODERATOR && dataProviderGuests.length > 0){
 				view.guestsList.visible = true;
 				view.guestsList.includeInLayout = true;
 				view.allGuests.visible = true;

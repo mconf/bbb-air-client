@@ -50,6 +50,7 @@
 			<s:Button id="showCameraButton0" width="90%" label="{resourceManager.getString('resources', 'userDetail.cameraBtn.text')}"  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
 			<s:Button id="showPrivateChat0"  width="90%" label="{resourceManager.getString('resources', 'userDetail.privateChatBtn.text')}" styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
 			<s:Button includeInLayout="false" visible="false" width="90%" label="{resourceManager.getString('resources', 'userDetail.clearStatus')}" id="clearStatusButton0" styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize"/>
+			<s:Button includeInLayout="false" visible="false" id="makePresenterButton0" width="90%" label="{resourceManager.getString('resources', 'userDetail.presenterBtn.text')}"  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
 		</s:Group>
 	</s:Group>
 </view:NoTabView>

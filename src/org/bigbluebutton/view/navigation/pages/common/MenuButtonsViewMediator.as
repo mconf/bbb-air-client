@@ -87,7 +87,7 @@ package org.bigbluebutton.view.navigation.pages.common
 		
 		private function updateGuestsNotification():void {
 			var numberOfGuests:int = userSession.guestList.guests.length;
-			if(numberOfGuests > 0 && userSession.userList.me.role == "MODERATOR" && userUISession.currentPage != PagesENUM.PARTICIPANTS){
+			if(numberOfGuests > 0 && userSession.userList.me.role == User.MODERATOR && userUISession.currentPage != PagesENUM.PARTICIPANTS){
 				(view.menuParticipantsButton.skin as NavigationButtonSkin).notification.visible  = true;
 			}
 			else {

@@ -57,12 +57,12 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 				if(_user.presenter)
 				{
 					roleText.text = resourceManager.getString('resources', 'participants.status.presenter');
-					if (_user.role == "MODERATOR")
+					if (_user.role == User.MODERATOR)
 					{
 						roleText.text += "/" + resourceManager.getString('resources', 'participants.status.moderator');
 					}
 				}
-				else if(_user.role == "MODERATOR")
+				else if(_user.role == User.MODERATOR)
 				{
 					roleText.text = resourceManager.getString('resources', 'participants.status.moderator');
 				}
@@ -71,13 +71,22 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 					roleText.text = "";
 				}
 				
-				if(_user.status != User.NO_STATUS && _userMe.role == "MODERATOR"){
+				if(_user.status != User.NO_STATUS && _userMe.role == User.MODERATOR){
 					clearStatusButton.includeInLayout = true;
 					clearStatusButton.visible = true;
 				}
 				else {
 					clearStatusButton.includeInLayout = false;
 					clearStatusButton.visible = false;
+				}
+				
+				if(!_user.presenter && _userMe.role == User.MODERATOR){
+					makePresenterButton.includeInLayout = true;
+					makePresenterButton.visible = true;
+				}
+				else {
+					makePresenterButton.includeInLayout = false;
+					makePresenterButton.visible = false;
 				}
 				
 				cameraIcon.visible = cameraIcon.includeInLayout = _user.hasStream;
@@ -112,6 +121,11 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		public function get clearStatusButton():Button
 		{
 			return clearStatusButton0;
+		}
+		
+		public function get makePresenterButton():Button
+		{
+			return makePresenterButton0;
 		}
 		
 		
