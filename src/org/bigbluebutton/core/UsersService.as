@@ -164,5 +164,9 @@ package org.bigbluebutton.core
 		public function validateToken():void {
 			usersMessageSender.validateToken(conferenceParameters.internalUserID);
 		}
+		
+		public function changeRole(userID:String, role:String):void {
+			usersMessageSender.changeRole(userID, role)	
+		}
 	}
 }

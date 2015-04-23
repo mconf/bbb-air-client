@@ -89,6 +89,24 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 					makePresenterButton.visible = false;
 				}
 				
+				if(_userMe.role == User.MODERATOR && !_user.me){
+					
+					promoteButton.includeInLayout = true;
+					promoteButton.visible = true;
+					
+					if(_user.role == User.MODERATOR){
+						promoteButton.label = resourceManager.getString('resources', 'userDetail.promoteBtn.demoteText');
+					}
+					else {
+						promoteButton.label = resourceManager.getString('resources', 'userDetail.promoteBtn.promoteText');
+					}
+				}
+				else {
+					promoteButton.includeInLayout = false;
+					promoteButton.visible = false;
+				}
+				
+				
 				cameraIcon.visible = cameraIcon.includeInLayout = _user.hasStream;
 				micIcon.visible = micIcon.includeInLayout = (_user.voiceJoined && !_user.muted);
 				micOffIcon.visible = micOffIcon.includeInLayout = (_user.voiceJoined && _user.muted);
@@ -121,6 +139,11 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		public function get clearStatusButton():Button
 		{
 			return clearStatusButton0;
+		}
+		
+		public function get promoteButton():Button
+		{
+			return promoteButton0;
 		}
 		
 		public function get makePresenterButton():Button

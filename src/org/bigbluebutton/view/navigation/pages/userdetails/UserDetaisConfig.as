@@ -6,6 +6,8 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
 
+	import org.bigbluebutton.command.ChangeRoleCommand;
+	import org.bigbluebutton.command.ChangeRoleSignal;
 	import org.bigbluebutton.command.ClearUserStatusCommand;
 	import org.bigbluebutton.command.ClearUserStatusSignal;
 	import org.bigbluebutton.command.PresenterCommand;
@@ -45,7 +47,6 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		private function mediators(): void
 		{
 			mediatorMap.map(IUserDetaisView).toMediator(UserDetaisViewMediator);
-			signalCommandMap.map(ClearUserStatusSignal).toCommand(ClearUserStatusCommand);
 		}
 		
 		/**
@@ -53,7 +54,9 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		 */
 		private function signals(): void
 		{
+			signalCommandMap.map(ClearUserStatusSignal).toCommand(ClearUserStatusCommand);
 			signalCommandMap.map(PresenterSignal).toCommand(PresenterCommand);
+			signalCommandMap.map(ChangeRoleSignal).toCommand(ChangeRoleCommand);
 			//signalCommandMap.map(ButtonTestSignal).toCommand(ButtonTestCommand);
 		}	
 	}

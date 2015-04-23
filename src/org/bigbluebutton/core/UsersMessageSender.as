@@ -189,5 +189,14 @@ package org.bigbluebutton.core
 			
 			userSession.mainConnection.sendMessage("validateToken", defaultSuccessResponse, defaultFailureResponse, internalUserID);
 		}
+		
+		public function changeRole(userID:String, role:String):void {
+			trace("UsersMessageSender::setParticipantRole() -- Sending [participants.setParticipantRole] message to server.. with message [userID:" + userID + ", role:" + role + "]");
+			
+			var message:Object = new Object();
+			message["userId"] = userID;
+			message["role"] = role;
+			userSession.mainConnection.sendMessage("participants.setParticipantRole", defaultSuccessResponse, defaultFailureResponse, message);
+		}
 	}
 }
