@@ -37,16 +37,7 @@ package org.bigbluebutton.core.util
 			_urlRequest = urlRequest;
 			if (_urlRequest == null) {
 				_urlRequest = new URLRequest();
-				var appXML:XML =  NativeApplication.nativeApplication.applicationDescriptor;
-				var ns:Namespace = appXML.namespace();
-				var airCap = new AirCapabilities();
-				var deviceModel = airCap.getDeviceModel();
-				if(deviceModel != ""){
-					var userAgent:Array = _urlRequest.userAgent.split(")");
-					userAgent[0] += "; " + deviceModel;
-					_urlRequest.userAgent = userAgent.join(")");
-				}
-				_urlRequest.userAgent += " " + appXML.ns::name + "/" + appXML.ns::versionNumber;
+				setUserAgent();
 				_urlRequest.manageCookies = true;
 				_urlRequest.followRedirects = true;
 				_urlRequest.method = URLRequestMethod.GET;
@@ -60,6 +51,32 @@ package org.bigbluebutton.core.util
 			urlLoader.addEventListener( HTTPStatusEvent.HTTP_RESPONSE_STATUS, httpResponseStatusHandler );
 			urlLoader.dataFormat = dataFormat;
 			urlLoader.load( _urlRequest );
+		}
+		
+		private function setUserAgent():void{
+			// AirCapabilities ANE to get the device information
+			var airCap:AirCapabilities = new AirCapabilities();
+			var deviceName:String = airCap.getMachineName();
+			if(deviceName != ""){
+				// include device name in the user agent looking for the first ")" character as follows:
+				// Mozilla/5.0 (Android; U; pt-BR<; DEVICE NAME>) AppleWebKit/533.19.4 (KHTML, like Gecko) AdobeAIR/16.0
+				var userAgent:Array = _urlRequest.userAgent.split(")");
+				userAgent[0] += "; " + deviceName;
+				_urlRequest.userAgent = userAgent.join(")");
+			}
+			var OSVersion:String =  airCap.getOSVersion();
+			if(OSVersion != ""){
+				// include os version in the user agent looking for the first ";" character as follows:
+				// Mozilla/5.0 (Android< OSVERSION>; U; pt-BR) AppleWebKit/533.19.4 (KHTML, like Gecko) AdobeAIR/16.0
+				var userAgent:Array = _urlRequest.userAgent.split(";");
+				userAgent[0] += " " + OSVersion;
+				_urlRequest.userAgent = userAgent.join(";");
+			}
+			var appXML:XML =  NativeApplication.nativeApplication.applicationDescriptor;
+			var ns:Namespace = appXML.namespace();
+			// append client name and version to the end of the user agent
+			_urlRequest.userAgent += " " + appXML.ns::name + "/" + appXML.ns::versionNumber;
+			trace(_urlRequest.userAgent);
 		}
 		
 		private function httpResponseStatusHandler(e:HTTPStatusEvent):void {
