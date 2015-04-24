@@ -308,4 +308,7 @@
 		</InfoAdditions>
 	    <requestedDisplayResolution>high</requestedDisplayResolution>
 	</iPhone>
+<extensions>
+        <extensionID>com.freshplanet.AirCapabilities</extensionID>
+    </extensions>
 </application>

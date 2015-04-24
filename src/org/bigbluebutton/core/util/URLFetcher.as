@@ -1,5 +1,8 @@
 package org.bigbluebutton.core.util
 {
+	import com.freshplanet.nativeExtensions.AirCapabilities;
+	
+	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
@@ -34,6 +37,16 @@ package org.bigbluebutton.core.util
 			_urlRequest = urlRequest;
 			if (_urlRequest == null) {
 				_urlRequest = new URLRequest();
+				var appXML:XML =  NativeApplication.nativeApplication.applicationDescriptor;
+				var ns:Namespace = appXML.namespace();
+				var airCap = new AirCapabilities();
+				var deviceModel = airCap.getDeviceModel();
+				if(deviceModel != ""){
+					var userAgent:Array = _urlRequest.userAgent.split(")");
+					userAgent[0] += "; " + deviceModel;
+					_urlRequest.userAgent = userAgent.join(")");
+				}
+				_urlRequest.userAgent += " " + appXML.ns::name + "/" + appXML.ns::versionNumber;
 				_urlRequest.manageCookies = true;
 				_urlRequest.followRedirects = true;
 				_urlRequest.method = URLRequestMethod.GET;
