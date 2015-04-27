@@ -18,12 +18,12 @@ Add extra arguments to Flex Compiler:
 -locale=en_US,pt_BR -source-path=./locale/{locale} -resource-bundle-list=used-resource-bundles.txt -allow-source-path-overlap=true
 ```
 
-Include the AirCapabilities Native Extension in the project
+Include the Air Native Extensions (ANE) in the project:
 
 * Project -> Properties -> Flex Build Path -> Native Extensions -> Add ANE...
-* Browse for bbb-air-client\libs\AirCapabilities.ane, click ok
+* Select the *.ane files in the bbb-air-client\libs folder
 * still on project properties, go to Flex Build Packaging -> Apple iOS -> Native Extensions
-* check the Package checkbox for AirCapabilities.ane, do the same for android on Flex Build Packaging -> Google Android
+* check the Package checkbox for the ane files, do the same for android on Flex Build Packaging -> Google Android
 * on Flex Build Packaging -> BlackBerry Tablet OS, uncheck "enable this target platform" 
 
 Everytime you change the localization files (and when you first compile the client), run *build-locale.bat* to compile the localization resources.
