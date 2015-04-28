@@ -8,6 +8,7 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 	import mx.core.FlexGlobals;
 	
 	import org.bigbluebutton.model.IUserUISession;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.common.MenuButtons;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectType;
@@ -32,6 +33,7 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 				view.exitButton.addEventListener(MouseEvent.CLICK, applicationExit);
 			}
 			
+			view.reconnectButton.addEventListener(MouseEvent.CLICK, reconnect);
 			changeConnectionStatus(userUISession.currentPageDetails as int);
 			FlexGlobals.topLevelApplication.pageName.text = "";
 			FlexGlobals.topLevelApplication.topActionBar.visible = false;
@@ -67,6 +69,14 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 		{
 			trace("DisconnectPageViewMediator.applicationExit - exitting the application!");
 			NativeApplication.nativeApplication.exit();
+		}
+		
+		private function reconnect(event:Event):void
+		{
+			trace("DisconnectPageViewMediator.reconnect - attempting to reconnect");
+			userUISession.popPage();
+			FlexGlobals.topLevelApplication.mainshell.visible=false;
+			userUISession.pushPage(PagesENUM.LOGIN);
 		}
 	}
 }

@@ -40,6 +40,8 @@
 				 text.InvalidPassword="{resourceManager.getString('resources', 'login.error.invalidPassword')}"
 				 text.NoRedirect="{resourceManager.getString('resources', 'login.error.noRedirect')}"
 				 text.InvalidURL="{resourceManager.getString('resources', 'login.error.invalidURL')}"/>
+		<s:Button id="tryAgainButton0" styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" width="90%" visible="false" includeInLayout="false" visible.GenericError="true" includeInLayout.GenericError="true"
+				 label="{resourceManager.getString('resources', 'login.button.tryAgain')}"/>
 
 	</s:Group>
 </view:NoTabView>

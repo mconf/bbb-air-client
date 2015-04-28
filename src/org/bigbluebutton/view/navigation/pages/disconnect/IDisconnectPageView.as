@@ -7,5 +7,6 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 		function get currentState():String
 		function set currentState(value:String):void	
 		function get exitButton():Button
+		function get reconnectButton():Button
 	}
 }

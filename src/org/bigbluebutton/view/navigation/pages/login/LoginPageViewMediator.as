@@ -1,7 +1,9 @@
 package org.bigbluebutton.view.navigation.pages.login
 {
 	import flash.desktop.NativeApplication;
+	import flash.events.Event;
 	import flash.events.InvokeEvent;
+	import flash.events.MouseEvent;
 	import flash.filesystem.File;
 	import flash.system.Capabilities;
 
@@ -14,6 +16,7 @@ package org.bigbluebutton.view.navigation.pages.login
 	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.model.UserUISession;
 	import org.bigbluebutton.view.navigation.IPagesNavigatorView;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.osmf.logging.Log;
 
@@ -46,6 +49,7 @@ package org.bigbluebutton.view.navigation.pages.login
 			//loginService.unsuccessJoinedSignal.add(onUnsucess);
 			userUISession.unsuccessJoined.add(onUnsucess);
 
+			view.tryAgainButton.addEventListener(MouseEvent.CLICK, tryAgain);
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvokeEvent);
 		}
 
@@ -128,6 +132,12 @@ package org.bigbluebutton.view.navigation.pages.login
 
 			view.dispose();
 			view = null;
+		}
+		
+		private function tryAgain(event:Event):void{
+			FlexGlobals.topLevelApplication.mainshell.visible=false;
+			userUISession.popPage();
+			userUISession.pushPage(PagesENUM.LOGIN);
 		}
 	}
 }

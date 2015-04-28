@@ -21,6 +21,7 @@ package org.bigbluebutton.core
 		function get selectedCameraRotation():int
 		function set selectedCameraRotation(rotation:int):void
 		function connect():void
+		function disconnect(onUserCommand:Boolean):void
 		function startPublishing(camera:Camera, streamName:String):void
 		function stopPublishing():void
 		function selectCameraQuality(profile:VideoProfile):void

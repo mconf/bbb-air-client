@@ -25,11 +25,13 @@ package org.bigbluebutton.command
 		override public function execute():void
 		{
 			userUISession.pushPage(PagesENUM.DISCONNECT, disconnectionStatusCode);	
-			userSession.mainConnection.connection.close();
+			userSession.mainConnection.disconnect(true);
 			if(userSession.videoConnection!=null)
-				userSession.videoConnection.connection.close();
+				userSession.videoConnection.disconnect(true);
 			if(userSession.voiceConnection!=null)
-				userSession.voiceConnection.connection.close();
+				userSession.voiceConnection.disconnect(true);
+			if(userSession.deskshareConnection!=null)
+				userSession.deskshareConnection.disconnect(true);
 		}
 	}
 }

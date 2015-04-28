@@ -23,6 +23,7 @@ package org.bigbluebutton.core
 		function set room(value:String):void;
 		function get connection():NetConnection
 		function connect():void
+		function disconnect(onUserCommand:Boolean):void
 		function get mouseLocationChangedSignal():ISignal;
 		function deskshareStreamStopped():void;
 	}

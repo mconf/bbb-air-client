@@ -91,6 +91,10 @@ package org.bigbluebutton.core
 		
 		public function disconnect(onUserCommand:Boolean):void {
 			_onUserCommand = onUserCommand;
+			_netConnection.removeEventListener( NetStatusEvent.NET_STATUS, netStatus );
+			_netConnection.removeEventListener( AsyncErrorEvent.ASYNC_ERROR, netASyncError );
+			_netConnection.removeEventListener( SecurityErrorEvent.SECURITY_ERROR, netSecurityError );
+			_netConnection.removeEventListener( IOErrorEvent.IO_ERROR, netIOError );
 			_netConnection.close();
 		}
 		

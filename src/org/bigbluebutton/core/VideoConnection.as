@@ -118,6 +118,10 @@ package org.bigbluebutton.core
 			baseConnection.connect(uri, conferenceParameters.externMeetingID, conferenceParameters.username);
 		}
 		
+		public function disconnect(onUserCommand:Boolean):void {
+			baseConnection.disconnect(onUserCommand);
+		}
+		
 		public function get cameraPosition():String
 		{
 			return _cameraPosition;

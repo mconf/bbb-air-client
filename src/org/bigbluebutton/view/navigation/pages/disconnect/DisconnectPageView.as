@@ -8,5 +8,10 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 		{
 			return exitButton0;
 		}
+		
+		public function get reconnectButton():Button
+		{
+			return reconnectButton0;
+		}
 	}
 }

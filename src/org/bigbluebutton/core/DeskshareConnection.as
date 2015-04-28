@@ -140,6 +140,10 @@ package org.bigbluebutton.core
 		{
 			baseConnection.connect(applicationURI, conferenceParameters.externMeetingID);
 		}
+		public function disconnect(onUserCommand:Boolean):void
+		{
+			baseConnection.disconnect(onUserCommand);
+		}
 		
 		public function get isStreaming():Boolean
 		{
