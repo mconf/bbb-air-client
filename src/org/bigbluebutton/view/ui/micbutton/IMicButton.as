@@ -1,4 +1,4 @@
-package org.bigbluebutton.view.ui
+package org.bigbluebutton.view.ui.micbutton
 {
 	import org.bigbluebutton.core.view.IView;
 	import org.osflash.signals.ISignal;

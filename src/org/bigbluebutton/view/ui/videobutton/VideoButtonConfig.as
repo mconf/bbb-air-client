@@ -1,15 +1,16 @@
-package org.bigbluebutton.view.ui
+package org.bigbluebutton.view.ui.videobutton
 {
 	import org.bigbluebutton.command.MicrophoneMuteCommand;
 	import org.bigbluebutton.command.MicrophoneMuteSignal;
+	import org.bigbluebutton.command.ShareCameraCommand;
+	import org.bigbluebutton.command.ShareCameraSignal;
 	
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
 
-
-	public class MicButtonConfig implements IConfig
+	public class VideoButtonConfig implements IConfig
 	{
 		[Inject]
 		public var injector: IInjector;
@@ -42,7 +43,7 @@ package org.bigbluebutton.view.ui
 		 */
 		private function mediators(): void
 		{
-			mediatorMap.map(IMicButton).toMediator(MicButtonMediator);
+			mediatorMap.map(IVideoButton).toMediator(VideoButtonMediator);
 		}
 		
 		/**
@@ -50,7 +51,7 @@ package org.bigbluebutton.view.ui
 		 */
 		private function signals(): void
 		{
-			signalCommandMap.map(MicrophoneMuteSignal).toCommand(MicrophoneMuteCommand);
+			signalCommandMap.map(ShareCameraSignal).toCommand(ShareCameraCommand);
 		}	
 	}
 }

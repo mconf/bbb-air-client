@@ -1,4 +1,4 @@
-package org.bigbluebutton.view.ui
+package org.bigbluebutton.view.ui.micbutton
 {
 	import flash.events.MouseEvent;
 	
@@ -34,6 +34,7 @@ package org.bigbluebutton.view.ui
 		
 		public function setVisibility(val:Boolean):void {
 			this.visible = val;
+			this.includeInLayout = val;
 		}
 		
 		protected var _muted:Boolean = false;

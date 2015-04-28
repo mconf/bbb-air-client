@@ -419,6 +419,11 @@ global
 		mutedBackgroundImage: Embed(source="assets/res/drawable-mdpi/micBtn_off.png");
 	}
 	
+	s|Button.videoButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/video.png");
+	}
+	
 	s|Image.iconStyle
 	{
 		width: 32;
@@ -809,6 +814,11 @@ global
 	{
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/micBtn_on.png");
 		mutedBackgroundImage: Embed(source="assets/res/drawable-hdpi/micBtn_off.png");
+	}
+	
+	s|Button.videoButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/video.png");
 	}
 	
 	s|Image.iconStyle
@@ -1203,6 +1213,11 @@ global
 		mutedBackgroundImage: Embed(source="assets/res/drawable-xhdpi/micBtn_off.png");
 	}
 	
+	s|Button.videoButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/video.png");
+	}
+	
 	s|Image.iconStyle
 	{
 		width: 64;
@@ -1594,6 +1609,11 @@ global
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/micBtn_on.png");
 		mutedBackgroundImage: Embed(source="assets/res/drawable-xxhdpi/micBtn_off.png");
+	}
+	
+	s|Button.videoButtonStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/video.png");
 	}
 	
 	s|Image.iconStyle

@@ -12,6 +12,8 @@
 			   creationComplete="creationCompleteHandler(event)"
 			   applicationComplete="applicationCompleteHandler(event)" 	
 			   runtimeDPIProvider = "CustomRuntimeDPIProvider"
+			   xmlns:micbutton="org.bigbluebutton.view.ui.micbutton.*"
+			   xmlns:videobutton="org.bigbluebutton.view.ui.videobutton.*"
 			   >
 	<fx:Style source="Default.css"/>
 	
@@ -55,11 +57,12 @@
 			import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantConfig;
 			import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisConfig;
 			import org.bigbluebutton.view.navigation.pages.videochat.VideoChatConfig;
-			import org.bigbluebutton.view.ui.MicButtonConfig;
 			import org.bigbluebutton.view.ui.NavigationButtonConfig;
 			import org.bigbluebutton.view.ui.RecordingStatusConfig;
 			import org.bigbluebutton.view.ui.SwapCameraConfig;
 			import org.bigbluebutton.view.ui.loading.LoadingScreenConfig;
+			import org.bigbluebutton.view.ui.micbutton.MicButtonConfig;
+			import org.bigbluebutton.view.ui.videobutton.VideoButtonConfig;
 			import org.osmf.logging.Log;
 			import org.osmf.logging.Logger;
 			
@@ -129,6 +132,7 @@
 					.configure(ParticipantsConfig)
 					.configure(SelectParticipantConfig)		
 					.configure(MicButtonConfig)
+					.configure(VideoButtonConfig)
 					.configure(NavigationButtonConfig)
 					.configure(SwapCameraConfig)
 					.configure(ExitPageConfig)
@@ -237,7 +241,8 @@
 				</s:Group>
 				<s:Label id="pageName" styleName="pageNameStyle" width="100%" height="100%"/>
 				<ui:RecordingStatus id="recordingStatus" styleName="recordingStatusIconStyle topButtonStyle"/>
-				<ui:MicButton id="microphoneBtn" styleName="micButtonStyle topButtonStyle"/>
+				<videobutton:VideoButton id="videoBtn" styleName="videoButtonStyle topButtonStyle"/>
+				<micbutton:MicButton id="microphoneBtn" styleName="micButtonStyle topButtonStyle"/>
 			</s:HGroup>
 		</s:SkinnableContainer>
 

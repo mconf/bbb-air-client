@@ -1,4 +1,4 @@
-package org.bigbluebutton.view.ui
+package org.bigbluebutton.view.ui.micbutton
 {
 	import flash.events.MouseEvent;
 	
