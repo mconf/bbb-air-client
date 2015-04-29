@@ -1,6 +1,7 @@
 package org.bigbluebutton.view.navigation.pages.videochat
 {
 	import flash.display.DisplayObject;
+	import flash.events.MouseEvent;
 	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
@@ -34,6 +35,8 @@ package org.bigbluebutton.view.navigation.pages.videochat
 		
 		protected var dataProvider:ArrayCollection;
 		
+		private var manualSelection:Boolean = false;
+		
 		override public function initialize():void
 		{
 			Log.getLogger("org.bigbluebutton").info(String(this));
@@ -42,7 +45,7 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			userSession.userList.userChangeSignal.add(userChangeHandler);
 			
 			userUISession.pageTransitionStartSignal.add(onPageTransitionStart);
-			view.streamlist.addEventListener(IndexChangeEvent.CHANGE, onSelectStream);
+			view.streamlist.addEventListener(MouseEvent.CLICK, onSelectStream);
 			
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'video.title');
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
@@ -57,7 +60,21 @@ package org.bigbluebutton.view.navigation.pages.videochat
 					addUserStreamNames(u);
 				}
 			}
-			checkVideo();
+			var selectedUserProfile:User = userUISession.currentPageDetails as User;
+			if (selectedUserProfile){
+				manualSelection = true;
+				var userStreamNames:Array = getUserStreamNamesByUserID(selectedUserProfile.userID);
+				var displayUserStreamName:UserStreamName = userStreamNames[0];
+				view.streamlist.selectedIndex = dataProvider.getItemIndex(displayUserStreamName);
+				startStream(selectedUserProfile, displayUserStreamName.streamName);
+				view.noVideoMessage.visible = false;
+				view.noVideoMessage.includeInLayout = false;
+				view.streamListScroller.visible = true;
+				view.streamListScroller.includeInLayout = true;
+			}
+			else {
+				checkVideo();
+			}
 		}
 		
 		private function addUserStreamNames(u:User):void{
@@ -110,14 +127,20 @@ package org.bigbluebutton.view.navigation.pages.videochat
 			}
 		}
 		
-		private function onSelectStream(event:IndexChangeEvent):void
+		private function onSelectStream(event:MouseEvent):void
 		{
-			if (event.newIndex >= 0) 
+			if (view.streamlist.selectedIndex >= 0) 
 			{
-				var userStreamName:UserStreamName = dataProvider.getItemAt(event.newIndex) as UserStreamName;
+				var userStreamName:UserStreamName = dataProvider.getItemAt(view.streamlist.selectedIndex) as UserStreamName;
 				var user:User = userStreamName.user;
-				if(user.hasStream)
+				if(userStreamName.streamName == userUISession.currentStreamName && manualSelection){
+					view.streamlist.selectedIndex = -1;
+					manualSelection = false;
+					checkVideo();
+				}
+				else if(user.hasStream)
 				{
+					manualSelection = true;
 					if(getDisplayedUser() != null)
 					{
 						stopStream(getDisplayedUser().userID);
@@ -229,7 +252,11 @@ package org.bigbluebutton.view.navigation.pages.videochat
 				
 				if(user.streamName.split("|").length > userStreamNames.length && user.streamName.length > 0)
 				{
+					var camNumber:int = dataProvider.length;
 					addUserStreamNames(user);
+					if(userUISession.currentStreamName == userSession.userList.me.streamName && camNumber == 1){
+						checkVideo();
+					}
 				}
 				
 				if(userUISession.currentStreamName == ""){
@@ -250,6 +277,9 @@ package org.bigbluebutton.view.navigation.pages.videochat
 					view.streamListScroller.visible = true;
 					view.streamListScroller.includeInLayout = true;
 				}
+			}
+			else if(property == UserList.PRESENTER){
+				checkVideo();
 			}
 			
 			dataProvider.refresh();
@@ -286,109 +316,97 @@ package org.bigbluebutton.view.navigation.pages.videochat
 		
 		private function checkVideo(changedUser:User = null):void 
 		{
-			
-			// get id of the user that is currently displayed
-			var currentUser:User = getDisplayedUser();
-			
-			// get user that was selected 
-			var selectedUser:User = userUISession.currentPageDetails as User;
-			
-			// get presenter user
-			var presenter:User = userSession.userList.getPresenter();
-			
-			// get any user that has video stream
-			var userWithCamera:User = getUserWithCamera();
-			
-			var newUser:User;
+			if(!manualSelection || userUISession.currentStreamName == ""){
+				// get id of the user that is currently displayed
+				var currentUser:User = getDisplayedUser();
+				
+				// get presenter user
+				var presenter:User = userSession.userList.getPresenter();
+				
+				// get any user that has video stream
+				var userWithCamera:User = getUserWithCamera();
+				
+				var newUser:User;
+						
+				if (changedUser)
+				{
 					
-			if (changedUser)
-			{
-				
-				var userStreamNames:Array = getUserStreamNamesByUserID(changedUser.userID);
-				
-				// Priority state machine
-				
-				if (selectedUser && selectedUser.hasStream && changedUser.userID == selectedUser.userID)
-				{
-					if (view) view.stopStream();	
-					startStream(changedUser, userStreamNames[0].streamName);
-				}
-				else if (changedUser.presenter && changedUser.hasStream)
-				{
-					if (view) view.stopStream();	
-					startStream(changedUser, userStreamNames[0].streamName);
-				}
-				else if (currentUser && changedUser.userID == currentUser.userID)
-				{
-					if (view) view.stopStream();	
-					startStream(changedUser, userStreamNames[0].streamName);
-				}
-				else if (userWithCamera)
-				{
-					if (userWithCamera.userID == changedUser.userID)
+					var userStreamNames:Array = getUserStreamNamesByUserID(changedUser.userID);
+					
+					// Priority state machine
+					if (changedUser.presenter && changedUser.hasStream)
 					{
 						if (view) view.stopStream();	
 						startStream(changedUser, userStreamNames[0].streamName);
 					}
-					else if (!changedUser.hasStream && userWithCamera.me)
+					else if (currentUser && changedUser.userID == currentUser.userID)
 					{
-						var userStreamNames:Array = getUserStreamNamesByUserID(userWithCamera.userID);
 						if (view) view.stopStream();	
-						startStream(userWithCamera, userStreamNames[0].streamName);
+						startStream(changedUser, userStreamNames[0].streamName);
 					}
-				}
-			}
-			else
-			{	
-				// Priority state machine
-				
-				// if user was directly selected, show this user as a first priority
-				if (selectedUser && userSession.userList.hasUser(selectedUser.userID) && selectedUser.hasStream)
-				{
-					newUser = selectedUser;
-				}
-					// if presenter is transmitting a video - put them in second priority
-				else if (presenter != null && presenter.hasStream)
-				{
-					newUser = presenter;
-				}
-					// current user is the third priority
-				else if (currentUser != null && currentUser.hasStream) 
-				{
-					newUser = currentUser;
-				}
-					// any user with camera is the last priority
-				else if (userWithCamera != null && userWithCamera.hasStream)
-				{
-					newUser = userWithCamera;
-				}
-					// otherwise, nobody transmitts video at this moment
-				else
-				{
-					return;
-				}
-								
-				if (newUser)
-				{
-					var userStreamNames:Array = getUserStreamNamesByUserID(newUser.userID);
-					var displayUserStreamName:UserStreamName = userStreamNames[0];
-					for each (var userStreamName:UserStreamName in userStreamNames){
-						if(userStreamName.user.hasStream && userUISession.currentStreamName == userStreamName.streamName){
-							displayUserStreamName = userStreamName;
-							break;
+					else if (userWithCamera)
+					{
+						if (userWithCamera.userID == changedUser.userID)
+						{
+							if (view) view.stopStream();	
+							startStream(changedUser, userStreamNames[0].streamName);
+						}
+						else if (!changedUser.hasStream && userWithCamera.me)
+						{
+							var userStreamNames:Array = getUserStreamNamesByUserID(userWithCamera.userID);
+							if (view) view.stopStream();	
+							startStream(userWithCamera, userStreamNames[0].streamName);
 						}
 					}
-					if (view){
-						view.stopStream();
-						view.streamlist.selectedIndex = dataProvider.getItemIndex(displayUserStreamName);
-						startStream(newUser, displayUserStreamName.streamName);
-						view.streamlist.selectedIndex = dataProvider.getItemIndex(userStreamNames[0]);
-						view.noVideoMessage.visible = false;
-						view.noVideoMessage.includeInLayout = false;
-						view.streamListScroller.visible = true;
-						view.streamListScroller.includeInLayout = true;
+				}
+				else
+				{	
+					// Priority state machine
+					
+					// if presenter is transmitting a video - put them in first priority
+					if (presenter != null && presenter.hasStream && !presenter.me)
+					{
+						trace("--- presenter, i choose you");
+						newUser = presenter;
 					}
-				}	
+						// current user is the second priority
+					else if (currentUser != null && currentUser.hasStream && !currentUser.me) 
+					{
+						trace("--- current user, i choose you");
+						newUser = currentUser;
+					}
+						// any user with camera is the last priority
+					else if (userWithCamera != null && userWithCamera.hasStream)
+					{
+						trace("--- any user, i choose you");
+						newUser = userWithCamera;
+					}
+						// otherwise, nobody transmitts video at this moment
+					else
+					{
+						return;
+					}
+									
+					if (newUser)
+					{
+						var userStreamNames:Array = getUserStreamNamesByUserID(newUser.userID);
+						var displayUserStreamName:UserStreamName = userStreamNames[0];
+						for each (var userStreamName:UserStreamName in userStreamNames){
+							if(userStreamName.user.hasStream && userUISession.currentStreamName == userStreamName.streamName){
+								displayUserStreamName = userStreamName;
+								break;
+							}
+						}
+						if (view){
+							view.stopStream();
+							startStream(newUser, displayUserStreamName.streamName);
+							view.noVideoMessage.visible = false;
+							view.noVideoMessage.includeInLayout = false;
+							view.streamListScroller.visible = true;
+							view.streamListScroller.includeInLayout = true;
+						}
+					}	
+				}
 			}
 		}
 	}
