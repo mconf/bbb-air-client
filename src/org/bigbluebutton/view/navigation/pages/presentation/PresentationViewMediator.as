@@ -1,10 +1,12 @@
 package org.bigbluebutton.view.navigation.pages.presentation
 {
 	import flash.display.DisplayObject;
+	import flash.events.TransformGestureEvent;
 	
 	import mx.core.FlexGlobals;
 	
 	import org.bigbluebutton.command.LoadSlideSignal;
+	import org.bigbluebutton.core.IPresentationService;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.presentation.Presentation;
 	import org.bigbluebutton.model.presentation.Slide;
@@ -23,6 +25,9 @@ package org.bigbluebutton.view.navigation.pages.presentation
 		[Inject]
 		public var loadSlideSignal: LoadSlideSignal;
 		
+		[Inject]
+		public var presentationService: IPresentationService;
+		
 		private var _currentPresentation:Presentation;
 		private var _currentSlideNum:int = -1;
 		private var _currentSlide:Slide;
@@ -33,9 +38,23 @@ package org.bigbluebutton.view.navigation.pages.presentation
 			
 			userSession.presentationList.presentationChangeSignal.add(presentationChangeHandler);
 			
+			view.slide.addEventListener(TransformGestureEvent.GESTURE_SWIPE, swipehandler); 
 			setPresentation(userSession.presentationList.currentPresentation);
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
+		}
+		
+		private function swipehandler(e:TransformGestureEvent){
+			if(userSession.userList.me.presenter){
+				if( e.offsetX == -1 && _currentSlideNum < _currentPresentation.slides.length - 1){
+					setCurrentSlideNum(_currentSlideNum + 1);
+					presentationService.gotoSlide(_currentPresentation.id + "/" + _currentSlide.slideNumber);
+				}
+				else if(e.offsetX == 1){
+					setCurrentSlideNum(_currentSlideNum - 1);
+					presentationService.gotoSlide(_currentPresentation.id + "/" + _currentSlide.slideNumber);
+				}
+			}
 		}
 		
 		private function displaySlide():void {

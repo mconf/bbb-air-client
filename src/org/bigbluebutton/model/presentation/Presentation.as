@@ -13,6 +13,7 @@ package org.bigbluebutton.model.presentation
 	public class Presentation
 	{
 		private var _fileName:String = "";
+		private var _id:String = "";
 		private var _slides:Vector.<Slide> = new Vector.<Slide>();
 		
 		private var _changePresentation:Function;
@@ -22,8 +23,9 @@ package org.bigbluebutton.model.presentation
 		
 		private var _slideChangeSignal:ISignal = new Signal();
 		
-		public function Presentation(fileName:String, changePresentation:Function, numOfSlides:int, isCurrent:Boolean):void {
+		public function Presentation(fileName:String, id:String, changePresentation:Function, numOfSlides:int, isCurrent:Boolean):void {
 			_fileName = fileName;
+			_id = id;
 			_slides = new Vector.<Slide>(numOfSlides);
 			_changePresentation = changePresentation;
 			_current = isCurrent;
@@ -31,6 +33,10 @@ package org.bigbluebutton.model.presentation
 		
 		public function get fileName():String {
 			return _fileName;
+		}
+		
+		public function get id():String {
+			return _id;
 		}
 		
 		public function get slides():Vector.<Slide> {
@@ -61,7 +67,9 @@ package org.bigbluebutton.model.presentation
 		}
 		
 		public function set currentSlideNum(n:int):void {
-			_slides[_currentSlideNum].current = false;
+			if(_currentSlideNum >= 0){
+				_slides[_currentSlideNum].current = false;
+			}
 			_currentSlideNum = n - 1;
 			_slides[_currentSlideNum].current = true;
 			_slideChangeSignal.dispatch();

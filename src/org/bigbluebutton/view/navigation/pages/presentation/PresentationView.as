@@ -70,6 +70,9 @@ package org.bigbluebutton.view.navigation.pages.presentation
 			}
 		}
 		
+		public function get slide(){
+			return slide0;	
+		}
 		
 		public function dispose():void
 		{

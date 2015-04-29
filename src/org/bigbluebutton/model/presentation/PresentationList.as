@@ -27,7 +27,7 @@ package org.bigbluebutton.model.presentation
 			
 		}
 		
-		public function addPresentation(presentationName:String, numberOfSlides:int, current:Boolean):Presentation {
+		public function addPresentation(presentationName:String, id:String, numberOfSlides:int, current:Boolean):Presentation {
 			trace("Adding presentation " + presentationName);
 			for (var i:int=0; i < _presentations.length; i++) {
 				var p:Presentation = _presentations[i] as Presentation;
@@ -35,7 +35,7 @@ package org.bigbluebutton.model.presentation
 					return p;
 				}
 			}
-			var presentation:Presentation = new Presentation(presentationName, changeCurrentPresentation, numberOfSlides, current);
+			var presentation:Presentation = new Presentation(presentationName, id, changeCurrentPresentation, numberOfSlides, current);
 			_presentations.addItem(presentation);
 			return presentation;
 		}

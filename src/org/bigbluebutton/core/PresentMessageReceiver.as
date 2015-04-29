@@ -175,7 +175,7 @@ package org.bigbluebutton.core
 			var length:int = presentationObject.pages.length;
 
 			trace("PresentMessageReceiver::handleGetPresentationInfoReply() -- adding presentation [" + presentationObject.name + "] to the presentation list");
-			var presentation:Presentation = userSession.presentationList.addPresentation(presentationObject.name, length, presentationObject.current);
+			var presentation:Presentation = userSession.presentationList.addPresentation(presentationObject.name, presentationObject.id, length, presentationObject.current);
 
 			// Add all the slides to the presentation:
 			for(var i:int = 0; i < length; i++) {
