@@ -177,6 +177,7 @@
 			
 			protected function applicationCompleteHandler(event:FlexEvent):void
 			{
+				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
 				stage.addEventListener(Event.ACTIVATE, fl_Activate);
 				stage.addEventListener(Event.DEACTIVATE, fl_Deactivate);
 				stage.addEventListener(Event.CLOSE, closeApplication);
