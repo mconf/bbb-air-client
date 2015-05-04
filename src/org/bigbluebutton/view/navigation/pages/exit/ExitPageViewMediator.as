@@ -3,10 +3,13 @@ package org.bigbluebutton.view.navigation.pages.exit
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.system.Capabilities;
 	
 	import mx.core.FlexGlobals;
 	
+	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.view.navigation.pages.common.MenuButtons;
@@ -26,6 +29,9 @@ package org.bigbluebutton.view.navigation.pages.exit
 		
 		[Inject]
 		public var userSession: IUserSession;
+		
+		[Inject]
+		public var conferenceParameters: IConferenceParameters;
 			
 		override public function initialize():void
 		{
@@ -73,6 +79,8 @@ package org.bigbluebutton.view.navigation.pages.exit
 		private function applicationExit(event:Event):void
 		{
 			trace("DisconnectPageViewMediator.applicationExit - exitting the application!");
+			var urlReq = new URLRequest(conferenceParameters.logoutUrl); 
+			navigateToURL(urlReq);
 			NativeApplication.nativeApplication.exit();
 		}
 		
