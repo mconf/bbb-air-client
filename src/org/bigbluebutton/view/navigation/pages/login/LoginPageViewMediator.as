@@ -5,18 +5,22 @@ package org.bigbluebutton.view.navigation.pages.login
 	import flash.events.InvokeEvent;
 	import flash.events.MouseEvent;
 	import flash.filesystem.File;
+	import flash.net.URLVariables;
 	import flash.system.Capabilities;
 
+	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
 
 	import org.bigbluebutton.command.JoinMeetingSignal;
 	import org.bigbluebutton.core.ILoginService;
+	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.model.UserUISession;
 	import org.bigbluebutton.view.navigation.IPagesNavigatorView;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
+	import org.bigbluebutton.view.navigation.pages.login.rooms.Room;
 	import org.flexunit.internals.namespaces.classInternal;
 	import org.osmf.logging.Log;
 
@@ -41,6 +45,8 @@ package org.bigbluebutton.view.navigation.pages.login
 		[Inject]
 		public var userUISession: IUserUISession;
 
+		[Inject]
+		public var saveData: ISaveData;
 
 		override public function initialize():void
 		{
@@ -61,7 +67,9 @@ package org.bigbluebutton.view.navigation.pages.login
 
 			switch(reason) {
 				case "emptyJoinUrl":
-					view.currentState = LoginPageViewBase.STATE_NO_REDIRECT;
+					if(!saveData.read("rooms")){
+						view.currentState = LoginPageViewBase.STATE_NO_REDIRECT;
+					}
 					break;
 				case "invalidMeetingIdentifier":
 					view.currentState = LoginPageViewBase.STATE_INVALID_MEETING_IDENTIFIER;
@@ -103,14 +111,43 @@ package org.bigbluebutton.view.navigation.pages.login
 			{
 				NativeApplication.nativeApplication.removeEventListener(InvokeEvent.INVOKE, onInvokeEvent);	
 
+				updateRooms(url);
 				url = getEndURL(url);
 			}
-			else
+			else if (url=="")
 			{
-
-			}
+				if(saveData.read("rooms")){
+					userUISession.pushPage(PagesENUM.ROOMS);
+				}
+			}	
 
 			joinMeetingSignal.dispatch(url);
+		}
+		
+		private function updateRooms(url:String):void{
+			var vars:URLVariables = new URLVariables(url);
+			var rooms:ArrayCollection = saveData.read("rooms") as ArrayCollection;
+			if(!rooms){
+				rooms = new ArrayCollection();
+			}
+			if(vars.meta_referer_url && vars.meta_referer_name){
+				var roomExists:Boolean = false;
+				for(var i = rooms.length-1; i > 0;i--){
+					if(rooms[i].name == vars.meta_referer_name && rooms[i].url == vars.meta_referer_url){
+						rooms.addItem(rooms.removeItemAt(i));
+						roomExists = true;
+						break;
+					}
+				}
+				if(!roomExists){
+					var room = new Room(vars.meta_referer_url, vars.meta_referer_name);
+					rooms.addItem(room);
+					if(rooms.length > 5){
+						rooms.removeItemAt(0);
+					}
+				}
+				saveData.save("rooms", rooms);
+			}
 		}
 
 		/**

@@ -251,7 +251,7 @@ global
 		weight:0.1;
 	}
 	
-	s|Label.chatRoomLabelStyle,s|Label.selectParticipantLabelStyle
+	s|Label.chatRoomLabelStyle,s|Label.selectParticipantLabelStyle, s|Label.RoomLabelStyle
 	{
 		paddingLeft:6;
 		paddingTop:20;
@@ -648,7 +648,7 @@ global
 		weight:0.15;
 	}
 	
-	s|Label.chatRoomLabelStyle,s|Label.selectParticipantLabelStyle
+	s|Label.chatRoomLabelStyle,s|Label.selectParticipantLabelStyle, s|Label.RoomLabelStyle
 	{
 		paddingLeft:9;
 		paddingTop:30;
@@ -1013,7 +1013,7 @@ global
 		paddingTop:80;
 	}
 	
-	s|Label.chatRoomLabelStyle,s|Label.selectParticipantLabelStyle
+	s|Label.chatRoomLabelStyle,s|Label.selectParticipantLabelStyle, s|Label.RoomLabelStyle
 	{
 		paddingLeft:12;
 		paddingTop:40;
@@ -1410,7 +1410,7 @@ global
 		paddingTop:120;
 	}
 	
-	s|Label.chatRoomLabelStyle,s|Label.selectParticipantLabelStyle
+	s|Label.chatRoomLabelStyle,s|Label.selectParticipantLabelStyle,s|Label.RoomLabelStyle
 	{
 		paddingLeft:18;
 		paddingTop:60;

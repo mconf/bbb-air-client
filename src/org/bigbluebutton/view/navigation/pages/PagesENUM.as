@@ -11,6 +11,7 @@ package org.bigbluebutton.view.navigation.pages
 	import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageView;
 	import org.bigbluebutton.view.navigation.pages.guest.GuestPageView;
 	import org.bigbluebutton.view.navigation.pages.login.LoginPageView;
+	import org.bigbluebutton.view.navigation.pages.login.rooms.RoomsView;
 	import org.bigbluebutton.view.navigation.pages.participants.ParticipantsView;
 	import org.bigbluebutton.view.navigation.pages.presentation.PresentationView;
 	import org.bigbluebutton.view.navigation.pages.profile.ProfileView;
@@ -37,6 +38,7 @@ package org.bigbluebutton.view.navigation.pages
 		public static const CAMERASETTINGS:String = "CameraSettings";
 		public static const AUDIOSETTINGS:String = "AudioSettings";
 		public static const EXIT:String = "Exit";
+		public static const ROOMS:String = "Rooms";
 		
 		/**
 		 * Especials
@@ -63,6 +65,7 @@ package org.bigbluebutton.view.navigation.pages
 				dic[CAMERASETTINGS] = CameraSettingsView;
 				dic[AUDIOSETTINGS] = AudioSettingsView;
 				dic[EXIT] = ExitPageView;
+				dic[ROOMS] = RoomsView;
 				dicInitiated = true;
 			}
 		}

@@ -19,6 +19,8 @@ package org.bigbluebutton.view.navigation.pages.exit
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
+	import spark.components.Application;
+	
 	public class ExitPageViewMediator extends Mediator
 	{	
 		[Inject]
@@ -86,11 +88,11 @@ package org.bigbluebutton.view.navigation.pages.exit
 		private function applicationExit(event:Event):void
 		{
 			trace("DisconnectPageViewMediator.applicationExit - exitting the application!");
+			NativeApplication.nativeApplication.exit();
 			if(conferenceParameters.logoutUrl){
 				var urlReq = new URLRequest(conferenceParameters.logoutUrl); 
 				navigateToURL(urlReq);
 			}
-			NativeApplication.nativeApplication.exit();
 		}
 		
 		private function backToApplication(event:Event):void
