@@ -7,11 +7,11 @@ package org.bigbluebutton.view.navigation.pages.profile
 	import mx.resources.ResourceManager;
 	
 	import org.bigbluebutton.command.MoodSignal;
-	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.model.IUserSession;
+	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
-	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.osmf.logging.Log;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
@@ -26,12 +26,12 @@ package org.bigbluebutton.view.navigation.pages.profile
 		[Inject]
 		public var userSession: IUserSession;
 		
+		[Inject]
+		public var userUISession: IUserUISession;
+		
 		[Inject] 
 		public var moodSignal: MoodSignal;
 		
-		[Inject]
-		public var disconnectUserSignal: DisconnectUserSignal;
-			
 		override public function initialize():void
 		{
 			Log.getLogger("org.bigbluebutton").info(String(this));
@@ -92,7 +92,7 @@ package org.bigbluebutton.view.navigation.pages.profile
 		 */ 
 		public function logoutClick(event:MouseEvent):void
 		{
-			disconnectUserSignal.dispatch(DisconnectEnum.CONNECTION_STATUS_USER_LOGGED_OUT);
+			userUISession.pushPage(PagesENUM.EXIT);
 		}
 		
 		/**

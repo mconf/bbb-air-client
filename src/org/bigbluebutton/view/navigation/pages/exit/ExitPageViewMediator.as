@@ -32,6 +32,9 @@ package org.bigbluebutton.view.navigation.pages.exit
 		
 		[Inject]
 		public var conferenceParameters: IConferenceParameters;
+		
+		private var _topBar:Boolean;
+		private var _bottomMenu:Boolean;
 			
 		override public function initialize():void
 		{
@@ -47,7 +50,11 @@ package org.bigbluebutton.view.navigation.pages.exit
 			
 			changeConnectionStatus(userUISession.currentPageDetails as int);
 			FlexGlobals.topLevelApplication.pageName.text = "";
+			
+			_topBar = FlexGlobals.topLevelApplication.topActionBar.visible;
 			FlexGlobals.topLevelApplication.topActionBar.visible = false;
+			
+			_bottomMenu = FlexGlobals.topLevelApplication.bottomMenu.visible;
 			FlexGlobals.topLevelApplication.bottomMenu.visible = false;
 		}
 		
@@ -79,8 +86,10 @@ package org.bigbluebutton.view.navigation.pages.exit
 		private function applicationExit(event:Event):void
 		{
 			trace("DisconnectPageViewMediator.applicationExit - exitting the application!");
-			var urlReq = new URLRequest(conferenceParameters.logoutUrl); 
-			navigateToURL(urlReq);
+			if(conferenceParameters.logoutUrl){
+				var urlReq = new URLRequest(conferenceParameters.logoutUrl); 
+				navigateToURL(urlReq);
+			}
 			NativeApplication.nativeApplication.exit();
 		}
 		
@@ -91,8 +100,8 @@ package org.bigbluebutton.view.navigation.pages.exit
 		
 		public override function destroy():void
 		{
-			FlexGlobals.topLevelApplication.topActionBar.visible = true;
-			FlexGlobals.topLevelApplication.bottomMenu.visible = true;
+			FlexGlobals.topLevelApplication.topActionBar.visible = _topBar;
+			FlexGlobals.topLevelApplication.bottomMenu.visible = _bottomMenu;
 		}
 	}
 }

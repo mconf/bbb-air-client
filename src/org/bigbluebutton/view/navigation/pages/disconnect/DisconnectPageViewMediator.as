@@ -9,7 +9,6 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 	
 	import mx.core.FlexGlobals;
 	
-	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.common.MenuButtons;
@@ -26,9 +25,6 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 		[Inject]
 		public var userUISession:IUserUISession;
 		
-		[Inject]
-		public var conferenceParameters: IConferenceParameters;
-			
 		override public function initialize():void
 		{
 			// If operating system is iOS, don't show exit button because there is no way to exit application:
@@ -74,8 +70,6 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 		private function applicationExit(event:Event):void
 		{
 			trace("DisconnectPageViewMediator.applicationExit - exitting the application!");
-			var urlReq = new URLRequest(conferenceParameters.logoutUrl); 
-			navigateToURL(urlReq);
 			NativeApplication.nativeApplication.exit();
 		}
 		
