@@ -1,6 +1,14 @@
 package org.bigbluebutton.view.navigation.pages.common
 {
+	import com.juankpro.ane.localnotif.Notification;
+	import com.juankpro.ane.localnotif.NotificationManager;
+	
+	import flash.desktop.NativeApplication;
+	import flash.desktop.SystemIdleMode;
+	import flash.events.Event;
+	
 	import mx.core.FlexGlobals;
+	import mx.resources.ResourceManager;
 	
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.model.IUserSession;
@@ -32,8 +40,12 @@ package org.bigbluebutton.view.navigation.pages.common
 		[Inject]
 		public var view:MenuButtonsView;
 		
+		private var notificationManager:NotificationManager  = new NotificationManager();
+		
 		public override function initialize():void
 		{	
+			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, fl_Activate);
+			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, fl_Deactivate);
 			userUISession.loadingSignal.add(loadingFinished);	
 			userUISession.pageChangedSignal.add(pageChanged);
 			userSession.guestList.guestAddedSignal.add(addGuest);
@@ -169,6 +181,24 @@ package org.bigbluebutton.view.navigation.pages.common
 		{
 			userSession.deskshareConnection.isStreamingSignal.remove(onDeskshareStreamChange);
 			/*userSession.userList.userChangeSignal.remove(userChangeHandler);*/
+		}
+		
+		private function fl_Activate(event:Event=null):void {
+			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
+			notificationManager.cancel("running");
+		}
+		
+		private function fl_Deactivate(event:Event):void {
+			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL;
+			if(userSession.mainConnection){
+				var notification:Notification = new Notification();
+				notification.body = ResourceManager.getInstance().getString('resources', 'notification.message');
+				notification.title = ResourceManager.getInstance().getString('resources', 'notification.title');
+				notification.fireDate = new Date((new Date()).time);
+				notification.ongoing = true;
+				notification.vibrate = false;
+				notificationManager.notifyUser("running", notification);
+			}
 		}
 	}
 }

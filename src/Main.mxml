@@ -76,7 +76,6 @@
 			
 			protected var context: IContext;
 			
-			private var notificationManager:NotificationManager  = new NotificationManager();
 			private var _orientationCalc:OrientationCalculator;
 			public var currentOrientation:String;
 			
@@ -180,36 +179,12 @@
 			protected function applicationCompleteHandler(event:FlexEvent):void
 			{
 				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
-				stage.addEventListener(Event.ACTIVATE, fl_Activate);
-				stage.addEventListener(Event.DEACTIVATE, fl_Deactivate);
-				stage.addEventListener(Event.CLOSE, closeApplication);
-				
 				stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGING, stageOrientationChangingHandler);
 				
 				// setup a custom orientation calculator based on the accelerometer because the default one doesn't work
 				_orientationCalc = new OrientationCalculator(pagesNavigatorView, accelerometerCallback);
 				_orientationCalc.active = true;
 				currentOrientation = _orientationCalc.currentOrientation;
-			}
-			
-			private function closeApplication(event:Event=null):void {
-				notificationManager.cancel("running");
-			}
-			
-			private function fl_Activate(event:Event=null):void {
-				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
-				notificationManager.cancel("running");
-			}
-			
-			private function fl_Deactivate(event:Event):void {
-				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL;
-				var notification:Notification = new Notification();
-				notification.body = resourceManager.getString('resources', 'notification.message');
-				notification.title = resourceManager.getString('resources', 'notification.title');
-				notification.fireDate = new Date((new Date()).time);
-				notification.ongoing = true;
-				notification.vibrate = false;
-				notificationManager.notifyUser("running", notification);
 			}
 			
 			private function stageOrientationChangingHandler(e:StageOrientationEvent):void {
