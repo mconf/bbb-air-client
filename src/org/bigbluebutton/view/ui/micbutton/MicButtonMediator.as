@@ -64,7 +64,7 @@ package org.bigbluebutton.view.ui.micbutton
 		 */ 
 		private function userChangeHandler(user:User, type:int):void
 		{
-			if (user.me) {
+			if (UserList && user.me) {
 				if (type == UserList.JOIN_AUDIO) {
 					view.setVisibility(user.voiceJoined);
 				} else if (type == UserList.MUTE) {
