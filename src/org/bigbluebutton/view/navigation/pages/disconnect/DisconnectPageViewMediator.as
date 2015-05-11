@@ -9,6 +9,7 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 	
 	import mx.core.FlexGlobals;
 	
+	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.common.MenuButtons;
@@ -24,6 +25,9 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 		
 		[Inject]
 		public var userUISession:IUserUISession;
+		
+		[Inject]
+		public var userSession:IUserSession;
 		
 		override public function initialize():void
 		{
@@ -70,6 +74,7 @@ package org.bigbluebutton.view.navigation.pages.disconnect
 		private function applicationExit(event:Event):void
 		{
 			trace("DisconnectPageViewMediator.applicationExit - exitting the application!");
+			userSession.logoutSignal.dispatch();
 			NativeApplication.nativeApplication.exit();
 		}
 		

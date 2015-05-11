@@ -88,6 +88,7 @@ package org.bigbluebutton.view.navigation.pages.exit
 		private function applicationExit(event:Event):void
 		{
 			trace("DisconnectPageViewMediator.applicationExit - exitting the application!");
+			userSession.logoutSignal.dispatch();
 			NativeApplication.nativeApplication.exit();
 			if(conferenceParameters.logoutUrl){
 				var urlReq = new URLRequest(conferenceParameters.logoutUrl); 

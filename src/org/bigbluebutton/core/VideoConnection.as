@@ -54,9 +54,9 @@ package org.bigbluebutton.core
 		public function init():void
 		{
 			baseConnection.init(this);
+			userSession.successJoiningMeetingSignal.add(loadCameraSettings);
 			baseConnection.successConnected.add(onConnectionSuccess);
 			baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
-			loadCameraSettings();
 		}
 		
 		private function loadCameraSettings():void{

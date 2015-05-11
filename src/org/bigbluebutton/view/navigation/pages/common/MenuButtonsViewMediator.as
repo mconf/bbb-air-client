@@ -41,6 +41,7 @@ package org.bigbluebutton.view.navigation.pages.common
 		public var view:MenuButtonsView;
 		
 		private var notificationManager:NotificationManager  = new NotificationManager();
+		private var loggingOut:Boolean = false;
 		
 		public override function initialize():void
 		{	
@@ -52,6 +53,11 @@ package org.bigbluebutton.view.navigation.pages.common
 			userSession.userList.userChangeSignal.add(userChanged);
 			chatMessagesSession.newChatMessageSignal.add(updateMessagesNotification);
 			userSession.presentationList.presentationChangeSignal.add(presentationChanged);
+			userSession.logoutSignal.add(loggingOutHandler);
+		}
+		
+		private function loggingOutHandler():void{
+			loggingOut = true;
 		}
 		
 		private function presentationChanged(){
@@ -112,7 +118,7 @@ package org.bigbluebutton.view.navigation.pages.common
 		}
 		
 		private function userChanged(user:User, property:String = null):void{
-			if(user.me){
+			if(user && user.me){
 				updateGuestsNotification();
 			}
 		}
@@ -190,7 +196,7 @@ package org.bigbluebutton.view.navigation.pages.common
 		
 		private function fl_Deactivate(event:Event):void {
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL;
-			if(userSession.mainConnection){
+			if(userSession.mainConnection && !loggingOut){
 				var notification:Notification = new Notification();
 				notification.body = ResourceManager.getInstance().getString('resources', 'notification.message');
 				notification.title = ResourceManager.getInstance().getString('resources', 'notification.title');
