@@ -1,5 +1,5 @@
-package org.bigbluebutton.core
-{
+package org.bigbluebutton.core {
+	
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
@@ -13,9 +13,9 @@ package org.bigbluebutton.core
 	import org.osflash.signals.Signal;
 	import org.bigbluebutton.core.util.URLFetcher;
 	
-	public class ProfilesService
-	{
+	public class ProfilesService {
 		protected var _successSignal:Signal = new Signal();
+		
 		protected var _unsuccessSignal:Signal = new Signal();
 		
 		public function get successSignal():ISignal {
@@ -31,10 +31,10 @@ package org.bigbluebutton.core
 			var fetcher:URLFetcher = new URLFetcher;
 			fetcher.successSignal.add(onSuccess);
 			fetcher.unsuccessSignal.add(onUnsuccess);
-			fetcher.fetch(ProfileUrl, urlRequest); 
+			fetcher.fetch(ProfileUrl, urlRequest);
 		}
 		
-		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest):void {
+		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest, httpStatusCode):void {
 			try {
 				successSignal.dispatch(new XML(data));
 			} catch (e:Error) {
@@ -46,5 +46,4 @@ package org.bigbluebutton.core
 			unsuccessSignal.dispatch(reason);
 		}
 	}
-	
 }

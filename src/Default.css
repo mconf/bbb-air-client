@@ -96,7 +96,7 @@ s|Label.pageNameStyle
 	color: #FFFFFF;
 }
 
-s|Label.participantStatusStyle
+s|Label.participantStatusStyle, s|Label.roomUrlStyle
 {
 	color: #999999;
 }
@@ -286,7 +286,12 @@ global
 		fontSize:14;
 	}
 	
-	s|ItemRenderer.participantItemStyle
+	.dateAndTimeFontSize
+	{
+		fontSize:12;
+	}
+	
+	s|ItemRenderer.participantItemStyle, s|ItemRenderer.roomItemStyle
 	{
 		itemHeight:64;
 		lineColor: #F2F2F2;
@@ -689,7 +694,12 @@ global
 		fontSize:21;
 	}
 	
-	s|ItemRenderer.participantItemStyle
+	.dateAndTimeFontSize
+	{
+		fontSize:18;
+	}
+	
+	s|ItemRenderer.participantItemStyle, s|ItemRenderer.roomItemStyle
 	{
 		itemHeight:96;
 		lineColor: #F2F2F2;
@@ -1086,7 +1096,12 @@ global
 		fontSize:28;
 	}
 	
-	s|ItemRenderer.participantItemStyle
+	.dateAndTimeFontSize
+	{
+		fontSize:24;
+	}
+	
+	s|ItemRenderer.participantItemStyle, s|ItemRenderer.roomItemStyle
 	{
 		itemHeight:128;
 		lineColor: #F2F2F2;
@@ -1477,7 +1492,12 @@ global
 		fontSize:42;
 	}
 	
-	s|ItemRenderer.participantItemStyle
+	.dateAndTimeFontSize
+	{
+		fontSize:36;
+	}
+	
+	s|ItemRenderer.participantItemStyle, s|ItemRenderer.roomItemStyle
 	{
 		itemHeight:192;
 		lineColor: #F2F2F2;

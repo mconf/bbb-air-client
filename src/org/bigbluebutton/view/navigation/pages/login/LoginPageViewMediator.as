@@ -1,5 +1,5 @@
-package org.bigbluebutton.view.navigation.pages.login
-{
+package org.bigbluebutton.view.navigation.pages.login {
+	
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
@@ -7,10 +7,8 @@ package org.bigbluebutton.view.navigation.pages.login
 	import flash.filesystem.File;
 	import flash.net.URLVariables;
 	import flash.system.Capabilities;
-
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
-
 	import org.bigbluebutton.command.JoinMeetingSignal;
 	import org.bigbluebutton.core.ILoginService;
 	import org.bigbluebutton.core.ISaveData;
@@ -22,52 +20,46 @@ package org.bigbluebutton.view.navigation.pages.login
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.login.rooms.Room;
 	import org.flexunit.internals.namespaces.classInternal;
-	import org.osmf.logging.Log;
-
 	import robotlegs.bender.bundles.mvcs.Mediator;
-
 	import spark.components.Application;
-
-	public class LoginPageViewMediator extends Mediator
-	{
+	
+	public class LoginPageViewMediator extends Mediator {
+		private const LOG:String = "LoginPageViewMediator::";
+		
 		[Inject]
-		public var view: ILoginPageView;
-
+		public var view:ILoginPageView;
+		
 		[Inject]
-		public var joinMeetingSignal: JoinMeetingSignal;
-
+		public var joinMeetingSignal:JoinMeetingSignal;
+		
 		[Inject]
-		public var loginService: ILoginService;
-
+		public var loginService:ILoginService;
+		
 		[Inject]
-		public var userSession: IUserSession;
-
+		public var userSession:IUserSession;
+		
 		[Inject]
-		public var userUISession: IUserUISession;
-
+		public var userUISession:IUserUISession;
+		
 		[Inject]
-		public var saveData: ISaveData;
-
-		override public function initialize():void
-		{
-			Log.getLogger("org.bigbluebutton").info(String(this));
-
+		public var saveData:ISaveData;
+		
+		private var count:Number = 0;
+		
+		override public function initialize():void {
 			//loginService.unsuccessJoinedSignal.add(onUnsucess);
 			userUISession.unsuccessJoined.add(onUnsucess);
-
 			view.tryAgainButton.addEventListener(MouseEvent.CLICK, tryAgain);
-			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvokeEvent);
+			joinRoom(userSession.joinUrl);
 		}
-
-		private function onUnsucess(reason:String):void 
-		{
-			Log.getLogger("org.bigbluebutton").info(String(this) + ":onUnsucess() " + reason);
-			FlexGlobals.topLevelApplication.topActionBar.visible=false;
-			FlexGlobals.topLevelApplication.bottomMenu.visible=false;
-
-			switch(reason) {
+		
+		private function onUnsucess(reason:String):void {
+			trace(LOG + "onUnsucess() " + reason);
+			FlexGlobals.topLevelApplication.topActionBar.visible = false;
+			FlexGlobals.topLevelApplication.bottomMenu.visible = false;
+			switch (reason) {
 				case "emptyJoinUrl":
-					if(!saveData.read("rooms")){
+					if (!saveData.read("rooms")) {
 						view.currentState = LoginPageViewBase.STATE_NO_REDIRECT;
 					}
 					break;
@@ -86,96 +78,60 @@ package org.bigbluebutton.view.navigation.pages.login
 				case "genericError":
 					view.currentState = LoginPageViewBase.STATE_GENERIC_ERROR;
 					break;
+				case "authTokenTimedOut":
+					view.currentState = LoginPageViewBase.STATE_AUTH_TOKEN_TIMEDOUT;
+					break;
+				case "authTokenInvalid":
+					view.currentState = LoginPageViewBase.STATE_AUTH_TOKEN_INVALID;
+					break;
 				default:
 					view.currentState = LoginPageViewBase.STATE_GENERIC_ERROR;
 					break;
 			}
 			// view.messageText.text = reason;
 		}
-
-		public function onInvokeEvent(invocation:InvokeEvent):void 
-		{
-			var url:String = "";
-			if(invocation.arguments.length > 0){
-				url = invocation.arguments[0].toString();
-			}
-			if(Capabilities.isDebugger)
-			{
+		
+		public function joinRoom(url:String) {
+			if (Capabilities.isDebugger) {
+				//saveData.save("rooms", null);
 				// test-install server no longer works with 0.9 mobile client
-
 				//url = "bigbluebutton://test-install.blindsidenetworks.com/bigbluebutton/api/join?fullName=Air&meetingID=Demo+Meeting&password=ap&checksum=512620179852dadd6fe0665a48bcb852a3c0afac";
-				//url = "bigbluebutton://lab1.mconf.org/bigbluebutton/api/join?fullName=Air+client&meetingID=Test+room+4&password=prof123&checksum=5805753edd08fbf9af50f9c28bb676c7e5241349"
+				//url = "bigbluebutton://lab1.mconf.org/bigbluebut/api/join?fullName=User+4237921ton/api/join?fullName=Air+client&meetingID=Test+room+4&password=prof123&checksum=5805753edd08fbf9af50f9c28bb676c7e5241349"
+				//url = "bigbluebutton://143.54.10.103/bigbluebutton/api/join?fullName=User+4704407&meetingID=random-3458293&password=mp&redirect=true&checksum=9102efa4f55e8b920b7f14b1c6bcdee7e0bb9c62";
+				url = "bigbluebutton://143.54.10.103/bigbluebutton/api/join?fullName=User+3569058&meetingID=random-1143106&password=mp&redirect=true&checksum=41f67390d73ca6fa149842bf082eef72d628c041";
 			}
-
-			if (url.lastIndexOf("://") != -1)
-			{
-				NativeApplication.nativeApplication.removeEventListener(InvokeEvent.INVOKE, onInvokeEvent);	
-
-				updateRooms(url);
+			if (!url) {
+				url = "";
+			}
+			if (url.lastIndexOf("://") != -1) {
 				url = getEndURL(url);
-			}
-			else if (url=="")
-			{
-				if(saveData.read("rooms")){
+			} else {
+				if (saveData.read("rooms")) {
 					userUISession.pushPage(PagesENUM.ROOMS);
 				}
-			}	
-
+			}
 			joinMeetingSignal.dispatch(url);
 		}
 		
-		private function updateRooms(url:String):void{
-			var vars:URLVariables = new URLVariables(url);
-			var rooms:ArrayCollection = saveData.read("rooms") as ArrayCollection;
-			if(!rooms){
-				rooms = new ArrayCollection();
-			}
-			if(vars.meta_referer_url && vars.meta_referer_name){
-				var roomExists:Boolean = false;
-				for(var i = rooms.length-1; i > 0;i--){
-					if(rooms[i].name == vars.meta_referer_name && rooms[i].url == vars.meta_referer_url){
-						rooms.addItem(rooms.removeItemAt(i));
-						roomExists = true;
-						break;
-					}
-				}
-				if(!roomExists){
-					var room = new Room(vars.meta_referer_url, vars.meta_referer_name);
-					rooms.addItem(room);
-					if(rooms.length > 5){
-						rooms.removeItemAt(0);
-					}
-				}
-				saveData.save("rooms", rooms);
-			}
-		}
-
 		/**
 		 * Replace the schema with "http"
-		 */ 
-		protected function getEndURL(origin:String):String
-		{
+		 */
+		protected function getEndURL(origin:String):String {
 			return origin.replace('bigbluebutton://', 'http://');
 		}
-
-		override public function destroy():void
-		{
+		
+		override public function destroy():void {
 			super.destroy();
-
 			//loginService.unsuccessJoinedSignal.remove(onUnsucess);
 			userUISession.unsuccessJoined.remove(onUnsucess);
-
-			NativeApplication.nativeApplication.removeEventListener(InvokeEvent.INVOKE, onInvokeEvent);
-
 			view.dispose();
 			view = null;
 		}
 		
-		private function tryAgain(event:Event):void{
-			FlexGlobals.topLevelApplication.mainshell.visible=false;
+		private function tryAgain(event:Event):void {
+			FlexGlobals.topLevelApplication.mainshell.visible = false;
 			userUISession.popPage();
 			userUISession.pushPage(PagesENUM.LOGIN);
 		}
 	}
 }
-

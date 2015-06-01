@@ -5,7 +5,7 @@
 	<fx:Metadata>
 		[HostComponent("spark.components.Button")]
 	</fx:Metadata>
-	
+
 	<!-- states -->
 	<s:states>
 		<s:State name="disabled" />
@@ -13,20 +13,34 @@
 		<s:State name="over" />
 		<s:State name="up" />
 	</s:states>
-	
-	<s:Rect top="0" bottom="0" right="0" left="0">
+
+	<s:Rect top="0"
+			bottom="0"
+			right="0"
+			left="0">
 		<s:stroke>
-			<s:SolidColorStroke color="{hostComponent.getStyle('strokeColor')}" weight="{hostComponent.getStyle('strokeWeight')}" alpha="0.5"/>
+			<s:SolidColorStroke color="{hostComponent.getStyle('strokeColor')}"
+								weight="{hostComponent.getStyle('strokeWeight')}"
+								alpha="0.5" />
 		</s:stroke>
-		<s:fill >
-			<s:SolidColor  color="{hostComponent.getStyle('backgroundColor')}" color.down="{hostComponent.getStyle('selectedBackgroundColor')}"/>
+		<s:fill>
+			<s:SolidColor color="{hostComponent.getStyle('backgroundColor')}"
+						  color.down="{hostComponent.getStyle('selectedBackgroundColor')}" />
 		</s:fill>
 	</s:Rect>
-	<s:BitmapImage id="image" source="{getStyle('backgroundImage')}" horizontalCenter="0" verticalCenter="0"/>
+	<s:BitmapImage id="image"
+				   source="{getStyle('backgroundImage')}"
+				   horizontalCenter="0"
+				   verticalCenter="0" />
 
-	<s:Ellipse id="notification" visible="false" height="{image.width/5}" width="{image.width/5}" left="{image.x + image.width - (notification.width * 1.5)}" top="{image.y + notification.height/2}">
+	<s:Ellipse id="notification"
+			   visible="false"
+			   height="{image.width/5}"
+			   width="{image.width/5}"
+			   left="{image.x + image.width - (notification.width * 1.5)}"
+			   top="{image.y + notification.height/2}">
 		<s:fill>
-			<s:SolidColor  color="#EE4C4C" />
+			<s:SolidColor color="#EE4C4C" />
 		</s:fill>
 	</s:Ellipse>
 

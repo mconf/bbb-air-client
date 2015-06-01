@@ -1,9 +1,9 @@
-package org.bigbluebutton.model
-{
+package org.bigbluebutton.model {
+	
 	import flash.net.NetConnection;
 	import mx.collections.ArrayCollection;
-	
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
+	import org.bigbluebutton.core.IDeskshareConnection;
 	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.core.IVoiceConnection;
 	import org.bigbluebutton.core.VideoConnection;
@@ -13,12 +13,8 @@ package org.bigbluebutton.model
 	import org.bigbluebutton.model.presentation.PresentationList;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	import org.bigbluebutton.core.IVoiceConnection;
-	import org.bigbluebutton.core.IDeskshareConnection;
 	
-
-	public interface IUserSession
-	{
+	public interface IUserSession {
 		function get phoneAutoJoin():Boolean;
 		function set phoneAutoJoin(value:Boolean):void;
 		function get phoneSkipCheck():Boolean;
@@ -30,9 +26,11 @@ package org.bigbluebutton.model
 		function get config():Config;
 		function set config(value:Config):void;
 		function get userId():String;
-		function set userId(value:String):void;		
+		function set userId(value:String):void;
 		function get userList():UserList;
-		function get guestList():GuestList;
+		function set userList(userList:UserList):void;
+		function get guestList():UserList;
+		function set guestList(userList:UserList):void;
 		function get voiceConnection():IVoiceConnection;
 		function set voiceConnection(value:IVoiceConnection):void;
 		function get mainConnection():IBigBlueButtonConnection;
@@ -55,5 +53,7 @@ package org.bigbluebutton.model
 		function get videoProfileManager():VideoProfileManager
 		function set videoProfileManager(value:VideoProfileManager):void;
 		function get authTokenSignal():ISignal
+		function get joinUrl():String;
+		function set joinUrl(value:String):void;
 	}
 }

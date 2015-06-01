@@ -1,32 +1,40 @@
-package org.bigbluebutton.core
-{
-	import flash.utils.Dictionary;
+package org.bigbluebutton.core {
 	
+	import flash.utils.Dictionary;
 	import mx.resources.ResourceManager;
 	
-	public class VideoProfile
-	{
+	public class VideoProfile {
 		private var _fallbackLanguage:String;
 		
 		private static var _nextId:int = -1;
+		
 		private var _id:String;
+		
 		private var _default:Boolean = false;
+		
 		private var _name:Dictionary = new Dictionary();
+		
 		private var _width:int = 320;
+		
 		private var _height:int = 240;
+		
 		private var _keyFrameInterval:int = 30;
+		
 		private var _modeFps:int = 10;
+		
 		private var _qualityBandwidth:int = 0;
+		
 		private var _qualityPicture:int = 90;
+		
 		private var _enableH264:Boolean = true;
+		
 		private var _h264Level:String = "2.1";
+		
 		private var _h264Profile:String = "main";
 		
-		public function VideoProfile(vxml:XML, fallbackLanguage:String)
-		{
+		public function VideoProfile(vxml:XML, fallbackLanguage:String) {
 			_fallbackLanguage = fallbackLanguage;
-			
-		    if (vxml.@id != undefined) {
+			if (vxml.@id != undefined) {
 				_id = vxml.@id.toString();
 			} else {
 				_id = String(nextId());
@@ -34,48 +42,45 @@ package org.bigbluebutton.core
 			if (vxml.@default != undefined) {
 				_default = ((vxml.@default).toString().toUpperCase() == "TRUE") ? true : false;
 			}
-				if (vxml.locale != undefined) {
-					for each (var locale:XML in vxml.locale.children()) {
-						_name[locale.localName()] = locale.toString();
-					}
+			if (vxml.locale != undefined) {
+				for each (var locale:XML in vxml.locale.children()) {
+					_name[locale.localName()] = locale.toString();
 				}
-				if (vxml.width != undefined) {
-					_width = vxml.width;
-				}
-				if (vxml.height != undefined) {
-					_height = vxml.height;
-				}
-				if (vxml.keyFrameInterval != undefined) {
-					_keyFrameInterval = vxml.keyFrameInterval;
-				}
-				if (vxml.modeFps != undefined) {
-					_modeFps = vxml.modeFps;
-				}
-				if (vxml.qualityBandwidth != undefined) {
-					_qualityBandwidth = vxml.qualityBandwidth;
-				}
-				if (vxml.qualityPicture != undefined) {
-					_qualityPicture = vxml.qualityPicture;
-				}
-				if (vxml.enableH264 != undefined) {
-					_enableH264 = (vxml.enableH264.toString().toUpperCase() == "TRUE") ? true : false;
-				}
-				if (vxml.h264Level != undefined) {
-					_h264Level = vxml.h264Level.toString();
-				}
-				if (vxml.h264Profile != undefined) {
-					_h264Profile = vxml.h264Profile.toString();
-				}
-				
-				trace("This is a new video profile");
-				trace(this.toString());
-				}
-		
-		
+			}
+			if (vxml.width != undefined) {
+				_width = vxml.width;
+			}
+			if (vxml.height != undefined) {
+				_height = vxml.height;
+			}
+			if (vxml.keyFrameInterval != undefined) {
+				_keyFrameInterval = vxml.keyFrameInterval;
+			}
+			if (vxml.modeFps != undefined) {
+				_modeFps = vxml.modeFps;
+			}
+			if (vxml.qualityBandwidth != undefined) {
+				_qualityBandwidth = vxml.qualityBandwidth;
+			}
+			if (vxml.qualityPicture != undefined) {
+				_qualityPicture = vxml.qualityPicture;
+			}
+			if (vxml.enableH264 != undefined) {
+				_enableH264 = (vxml.enableH264.toString().toUpperCase() == "TRUE") ? true : false;
+			}
+			if (vxml.h264Level != undefined) {
+				_h264Level = vxml.h264Level.toString();
+			}
+			if (vxml.h264Profile != undefined) {
+				_h264Profile = vxml.h264Profile.toString();
+			}
+			trace("This is a new video profile");
+			trace(this.toString());
+		}
 		
 		public function toString():String {
 			return "VideoProfile [ "
-			+ "id: " + this.id + ", "
+				+ "id: " + this.id + ", "
 				+ "default: " + this.defaultProfile + ", "
 				+ "name: " + this.name + ", "
 				+ "width: " + this.width + ", "
@@ -103,7 +108,7 @@ package org.bigbluebutton.core
 		}
 		
 		public function get name():String {
-			var locale:String = ResourceManager.getInstance().localeChain[0];//"en_US";//ResourceUtil.getInstance().getCurrentLanguageCode();
+			var locale:String = ResourceManager.getInstance().localeChain[0]; //"en_US";//ResourceUtil.getInstance().getCurrentLanguageCode();
 			if (_name.hasOwnProperty(locale)) {
 				return _name[locale];
 			} else if (_name.hasOwnProperty(_fallbackLanguage)) {
@@ -112,7 +117,7 @@ package org.bigbluebutton.core
 				return "";
 			}
 		}
-	
+		
 		public function get width():int {
 			return _width;
 		}

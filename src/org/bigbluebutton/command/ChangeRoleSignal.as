@@ -1,12 +1,9 @@
-package org.bigbluebutton.command
-{
+package org.bigbluebutton.command {
+	
 	import org.osflash.signals.Signal;
 	
-	public class ChangeRoleSignal extends Signal
-	{
-		
-		public function ChangeRoleSignal()
-		{
+	public class ChangeRoleSignal extends Signal {
+		public function ChangeRoleSignal() {
 			/**
 			 * @1 userID, role
 			 */

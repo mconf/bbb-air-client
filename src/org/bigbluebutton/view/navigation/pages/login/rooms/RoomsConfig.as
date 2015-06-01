@@ -1,24 +1,22 @@
-package org.bigbluebutton.view.navigation.pages.login.rooms
-{
+package org.bigbluebutton.view.navigation.pages.login.rooms {
 	
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
-
-	public class RoomsConfig implements IConfig
-	{
-		[Inject]
-		public var injector: IInjector;
+	
+	public class RoomsConfig implements IConfig {
 		
 		[Inject]
-		public var mediatorMap: IMediatorMap;
+		public var injector:IInjector;
 		
 		[Inject]
-		public var signalCommandMap: ISignalCommandMap;
+		public var mediatorMap:IMediatorMap;
 		
-		public function configure(): void
-		{
+		[Inject]
+		public var signalCommandMap:ISignalCommandMap;
+		
+		public function configure():void {
 			dependencies();
 			mediators();
 			signals();
@@ -29,24 +27,20 @@ package org.bigbluebutton.view.navigation.pages.login.rooms
 		 * that will be injected onto objects used by the
 		 * application.
 		 */
-		private function dependencies(): void
-		{
-			 
+		private function dependencies():void {
 		}
 		
 		/**
 		 * Maps view mediators to views.
 		 */
-		private function mediators(): void
-		{
+		private function mediators():void {
 			mediatorMap.map(IRoomsView).toMediator(RoomsViewMediator);
 		}
 		
 		/**
 		 * Maps signals to commands using the signalCommandMap.
 		 */
-		private function signals(): void
-		{
-		}	
+		private function signals():void {
+		}
 	}
 }

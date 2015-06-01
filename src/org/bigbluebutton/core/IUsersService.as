@@ -1,23 +1,20 @@
-package org.bigbluebutton.core
-{
+package org.bigbluebutton.core {
+	
 	import org.bigbluebutton.model.User;
 	import org.osflash.signals.ISignal;
-
-	public interface IUsersService
-	{
+	
+	public interface IUsersService {
 		function setupMessageSenderReceiver():void;
-		function sendJoinMeetingMessage():void; 
+		function sendJoinMeetingMessage():void;
 		function kickUser(userID:String):void;
 		function queryForParticipants():void;
 		function assignPresenter(userid:String, name:String, assignedBy:String):void;
 		function changeMood(mood:String):void
 		function clearUserStatus(userID:String):void
 		function addStream(userID:String, streamName:String):void;
-		function askToEnter():void
-		function getWaitingGuests(): void
-		function getGuestPolicy(): void	
-		function responseToGuest(userID:String, response:Boolean): void
-		function responseToAllGuests(response:Boolean): void
+		function getGuestPolicy():void
+		function responseToGuest(userID:String, response:Boolean):void
+		function responseToAllGuests(response:Boolean):void
 		function removeStream(userID:String, streamName:String):void;
 		function queryForRecordingStatus():void;
 		function changeRecordingStatus(userID:String, recording:Boolean):void;
@@ -34,7 +31,7 @@ package org.bigbluebutton.core
 		function unmuteMe():void;
 		function mute(user:User):void;
 		function unmute(user:User):void;
-		function validateToken():void
+		function validateToken():void;
 		function changeRole(userID:String, role:String):void;
 	}
 }

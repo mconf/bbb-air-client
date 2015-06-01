@@ -1,23 +1,28 @@
-package org.bigbluebutton.core
-{
+package org.bigbluebutton.core {
+	
+	import org.bigbluebutton.command.AuthenticationSignal;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
-	public class UsersService implements IUsersService
-	{	
-		[Inject]
-		public var conferenceParameters: IConferenceParameters;
+	
+	public class UsersService implements IUsersService {
 		
 		[Inject]
-		public var userSession: IUserSession;
+		public var conferenceParameters:IConferenceParameters;
+		
+		[Inject]
+		public var userSession:IUserSession;
+		
+		[Inject]
+		public var authenticationSignal:AuthenticationSignal;
 		
 		public var usersMessageSender:UsersMessageSender;
+		
 		public var usersMessageReceiver:UsersMessageReceiver;
-
+		
 		public function UsersService() {
 			usersMessageSender = new UsersMessageSender;
 			usersMessageReceiver = new UsersMessageReceiver;
@@ -25,12 +30,12 @@ package org.bigbluebutton.core
 		
 		public function setupMessageSenderReceiver():void {
 			usersMessageReceiver.userSession = userSession;
+			usersMessageReceiver.authenticationSignal = authenticationSignal;
 			usersMessageSender.userSession = userSession;
-			
 			userSession.mainConnection.addMessageListener(usersMessageReceiver as IMessageListener);
 			userSession.logoutSignal.add(logout);
 		}
-
+		
 		public function muteMe():void {
 			mute(userSession.userList.me);
 		}
@@ -70,13 +75,11 @@ package org.bigbluebutton.core
 			userSession.mainConnection.disconnect(onUserAction);
 		}
 		
-		public function changeMood(mood:String):void
-		{
+		public function changeMood(mood:String):void {
 			usersMessageSender.changeMood(userSession.userList.me.userID, mood);
 		}
 		
-		public function clearUserStatus(userID:String):void
-		{
+		public function clearUserStatus(userID:String):void {
 			usersMessageSender.changeMood(userID, User.NO_STATUS);
 		}
 		
@@ -140,15 +143,7 @@ package org.bigbluebutton.core
 			usersMessageSender.sendJoinMeetingMessage(conferenceParameters.internalUserID);
 		}
 		
-		public function askToEnter():void {
-			usersMessageSender.askToEnter();
-		}
-		
-		public function getWaitingGuests(): void{
-			usersMessageSender.getWaitingGuests();
-		}
-		
-		public function getGuestPolicy(): void{
+		public function getGuestPolicy():void {
 			usersMessageSender.getGuestPolicy();
 		}
 		
@@ -159,14 +154,13 @@ package org.bigbluebutton.core
 		public function responseToAllGuests(response:Boolean):void {
 			usersMessageSender.responseToAllGuests(response);
 		}
-
-
+		
 		public function validateToken():void {
-			usersMessageSender.validateToken(conferenceParameters.internalUserID);
+			usersMessageSender.validateToken(conferenceParameters.internalUserID, conferenceParameters.authToken);
 		}
 		
 		public function changeRole(userID:String, role:String):void {
-			usersMessageSender.changeRole(userID, role)	
+			usersMessageSender.changeRole(userID, role)
 		}
 	}
 }

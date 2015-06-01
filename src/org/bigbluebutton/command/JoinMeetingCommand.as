@@ -1,5 +1,5 @@
-package org.bigbluebutton.command
-{
+package org.bigbluebutton.command {
+	
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
 	import org.bigbluebutton.core.ILoginService;
 	import org.bigbluebutton.model.ConferenceParameters;
@@ -7,47 +7,46 @@ package org.bigbluebutton.command
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
+	import org.bigbluebutton.model.UserList;
+	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.model.VideoProfileManager;
 	import org.bigbluebutton.view.ui.ILoginButton;
-	import org.osmf.logging.Log;
-	
 	import robotlegs.bender.bundles.mvcs.Command;
 	
-	public class JoinMeetingCommand extends Command
-	{		
-		[Inject]
-		public var loginService: ILoginService;
-				
-		[Inject]
-		public var userUISession: IUserUISession;
+	public class JoinMeetingCommand extends Command {
+		private const LOG:String = "JoinMeetingCommand::";
 		
 		[Inject]
-		public var userSession: IUserSession;
+		public var loginService:ILoginService;
 		
 		[Inject]
-		public var url: String;
+		public var userUISession:IUserUISession;
 		
 		[Inject]
-		public var conferenceParameters: IConferenceParameters;
+		public var userSession:IUserSession;
 		
 		[Inject]
-		public var connectSignal: ConnectSignal;
+		public var url:String;
 		
-		override public function execute():void
-		{
+		[Inject]
+		public var conferenceParameters:IConferenceParameters;
+		
+		[Inject]
+		public var connectSignal:ConnectSignal;
+		
+		override public function execute():void {
 			loginService.successJoinedSignal.add(successJoined);
 			loginService.successGetConfigSignal.add(successConfig);
 			loginService.successGetProfilesSignal.add(sucessProfiles);
 			loginService.unsuccessJoinedSignal.add(unsuccessJoined);
-			
+			//remove users from list in case we reconnect to have a clean user list 
+			userSession.guestList.removeAllUsers();
+			userSession.userList.removeAllUsers();
 			userUISession.loading = true;
-
 			loginService.load(url);
 		}
-
+		
 		protected function successJoined(userObject:Object):void {
-			Log.getLogger("org.bigbluebutton").info(String(this) + ":successJoined()");
-
 			conferenceParameters.load(userObject);
 			connectSignal.dispatch(new String(userSession.config.application.uri));
 		}
@@ -56,16 +55,14 @@ package org.bigbluebutton.command
 			userSession.config = config;
 		}
 		
-		protected function sucessProfiles(profiles:VideoProfileManager):void{
+		protected function sucessProfiles(profiles:VideoProfileManager):void {
 			userSession.videoProfileManager = profiles;
 		}
 		
 		protected function unsuccessJoined(reason:String):void {
-			Log.getLogger("org.bigbluebutton").info(String(this) + ":unsuccessJoined()");
-			
+			trace(LOG + "unsuccessJoined()");
 			userUISession.loading = false;
 			userUISession.unsuccessJoined.dispatch(reason);
 		}
-		
 	}
 }

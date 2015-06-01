@@ -1,12 +1,9 @@
-package org.bigbluebutton.command
-{
+package org.bigbluebutton.command {
+	
 	import org.osflash.signals.Signal;
 	
-	public class MoodSignal extends Signal
-	{
-		
-		public function MoodSignal()
-		{
+	public class MoodSignal extends Signal {
+		public function MoodSignal() {
 			/**
 			 * @1 mood
 			 */

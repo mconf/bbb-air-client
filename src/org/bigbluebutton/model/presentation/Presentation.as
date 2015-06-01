@@ -1,24 +1,24 @@
-package org.bigbluebutton.model.presentation
-{
+package org.bigbluebutton.model.presentation {
+	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	
 	import mx.collections.ArrayCollection;
-	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
-	public class Presentation
-	{
+	
+	public class Presentation {
 		private var _fileName:String = "";
+		
 		private var _id:String = "";
+		
 		private var _slides:Vector.<Slide> = new Vector.<Slide>();
 		
 		private var _changePresentation:Function;
 		
 		private var _currentSlideNum:int = -1;
+		
 		private var _current:Boolean = false;
 		
 		private var _slideChangeSignal:ISignal = new Signal();
@@ -53,7 +53,7 @@ package org.bigbluebutton.model.presentation
 		
 		public function add(slide:Slide):void {
 			_slides[slide.slideNumber - 1] = slide;
-			if(slide.current == true) {
+			if (slide.current == true) {
 				_currentSlideNum = slide.slideNumber - 1;
 			}
 		}
@@ -67,7 +67,7 @@ package org.bigbluebutton.model.presentation
 		}
 		
 		public function set currentSlideNum(n:int):void {
-			if(_currentSlideNum >= 0){
+			if (_currentSlideNum >= 0) {
 				_slides[_currentSlideNum].current = false;
 			}
 			_currentSlideNum = n - 1;

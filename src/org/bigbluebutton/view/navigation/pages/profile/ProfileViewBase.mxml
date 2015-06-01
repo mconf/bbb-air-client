@@ -1,48 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<view:NoTabView xmlns:fx="http://ns.adobe.com/mxml/2009" 
-				xmlns:s="library://ns.adobe.com/flex/spark" 
-				xmlns:mx="library://ns.adobe.com/flex/mx" 
+<view:NoTabView xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
 				xmlns:view="org.bigbluebutton.core.view.*"
-				xmlns:ui="org.bigbluebutton.view.ui.*"
-				>
+				xmlns:ui="org.bigbluebutton.view.ui.*">
 	<fx:Script>
-		<![CDATA[			
+		<![CDATA[
 			import org.bigbluebutton.view.navigation.pages.PagesENUM;
 			import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
 			import mx.events.FlexEvent;
 		]]>
 	</fx:Script>
-	
-	<s:Scroller width="100%" height="100%" >
-		<s:VGroup width="100%" height="100%" horizontalAlign="center">
-			<s:Label width="90%" styleName="contentFontSize userSettingsStyle" text="{resourceManager.getString('resources', 'profile.participant')}"/>					
-			<s:Button id="userName0" width="90%" buttonMode="false" mouseEnabled="false" styleName="userSettingsButtonStyle userSettingsUserNameStyle contentFontSize"/>
-			<s:Label width="90%" styleName="contentFontSize userSettingsStyle" text="{resourceManager.getString('resources', 'profile.status.current')}"/>
-			
-			<s:HGroup horizontalAlign="right" width="90%">
-			<s:Button width="90%" id="userStatus0" buttonMode="false" mouseEnabled="false" styleName="userSettingsButtonStyle userSettingsUserNameStyle contentFontSize"/>
-			<s:Button width="40%" label="X" id="clearStatusButton0" styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize"/>
-			</s:HGroup>	
-			
-			<ui:NavigationButton id="statusBtn0" width="90%"
+
+	<s:Scroller width="100%"
+				height="100%">
+		<s:VGroup width="100%"
+				  height="100%"
+				  horizontalAlign="center">
+			<s:Label width="90%"
+					 styleName="contentFontSize userSettingsStyle"
+					 text="{resourceManager.getString('resources', 'profile.participant')}" />
+			<s:Button id="userName0"
+					  width="90%"
+					  buttonMode="false"
+					  mouseEnabled="false"
+					  styleName="userSettingsButtonStyle userSettingsUserNameStyle contentFontSize" />
+			<s:Label width="90%"
+					 styleName="contentFontSize userSettingsStyle"
+					 text="{resourceManager.getString('resources', 'profile.status.current')}" />
+
+			<s:HGroup horizontalAlign="right"
+					  width="90%">
+				<s:Button width="90%"
+						  id="userStatus0"
+						  buttonMode="false"
+						  mouseEnabled="false"
+						  styleName="userSettingsButtonStyle userSettingsUserNameStyle contentFontSize" />
+				<s:Button width="40%"
+						  label="X"
+						  id="clearStatusButton0"
+						  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
+			</s:HGroup>
+
+			<ui:NavigationButton id="statusBtn0"
+								 width="90%"
 								 label="{resourceManager.getString('resources', 'profile.status.title')}"
 								 navigateTo="{[PagesENUM.STATUS]}"
 								 styleName="profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
-								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}"/>	
-			<s:Button id="logoutButton0" width="90%"
+								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
+			<s:Button id="logoutButton0"
+					  width="90%"
 					  label="{resourceManager.getString('resources', 'profile.logout')}"
-					  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize"/>				
-			<s:Label width="90%" styleName="contentFontSize userSettingsStyle" text="{resourceManager.getString('resources', 'profile.settings')}"/>
-			<ui:NavigationButton id="shareCameraBtn0" width="90%"
+					  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
+			<s:Label width="90%"
+					 styleName="contentFontSize userSettingsStyle"
+					 text="{resourceManager.getString('resources', 'profile.settings')}" />
+			<ui:NavigationButton id="shareCameraBtn0"
+								 width="90%"
 								 label="{resourceManager.getString('resources', 'cameraSettings.title')}"
 								 navigateTo="{[PagesENUM.CAMERASETTINGS]}"
 								 styleName="profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
-								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}"/>
-			<ui:NavigationButton id="shareMicBtn0" width="90%"
+								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
+			<ui:NavigationButton id="shareMicBtn0"
+								 width="90%"
 								 label="{resourceManager.getString('resources', 'audioSettings.title')}"
 								 navigateTo="{[PagesENUM.AUDIOSETTINGS]}"
 								 styleName="profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
-								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}"/>
+								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
 		</s:VGroup>
 	</s:Scroller>
 </view:NoTabView>
