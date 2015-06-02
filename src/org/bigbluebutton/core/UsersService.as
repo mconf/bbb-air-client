@@ -32,6 +32,7 @@ package org.bigbluebutton.core {
 			usersMessageReceiver.userSession = userSession;
 			usersMessageReceiver.authenticationSignal = authenticationSignal;
 			usersMessageSender.userSession = userSession;
+			usersMessageSender.conferenceParameters = conferenceParameters;
 			userSession.mainConnection.addMessageListener(usersMessageReceiver as IMessageListener);
 			userSession.logoutSignal.add(logout);
 		}

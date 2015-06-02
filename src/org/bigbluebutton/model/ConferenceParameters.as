@@ -89,6 +89,8 @@ package org.bigbluebutton.model {
 		
 		private var _muteOnStart:Boolean;
 		
+		private var _serverIsMconf:Boolean;
+		
 		public function ConferenceParameters() {
 		}
 		
@@ -260,6 +262,10 @@ package org.bigbluebutton.model {
 			_changedSignal.dispatch();
 		}
 		
+		public function get serverIsMconf():Boolean {
+			return _serverIsMconf;
+		}
+		
 		public function isGuestDefined():Boolean {
 			return _guestDefined;
 		}
@@ -280,6 +286,7 @@ package org.bigbluebutton.model {
 			_logoutUrl = obj.logoutUrl;
 			_record = !(obj.record == "false");
 			_guest = (obj.guest == "true");
+			_serverIsMconf = (obj.guest) ? true : false;
 			_guestDefined = (obj.guest != undefined);
 			_authToken = obj.authToken;
 			_changedSignal.dispatch();

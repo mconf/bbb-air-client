@@ -45,5 +45,6 @@ package org.bigbluebutton.model {
 		function load(obj:Object):void;
 		function get muteOnStart():Boolean;
 		function set muteOnStart(mute:Boolean):void;
+		function get serverIsMconf():Boolean;
 	}
 }

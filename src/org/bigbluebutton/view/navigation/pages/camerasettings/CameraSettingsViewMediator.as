@@ -16,6 +16,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.core.VideoConnection;
 	import org.bigbluebutton.core.VideoProfile;
+	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
@@ -45,6 +46,9 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		[Inject]
 		public var saveData:ISaveData;
 		
+		[Inject]
+		public var conferenceParameters:IConferenceParameters;
+		
 		protected var dataProvider:ArrayCollection;
 		
 		override public function initialize():void {
@@ -69,7 +73,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 				view.swapCameraButton.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 				userSession.userList.userChangeSignal.add(userChangeHandler);
 			}
-			setRotateCameraButtonEnable(!userMe.hasStream);
+			setRotateCameraButtonEnable(!userMe.hasStream && conferenceParameters.serverIsMconf);
 			view.startCameraButton.addEventListener(MouseEvent.CLICK, onShareCameraClick);
 			view.rotateCameraButton.addEventListener(MouseEvent.CLICK, onRotateCameraClick);
 			view.cameraProfilesList.addEventListener(IndexChangeEvent.CHANGE, onCameraQualitySelected);
@@ -98,7 +102,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		}
 		
 		protected function onShareCameraClick(event:MouseEvent):void {
-			setRotateCameraButtonEnable(userSession.userList.me.hasStream);
+			setRotateCameraButtonEnable(userSession.userList.me.hasStream && conferenceParameters.serverIsMconf);
 			view.cameraProfilesList.selectedIndex = dataProvider.getItemIndex(userSession.videoConnection.selectedCameraQuality);
 			shareCameraSignal.dispatch(!userSession.userList.me.hasStream, userSession.videoConnection.cameraPosition);
 			displayPreviewCamera();

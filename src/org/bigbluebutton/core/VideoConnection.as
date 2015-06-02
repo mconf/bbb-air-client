@@ -134,7 +134,7 @@ package org.bigbluebutton.core {
 		}
 		
 		public function get selectedCameraRotation():int {
-			return _selectedCameraRotation;
+			return (conferenceParameters.serverIsMconf) ? _selectedCameraRotation : 0;
 		}
 		
 		public function set selectedCameraRotation(rotation:int):void {

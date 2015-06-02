@@ -5,14 +5,15 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 	import mx.core.FlexGlobals;
 	import mx.resources.ResourceManager;
 	import mx.states.Transition;
+	import org.bigbluebutton.command.ChangeRoleSignal;
+	import org.bigbluebutton.command.ClearUserStatusSignal;
+	import org.bigbluebutton.command.PresenterSignal;
+	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
-	import org.bigbluebutton.command.ChangeRoleSignal;
-	import org.bigbluebutton.command.ClearUserStatusSignal;
-	import org.bigbluebutton.command.PresenterSignal;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class UserDetaisViewMediator extends Mediator {
@@ -35,6 +36,9 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 		[Inject]
 		public var changeRoleSignal:ChangeRoleSignal;
 		
+		[Inject]
+		public var conferenceParameters:IConferenceParameters;
+		
 		protected var _user:User;
 		
 		override public function initialize():void {
@@ -42,6 +46,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			userSession.userList.userChangeSignal.add(userChanged);
 			userSession.userList.userRemovedSignal.add(userRemoved);
 			view.user = _user;
+			view.conferenceParameters = conferenceParameters;
 			view.userMe = userSession.userList.me;
 			view.showCameraButton.addEventListener(MouseEvent.CLICK, onShowCameraButton);
 			view.showPrivateChat.addEventListener(MouseEvent.CLICK, onShowPrivateChatButton);

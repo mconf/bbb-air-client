@@ -196,41 +196,43 @@ package org.bigbluebutton.core {
 			user.guest = newUser.guest;
 			user.waitingForAcceptance = newUser.waitingForAcceptance;
 			var mood:String = newUser.mood;
-			switch (mood.substr(0, mood.indexOf(","))) {
-				case "AGREE":
-					user.status = User.AGREE;
-					break;
-				case "DISAGREE":
-					user.status = User.DISAGREE;
-					break;
-				case "SPEAK_LOUDER":
-					user.status = User.SPEAK_LOUDER;
-					break;
-				case "SPEAK_LOWER":
-					user.status = User.SPEAK_LOWER;
-					break;
-				case "SPEAK_FASTER":
-					user.status = User.SPEAK_FASTER;
-					break;
-				case "SPEAK_SLOWER":
-					user.status = User.SPEAK_SLOWER;
-					break;
-				case "BE_RIGHT_BACK":
-					user.status = User.BE_RIGHT_BACK;
-					break;
-				case "LAUGHTER":
-					user.status = User.LAUGHTER;
-					break;
-				case "SAD":
-					user.status = User.SAD;
-					break;
-				case "RAISE_HAND":
-					user.status = User.RAISE_HAND;
-					break;
-				case "":
-				case "CLEAR_MOOD":
-					user.status = User.NO_STATUS;
-					break;
+			if (mood) {
+				switch (mood.substr(0, mood.indexOf(","))) {
+					case "AGREE":
+						user.status = User.AGREE;
+						break;
+					case "DISAGREE":
+						user.status = User.DISAGREE;
+						break;
+					case "SPEAK_LOUDER":
+						user.status = User.SPEAK_LOUDER;
+						break;
+					case "SPEAK_LOWER":
+						user.status = User.SPEAK_LOWER;
+						break;
+					case "SPEAK_FASTER":
+						user.status = User.SPEAK_FASTER;
+						break;
+					case "SPEAK_SLOWER":
+						user.status = User.SPEAK_SLOWER;
+						break;
+					case "BE_RIGHT_BACK":
+						user.status = User.BE_RIGHT_BACK;
+						break;
+					case "LAUGHTER":
+						user.status = User.LAUGHTER;
+						break;
+					case "SAD":
+						user.status = User.SAD;
+						break;
+					case "RAISE_HAND":
+						user.status = User.RAISE_HAND;
+						break;
+					case "":
+					case "CLEAR_MOOD":
+						user.status = User.NO_STATUS;
+						break;
+				}
 			}
 			if (user.waitingForAcceptance) {
 				userSession.guestList.addUser(user);

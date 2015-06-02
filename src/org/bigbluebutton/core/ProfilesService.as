@@ -38,7 +38,7 @@ package org.bigbluebutton.core {
 			try {
 				successSignal.dispatch(new XML(data));
 			} catch (e:Error) {
-				onUnsuccess("invalidXml");
+				//onUnsuccess("invalidXml");
 			}
 		}
 		

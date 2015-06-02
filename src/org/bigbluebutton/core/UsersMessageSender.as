@@ -1,9 +1,12 @@
 package org.bigbluebutton.core {
 	
 	import flash.net.Responder;
+	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	
 	public class UsersMessageSender {
+		public var conferenceParameters:IConferenceParameters;
+		
 		public var userSession:IUserSession;
 		
 		// The default callbacks of userSession.mainconnection.sendMessage
@@ -52,7 +55,11 @@ package org.bigbluebutton.core {
 		
 		public function removeStream(userID:String, streamName:String):void {
 			trace("UsersMessageSender::removeStream() -- Sending [participants.unshareWebcam] message to server");
-			userSession.mainConnection.sendMessage("participants.unshareWebcam", defaultSuccessResponse, defaultFailureResponse, streamName);
+			if (conferenceParameters.serverIsMconf) {
+				userSession.mainConnection.sendMessage("participants.unshareWebcam", defaultSuccessResponse, defaultFailureResponse, streamName);
+			} else {
+				userSession.mainConnection.sendMessage("participants.unshareWebcam", defaultSuccessResponse, defaultFailureResponse);
+			}
 		}
 		
 		public function queryForRecordingStatus():void {
