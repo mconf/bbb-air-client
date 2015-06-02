@@ -5,6 +5,7 @@ package org.bigbluebutton.view.navigation.pages.profile {
 	import mx.events.ItemClickEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.MoodSignal;
+	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
@@ -27,7 +28,11 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		[Inject]
 		public var moodSignal:MoodSignal;
 		
+		[Inject]
+		public var conferenceParameters:IConferenceParameters;
+		
 		override public function initialize():void {
+			view.currentState = (conferenceParameters.serverIsMconf) ? "mconf" : "bbb";
 			var userMe:User = userSession.userList.me;
 			view.userNameButton.label = userMe.name;
 			switch (userMe.status) {
