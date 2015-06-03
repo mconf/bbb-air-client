@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view:NoTabView xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:view="org.bigbluebutton.core.view.*">
+	<s:VGroup width="100%"
+			  height="100%"
+			  horizontalAlign="center">
+		<s:Scroller width="100%"
+					height="100%">
+			<s:VGroup width="100%"
+					  height="100%"
+					  horizontalAlign="center">
+				<s:List id="roomsList0"
+						width="100%"
+						height="100%"
+						itemRenderer="org.bigbluebutton.view.navigation.pages.login.rooms.RoomItemRenderer" />
+			</s:VGroup>
+		</s:Scroller>
+
+		<s:Label text="{resourceManager.getString('resources', 'rooms.message')}"
+				 textAlign="center"
+				 verticalAlign="middle"
+				 width="70%"
+				 height="20%"
+				 styleName="contentFontSize" />
+
+	</s:VGroup>
+
+</view:NoTabView>

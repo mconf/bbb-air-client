@@ -1,22 +1,14 @@
-package org.bigbluebutton.core
-{
-	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLLoader;
+package org.bigbluebutton.core {
+	
 	import flash.net.URLRequest;
-	import flash.net.URLRequestHeader;
-	import flash.net.URLRequestMethod;
-	
 	import mx.utils.ObjectUtil;
-	
 	import org.bigbluebutton.core.util.URLFetcher;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
-	public class EnterService
-	{
+	public class EnterService {
 		protected var _successSignal:Signal = new Signal();
+		
 		protected var _unsuccessSignal:Signal = new Signal();
 		
 		public function get successSignal():ISignal {
@@ -34,8 +26,9 @@ package org.bigbluebutton.core
 			fetcher.fetch(enterUrl, urlRequest);
 		}
 		
-		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest):void {
-			successSignal.dispatch(new XML(data));
+		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest, httpStatusCode:Number = 0):void {
+			var result:Object = JSON.parse(data as String);
+			successSignal.dispatch(result.response);
 		}
 		
 		protected function onUnsuccess(reason:String):void {

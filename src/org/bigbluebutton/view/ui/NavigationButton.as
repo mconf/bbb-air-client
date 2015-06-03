@@ -1,74 +1,72 @@
-package org.bigbluebutton.view.ui
-{
-	import flash.events.MouseEvent;
+package org.bigbluebutton.view.ui {
 	
+	import flash.events.MouseEvent;
+	import mx.events.FlexEvent;
+	import mx.states.SetStyle;
+	import mx.states.State;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
+	import spark.components.Button;
 	
-	import spark.components.Group;
-	
-	public class NavigationButton extends Group implements INavigationButton
-	{		
-		private var _navigationSignal: Signal = new Signal();
+	public class NavigationButton extends Button implements INavigationButton {
+		private var _transitionAnimation:int;
+		
+		public function get transitionAnimation():int {
+			return _transitionAnimation;
+		}
+		
+		public function set transitionAnimation(value:int):void {
+			_transitionAnimation = value;
+		}
+		
+		private var _navigationSignal:Signal = new Signal();
 		
 		/**
 		 * Dispatched when the user wants to navigato to a different page.
 		 */
-		public function get navigationSignal(): ISignal
-		{
+		public function get navigationSignal():ISignal {
 			return _navigationSignal;
 		}
 		
-		public function NavigationButton()
-		{
+		public function NavigationButton() {
 			super();
 		}
 		
-		override protected function childrenCreated():void
-		{
+		override protected function childrenCreated():void {
 			super.childrenCreated();
-			
 			this.addEventListener(MouseEvent.CLICK, onClick);
 		}
 		
-		protected function onClick(e:MouseEvent):void
-		{
+		protected function onClick(e:MouseEvent):void {
 			navigate();
-		}	
+		}
 		
-		protected function navigate():void
-		{
+		protected function navigate():void {
 			_navigationSignal.dispatch();
 		}
 		
-		public function dispose():void
-		{
+		public function dispose():void {
 			_navigationSignal.removeAll();
-			
 			this.removeEventListener(MouseEvent.CLICK, onClick);
 		}
 		
-		protected var _navigateTo:String = "";
-
-		public function get navigateTo():String
-		{
+		protected var _navigateTo:Array = new Array();
+		
+		public function get navigateTo():Array {
 			return _navigateTo;
 		}
-
-		public function set navigateTo(value:String):void
-		{
+		
+		public function set navigateTo(value:Array):void {
 			_navigateTo = value;
 		}
 		
 		protected var _pageDetails:String = "";
 		
-		public function get pageDetails():String
-		{
+		public function get pageDetails():String {
 			return _pageDetails;
 		}
 		
-		public function set pageDetails(value:String):void
-		{
+		public function set pageDetails(value:String):void {
 			_pageDetails = value;
 		}
 	}

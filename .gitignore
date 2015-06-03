@@ -13,9 +13,12 @@ bin-release-temp/
 .project
 .fxpProperties
 *.p12
+*.mobileprovision
 *.apk
 *.log
 resources.swf
+Thumbs.db
+*~
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important

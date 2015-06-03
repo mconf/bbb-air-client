@@ -1,62 +1,105 @@
-package org.bigbluebutton.view.navigation.pages.profile
-{
-	import flash.display.DisplayObject;
+package org.bigbluebutton.view.navigation.pages.profile {
+	
 	import flash.events.MouseEvent;
-	
+	import mx.core.FlexGlobals;
+	import mx.events.ItemClickEvent;
 	import mx.resources.ResourceManager;
-	
-	import org.bigbluebutton.command.CameraEnableSignal;
+	import org.bigbluebutton.command.MoodSignal;
 	import org.bigbluebutton.model.IUserSession;
-	import org.bigbluebutton.model.IUserSettings;
-	import org.osmf.logging.Log;
-	
+	import org.bigbluebutton.model.IUserUISession;
+	import org.bigbluebutton.model.User;
+	import org.bigbluebutton.model.UserList;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import robotlegs.bender.bundles.mvcs.Mediator;
+	import spark.events.IndexChangeEvent;
 	
-	public class ProfileViewMediator extends Mediator
-	{
-		[Inject]
-		public var view: IProfileView;
+	public class ProfileViewMediator extends Mediator {
 		
 		[Inject]
-		public var userSession: IUserSession;
+		public var view:IProfileView;
 		
 		[Inject]
-		public var userSettings: IUserSettings;
+		public var userSession:IUserSession;
 		
 		[Inject]
-		public var cameraEnabledSignal: CameraEnableSignal;
-
-		override public function initialize():void
-		{
-			Log.getLogger("org.bigbluebutton").info(String(this));
-			
-			userSettings.cameraChangeSignal.add(onCameraSettingChange)
-			
-			view.userNameText.text = userSession.userlist.getUser(userSession.userId).name;
-			
-			view.cameraOnOFFText.text = ResourceManager.getInstance().getString('resources', userSettings.cameraEnabled? 'profile.settings.camera.on':'profile.settings.camera.off'); 
-						
-			view.cameraButton.addEventListener(MouseEvent.CLICK, onCameraClick);
+		public var userUISession:IUserUISession;
+		
+		[Inject]
+		public var moodSignal:MoodSignal;
+		
+		override public function initialize():void {
+			var userMe:User = userSession.userList.me;
+			view.userNameButton.label = userMe.name;
+			switch (userMe.status) {
+				case User.RAISE_HAND:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.handRaise');
+					break;
+				case User.AGREE:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.agree');
+					break;
+				case User.DISAGREE:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.disagree');
+					break;
+				case User.SPEAK_LOUDER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakLouder');
+					break;
+				case User.SPEAK_LOWER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSofter');
+					break;
+				case User.SPEAK_FASTER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakFaster');
+					break;
+				case User.SPEAK_SLOWER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSlower');
+					break;
+				case User.BE_RIGHT_BACK:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.beRightBack');
+					break;
+				case User.LAUGHTER:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.laughter');
+					break;
+				case User.SAD:
+					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.sad');
+					break;
+				case User.NO_STATUS:
+					view.userStatusButton.visible = false;
+					view.clearStatusButton.visible = false;
+					view.userStatusButton.includeInLayout = false;
+					view.clearStatusButton.includeInLayout = false;
+					break;
+			}
+			view.logoutButton.addEventListener(MouseEvent.CLICK, logoutClick);
+			view.clearStatusButton.addEventListener(MouseEvent.CLICK, clearStatusClick);
+			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
+			FlexGlobals.topLevelApplication.profileBtn.visible = false;
+			FlexGlobals.topLevelApplication.backBtn.visible = true;
 		}
 		
-		private function onCameraSettingChange(cameraEnabled:Boolean):void
-		{
-			view.cameraOnOFFText.text = ResourceManager.getInstance().getString('resources', cameraEnabled? 'profile.settings.camera.on':'profile.settings.camera.off'); 
+		/**
+		 * User pressed log out button
+		 */
+		public function logoutClick(event:MouseEvent):void {
+			userUISession.pushPage(PagesENUM.EXIT);
 		}
 		
-		protected function onCameraClick(event:MouseEvent):void
-		{
-			cameraEnabledSignal.dispatch(!userSettings.cameraEnabled);
+		/**
+		 * User pressed clean status button
+		 */
+		public function clearStatusClick(event:MouseEvent):void {
+			var obj:Object;
+			obj = User.NO_STATUS;
+			moodSignal.dispatch(User.NO_STATUS);
+			view.userStatusButton.visible = false;
+			view.clearStatusButton.visible = false;
+			view.userStatusButton.includeInLayout = false;
+			view.clearStatusButton.includeInLayout = false;
+			userSession.userList.me.status = User.NO_STATUS;
 		}
 		
-		override public function destroy():void
-		{
+		override public function destroy():void {
 			super.destroy();
-			
-			userSettings.cameraChangeSignal.remove(onCameraSettingChange)
-			
-			view.cameraButton.removeEventListener(MouseEvent.CLICK, onCameraClick);
-			
+			view.logoutButton.removeEventListener(MouseEvent.CLICK, logoutClick);
+			view.clearStatusButton.removeEventListener(MouseEvent.CLICK, clearStatusClick);
 			view.dispose();
 			view = null;
 		}

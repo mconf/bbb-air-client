@@ -1,82 +1,105 @@
-package org.bigbluebutton.model
-{
-	import flash.net.NetConnection;
+package org.bigbluebutton.model {
 	
+	import flash.net.NetConnection;
+	import flash.utils.describeType;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-
+	
 	/**
 	 * The ConferenceParameters class holds attributes that define the conference. You can access them in your module through the
 	 * attributes property that is passed to your IBigBlueButtonModule instance on startup.
-	 * 
-	 */	
-	public class ConferenceParameters implements IConferenceParameters
-	{
-		private var _changedSignal: Signal = new Signal();
+	 *
+	 */
+	public class ConferenceParameters implements IConferenceParameters {
+		private var _changedSignal:Signal = new Signal();
+		
 		private var _meetingName:String;
+		
 		private var _externMeetingID:String;
+		
 		/**
 		 * The name of the conference
-		 */		
+		 */
 		private var _conference:String;
+		
 		/**
 		 * The username of the local user
-		 */		
+		 */
 		private var _username:String;
+		
 		/**
-		 * The role of the local user. Could be MODERATOR or VIEWER 
-		 */		
+		 * The role of the local user. Could be MODERATOR or VIEWER
+		 */
 		private var _role:String;
+		
 		/**
 		 * The room unique id, as specified in the API /create call.
-		 */		
+		 */
 		private var _room:String;
+		
 		/**
 		 * Voice conference bridge for the client
-		 */		
+		 */
 		private var _webvoiceconf:String;
+		
 		/**
-		 * Voice conference bridge that external SIP clients use. Usually the same as webvoiceconf 
-		 */		
+		 * Voice conference bridge that external SIP clients use. Usually the same as webvoiceconf
+		 */
 		private var _voicebridge:String;
+		
 		/**
 		 *  The welcome string, as passed in through the API /create call.
-		 */		
+		 */
 		private var _welcome:String;
+		
 		private var _meetingID:String;
+		
 		/**
 		 * External unique user id.
-		 */		
+		 */
 		private var _externUserID:String;
+		
 		/**
 		 * Internal unique user id.
-		 */		
-		private var _internalUserID:String;		
+		 */
+		private var _internalUserID:String;
+		
 		private var _logoutUrl:String;
+		
 		/**
-		 * A flash.net.NetConnection object that bbb-client connects to on startup. This connection reference is 
+		 * A flash.net.NetConnection object that bbb-client connects to on startup. This connection reference is
 		 * passed to your module as an already open connection. Use it to talk to the bigbluebutton server.
-		 */		
+		 */
 		private var _connection:NetConnection;
+		
 		/**
 		 * The unique userid internal to bbb-client.
-		 */		
+		 */
 		private var _userid:String;
+		
 		private var _record:Boolean;
-
-		public function ConferenceParameters()
-		{
+		
+		private var _guest:Boolean;
+		
+		private var _guestDefined:Boolean;
+		
+		private var _authToken:String;
+		
+		private var _metadata:Object;
+		
+		private var _muteOnStart:Boolean;
+		
+		public function ConferenceParameters() {
 		}
 		
 		/**
 		 * Dispatched when the collection is
 		 * changed.
 		 */
-		public function get changedSignal(): ISignal
-		{
+		public function get changedSignal():ISignal {
 			return _changedSignal;
 		}
-
+		
 		public function get meetingName():String {
 			return _meetingName;
 		}
@@ -112,7 +135,7 @@ package org.bigbluebutton.model
 			_username = username;
 			_changedSignal.dispatch();
 		}
-				
+		
 		public function get role():String {
 			return _role;
 		}
@@ -212,11 +235,40 @@ package org.bigbluebutton.model
 			_changedSignal.dispatch();
 		}
 		
+		public function get authToken():String {
+			return _authToken;
+		}
+		
+		public function set authToken(authToken:String):void {
+			_authToken = authToken;
+		}
+		
+		public function get metadata():Object {
+			return _metadata;
+		}
+		
+		public function set metadata(metadata:Object):void {
+			metadata = metadata;
+		}
+		
+		public function get guest():Boolean {
+			return _guest;
+		}
+		
+		public function set guest(value:Boolean):void {
+			_guest = value;
+			_changedSignal.dispatch();
+		}
+		
+		public function isGuestDefined():Boolean {
+			return _guestDefined;
+		}
+		
 		public function load(obj:Object):void {
-			_meetingName = obj.conferenceName;
+			_meetingName = obj.confname;
 			_externMeetingID = obj.externMeetingID;
 			_conference = obj.conference;
-			_username = obj.username;
+			_username = obj.fullname;
 			_role = obj.role;
 			_room = obj.room;
 			_webvoiceconf = obj.webvoiceconf;
@@ -224,12 +276,36 @@ package org.bigbluebutton.model
 			_welcome = obj.welcome;
 			_meetingID = obj.meetingID;
 			_externUserID = obj.externUserID;
-			_internalUserID = obj.internalUserId;
+			_internalUserID = obj.internalUserID;
 			_logoutUrl = obj.logoutUrl;
 			_record = !(obj.record == "false");
-			
+			_guest = (obj.guest == "true");
+			_guestDefined = (obj.guest != undefined);
+			_authToken = obj.authToken;
 			_changedSignal.dispatch();
+			_metadata = new Object();
+			for (var n:String in obj.metadata) {
+				for (var id:String in obj.metadata[n]) {
+					_metadata[id] = obj.metadata[n][id];
+				}
+			}
+			try {
+				_muteOnStart = (obj.muteOnStart as String).toUpperCase() == "TRUE";
+			} catch (e:Error) {
+				_muteOnStart = false;
+			}
+			for (var id:String in obj) {
+				var value:Object = obj[id];
+				trace(id + " = " + value);
+			}
 		}
 		
+		public function set muteOnStart(mute:Boolean):void {
+			_muteOnStart = mute;
+		}
+		
+		public function get muteOnStart():Boolean {
+			return _muteOnStart;
+		}
 	}
 }

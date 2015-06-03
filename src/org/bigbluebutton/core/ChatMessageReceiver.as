@@ -1,26 +1,31 @@
-package org.bigbluebutton.core
-{
+package org.bigbluebutton.core {
+	
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.chat.ChatMessageVO;
-
-	public class ChatMessageReceiver implements IChatMessageReceiver, IMessageListener
-	{
-		[Inject]
-		public var userSession: IUserSession;
-
-		public function onMessage(messageName:String, message:Object):void
-		{
+	import org.bigbluebutton.model.chat.IChatMessagesSession;
+	
+	public class ChatMessageReceiver implements IMessageListener {
+		public var userSession:IUserSession;
+		
+		public var chatMessagesSession:IChatMessagesSession;
+		
+		public function ChatMessageReceiver(userSession:IUserSession, chatMessagesSession:IChatMessagesSession) {
+			this.userSession = userSession;
+			this.chatMessagesSession = chatMessagesSession;
+		}
+		
+		public function onMessage(messageName:String, message:Object):void {
 			switch (messageName) {
 				case "ChatReceivePublicMessageCommand":
 					handleChatReceivePublicMessageCommand(message);
-					break;			
+					break;
 				case "ChatReceivePrivateMessageCommand":
 					handleChatReceivePrivateMessageCommand(message);
-					break;	
+					break;
 				case "ChatRequestMessageHistoryReply":
 					handleChatRequestMessageHistoryReply(message);
-					break;	
+					break;
 				default:
 					//   LogUtil.warn("Cannot handle message [" + messageName + "]");
 			}
@@ -46,8 +51,7 @@ package org.bigbluebutton.core
 			msg.toUserID = message.toUserID;
 			msg.toUsername = message.toUsername;
 			msg.message = message.message;
-			
-			userSession.publicChat.newChatMessage(msg);
+			chatMessagesSession.publicChat.newChatMessage(msg);
 		}
 		
 		private function handleChatReceivePrivateMessageCommand(message:Object):void {
@@ -63,9 +67,9 @@ package org.bigbluebutton.core
 			msg.toUserID = message.toUserID;
 			msg.toUsername = message.toUsername;
 			msg.message = message.message;
-			
-			var userId:String = (msg.fromUserID == userSession.userId? msg.toUserID: msg.fromUserID);
-			userSession.userlist.getUser(userId).privateChat.newChatMessage(msg);
+			var userId:String = (msg.fromUserID == userSession.userId ? msg.toUserID : msg.fromUserID);
+			var userName:String = (msg.fromUserID == userSession.userId ? msg.toUsername : msg.fromUsername);
+			chatMessagesSession.newPrivateMessage(userId, userName, msg);
 		}
 	}
 }

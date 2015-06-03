@@ -1,25 +1,28 @@
-package org.bigbluebutton.view.navigation.pages.userdetails
-{
+package org.bigbluebutton.view.navigation.pages.userdetails {
 	
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
-
-
-	public class UserDetaisConfig implements IConfig
-	{
-		[Inject]
-		public var injector: IInjector;
+	import org.bigbluebutton.command.ChangeRoleCommand;
+	import org.bigbluebutton.command.ChangeRoleSignal;
+	import org.bigbluebutton.command.ClearUserStatusCommand;
+	import org.bigbluebutton.command.ClearUserStatusSignal;
+	import org.bigbluebutton.command.PresenterCommand;
+	import org.bigbluebutton.command.PresenterSignal;
+	
+	public class UserDetaisConfig implements IConfig {
 		
 		[Inject]
-		public var mediatorMap: IMediatorMap;
+		public var injector:IInjector;
 		
 		[Inject]
-		public var signalCommandMap: ISignalCommandMap;
+		public var mediatorMap:IMediatorMap;
 		
-		public function configure(): void
-		{
+		[Inject]
+		public var signalCommandMap:ISignalCommandMap;
+		
+		public function configure():void {
 			dependencies();
 			mediators();
 			signals();
@@ -30,25 +33,24 @@ package org.bigbluebutton.view.navigation.pages.userdetails
 		 * that will be injected onto objects used by the
 		 * application.
 		 */
-		private function dependencies(): void
-		{
-			 
+		private function dependencies():void {
 		}
 		
 		/**
 		 * Maps view mediators to views.
 		 */
-		private function mediators(): void
-		{
+		private function mediators():void {
 			mediatorMap.map(IUserDetaisView).toMediator(UserDetaisViewMediator);
 		}
 		
 		/**
 		 * Maps signals to commands using the signalCommandMap.
 		 */
-		private function signals(): void
-		{
+		private function signals():void {
+			signalCommandMap.map(ClearUserStatusSignal).toCommand(ClearUserStatusCommand);
+			signalCommandMap.map(PresenterSignal).toCommand(PresenterCommand);
+			signalCommandMap.map(ChangeRoleSignal).toCommand(ChangeRoleCommand);
 			//signalCommandMap.map(ButtonTestSignal).toCommand(ButtonTestCommand);
-		}	
+		}
 	}
 }
