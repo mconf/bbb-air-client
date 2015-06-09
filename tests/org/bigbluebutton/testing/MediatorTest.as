@@ -4,7 +4,7 @@ package org.bigbluebutton.testing {
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
 	
-	public class MediatorTests {
+	public class MediatorTest {
 		/**
 		 * Sets the dependencies on a mediator ensuring it has
 		 * all the dependencies that the RL framework will provide

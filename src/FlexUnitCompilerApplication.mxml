@@ -7,30 +7,79 @@ Please click on the "Refresh" icon in "FlexUnit Results" view to regenerate this
 			   xmlns:s="library://ns.adobe.com/flex/spark">
 	<fx:Script>
 		<![CDATA[
-			import org.bigbluebutton.model.GuestTests;
-			import org.bigbluebutton.ui.MicButtonConfigTests;
-			import org.bigbluebutton.model.GuestListTests;
-			import org.mockito.integrations.flexunit3.MockitoTestCase;
+			import org.bigbluebutton.model.UserUISessionTest;
+			import org.bigbluebutton.model.ConfigTest;
+			import org.bigbluebutton.command.ShareCameraCommandTest;
+			import org.bigbluebutton.command.PresenterCommandTest;
+			import org.bigbluebutton.command.MoodCommandTest;
+			import org.bigbluebutton.command.MicrophoneMuteCommandTest;
+			import org.bigbluebutton.command.LoadSlideCommandTest;
+			import org.bigbluebutton.command.JoinMeetingCommandTest;
 			import org.bigbluebutton.AppTestSuite;
+			import org.bigbluebutton.command.AuthenticationCommandTest;
+			import org.bigbluebutton.command.ShareMicrophoneCommandTest;
+			import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageViewMediatorTest;
+			import org.bigbluebutton.model.UserTest;
+			import org.bigbluebutton.command.ConnectCommandTest;
+			import org.bigbluebutton.model.ConferenceParametersTest;
+			import org.mockito.integrations.flexunit3.MockitoTestCase;
+			import org.bigbluebutton.command.ClearUserStatusCommandTest;
 			import org.mockito.MockitoTestCase;
-			import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageViewMediatorTests;
+			import org.bigbluebutton.AppConfigurationTests;
+			import org.bigbluebutton.command.ChangeRoleCommandTest;
+			import org.bigbluebutton.model.UserListTest;
+			import org.bigbluebutton.command.NavigateToCommandTest;
+			import org.bigbluebutton.command.DisconnectUserCommandTest;
+			import org.bigbluebutton.ui.MicButtonConfigTest;
 			
-			private var org_bigbluebutton_view_navigation_pages_disconnect_DisconnectPageViewMediatorTests_obj:org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageViewMediatorTests;
+			private var org_bigbluebutton_ui_MicButtonConfigTest_obj:org.bigbluebutton.ui.MicButtonConfigTest;
+			
+			private var org_bigbluebutton_command_DisconnectUserCommandTest_obj:org.bigbluebutton.command.DisconnectUserCommandTest;
+			
+			private var org_bigbluebutton_command_NavigateToCommandTest_obj:org.bigbluebutton.command.NavigateToCommandTest;
+			
+			private var org_bigbluebutton_model_UserListTest_obj:org.bigbluebutton.model.UserListTest;
+			
+			private var org_bigbluebutton_command_ChangeRoleCommandTest_obj:org.bigbluebutton.command.ChangeRoleCommandTest;
+			
+			private var org_bigbluebutton_AppConfigurationTests_obj:org.bigbluebutton.AppConfigurationTests;
 			
 			private var org_mockito_MockitoTestCase_obj:org.mockito.MockitoTestCase;
 			
-			private var org_bigbluebutton_AppTestSuite_obj:org.bigbluebutton.AppTestSuite;
+			private var org_bigbluebutton_command_ClearUserStatusCommandTest_obj:org.bigbluebutton.command.ClearUserStatusCommandTest;
 			
 			private var org_mockito_integrations_flexunit3_MockitoTestCase_obj:org.mockito.integrations.flexunit3.MockitoTestCase;
 			
-			private var org_bigbluebutton_model_GuestListTests_obj:org.bigbluebutton.model.GuestListTests;
+			private var org_bigbluebutton_model_ConferenceParametersTest_obj:org.bigbluebutton.model.ConferenceParametersTest;
 			
-			private var org_bigbluebutton_ui_MicButtonConfigTests_obj:org.bigbluebutton.ui.MicButtonConfigTests;
+			private var org_bigbluebutton_command_ConnectCommandTest_obj:org.bigbluebutton.command.ConnectCommandTest;
 			
-			private var org_bigbluebutton_model_GuestTests_obj:org.bigbluebutton.model.GuestTests;
+			private var org_bigbluebutton_model_GuestTest_obj:org.bigbluebutton.model.UserTest;
 			
-			private var org_bigbluebutton__AppConfigurationTests_obj:org.bigbluebutton.AppConfigurationTests;
+			private var org_bigbluebutton_view_navigation_pages_disconnect_DisconnectPageViewMediatorTest_obj:org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageViewMediatorTest;
+			
+			private var org_bigbluebutton_command_ShareMicrophoneCommandTest_obj:org.bigbluebutton.command.ShareMicrophoneCommandTest;
+			
+			private var org_bigbluebutton_command_AuthenticationCommandTest_obj:org.bigbluebutton.command.AuthenticationCommandTest;
+			
+			private var org_bigbluebutton_AppTestSuite_obj:org.bigbluebutton.AppTestSuite;
+			
+			private var org_bigbluebutton_command_JoinMeetingCommandTest_obj:org.bigbluebutton.command.JoinMeetingCommandTest;
+			
+			private var org_bigbluebutton_command_LoadSlideCommandTest_obj:org.bigbluebutton.command.LoadSlideCommandTest;
+			
+			private var org_bigbluebutton_command_MicrophoneMuteCommandTest_obj:org.bigbluebutton.command.MicrophoneMuteCommandTest;
+			
+			private var org_bigbluebutton_command_MoodCommandTest_obj:org.bigbluebutton.command.MoodCommandTest;
+			
+			private var org_bigbluebutton_command_PresenterCommandTest_obj:org.bigbluebutton.command.PresenterCommandTest;
+			
+			private var org_bigbluebutton_command_ShareCameraCommandTest_obj:org.bigbluebutton.command.ShareCameraCommandTest;
+			
+			private var org_bigbluebutton_model_ConfigTest_obj:org.bigbluebutton.model.ConfigTest;
+			
+			private var org_bigbluebutton_model_UserUISessionTest_obj:org.bigbluebutton.model.UserUISessionTest;
 		]]>
 	</fx:Script>
-
+	
 </s:Application>

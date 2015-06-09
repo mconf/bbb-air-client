@@ -3,6 +3,7 @@ package org.bigbluebutton.view.navigation.pages.disconnect {
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.system.Capabilities;
 	import flash.utils.Timer;
 	import mx.core.FlexGlobals;
 	import org.bigbluebutton.model.UserSession;
@@ -30,11 +31,12 @@ package org.bigbluebutton.view.navigation.pages.disconnect {
 	import org.mockito.integrations.mock;
 	import org.mockito.integrations.notNull;
 	import org.mockito.integrations.verify;
+	import org.osflash.signals.Signal;
 	import spark.components.Button;
 	import spark.components.Label;
 	import spark.components.SkinnableContainer;
 	
-	public class DisconnectPageViewMediatorTests {
+	public class DisconnectPageViewMediatorTest {
 		
 		[Rule]
 		public var mockitoRule:IMethodRule = new MockitoRule();
@@ -44,35 +46,35 @@ package org.bigbluebutton.view.navigation.pages.disconnect {
 		[Mock(type = "org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageView")]
 		public var view:DisconnectPageView;
 		
-		[Mock(type = "spark.components.Button")]
-		public var exitButton:Button;
-		
 		[Mock(type = "org.bigbluebutton.model.UserSession")]
 		public var userSession:UserSession;
 		
 		[Mock(type = "org.bigbluebutton.model.UserUISession")]
 		public var userUISession:UserUISession;
 		
+		[Mock(type = "org.osflash.signals.Signal")]
+		public var logoutSignal:Signal;
+		
 		[Mock(type = "Object")]
 		public var topLevelApplication:Object;
+		
+		public var exitButton:Button;
+		
+		public var reconnectButton:Button;
 		
 		[Before]
 		public function setUp():void {
 			disconnectPageViewMediator = new DisconnectPageViewMediator();
-			given(exitButton.addEventListener(any(), any())).will(callOriginal());
+			reconnectButton = new Button();
+			exitButton = new Button();
 			given(view.exitButton).willReturn(exitButton);
-			given(view.reconnectButton).willReturn(new Button());
+			given(view.reconnectButton).willReturn(reconnectButton);
+			given(userSession.logoutSignal).willReturn(logoutSignal);
 			disconnectPageViewMediator.view = view;
 			disconnectPageViewMediator.eventDispatcher = new EventDispatcher();
 			disconnectPageViewMediator.userSession = userSession;
 			disconnectPageViewMediator.userUISession = userUISession;
-			//given(topLevelApplication.pageName).willReturn(new Label());
-			//given(topLevelApplication.topActionBar).willReturn(new SkinnableContainer());
-			//given(topLevelApplication.bottomMenu).willReturn(new MenuButtonsView());
-			//given(topLevelApplication.applicationDPI).willReturn(new Number());
-			//FlexGlobals.topLevelApplication = topLevelApplication;
 			disconnectPageViewMediator.initialize();
-			trace("asddsa " + disconnectPageViewMediator.view.exitButton);
 		}
 		
 		[Test]
@@ -85,21 +87,20 @@ package org.bigbluebutton.view.navigation.pages.disconnect {
 			verify().that(disconnectPageViewMediator.view.currentState = DisconnectType.CONNECTION_STATUS_MEETING_ENDED_STRING);
 		}
 		
-		[Test(async)]
-		public function reconnect():void {
-			verify().that(exitButton.addEventListener);
-			given(exitButton.dispatchEvent(new MouseEvent(MouseEvent.CLICK))).will(callOriginal());
+		[Ignore]
+		[Test]
+		public function applicationExit():void {
 			exitButton.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-			//runAfterTimeOut(this, 2800, function():void {
-			//	verify().that(disconnectPageViewMediator.userUISession.pushPage(PagesENUM.LOGIN));
-			//});
+			if (Capabilities.version.indexOf('IOS') < 0) {
+				verify().that(logoutSignal.dispatch());
+			}
 		}
 		
-		public function runAfterTimeOut(testClass:Object, time:Number, toRun:Function) {
-			var runWrapper:Function = function(... args):void {toRun();};
-			var t:Timer = new Timer(time);
-			Async.handleEvent(testClass, t, TimerEvent.TIMER, runWrapper, time + 200);
-			t.start();
+		[Test]
+		public function reconnect():void {
+			reconnectButton.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+			verify().that(userUISession.popPage());
+			verify().that(userUISession.pushPage(PagesENUM.LOGIN));
 		}
 	}
 }

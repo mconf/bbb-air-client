@@ -8,7 +8,7 @@ package org.bigbluebutton.testing {
 	import spark.components.Button;
 	import spark.components.TextArea;
 	
-	public class ViewTests {
+	public class ViewTest {
 		/**
 		 * Adds a UIComponent to a mock of the display list.
 		 */

@@ -2,7 +2,6 @@ package org.bigbluebutton.core {
 	
 	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.command.AuthenticationSignal;
-	import org.bigbluebutton.model.Guest;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;

@@ -74,7 +74,9 @@ package org.bigbluebutton.view.navigation.pages.disconnect {
 		private function reconnect(event:Event):void {
 			trace("DisconnectPageViewMediator.reconnect - attempting to reconnect");
 			userUISession.popPage();
-			FlexGlobals.topLevelApplication.mainshell.visible = false;
+			if (FlexGlobals.topLevelApplication.hasOwnProperty("mainshell")) {
+				FlexGlobals.topLevelApplication.mainshell.visible = false;
+			}
 			userUISession.pushPage(PagesENUM.LOGIN);
 		}
 	}

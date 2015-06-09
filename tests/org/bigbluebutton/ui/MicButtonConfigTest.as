@@ -5,7 +5,7 @@ package org.bigbluebutton.ui {
 	import org.hamcrest.object.notNullValue;
 	import robotlegs.bender.framework.api.IConfig;
 	
-	public class MicButtonConfigTests {
+	public class MicButtonConfigTest {
 		
 		/**
 		 * Tests that the TodoFormConfig class implements IConfig.

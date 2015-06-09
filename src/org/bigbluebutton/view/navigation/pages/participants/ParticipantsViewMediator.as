@@ -9,8 +9,6 @@ package org.bigbluebutton.view.navigation.pages.participants {
 	import mx.events.CollectionEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.core.IUsersService;
-	import org.bigbluebutton.model.Guest;
-	import org.bigbluebutton.model.GuestList;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;

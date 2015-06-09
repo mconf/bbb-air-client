@@ -143,7 +143,7 @@ package org.bigbluebutton.command {
 			chatService.setupMessageSenderReceiver();
 			presentationService.setupMessageSenderReceiver();
 			// set up and connect the remaining connections
-			videoConnection.uri = userSession.config.getConfigFor("VideoConfModule").@uri + "/" + conferenceParameters.room;
+			videoConnection.uri = userSession.config.getConfigFor("VideoconfModule").@uri + "/" + conferenceParameters.room;
 			//TODO see if videoConnection.successConnected is dispatched when it's connected properly
 			videoConnection.successConnected.add(successVideoConnected);
 			videoConnection.unsuccessConnected.add(unsuccessVideoConnected);
@@ -167,7 +167,7 @@ package org.bigbluebutton.command {
 			chatService.getPublicChatMessages();
 			presentationService.getPresentationInfo();
 			userSession.userList.allUsersAddedSignal.add(successUsersAdded);
-			usersService.queryForParticipants(); //pppppppppp
+			usersService.queryForParticipants();
 			usersService.queryForRecordingStatus();
 			userSession.successJoiningMeetingSignal.remove(successJoiningMeeting);
 			userSession.unsuccessJoiningMeetingSignal.remove(unsuccessJoiningMeeting);
@@ -213,8 +213,10 @@ package org.bigbluebutton.command {
 		private function successUsersAdded():void {
 			// remove guest page (if it is there)
 			userUISession.popPage();
-			FlexGlobals.topLevelApplication.topActionBar.visible = true;
-			FlexGlobals.topLevelApplication.bottomMenu.visible = true;
+			if (FlexGlobals.topLevelApplication.hasOwnProperty("topActionBar") && FlexGlobals.topLevelApplication.hasOwnProperty("bottomMenu")) {
+				FlexGlobals.topLevelApplication.topActionBar.visible = true;
+				FlexGlobals.topLevelApplication.bottomMenu.visible = true;
+			}
 			userUISession.loading = false;
 			userUISession.pushPage(PagesENUM.PARTICIPANTS);
 			if (userSession.phoneAutoJoin && !userSession.phoneSkipCheck) {

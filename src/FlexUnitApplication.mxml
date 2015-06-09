@@ -11,12 +11,12 @@
 	<fx:Script>
 		<![CDATA[
 			import flexunit.flexui.FirstViewDataVO;
-			import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageViewMediatorTests;
+			import org.bigbluebutton.AppTestSuite;
 			
 			public function currentRunTestSuite():Array
 			{
 				var testsToRun:Array = new Array();
-				testsToRun.push(org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageViewMediatorTests);
+				testsToRun.push(org.bigbluebutton.AppTestSuite);
 				return testsToRun;
 			}
 			

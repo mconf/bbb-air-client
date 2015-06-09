@@ -68,9 +68,11 @@ package org.bigbluebutton.command {
 			}
 		}
 		
-		private function mediaSuccessConnected(publishName:String, playName:String, codec:String):void {
+		private function mediaSuccessConnected(publishName:String, playName:String, codec:String, manager = null):void {
 			trace(LOG + "mediaSuccessConnected()");
-			var manager:VoiceStreamManager = new VoiceStreamManager();
+			if (!manager) {
+				var manager:VoiceStreamManager = new VoiceStreamManager();
+			}
 			manager.play(voiceConnection.connection, playName);
 			if (publishName != null && publishName.length != 0) {
 				manager.publish(voiceConnection.connection, publishName, codec);
