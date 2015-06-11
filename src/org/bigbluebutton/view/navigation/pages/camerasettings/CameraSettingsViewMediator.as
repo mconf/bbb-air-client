@@ -52,6 +52,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		protected var dataProvider:ArrayCollection;
 		
 		override public function initialize():void {
+			view.currentState = (conferenceParameters.serverIsMconf) ? "mconf" : "bbb";
 			dataProvider = new ArrayCollection();
 			view.cameraProfilesList.dataProvider = dataProvider;
 			displayCameraProfiles();
@@ -67,13 +68,12 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 			if (Camera.names.length <= 1) {
 				setSwapCameraButtonEnable(false);
 			} else {
-				if (!userMe.hasStream) {
-					setSwapCameraButtonEnable(false);
-				}
+				setSwapCameraButtonEnable(!userMe.hasStream);
 				view.swapCameraButton.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 				userSession.userList.userChangeSignal.add(userChangeHandler);
 			}
-			setRotateCameraButtonEnable(!userMe.hasStream && conferenceParameters.serverIsMconf);
+			setQualityListEnable(!userSession.userList.me.hasStream);
+			setRotateCameraButtonEnable(!userMe.hasStream);
 			view.startCameraButton.addEventListener(MouseEvent.CLICK, onShareCameraClick);
 			view.rotateCameraButton.addEventListener(MouseEvent.CLICK, onRotateCameraClick);
 			view.cameraProfilesList.addEventListener(IndexChangeEvent.CHANGE, onCameraQualitySelected);
@@ -102,7 +102,8 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		}
 		
 		protected function onShareCameraClick(event:MouseEvent):void {
-			setRotateCameraButtonEnable(userSession.userList.me.hasStream && conferenceParameters.serverIsMconf);
+			setRotateCameraButtonEnable(userSession.userList.me.hasStream);
+			setQualityListEnable(userSession.userList.me.hasStream);
 			view.cameraProfilesList.selectedIndex = dataProvider.getItemIndex(userSession.videoConnection.selectedCameraQuality);
 			shareCameraSignal.dispatch(!userSession.userList.me.hasStream, userSession.videoConnection.cameraPosition);
 			displayPreviewCamera();
@@ -127,6 +128,10 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		
 		protected function setRotateCameraButtonEnable(enabled:Boolean):void {
 			view.rotateCameraButton.enabled = enabled;
+		}
+		
+		protected function setQualityListEnable(enabled:Boolean):void {
+			view.cameraProfilesList.enabled = enabled;
 		}
 		
 		protected function onCameraQualitySelected(event:IndexChangeEvent):void {

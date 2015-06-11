@@ -68,7 +68,7 @@ package org.bigbluebutton.model {
 		
 		protected var _authTokenSignal:ISignal = new Signal();
 		
-		protected var _videoProfileManager:VideoProfileManager = new VideoProfileManager(null);
+		protected var _videoProfileManager:VideoProfileManager = new VideoProfileManager();
 		
 		public function get videoProfileManager():VideoProfileManager {
 			return _videoProfileManager;

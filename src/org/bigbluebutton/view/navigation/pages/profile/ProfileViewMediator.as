@@ -38,6 +38,7 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			switch (userMe.status) {
 				case User.RAISE_HAND:
 					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.handRaise');
+					view.handButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.handLower');
 					break;
 				case User.AGREE:
 					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.agree');
@@ -75,6 +76,7 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			}
 			view.logoutButton.addEventListener(MouseEvent.CLICK, logoutClick);
 			view.clearStatusButton.addEventListener(MouseEvent.CLICK, clearStatusClick);
+			view.handButton.addEventListener(MouseEvent.CLICK, raiseHandClick);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
@@ -99,6 +101,15 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			view.userStatusButton.includeInLayout = false;
 			view.clearStatusButton.includeInLayout = false;
 			userSession.userList.me.status = User.NO_STATUS;
+		}
+		
+		public function raiseHandClick(event:MouseEvent):void {
+			if (userSession.userList.me.status == User.RAISE_HAND) {
+				moodSignal.dispatch(User.NO_STATUS);
+			} else {
+				moodSignal.dispatch(User.RAISE_HAND);
+			}
+			userUISession.popPage();
 		}
 		
 		override public function destroy():void {

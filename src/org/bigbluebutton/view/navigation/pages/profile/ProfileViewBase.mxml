@@ -58,6 +58,14 @@
 								 navigateTo="{[PagesENUM.STATUS]}"
 								 styleName="profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
 								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
+
+			<s:Button id="handBtn0"
+					  visible.mconf="false"
+					  includeInLayout.mconf="false"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'profile.settings.handRaise')}"
+					  styleName="raiseHandButtonStyle videoAudioSettingStyle contentFontSize" />
+
 			<s:Button id="logoutButton0"
 					  width="90%"
 					  label="{resourceManager.getString('resources', 'profile.logout')}"

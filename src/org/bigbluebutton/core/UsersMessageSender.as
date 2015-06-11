@@ -48,6 +48,19 @@ package org.bigbluebutton.core {
 			userSession.mainConnection.sendMessage("participants.setParticipantStatus", defaultSuccessResponse, defaultFailureResponse, message);
 		}
 		
+		public function raiseHand():void {
+			trace("UsersMessageSender::raiseHand() -- Sending [participants.userRaiseHand] message to server");
+			userSession.mainConnection.sendMessage("participants.userRaiseHand", defaultSuccessResponse, defaultFailureResponse);
+		}
+		
+		public function lowerHand(userID:String, loweredBy:String):void {
+			trace("UsersMessageSender::raiseHand() -- Sending [participants.lowerHand] message to server with message: [userId:" + userID + ", loweredBy:" + userID + "]");
+			var message:Object = new Object();
+			message["userId"] = userID;
+			message["loweredBy"] = loweredBy;
+			userSession.mainConnection.sendMessage("participants.lowerHand", defaultSuccessResponse, defaultFailureResponse, message);
+		}
+		
 		public function addStream(userID:String, streamName:String):void {
 			trace("UsersMessageSender::addStream() -- Sending [participants.shareWebcam] message to server with message [streamName:" + streamName + "]");
 			userSession.mainConnection.sendMessage("participants.shareWebcam", defaultSuccessResponse, defaultFailureResponse, streamName);

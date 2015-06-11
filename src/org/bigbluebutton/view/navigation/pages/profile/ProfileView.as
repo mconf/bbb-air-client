@@ -50,5 +50,9 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		public function get logoutButton():Button {
 			return logoutButton0;
 		}
+		
+		public function get handButton():Button {
+			return handBtn0;
+		}
 	}
 }

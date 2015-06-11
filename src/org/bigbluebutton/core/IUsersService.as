@@ -33,5 +33,6 @@ package org.bigbluebutton.core {
 		function unmute(user:User):void;
 		function validateToken():void;
 		function changeRole(userID:String, role:String):void;
+		function lowerHand(userID:String, loweredBy:String):void;
 	}
 }

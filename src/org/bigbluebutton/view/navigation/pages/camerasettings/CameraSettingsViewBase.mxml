@@ -6,7 +6,10 @@
 				xmlns:ui="org.bigbluebutton.view.ui.*"
 				styleName="cameraSettingsViewStyle"
 				xmlns:cameraprofiles="org.bigbluebutton.view.navigation.pages.camerasettings.cameraprofiles.*">
-
+	<view:states>
+		<s:State name="bbb" />
+		<s:State name="mconf" />
+	</view:states>
 	<fx:Script>
 		<![CDATA[
 			import org.bigbluebutton.view.navigation.pages.PagesENUM;
@@ -41,14 +44,15 @@
 						 height="100%"
 						 id="settingsGroup0">
 					<s:layout>
-						<s:VerticalLayout verticalAlign="middle"
-										  horizontalAlign="center" />
+						<s:VerticalLayout horizontalAlign="center" />
 					</s:layout>
 					<cameraprofiles:CameraProfilesList id="cameraprofileslist"
 													   width="90%" />
 
 					<s:HGroup width="90%">
-						<s:Button width="100%"
+						<s:Button visible.bbb="false"
+								  includeInLayout.bbb="false"
+								  width="100%"
 								  id="rotateCameraBtn0"
 								  styleName="cameraSettingsRotateButtonStyle videoAudioSettingStyle contentFontSize"
 								  label="{resourceManager.getString('resources', 'cameraSettings.rotate')}" />

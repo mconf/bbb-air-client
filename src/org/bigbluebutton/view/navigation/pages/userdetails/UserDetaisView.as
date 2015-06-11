@@ -82,6 +82,9 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 					promoteButton.includeInLayout = false;
 					promoteButton.visible = false;
 				}
+				if (!_conferenceParameters.serverIsMconf) {
+					clearStatusButton.label = resourceManager.getString('resources', 'profile.settings.handLower');
+				}
 				cameraIcon.visible = cameraIcon.includeInLayout = _user.hasStream;
 				micIcon.visible = micIcon.includeInLayout = (_user.voiceJoined && !_user.muted);
 				micOffIcon.visible = micOffIcon.includeInLayout = (_user.voiceJoined && _user.muted);

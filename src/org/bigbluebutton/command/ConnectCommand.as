@@ -180,14 +180,12 @@ package org.bigbluebutton.command {
 				rooms = new ArrayCollection();
 			}
 			var roomName:String = conferenceParameters.externMeetingID;
-			for (var n:String in conferenceParameters.metadata) {
-				trace(conferenceParameters.metadata[n]);
-			}
 			var roomUrl:String = (conferenceParameters.metadata && conferenceParameters.metadata.hasOwnProperty("invitation-url")) ? conferenceParameters.metadata['invitation-url'] : null;
 			if (roomName) {
 				var roomExists:Boolean = false;
 				for (var i:int = rooms.length - 1; i >= 0; i--) {
 					if (rooms[i].name == roomName && rooms[i].url == roomUrl) {
+						rooms[i].timestamp = new Date();
 						rooms.addItem(rooms.removeItemAt(i));
 						roomExists = true;
 						break;

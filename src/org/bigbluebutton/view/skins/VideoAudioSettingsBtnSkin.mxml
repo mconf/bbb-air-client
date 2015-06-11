@@ -13,6 +13,8 @@
 		<s:State name="down" />
 		<s:State name="over" />
 		<s:State name="up" />
+		<s:State name="upAndSelected" />
+		<s:State name="downAndSelected" />
 	</s:states>
 	<s:Rect radiusX="{getStyle('radiusX')}"
 			radiusY="{getStyle('radiusY')}"

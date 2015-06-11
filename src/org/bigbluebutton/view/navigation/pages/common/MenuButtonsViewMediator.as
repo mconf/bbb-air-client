@@ -221,6 +221,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 				notification.fireDate = new Date((new Date()).time);
 				notification.ongoing = true;
 				notification.vibrate = false;
+				notification.playSound = false;
 				notificationManager.notifyUser("running", notification);
 			}
 		}

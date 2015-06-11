@@ -89,9 +89,27 @@ package org.bigbluebutton.core {
 				case "participantRoleChange":
 					handleParticipantRoleChange(message);
 					break;
+				case "userRaisedHand":
+					handleParticipantRaisedHand(message);
+					break;
+				case "userLoweredHand":
+					handleParticipantLoweredHand(message);
+					break;
 				default:
 					break;
 			}
+		}
+		
+		private function handleParticipantRaisedHand(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("ParticipantRaisedHand: " + ObjectUtil.toString(msg));
+			userSession.userList.statusChange(msg.userId, User.RAISE_HAND);
+		}
+		
+		private function handleParticipantLoweredHand(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("ParticipantLoweredHand: " + ObjectUtil.toString(msg));
+			userSession.userList.statusChange(msg.userId, User.NO_STATUS);
 		}
 		
 		private function handleParticipantRoleChange(m:Object):void {
@@ -196,6 +214,9 @@ package org.bigbluebutton.core {
 			user.guest = newUser.guest;
 			user.waitingForAcceptance = newUser.waitingForAcceptance;
 			var mood:String = newUser.mood;
+			if (newUser.raiseHand) {
+				user.status = User.RAISE_HAND;
+			}
 			if (mood) {
 				switch (mood.substr(0, mood.indexOf(","))) {
 					case "AGREE":
