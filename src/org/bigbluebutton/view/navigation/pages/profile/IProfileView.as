@@ -18,5 +18,8 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		function get shareMicBtnLabel():String;
 		function get statusButton():Button;
 		function get logoutButton():Button;
+		function get currentState():String;
+		function set currentState(value:String):void;
+		function get handButton():Button;
 	}
 }

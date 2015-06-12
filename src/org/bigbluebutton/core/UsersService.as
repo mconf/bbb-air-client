@@ -32,6 +32,7 @@ package org.bigbluebutton.core {
 			usersMessageReceiver.userSession = userSession;
 			usersMessageReceiver.authenticationSignal = authenticationSignal;
 			usersMessageSender.userSession = userSession;
+			usersMessageSender.conferenceParameters = conferenceParameters;
 			userSession.mainConnection.addMessageListener(usersMessageReceiver as IMessageListener);
 			userSession.logoutSignal.add(logout);
 		}
@@ -77,6 +78,13 @@ package org.bigbluebutton.core {
 		
 		public function changeMood(mood:String):void {
 			usersMessageSender.changeMood(userSession.userList.me.userID, mood);
+			if (!conferenceParameters.serverIsMconf) {
+				if (mood == User.RAISE_HAND) {
+					usersMessageSender.raiseHand();
+				} else if (mood == User.NO_STATUS) {
+					usersMessageSender.lowerHand(userSession.userList.me.userID, userSession.userList.me.userID);
+				}
+			}
 		}
 		
 		public function clearUserStatus(userID:String):void {
@@ -149,6 +157,10 @@ package org.bigbluebutton.core {
 		
 		public function responseToGuest(userId:String, response:Boolean):void {
 			usersMessageSender.responseToGuest(userId, response);
+		}
+		
+		public function lowerHand(userID:String, loweredBy:String):void {
+			usersMessageSender.lowerHand(userID, loweredBy);
 		}
 		
 		public function responseToAllGuests(response:Boolean):void {

@@ -57,6 +57,10 @@ package org.bigbluebutton.core {
 		private function loadCameraSettings():void {
 			if (saveData.read("cameraQuality") != null) {
 				_selectedCameraQuality = userSession.videoProfileManager.getVideoProfileById(saveData.read("cameraQuality") as String);
+				if (!_selectedCameraQuality) {
+					_selectedCameraQuality = userSession.videoProfileManager.defaultVideoProfile;
+					trace("selected camera quality " + _selectedCameraQuality)
+				}
 			} else {
 				_selectedCameraQuality = userSession.videoProfileManager.defaultVideoProfile;
 			}
@@ -134,7 +138,7 @@ package org.bigbluebutton.core {
 		}
 		
 		public function get selectedCameraRotation():int {
-			return _selectedCameraRotation;
+			return (conferenceParameters.serverIsMconf) ? _selectedCameraRotation : 0;
 		}
 		
 		public function set selectedCameraRotation(rotation:int):void {
@@ -146,7 +150,6 @@ package org.bigbluebutton.core {
 		 **/
 		public function selectCameraQuality(profile:VideoProfile):void {
 			if (selectedCameraRotation == 90 || selectedCameraRotation == 270) {
-				trace("camera de lado... inverter");
 				camera.setMode(profile.height, profile.width, profile.modeFps);
 			} else {
 				camera.setMode(profile.width, profile.height, profile.modeFps);

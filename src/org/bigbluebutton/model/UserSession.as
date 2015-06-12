@@ -62,13 +62,15 @@ package org.bigbluebutton.model {
 		
 		protected var _unsuccessJoiningMeetingSignal:ISignal = new Signal();
 		
+		protected var _assignedDeskshareSignal:ISignal = new Signal();
+		
 		protected var _recordingStatusChangedSignal:ISignal = new Signal();
 		
 		protected var _logoutSignal:Signal = new Signal();
 		
 		protected var _authTokenSignal:ISignal = new Signal();
 		
-		protected var _videoProfileManager:VideoProfileManager = null;
+		protected var _videoProfileManager:VideoProfileManager = new VideoProfileManager();
 		
 		public function get videoProfileManager():VideoProfileManager {
 			return _videoProfileManager;
@@ -181,6 +183,7 @@ package org.bigbluebutton.model {
 		
 		public function set deskshareConnection(value:IDeskshareConnection):void {
 			_deskshareConnection = value;
+			_assignedDeskshareSignal.dispatch();
 		}
 		
 		public function UserSession() {
@@ -207,6 +210,10 @@ package org.bigbluebutton.model {
 		
 		public function get unsuccessJoiningMeetingSignal():ISignal {
 			return _unsuccessJoiningMeetingSignal;
+		}
+		
+		public function get assignedDeskshareSignal():ISignal {
+			return _assignedDeskshareSignal;
 		}
 		
 		public function joinMeetingResponse(msg:Object):void {

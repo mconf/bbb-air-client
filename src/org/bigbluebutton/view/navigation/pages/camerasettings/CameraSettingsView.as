@@ -1,5 +1,6 @@
 package org.bigbluebutton.view.navigation.pages.camerasettings {
 	
+	import org.bigbluebutton.view.navigation.pages.camerasettings.cameraprofiles.CameraProfilesList;
 	import spark.components.Button;
 	import spark.components.Group;
 	import spark.components.Label;

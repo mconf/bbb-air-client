@@ -46,6 +46,7 @@ package org.bigbluebutton.model {
 		function get guestEntranceSignal():ISignal;
 		function get successJoiningMeetingSignal():ISignal;
 		function get unsuccessJoiningMeetingSignal():ISignal;
+		function get assignedDeskshareSignal():ISignal;
 		function get logoutSignal():Signal;
 		function get recordingStatusChangedSignal():ISignal;
 		function joinMeetingResponse(msg:Object):void;

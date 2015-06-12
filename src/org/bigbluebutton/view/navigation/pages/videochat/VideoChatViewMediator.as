@@ -50,10 +50,13 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 				}
 			}
 			var selectedUserProfile:User = userUISession.currentPageDetails as User;
+			var displayUserStreamName:UserStreamName = null;
 			if (selectedUserProfile) {
-				manualSelection = true;
 				var userStreamNames:Array = getUserStreamNamesByUserID(selectedUserProfile.userID);
-				var displayUserStreamName:UserStreamName = userStreamNames[0];
+				displayUserStreamName = userStreamNames[0];
+			}
+			if (displayUserStreamName) {
+				manualSelection = true;
 				view.streamlist.selectedIndex = dataProvider.getItemIndex(displayUserStreamName);
 				startStream(selectedUserProfile, displayUserStreamName.streamName);
 				view.noVideoMessage.visible = false;

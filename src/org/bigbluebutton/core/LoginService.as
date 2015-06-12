@@ -27,6 +27,8 @@ package org.bigbluebutton.core {
 		
 		protected var _joinUrl:String;
 		
+		protected var _config:Config;
+		
 		public function get successJoinedSignal():ISignal {
 			return _successJoinedSignal;
 		}
@@ -63,10 +65,6 @@ package org.bigbluebutton.core {
 			configSubservice.successSignal.add(onConfigResponse);
 			configSubservice.unsuccessSignal.add(fail);
 			configSubservice.getConfig(getServerUrl(responseUrl), _urlRequest);
-			var profilesService:ProfilesService = new ProfilesService();
-			profilesService.successSignal.add(onProfilesResponse);
-			profilesService.unsuccessSignal.add(fail);
-			profilesService.getProfiles(getServerUrl(responseUrl), _urlRequest);
 		}
 		
 		protected function getServerUrl(url:String):String {
@@ -75,12 +73,12 @@ package org.bigbluebutton.core {
 		}
 		
 		protected function onConfigResponse(xml:XML):void {
-			var config:Config = new Config(xml);
-			successGetConfigSignal.dispatch(config);
-			var enterSubservice:EnterService = new EnterService();
-			enterSubservice.successSignal.add(onEnterResponse);
-			enterSubservice.unsuccessSignal.add(fail);
-			enterSubservice.enter(config.application.host, _urlRequest);
+			_config = new Config(xml);
+			successGetConfigSignal.dispatch(_config);
+			var profilesService:ProfilesService = new ProfilesService();
+			profilesService.successSignal.add(onProfilesResponse);
+			profilesService.unsuccessSignal.add(failedLoadingProfiles);
+			profilesService.getProfiles(getServerUrl(_config.application.host), _urlRequest);
 		}
 		
 		protected function afterEnter(result:Object):void {
@@ -124,11 +122,26 @@ package org.bigbluebutton.core {
 			}
 		}
 		
+		protected function dispatchVideoProfileManager(manager:VideoProfileManager):void {
+			successGetProfilesSignal.dispatch(manager);
+			var enterSubservice:EnterService = new EnterService();
+			enterSubservice.successSignal.add(onEnterResponse);
+			enterSubservice.unsuccessSignal.add(fail);
+			enterSubservice.enter(_config.application.host, _urlRequest);
+		}
+		
 		protected function onProfilesResponse(xml:XML):void {
 			trace("sucess video profile");
-			var prof:VideoProfileManager = new VideoProfileManager(xml);
-			prof.getProfileTypes();
-			successGetProfilesSignal.dispatch(prof);
+			var prof:VideoProfileManager = new VideoProfileManager();
+			prof.parseProfilesXml(xml);
+			dispatchVideoProfileManager(prof);
+		}
+		
+		protected function failedLoadingProfiles(reason:String):void {
+			trace("failed video profile: " + reason);
+			var prof:VideoProfileManager = new VideoProfileManager();
+			prof.parseConfigXml(_config.getConfigFor("VideoconfModule"));
+			dispatchVideoProfileManager(prof);
 		}
 		
 		protected function onEnterResponse(user:Object):void {

@@ -4,6 +4,10 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx"
 				xmlns:view="org.bigbluebutton.core.view.*"
 				xmlns:ui="org.bigbluebutton.view.ui.*">
+	<view:states>
+		<s:State name="bbb" />
+		<s:State name="mconf" />
+	</view:states>
 	<fx:Script>
 		<![CDATA[
 			import org.bigbluebutton.view.navigation.pages.PagesENUM;
@@ -25,12 +29,16 @@
 					  buttonMode="false"
 					  mouseEnabled="false"
 					  styleName="userSettingsButtonStyle userSettingsUserNameStyle contentFontSize" />
-			<s:Label width="90%"
+			<s:Label visible.bbb="false"
+					 includeInLayout.bbb="false"
+					 width="90%"
 					 styleName="contentFontSize userSettingsStyle"
 					 text="{resourceManager.getString('resources', 'profile.status.current')}" />
 
 			<s:HGroup horizontalAlign="right"
-					  width="90%">
+					  width="90%"
+					  visible.bbb="false"
+					  includeInLayout.bbb="false">
 				<s:Button width="90%"
 						  id="userStatus0"
 						  buttonMode="false"
@@ -43,11 +51,21 @@
 			</s:HGroup>
 
 			<ui:NavigationButton id="statusBtn0"
+								 visible.bbb="false"
+								 includeInLayout.bbb="false"
 								 width="90%"
 								 label="{resourceManager.getString('resources', 'profile.status.title')}"
 								 navigateTo="{[PagesENUM.STATUS]}"
 								 styleName="profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
 								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
+
+			<s:Button id="handBtn0"
+					  visible.mconf="false"
+					  includeInLayout.mconf="false"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'profile.settings.handRaise')}"
+					  styleName="raiseHandButtonStyle videoAudioSettingStyle contentFontSize" />
+
 			<s:Button id="logoutButton0"
 					  width="90%"
 					  label="{resourceManager.getString('resources', 'profile.logout')}"

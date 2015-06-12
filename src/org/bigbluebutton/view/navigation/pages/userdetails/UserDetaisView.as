@@ -2,8 +2,9 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 	
 	import flash.events.MouseEvent;
 	import mx.core.FlexGlobals;
-	import org.bigbluebutton.model.User;
+	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
+	import org.bigbluebutton.model.User;
 	import spark.components.Button;
 	
 	public class UserDetaisView extends UserDetaisViewBase implements IUserDetaisView {
@@ -13,6 +14,12 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 		protected var _user:User;
 		
 		protected var _userMe:User;
+		
+		protected var _conferenceParameters:IConferenceParameters;
+		
+		public function set conferenceParameters(c:IConferenceParameters):void {
+			_conferenceParameters = c;
+		}
 		
 		public function set user(u:User):void {
 			_user = u;
@@ -63,7 +70,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 					makePresenterButton.includeInLayout = false;
 					makePresenterButton.visible = false;
 				}
-				if (_userMe.role == User.MODERATOR && !_user.me) {
+				if (_userMe.role == User.MODERATOR && !_user.me && _conferenceParameters.serverIsMconf) {
 					promoteButton.includeInLayout = true;
 					promoteButton.visible = true;
 					if (_user.role == User.MODERATOR) {
@@ -74,6 +81,9 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 				} else {
 					promoteButton.includeInLayout = false;
 					promoteButton.visible = false;
+				}
+				if (!_conferenceParameters.serverIsMconf) {
+					clearStatusButton.label = resourceManager.getString('resources', 'profile.settings.handLower');
 				}
 				cameraIcon.visible = cameraIcon.includeInLayout = _user.hasStream;
 				micIcon.visible = micIcon.includeInLayout = (_user.voiceJoined && !_user.muted);
