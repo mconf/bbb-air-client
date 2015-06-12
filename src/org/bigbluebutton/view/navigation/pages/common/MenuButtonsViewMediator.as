@@ -57,6 +57,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 			chatMessagesSession.newChatMessageSignal.add(updateMessagesNotification);
 			userSession.presentationList.presentationChangeSignal.add(presentationChanged);
 			userSession.logoutSignal.add(loggingOutHandler);
+			userSession.assignedDeskshareSignal.add(configDeskshare);
 		}
 		
 		private function onInvokeEvent(invocation:InvokeEvent):void {
@@ -150,28 +151,20 @@ package org.bigbluebutton.view.navigation.pages.common {
 		private function loadingFinished(loading:Boolean):void {
 			if (!loading) {
 				updateGuestsNotification();
-				/*var users:ArrayCollection = userSession.userList.users;*/
 				userUISession.loadingSignal.remove(loadingFinished);
-				if (userSession.deskshareConnection) {
-					view.menuDeskshareButton.visible = view.menuDeskshareButton.includeInLayout = userSession.deskshareConnection.isStreaming;
-					userSession.deskshareConnection.isStreamingSignal.add(onDeskshareStreamChange);
-				}
-				/*userSession.userList.userChangeSignal.add(userChangeHandler);
-				   for each(var u:User in users)
-				   {
-				   if(u.hasStream)
-				   {
-				   view.menuVideoChatButton.visible = view.menuVideoChatButton.includeInLayout = true;
-				   break;
-				   }
-				   }*/
 			}
+		}
+		
+		private function configDeskshare() {
+			view.menuDeskshareButton.visible = view.menuDeskshareButton.includeInLayout = userSession.deskshareConnection.isStreaming;
+			userSession.deskshareConnection.isStreamingSignal.add(onDeskshareStreamChange);
 		}
 		
 		/**
 		 * If we recieve signal that deskshare stream is on - include Deskshare button to the layout
 		 */
 		public function onDeskshareStreamChange(isDeskshareStreaming:Boolean):void {
+			trace("++ ativar deskshare....");
 			view.menuDeskshareButton.visible = view.menuDeskshareButton.includeInLayout = isDeskshareStreaming;
 		}
 		

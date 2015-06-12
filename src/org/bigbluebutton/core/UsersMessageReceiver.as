@@ -74,6 +74,7 @@ package org.bigbluebutton.core {
 				case "participantStatusChange":
 					handleStatusChange(message);
 					break;
+				case "guest_access_denied":
 				case "response_to_guest":
 					handleGuestResponse(message);
 					break;

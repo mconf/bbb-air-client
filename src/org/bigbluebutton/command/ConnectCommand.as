@@ -167,7 +167,7 @@ package org.bigbluebutton.command {
 			chatService.getPublicChatMessages();
 			presentationService.getPresentationInfo();
 			userSession.userList.allUsersAddedSignal.add(successUsersAdded);
-			usersService.queryForParticipants(); //pppppppppp
+			usersService.queryForParticipants();
 			usersService.queryForRecordingStatus();
 			userSession.successJoiningMeetingSignal.remove(successJoiningMeeting);
 			userSession.unsuccessJoiningMeetingSignal.remove(unsuccessJoiningMeeting);
