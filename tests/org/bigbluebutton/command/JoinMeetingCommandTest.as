@@ -94,7 +94,7 @@ package org.bigbluebutton.command {
 			verify().that(loginService.load(any()));
 			successGetConfigSignal.dispatch(config);
 			verify().that(userSession.config = config);
-			var videoProfiles:VideoProfileManager = new VideoProfileManager(null);
+			var videoProfiles:VideoProfileManager = new VideoProfileManager();
 			successGetProfilesSignal.dispatch(videoProfiles);
 			verify().that(userSession.videoProfileManager = videoProfiles);
 			var userObject:Object = new Object();
