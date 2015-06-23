@@ -36,6 +36,7 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 			setPresentation(userSession.presentationList.currentPresentation);
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
+			view.rotationHandler(FlexGlobals.topLevelApplication.currentOrientation);
 		}
 		
 		private function swipehandler(e:TransformGestureEvent):void {

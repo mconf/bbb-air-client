@@ -9,5 +9,6 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 		function setSlide(s:Slide):void;
 		function setPresentationName(name:String):void;
 		function get slide();
+		function rotationHandler(rotation:String):void;
 	}
 }
