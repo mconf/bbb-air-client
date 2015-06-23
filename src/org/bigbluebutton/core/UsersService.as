@@ -111,8 +111,12 @@ package org.bigbluebutton.core {
 			usersMessageSender.changeRecordingStatus(userID, recording);
 		}
 		
-		public function muteAllUsers(mute:Boolean, dontMuteThese:Array = null):void {
-			usersMessageSender.muteAllUsers(mute, dontMuteThese);
+		public function muteAllUsers(mute:Boolean):void {
+			usersMessageSender.muteAllUsers(mute);
+		}
+		
+		public function muteAllUsersExceptPresenter(mute:Boolean):void {
+			usersMessageSender.muteAllUsersExceptPresenter(mute);
 		}
 		
 		public function muteUnmuteUser(userid:String, mute:Boolean):void {

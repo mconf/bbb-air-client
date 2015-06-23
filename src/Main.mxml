@@ -44,6 +44,7 @@
 			import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageConfig;
 			import org.bigbluebutton.view.navigation.pages.exit.ExitPageConfig;
 			import org.bigbluebutton.view.navigation.pages.guest.GuestPageConfig;
+			import org.bigbluebutton.view.navigation.pages.locksettings.LockSettingsConfig;
 			import org.bigbluebutton.view.navigation.pages.login.LoginPageConfig;
 			import org.bigbluebutton.view.navigation.pages.login.rooms.RoomsConfig;
 			import org.bigbluebutton.view.navigation.pages.participants.ParticipantsConfig;
@@ -53,12 +54,12 @@
 			import org.bigbluebutton.view.navigation.pages.status.StatusConfig;
 			import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisConfig;
 			import org.bigbluebutton.view.navigation.pages.videochat.VideoChatConfig;
-			import org.bigbluebutton.view.ui.micbutton.MicButtonConfig;
-			import org.bigbluebutton.view.ui.videobutton.VideoButtonConfig;
 			import org.bigbluebutton.view.ui.NavigationButtonConfig;
 			import org.bigbluebutton.view.ui.RecordingStatusConfig;
 			import org.bigbluebutton.view.ui.SwapCameraConfig;
 			import org.bigbluebutton.view.ui.loading.LoadingScreenConfig;
+			import org.bigbluebutton.view.ui.micbutton.MicButtonConfig;
+			import org.bigbluebutton.view.ui.videobutton.VideoButtonConfig;
 			import org.osmf.logging.Log;
 			import org.osmf.logging.Logger;
 			import robotlegs.bender.bundles.mvcs.MVCSBundle;
@@ -114,6 +115,7 @@
 					.configure(PagesNavigatorConfig)
 					.configure(PresentationConfig)
 					.configure(LoginPageConfig)
+					.configure(LockSettingsConfig)
 					.configure(ChatConfig)
 					.configure(ChatRoomsConfig)
 					.configure(VideoChatConfig)

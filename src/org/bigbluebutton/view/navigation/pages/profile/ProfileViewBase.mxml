@@ -29,6 +29,10 @@
 					  buttonMode="false"
 					  mouseEnabled="false"
 					  styleName="userSettingsButtonStyle userSettingsUserNameStyle contentFontSize" />
+			<s:Button id="logoutButton0"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'profile.logout')}"
+					  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
 			<s:Label visible.bbb="false"
 					 includeInLayout.bbb="false"
 					 width="90%"
@@ -66,10 +70,6 @@
 					  label="{resourceManager.getString('resources', 'profile.settings.handRaise')}"
 					  styleName="raiseHandButtonStyle videoAudioSettingStyle contentFontSize" />
 
-			<s:Button id="logoutButton0"
-					  width="90%"
-					  label="{resourceManager.getString('resources', 'profile.logout')}"
-					  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
 			<s:Label width="90%"
 					 styleName="contentFontSize userSettingsStyle"
 					 text="{resourceManager.getString('resources', 'profile.settings')}" />
@@ -83,6 +83,32 @@
 								 width="90%"
 								 label="{resourceManager.getString('resources', 'audioSettings.title')}"
 								 navigateTo="{[PagesENUM.AUDIOSETTINGS]}"
+								 styleName="profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
+								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
+			<s:Label id="managementLbl"
+					 width="90%"
+					 text="{resourceManager.getString('resources', 'management.title')}"
+					 styleName="contentFontSize userSettingsStyle" />
+			<s:Button id="clearAllStatusBtn"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'management.clearAllStatus')}"
+					  styleName="clearButtonStyle videoAudioSettingStyle contentFontSize" />
+			<s:Button id="unmuteAllBtn"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'management.unmuteAll')}"
+					  styleName="audioSettingsShareMicButtonStyle videoAudioSettingStyle contentFontSize" />
+			<s:Button id="muteAllBtn"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'management.muteAll')}"
+					  styleName="MuteButtonStyle videoAudioSettingStyle contentFontSize" />
+			<s:Button id="muteAllExceptPresenterBtn"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'management.muteAllExceptPresenter')}"
+					  styleName="MuteButtonStyle videoAudioSettingStyle contentFontSize" />
+			<ui:NavigationButton id="lockViewersBtn"
+								 width="90%"
+								 label="{resourceManager.getString('resources', 'management.lockViewers')}"
+								 navigateTo="{[PagesENUM.LOCKSETTINGS]}"
 								 styleName="profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
 								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
 		</s:VGroup>

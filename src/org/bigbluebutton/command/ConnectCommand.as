@@ -82,6 +82,7 @@ package org.bigbluebutton.command {
 		private function successConnected():void {
 			trace(LOG + "successConnected()");
 			userSession.mainConnection = connection;
+			chatService.setupMessageSenderReceiver();
 			userSession.userId = connection.userId;
 			// Set up users message sender in order to send the "joinMeeting" message:
 			usersService.setupMessageSenderReceiver();
@@ -89,6 +90,7 @@ package org.bigbluebutton.command {
 			//userSession.successJoiningMeetingSignal.add(successJoiningMeeting);
 			//userSession.unsuccessJoiningMeetingSignal.add(unsuccessJoiningMeeting);
 			userSession.authTokenSignal.add(onAuthTokenReply);
+			userSession.loadedMessageHistorySignal.add(chatService.sendWelcomeMessage);
 			usersService.validateToken();
 			connection.successConnected.remove(successConnected);
 			connection.unsuccessConnected.remove(unsuccessConnected);
@@ -100,8 +102,6 @@ package org.bigbluebutton.command {
 				if (conferenceParameters.isGuestDefined() && conferenceParameters.guest) {
 					userSession.guestPolicySignal.add(onGuestPolicyResponse);
 					usersService.getGuestPolicy();
-					userUISession.pushPage(PagesENUM.GUEST);
-					userUISession.loading = false;
 				} else {
 					successJoiningMeeting();
 				}
@@ -125,6 +125,8 @@ package org.bigbluebutton.command {
 			} else if (policy == UserSession.GUEST_POLICY_ALWAYS_DENY) {
 				onGuestDenied();
 			} else if (policy == UserSession.GUEST_POLICY_ASK_MODERATOR) {
+				userUISession.pushPage(PagesENUM.GUEST);
+				userUISession.loading = false;
 				userSession.guestEntranceSignal.add(onGuestEntranceResponse);
 			}
 		}
@@ -140,7 +142,6 @@ package org.bigbluebutton.command {
 		private function successJoiningMeeting():void {
 			updateRooms();
 			// Set up remaining message sender and receivers:
-			chatService.setupMessageSenderReceiver();
 			presentationService.setupMessageSenderReceiver();
 			// set up and connect the remaining connections
 			videoConnection.uri = userSession.config.getConfigFor("VideoconfModule").@uri + "/" + conferenceParameters.room;
@@ -163,8 +164,8 @@ package org.bigbluebutton.command {
 			deskshareConnection.connect();
 			userSession.deskshareConnection = deskshareConnection;
 			// Query the server for chat, users, and presentation info
-			chatService.sendWelcomeMessage();
-			chatService.getPublicChatMessages();
+			//chatService.getPublicChatMessages();
+			//chatService.sendWelcomeMessage();
 			presentationService.getPresentationInfo();
 			userSession.userList.allUsersAddedSignal.add(successUsersAdded);
 			usersService.queryForParticipants();

@@ -64,16 +64,38 @@ package org.bigbluebutton.view.navigation.pages.chat {
 			} else {
 				openChat(data);
 			}
+			if (userSession.userList.me.role != User.MODERATOR) {
+				if (publicChat) {
+					disableChat(userSession.lockSettings.disablePublicChat);
+					userSession.lockSettings.disablePublicChatSignal.add(disableChat);
+				} else {
+					disableChat(userSession.lockSettings.disablePrivateChat);
+					userSession.lockSettings.disablePrivateChatSignal.add(disableChat);
+				}
+			} else {
+				disableChat(false);
+			}
 			chatMessageService.sendMessageOnSuccessSignal.add(onSendSucess);
 			chatMessageService.sendMessageOnFailureSignal.add(onSendFailure);
 			list.addEventListener(FlexEvent.UPDATE_COMPLETE, scrollUpdate);
-			(view as View).addEventListener(KeyboardEvent.KEY_DOWN, KeyHandler);
 			view.sendButton.addEventListener(MouseEvent.CLICK, onSendButtonClick);
 			userSession.userList.userRemovedSignal.add(userRemoved);
 			userSession.userList.userAddedSignal.add(userAdded);
 			(view as View).addEventListener(ViewNavigatorEvent.VIEW_DEACTIVATE, viewDeactivateHandler);
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
+		}
+		
+		private function disableChat(disable:Boolean) {
+			if (disable) {
+				view.inputMessage.enabled = false;
+				view.sendButton.enabled = false;
+				(view as View).removeEventListener(KeyboardEvent.KEY_DOWN, KeyHandler);
+			} else {
+				view.inputMessage.enabled = true;
+				view.sendButton.enabled = true;
+				(view as View).addEventListener(KeyboardEvent.KEY_DOWN, KeyHandler);
+			}
 		}
 		
 		private function KeyHandler(e:KeyboardEvent):void {
@@ -195,6 +217,8 @@ package org.bigbluebutton.view.navigation.pages.chat {
 			view.sendButton.removeEventListener(MouseEvent.CLICK, onSendButtonClick);
 			chatMessageService.sendMessageOnSuccessSignal.remove(onSendSucess);
 			chatMessageService.sendMessageOnFailureSignal.remove(onSendFailure);
+			userSession.lockSettings.disablePublicChatSignal.remove(disableChat);
+			userSession.lockSettings.disablePrivateChatSignal.remove(disableChat);
 			userSession.userList.userRemovedSignal.remove(userRemoved);
 			userSession.userList.userAddedSignal.remove(userAdded);
 			(view as View).removeEventListener(ViewNavigatorEvent.VIEW_DEACTIVATE, viewDeactivateHandler);

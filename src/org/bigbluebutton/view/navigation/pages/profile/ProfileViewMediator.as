@@ -4,7 +4,9 @@ package org.bigbluebutton.view.navigation.pages.profile {
 	import mx.core.FlexGlobals;
 	import mx.events.ItemClickEvent;
 	import mx.resources.ResourceManager;
+	import org.bigbluebutton.command.ClearUserStatusSignal;
 	import org.bigbluebutton.command.MoodSignal;
+	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
@@ -30,6 +32,12 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		
 		[Inject]
 		public var conferenceParameters:IConferenceParameters;
+		
+		[Inject]
+		public var clearUserStatusSignal:ClearUserStatusSignal;
+		
+		[Inject]
+		public var userService:IUsersService;
 		
 		override public function initialize():void {
 			view.currentState = (conferenceParameters.serverIsMconf) ? "mconf" : "bbb";
@@ -74,12 +82,66 @@ package org.bigbluebutton.view.navigation.pages.profile {
 					view.clearStatusButton.includeInLayout = false;
 					break;
 			}
+			if (userMe.role != User.MODERATOR) {
+				disableCamButton(userSession.lockSettings.disableCam);
+				userSession.lockSettings.disableCamSignal.add(disableCamButton);
+				view.managementLabel.visible = false;
+				view.managementLabel.includeInLayout = false;
+				view.clearAllStatusButton.visible = false;
+				view.clearAllStatusButton.includeInLayout = false;
+				view.muteAllButton.visible = false;
+				view.muteAllButton.includeInLayout = false;
+				view.muteAllExceptPresenterButton.visible = false;
+				view.muteAllExceptPresenterButton.includeInLayout = false;
+				view.lockViewersButton.visible = false;
+				view.lockViewersButton.includeInLayout = false
+				view.unmuteAllButton.visible = false;
+				view.unmuteAllButton.includeInLayout = false;
+			} else {
+				setMuteState(userSession.meetingMuted);
+				view.clearAllStatusButton.addEventListener(MouseEvent.CLICK, onClearAllButton);
+				view.unmuteAllButton.addEventListener(MouseEvent.CLICK, onUnmuteAllButton);
+				view.muteAllButton.addEventListener(MouseEvent.CLICK, onMuteAllButton);
+				view.muteAllExceptPresenterButton.addEventListener(MouseEvent.CLICK, onMuteAllExceptPresenterButton);
+			}
+			if (!conferenceParameters.serverIsMconf) {
+				view.clearAllStatusButton.label = ResourceManager.getInstance().getString('resources', 'management.lowerAllHands');
+				view.clearAllStatusButton.styleName = "lowerAllHandsButtonStyle videoAudioSettingStyle contentFontSize";
+			}
 			view.logoutButton.addEventListener(MouseEvent.CLICK, logoutClick);
 			view.clearStatusButton.addEventListener(MouseEvent.CLICK, clearStatusClick);
 			view.handButton.addEventListener(MouseEvent.CLICK, raiseHandClick);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
+		}
+		
+		private function setMuteState(muted:Boolean) {
+			if (muted) {
+				view.muteAllButton.visible = false;
+				view.muteAllButton.includeInLayout = false;
+				view.muteAllExceptPresenterButton.visible = false;
+				view.muteAllExceptPresenterButton.includeInLayout = false;
+				view.unmuteAllButton.visible = true;
+				view.unmuteAllButton.includeInLayout = true;
+			} else {
+				view.muteAllButton.visible = true;
+				view.muteAllButton.includeInLayout = true;
+				view.muteAllExceptPresenterButton.visible = true;
+				view.muteAllExceptPresenterButton.includeInLayout = true;
+				view.unmuteAllButton.visible = false;
+				view.unmuteAllButton.includeInLayout = false;
+			}
+		}
+		
+		private function disableCamButton(disable:Boolean) {
+			if (disable) {
+				view.shareCameraButton.visible = false;
+				view.shareCameraButton.includeInLayout = false;
+			} else {
+				view.shareCameraButton.visible = true;
+				view.shareCameraButton.includeInLayout = true;
+			}
 		}
 		
 		/**
@@ -112,10 +174,37 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			userUISession.popPage();
 		}
 		
+		protected function onClearAllButton(event:MouseEvent):void {
+			for each (var user:User in userSession.userList.users) {
+				clearUserStatusSignal.dispatch(user.userID);
+				userSession.userList.getUser(user.userID).status = User.NO_STATUS;
+			}
+			userUISession.popPage();
+		}
+		
+		protected function onMuteAllButton(event:MouseEvent):void {
+			userService.muteAllUsers(true);
+			setMuteState(true);
+			userUISession.popPage();
+		}
+		
+		protected function onUnmuteAllButton(event:MouseEvent):void {
+			userService.muteAllUsers(false);
+			setMuteState(false);
+			userUISession.popPage();
+		}
+		
+		protected function onMuteAllExceptPresenterButton(event:MouseEvent):void {
+			userService.muteAllUsersExceptPresenter(true);
+			setMuteState(true);
+			userUISession.popPage();
+		}
+		
 		override public function destroy():void {
 			super.destroy();
 			view.logoutButton.removeEventListener(MouseEvent.CLICK, logoutClick);
 			view.clearStatusButton.removeEventListener(MouseEvent.CLICK, clearStatusClick);
+			userSession.lockSettings.disableCamSignal.remove(disableCamButton);
 			view.dispose();
 			view = null;
 		}

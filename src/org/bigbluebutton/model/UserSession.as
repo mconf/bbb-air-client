@@ -52,9 +52,15 @@ package org.bigbluebutton.model {
 		
 		protected var _skipCamSettingsCheck:Boolean;
 		
+		protected var _meetingMuted:Boolean;
+		
 		protected var _joinUrl:String;
 		
+		protected var _lockSettings:LockSettings;
+		
 		protected var _guestPolicySignal:ISignal = new Signal();
+		
+		protected var _loadedMessageHistorySignal:ISignal = new Signal();
 		
 		protected var _guestEntranceSignal:ISignal = new Signal();
 		
@@ -110,6 +116,18 @@ package org.bigbluebutton.model {
 		
 		public function set phoneSkipCheck(value:Boolean):void {
 			_phoneSkipCheck = value;
+		}
+		
+		public function get lockSettings():LockSettings {
+			return _lockSettings;
+		}
+		
+		public function get meetingMuted():Boolean {
+			return _meetingMuted;
+		}
+		
+		public function set meetingMuted(mute:Boolean):void {
+			_meetingMuted = mute;
 		}
 		
 		public function get videoAutoStart():Boolean {
@@ -190,6 +208,7 @@ package org.bigbluebutton.model {
 			_userList = new UserList();
 			_guestList = new UserList();
 			_presentationList = new PresentationList();
+			_lockSettings = new LockSettings();
 		}
 		
 		public function get presentationList():PresentationList {
@@ -198,6 +217,10 @@ package org.bigbluebutton.model {
 		
 		public function get guestEntranceSignal():ISignal {
 			return _guestEntranceSignal;
+		}
+		
+		public function get loadedMessageHistorySignal():ISignal {
+			return _loadedMessageHistorySignal;
 		}
 		
 		public function get guestPolicySignal():ISignal {

@@ -46,6 +46,7 @@ package org.bigbluebutton.model {
 		function get guestEntranceSignal():ISignal;
 		function get successJoiningMeetingSignal():ISignal;
 		function get unsuccessJoiningMeetingSignal():ISignal;
+		function get loadedMessageHistorySignal():ISignal;
 		function get assignedDeskshareSignal():ISignal;
 		function get logoutSignal():Signal;
 		function get recordingStatusChangedSignal():ISignal;
@@ -56,5 +57,8 @@ package org.bigbluebutton.model {
 		function get authTokenSignal():ISignal
 		function get joinUrl():String;
 		function set joinUrl(value:String):void;
+		function get lockSettings():LockSettings;
+		function set meetingMuted(mute:Boolean):void;
+		function get meetingMuted():Boolean;
 	}
 }

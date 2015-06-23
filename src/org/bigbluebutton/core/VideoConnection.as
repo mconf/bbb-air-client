@@ -9,6 +9,7 @@ package org.bigbluebutton.core {
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import mx.utils.ObjectUtil;
+	import org.bigbluebutton.command.ShareCameraSignal;
 	import org.bigbluebutton.model.ConferenceParameters;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
@@ -29,6 +30,9 @@ package org.bigbluebutton.core {
 		
 		[Inject]
 		public var saveData:ISaveData;
+		
+		[Inject]
+		public var shareCameraSignal:ShareCameraSignal;
 		
 		private var _ns:NetStream;
 		
@@ -52,6 +56,13 @@ package org.bigbluebutton.core {
 			userSession.successJoiningMeetingSignal.add(loadCameraSettings);
 			baseConnection.successConnected.add(onConnectionSuccess);
 			baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
+			userSession.lockSettings.disableCamSignal.add(disableCam);
+		}
+		
+		private function disableCam(disable:Boolean) {
+			if (disable) {
+				shareCameraSignal.dispatch(false, null);
+			}
 		}
 		
 		private function loadCameraSettings():void {

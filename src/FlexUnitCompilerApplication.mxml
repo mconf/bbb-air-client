@@ -7,12 +7,12 @@ Please click on the "Refresh" icon in "FlexUnit Results" view to regenerate this
 			   xmlns:s="library://ns.adobe.com/flex/spark">
 	<fx:Script>
 		<![CDATA[
+			import org.bigbluebutton.model.LockSettingsTest;
 			import org.bigbluebutton.model.UserUISessionTest;
 			import org.bigbluebutton.model.ConfigTest;
 			import org.bigbluebutton.command.ShareCameraCommandTest;
 			import org.bigbluebutton.command.PresenterCommandTest;
 			import org.bigbluebutton.command.MoodCommandTest;
-			import org.bigbluebutton.command.MicrophoneMuteCommandTest;
 			import org.bigbluebutton.command.LoadSlideCommandTest;
 			import org.bigbluebutton.command.JoinMeetingCommandTest;
 			import org.bigbluebutton.AppTestSuite;
@@ -68,8 +68,6 @@ Please click on the "Refresh" icon in "FlexUnit Results" view to regenerate this
 			
 			private var org_bigbluebutton_command_LoadSlideCommandTest_obj:org.bigbluebutton.command.LoadSlideCommandTest;
 			
-			private var org_bigbluebutton_command_MicrophoneMuteCommandTest_obj:org.bigbluebutton.command.MicrophoneMuteCommandTest;
-			
 			private var org_bigbluebutton_command_MoodCommandTest_obj:org.bigbluebutton.command.MoodCommandTest;
 			
 			private var org_bigbluebutton_command_PresenterCommandTest_obj:org.bigbluebutton.command.PresenterCommandTest;
@@ -79,7 +77,9 @@ Please click on the "Refresh" icon in "FlexUnit Results" view to regenerate this
 			private var org_bigbluebutton_model_ConfigTest_obj:org.bigbluebutton.model.ConfigTest;
 			
 			private var org_bigbluebutton_model_UserUISessionTest_obj:org.bigbluebutton.model.UserUISessionTest;
+			
+			private var org_bigbluebutton_model_LockSettingsTest_obj:org.bigbluebutton.model.LockSettingsTest;
 		]]>
 	</fx:Script>
-	
+
 </s:Application>

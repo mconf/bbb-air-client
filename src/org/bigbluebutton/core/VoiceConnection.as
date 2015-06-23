@@ -3,6 +3,7 @@ package org.bigbluebutton.core {
 	import flash.net.NetConnection;
 	import flash.net.Responder;
 	import mx.utils.ObjectUtil;
+	import org.bigbluebutton.command.ShareMicrophoneSignal;
 	import org.bigbluebutton.model.ConferenceParameters;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
@@ -17,6 +18,9 @@ package org.bigbluebutton.core {
 		
 		[Inject]
 		public var userSession:IUserSession;
+		
+		[Inject]
+		public var shareMicrophoneSignal:ShareMicrophoneSignal;
 		
 		public var _callActive:Boolean = false;
 		
@@ -38,6 +42,21 @@ package org.bigbluebutton.core {
 			baseConnection.init(this);
 			baseConnection.successConnected.add(onConnectionSuccess);
 			baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
+			userSession.lockSettings.disableMicSignal.add(disableMic);
+		}
+		
+		private function disableMic(disable:Boolean):void {
+			if (disable && _callActive) {
+				var audioOptions:Object = new Object();
+				audioOptions.shareMic = userSession.userList.me.voiceJoined = !userSession.userList.me.voiceJoined;
+				audioOptions.listenOnly = userSession.userList.me.listenOnly = false;
+				shareMicrophoneSignal.dispatch(audioOptions);
+				_callActive = false;
+				audioOptions.listenOnly = !userSession.userList.me.listenOnly;
+				userSession.userList.me.listenOnly = !userSession.userList.me.listenOnly
+				audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
+				shareMicrophoneSignal.dispatch(audioOptions);
+			}
 		}
 		
 		private function onConnectionUnsuccess(reason:String):void {

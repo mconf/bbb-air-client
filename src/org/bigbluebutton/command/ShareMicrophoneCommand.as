@@ -47,12 +47,15 @@ package org.bigbluebutton.command {
 		}
 		
 		private function enableAudio():void {
+			trace("++ enabling audio.");
 			voiceConnection = userSession.voiceConnection;
 			if (!voiceConnection.connection.connected) {
+				trace("++ 1");
 				voiceConnection.connect(conferenceParameters);
 				voiceConnection.successConnected.add(mediaSuccessConnected);
 				voiceConnection.unsuccessConnected.add(mediaUnsuccessConnected);
 			} else if (!voiceConnection.callActive) {
+				trace("++ 2");
 				voiceConnection.call(_listenOnly);
 				voiceConnection.successConnected.add(mediaSuccessConnected);
 				voiceConnection.unsuccessConnected.add(mediaUnsuccessConnected);
@@ -61,6 +64,7 @@ package org.bigbluebutton.command {
 		
 		private function disableAudio():void {
 			var manager:VoiceStreamManager = userSession.voiceStreamManager;
+			trace("++ disabling audio. manager = " + manager);
 			voiceConnection = userSession.voiceConnection;
 			if (manager != null) {
 				manager.close();

@@ -6,16 +6,17 @@ package org.bigbluebutton.view.navigation.pages {
 	import org.bigbluebutton.view.navigation.pages.chat.ChatView;
 	import org.bigbluebutton.view.navigation.pages.chatrooms.ChatRoomsView;
 	import org.bigbluebutton.view.navigation.pages.deskshare.DeskshareView;
-	import org.bigbluebutton.view.navigation.pages.exit.ExitPageView;
 	import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageView;
+	import org.bigbluebutton.view.navigation.pages.exit.ExitPageView;
 	import org.bigbluebutton.view.navigation.pages.guest.GuestPageView;
+	import org.bigbluebutton.view.navigation.pages.locksettings.LockSettingsView;
 	import org.bigbluebutton.view.navigation.pages.login.LoginPageView;
 	import org.bigbluebutton.view.navigation.pages.login.rooms.RoomsView;
 	import org.bigbluebutton.view.navigation.pages.participants.ParticipantsView;
 	import org.bigbluebutton.view.navigation.pages.presentation.PresentationView;
 	import org.bigbluebutton.view.navigation.pages.profile.ProfileView;
-	import org.bigbluebutton.view.navigation.pages.status.StatusView;
 	import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantView;
+	import org.bigbluebutton.view.navigation.pages.status.StatusView;
 	import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisView;
 	import org.bigbluebutton.view.navigation.pages.videochat.VideoChatView;
 	
@@ -54,6 +55,8 @@ package org.bigbluebutton.view.navigation.pages {
 		
 		public static const ROOMS:String = "Rooms";
 		
+		public static const LOCKSETTINGS:String = "LockSettings";
+		
 		/**
 		 * Especials
 		 */
@@ -78,6 +81,7 @@ package org.bigbluebutton.view.navigation.pages {
 				dic[AUDIOSETTINGS] = AudioSettingsView;
 				dic[EXIT] = ExitPageView;
 				dic[ROOMS] = RoomsView;
+				dic[LOCKSETTINGS] = LockSettingsView;
 				dicInitiated = true;
 			}
 		}

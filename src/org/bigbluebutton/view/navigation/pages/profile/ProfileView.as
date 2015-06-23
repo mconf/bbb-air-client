@@ -54,5 +54,29 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		public function get handButton():Button {
 			return handBtn0;
 		}
+		
+		public function get managementLabel():Label {
+			return managementLbl;
+		}
+		
+		public function get clearAllStatusButton():Button {
+			return clearAllStatusBtn;
+		}
+		
+		public function get muteAllButton():Button {
+			return muteAllBtn;
+		}
+		
+		public function get muteAllExceptPresenterButton():Button {
+			return muteAllExceptPresenterBtn;
+		}
+		
+		public function get lockViewersButton():Button {
+			return lockViewersBtn;
+		}
+		
+		public function get unmuteAllButton():Button {
+			return unmuteAllBtn;
+		}
 	}
 }

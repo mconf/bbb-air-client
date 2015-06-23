@@ -72,6 +72,9 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 				view.swapCameraButton.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 				userSession.userList.userChangeSignal.add(userChangeHandler);
 			}
+			if (userMe.role != User.MODERATOR) {
+				userSession.lockSettings.disableCamSignal.add(disableCam);
+			}
 			setQualityListEnable(!userSession.userList.me.hasStream);
 			setRotateCameraButtonEnable(!userMe.hasStream);
 			view.startCameraButton.addEventListener(MouseEvent.CLICK, onShareCameraClick);
@@ -79,6 +82,14 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 			view.cameraProfilesList.addEventListener(IndexChangeEvent.CHANGE, onCameraQualitySelected);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'cameraSettings.title');
 			displayPreviewCamera();
+		}
+		
+		private function disableCam(disable:Boolean):void {
+			if (disable) {
+				view.startCameraButton.enabled = false;
+			} else {
+				view.startCameraButton.enabled = true;
+			}
 		}
 		
 		private function displayCameraProfiles():void {
@@ -239,6 +250,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		
 		override public function destroy():void {
 			super.destroy();
+			userSession.lockSettings.disableCamSignal.remove(disableCam);
 			userSession.userList.userChangeSignal.remove(userChangeHandler);
 			view.startCameraButton.removeEventListener(MouseEvent.CLICK, onShareCameraClick);
 			if (Camera.names.length > 1) {

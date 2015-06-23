@@ -18,7 +18,8 @@ package org.bigbluebutton.core {
 		function removeStream(userID:String, streamName:String):void;
 		function queryForRecordingStatus():void;
 		function changeRecordingStatus(userID:String, recording:Boolean):void;
-		function muteAllUsers(mute:Boolean, dontMuteThese:Array = null):void;
+		function muteAllUsers(mute:Boolean):void;
+		function muteAllUsersExceptPresenter(mute:Boolean):void;
 		function muteUnmuteUser(userid:String, mute:Boolean):void;
 		function ejectUser(userid:String):void;
 		function getRoomMuteState():void;

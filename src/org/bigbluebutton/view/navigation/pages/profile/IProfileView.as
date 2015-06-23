@@ -21,5 +21,11 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		function get currentState():String;
 		function set currentState(value:String):void;
 		function get handButton():Button;
+		function get managementLabel():Label;
+		function get clearAllStatusButton():Button;
+		function get muteAllButton():Button;
+		function get muteAllExceptPresenterButton():Button;
+		function get lockViewersButton():Button;
+		function get unmuteAllButton():Button;
 	}
 }

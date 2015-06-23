@@ -95,9 +95,43 @@ package org.bigbluebutton.core {
 				case "userLoweredHand":
 					handleParticipantLoweredHand(message);
 					break;
+				case "meetingState":
+					handleMeetingState(message);
+					break;
+				case "permissionsSettingsChanged":
+					handlePermissionsSettingsChanged(message);
+					break;
+				case "meetingMuted":
+					handleMeetingMuted(message);
 				default:
 					break;
 			}
+		}
+		
+		private function handleMeetingMuted(m:Object) {
+			var msg:Object = JSON.parse(m.msg);
+			trace("handleMeetingMuted: " + ObjectUtil.toString(msg));
+			userSession.meetingMuted = msg.meetingMuted;
+		}
+		
+		private function handleMeetingState(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			userSession.meetingMuted = msg.meetingMuted;
+			userSession.lockSettings.disableCam = msg.permissions.disableCam;
+			userSession.lockSettings.disableMic = msg.permissions.disableMic;
+			userSession.lockSettings.disablePrivateChat = msg.permissions.disablePrivChat;
+			userSession.lockSettings.disablePublicChat = msg.permissions.disablePubChat;
+			userSession.lockSettings.lockedLayout = msg.permissions.lockedLayout;
+		}
+		
+		private function handlePermissionsSettingsChanged(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("permissionsSettingsChanged: " + ObjectUtil.toString(msg));
+			userSession.lockSettings.disableCam = msg.disableCam;
+			userSession.lockSettings.disableMic = msg.disableMic;
+			userSession.lockSettings.disablePrivateChat = msg.disablePrivChat;
+			userSession.lockSettings.disablePublicChat = msg.disablePubChat;
+			userSession.lockSettings.lockedLayout = msg.lockedLayout;
 		}
 		
 		private function handleParticipantRaisedHand(m:Object):void {

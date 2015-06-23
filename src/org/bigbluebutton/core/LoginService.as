@@ -85,37 +85,7 @@ package org.bigbluebutton.core {
 			if (result.returncode == 'SUCCESS') {
 				trace("Join SUCCESS");
 				trace(ObjectUtil.toString(result));
-				var user:Object = {
-						username: result.fullname,
-						conference: result.conference,
-						conferenceName: result.confname,
-						externMeetingID: result.externMeetingID,
-						meetingID: result.meetingID,
-						externUserID: result.externUserID,
-						internalUserId: result.internalUserID,
-						role: result.role,
-						room: result.room,
-						authToken: result.room,
-						record: result.record,
-						webvoiceconf: result.webvoiceconf,
-						dialnumber: result.dialnumber,
-						voicebridge: result.voicebridge,
-						mode: result.mode,
-						welcome: result.welcome,
-						logoutUrl: result.logoutUrl,
-						defaultLayout: result.defaultLayout,
-						avatarURL: result.avatarURL,
-						guest: result.guest,
-						metadata: result.metadata,
-						muteOnStart: result.muteOnStart};
-				user.customdata = new Object();
-				if (result.customdata) {
-					for (var key:String in result.customdata) {
-						trace("checking user customdata: " + key + " = " + result.customdata[key]);
-						user.customdata[key] = result.customdata[key].toString();
-					}
-				}
-				successJoinedSignal.dispatch(user);
+				successJoinedSignal.dispatch(result);
 			} else {
 				trace("Join FAILED");
 				unsuccessJoinedSignal.dispatch("Add some reason here!");
@@ -125,7 +95,7 @@ package org.bigbluebutton.core {
 		protected function dispatchVideoProfileManager(manager:VideoProfileManager):void {
 			successGetProfilesSignal.dispatch(manager);
 			var enterSubservice:EnterService = new EnterService();
-			enterSubservice.successSignal.add(onEnterResponse);
+			enterSubservice.successSignal.add(afterEnter);
 			enterSubservice.unsuccessSignal.add(fail);
 			enterSubservice.enter(_config.application.host, _urlRequest);
 		}
@@ -142,10 +112,6 @@ package org.bigbluebutton.core {
 			var prof:VideoProfileManager = new VideoProfileManager();
 			prof.parseConfigXml(_config.getConfigFor("VideoconfModule"));
 			dispatchVideoProfileManager(prof);
-		}
-		
-		protected function onEnterResponse(user:Object):void {
-			successJoinedSignal.dispatch(user);
 		}
 	}
 }

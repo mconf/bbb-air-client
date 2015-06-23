@@ -88,15 +88,18 @@ package org.bigbluebutton.core {
 			userSession.mainConnection.sendMessage("participants.setRecordingStatus", defaultSuccessResponse, defaultFailureResponse, message);
 		}
 		
-		public function muteAllUsers(mute:Boolean, dontMuteThese:Array = null):void {
-			trace("UsersMessageSender::muteAllUsers() -- Sending [voice.muteAllUsers] message to server");
-			if (dontMuteThese == null) {
-				dontMuteThese = [];
-			}
+		public function muteAllUsers(mute:Boolean):void {
+			trace("UsersMessageSender::muteAllUsers() -- Sending [voice.muteAllUsers] message to server. mute=[" + mute + "]");
 			var message:Object = new Object();
 			message["mute"] = mute;
-			message["exceptUsers"] = dontMuteThese;
 			userSession.mainConnection.sendMessage("voice.muteAllUsers", defaultSuccessResponse, defaultFailureResponse, message);
+		}
+		
+		public function muteAllUsersExceptPresenter(mute:Boolean):void {
+			trace("UsersMessageSender::muteAllUsers() -- Sending [voice.muteAllUsersExceptPresenter] message to server. mute=[" + mute + "]");
+			var message:Object = new Object();
+			message["mute"] = mute;
+			userSession.mainConnection.sendMessage("voice.muteAllUsersExceptPresenter", defaultSuccessResponse, defaultFailureResponse, message);
 		}
 		
 		public function muteUnmuteUser(userid:String, mute:Boolean):void {
@@ -139,6 +142,7 @@ package org.bigbluebutton.core {
 		
 		public function saveLockSettings(newLockSettings:Object):void {
 			trace("UsersMessageSender::saveLockSettings() -- Sending [saveLockSettings] message to server");
+			userSession.mainConnection.sendMessage("lock.setLockSettings", defaultSuccessResponse, defaultFailureResponse, newLockSettings);
 		}
 		
 		public function validateToken(internalUserID:String, authToken:String):void {

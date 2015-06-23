@@ -7,7 +7,6 @@ package org.bigbluebutton {
 	import org.bigbluebutton.command.DisconnectUserCommandTest;
 	import org.bigbluebutton.command.JoinMeetingCommandTest;
 	import org.bigbluebutton.command.LoadSlideCommandTest;
-	import org.bigbluebutton.command.MicrophoneMuteCommandTest;
 	import org.bigbluebutton.command.MoodCommandTest;
 	import org.bigbluebutton.command.NavigateToCommandTest;
 	import org.bigbluebutton.command.PresenterCommand;
@@ -53,8 +52,6 @@ package org.bigbluebutton {
 		public var loadSlideCommandTest:LoadSlideCommandTest;
 		
 		public var moodCommandTest:MoodCommandTest;
-		
-		public var microphoneMuteCommandTest:MicrophoneMuteCommandTest;
 		
 		public var presenterCommandTest:PresenterCommandTest;
 		
