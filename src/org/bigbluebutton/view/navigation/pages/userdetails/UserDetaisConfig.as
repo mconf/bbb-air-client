@@ -1,15 +1,17 @@
 package org.bigbluebutton.view.navigation.pages.userdetails {
 	
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
-	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
-	import robotlegs.bender.framework.api.IConfig;
-	import robotlegs.bender.framework.api.IInjector;
 	import org.bigbluebutton.command.ChangeRoleCommand;
 	import org.bigbluebutton.command.ChangeRoleSignal;
 	import org.bigbluebutton.command.ClearUserStatusCommand;
 	import org.bigbluebutton.command.ClearUserStatusSignal;
+	import org.bigbluebutton.command.LockUserCommand;
+	import org.bigbluebutton.command.LockUserSignal;
 	import org.bigbluebutton.command.PresenterCommand;
 	import org.bigbluebutton.command.PresenterSignal;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
+	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
+	import robotlegs.bender.framework.api.IConfig;
+	import robotlegs.bender.framework.api.IInjector;
 	
 	public class UserDetaisConfig implements IConfig {
 		
@@ -50,6 +52,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			signalCommandMap.map(ClearUserStatusSignal).toCommand(ClearUserStatusCommand);
 			signalCommandMap.map(PresenterSignal).toCommand(PresenterCommand);
 			signalCommandMap.map(ChangeRoleSignal).toCommand(ChangeRoleCommand);
+			signalCommandMap.map(LockUserSignal).toCommand(LockUserCommand);
 			//signalCommandMap.map(ButtonTestSignal).toCommand(ButtonTestCommand);
 		}
 	}

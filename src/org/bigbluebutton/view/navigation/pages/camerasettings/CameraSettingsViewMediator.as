@@ -72,9 +72,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 				view.swapCameraButton.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 				userSession.userList.userChangeSignal.add(userChangeHandler);
 			}
-			if (userMe.role != User.MODERATOR) {
-				userSession.lockSettings.disableCamSignal.add(disableCam);
-			}
+			userSession.lockSettings.disableCamSignal.add(disableCam);
 			setQualityListEnable(!userSession.userList.me.hasStream);
 			setRotateCameraButtonEnable(!userMe.hasStream);
 			view.startCameraButton.addEventListener(MouseEvent.CLICK, onShareCameraClick);

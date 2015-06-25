@@ -35,10 +35,8 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			var userMe:User = userSession.userList.me;
 			view.shareMicButton.addEventListener(MouseEvent.CLICK, onShareMicClick);
 			view.listenOnlyButton.addEventListener(MouseEvent.CLICK, onListenOnlyClick);
-			if (userSession.userList.me.role != User.MODERATOR) {
-				userSession.lockSettings.disableMicSignal.add(disableMic);
-				disableMic(userSession.lockSettings.disableMic);
-			}
+			userSession.lockSettings.disableMicSignal.add(disableMic);
+			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter);
 			view.listenOnlyButton.visible = !userMe.voiceJoined;
 			view.shareMicButton.label = ResourceManager.getInstance().getString('resources', userMe.voiceJoined ? 'audioSettings.shareMicrophone.off' : 'audioSettings.shareMicrophone.on');
 			view.listenOnlyButton.label = ResourceManager.getInstance().getString('resources', userMe.listenOnly ? 'audioSettings.listenOnly.off' : 'audioSettings.listenOnly.on');

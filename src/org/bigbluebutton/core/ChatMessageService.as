@@ -41,7 +41,6 @@ package org.bigbluebutton.core {
 		}
 		
 		public function setupMessageSenderReceiver():void {
-			trace("++ hello again")
 			chatMessageSender = new ChatMessageSender(userSession, _sendMessageOnSuccessSignal, _sendMessageOnFailureSignal);
 			chatMessageReceiver = new ChatMessageReceiver(userSession, chatMessagesSession);
 			userSession.mainConnection.addMessageListener(chatMessageReceiver as IMessageListener);

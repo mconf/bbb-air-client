@@ -29,7 +29,6 @@ package org.bigbluebutton.core {
 					handleChatReceivePrivateMessageCommand(message);
 					break;
 				case "ChatRequestMessageHistoryReply":
-					trace("++ gimme messages");
 					handleChatRequestMessageHistoryReply(message);
 					break;
 				default:

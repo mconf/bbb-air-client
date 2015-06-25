@@ -7,6 +7,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 	import mx.states.Transition;
 	import org.bigbluebutton.command.ChangeRoleSignal;
 	import org.bigbluebutton.command.ClearUserStatusSignal;
+	import org.bigbluebutton.command.LockUserSignal;
 	import org.bigbluebutton.command.PresenterSignal;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
@@ -37,6 +38,9 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 		public var changeRoleSignal:ChangeRoleSignal;
 		
 		[Inject]
+		public var lockUserSignal:LockUserSignal;
+		
+		[Inject]
 		public var conferenceParameters:IConferenceParameters;
 		
 		protected var _user:User;
@@ -53,9 +57,32 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			view.clearStatusButton.addEventListener(MouseEvent.CLICK, onClearStatusButton);
 			view.makePresenterButton.addEventListener(MouseEvent.CLICK, onMakePresenterButton);
 			view.promoteButton.addEventListener(MouseEvent.CLICK, onPromoteButton);
+			view.updateLockButtons(isRoomLocked());
+			view.lockButton.addEventListener(MouseEvent.CLICK, onLockUser);
+			view.unlockButton.addEventListener(MouseEvent.CLICK, onUnlockUser);
 			FlexGlobals.topLevelApplication.pageName.text = view.user.name;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
+		}
+		
+		protected function onLockUser(event:MouseEvent):void {
+			//dispatch lock signal
+			lockUserSignal.dispatch(_user.userID, true);
+			userUISession.popPage();
+		}
+		
+		protected function onUnlockUser(event:MouseEvent):void {
+			//dispatch lock signal
+			lockUserSignal.dispatch(_user.userID, false);
+			userUISession.popPage();
+		}
+		
+		private function isRoomLocked() {
+			return userSession.lockSettings.disableCam ||
+				userSession.lockSettings.disableMic ||
+				userSession.lockSettings.disablePrivateChat ||
+				userSession.lockSettings.disablePublicChat ||
+				userSession.lockSettings.lockedLayout;
 		}
 		
 		protected function onShowCameraButton(event:MouseEvent):void {
@@ -96,6 +123,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 		private function userChanged(user:User, type:int):void {
 			if (_user.userID == user.userID || user.me) {
 				view.update();
+				view.updateLockButtons(isRoomLocked());
 			}
 		}
 		

@@ -7,6 +7,8 @@ package org.bigbluebutton.model {
 	import spark.collections.Sort;
 	
 	public class UserList {
+		public static const MODERATOR:int = 0;
+		
 		public static const HAS_STREAM:int = 1;
 		
 		public static const PRESENTER:int = 2;
@@ -306,6 +308,7 @@ package org.bigbluebutton.model {
 		private function clearPresenter():void {
 			for each (var user:User in _users) {
 				user.presenter = false;
+				userChangeSignal.dispatch(user, PRESENTER);
 			}
 		}
 		
@@ -404,7 +407,6 @@ package org.bigbluebutton.model {
 				user.voiceJoined = true;
 				user.muted = muted;
 				user.talking = talking;
-				user.locked = locked;
 				userChangeSignal.dispatch(user, JOIN_AUDIO);
 			} else {
 				trace("UserList: User join audio failed - user not found");

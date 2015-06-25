@@ -164,7 +164,6 @@ package org.bigbluebutton.view.navigation.pages.common {
 		 * If we recieve signal that deskshare stream is on - include Deskshare button to the layout
 		 */
 		public function onDeskshareStreamChange(isDeskshareStreaming:Boolean):void {
-			trace("++ ativar deskshare....");
 			view.menuDeskshareButton.visible = view.menuDeskshareButton.includeInLayout = isDeskshareStreaming;
 		}
 		

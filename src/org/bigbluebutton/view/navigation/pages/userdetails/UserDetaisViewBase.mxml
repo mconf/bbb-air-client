@@ -96,6 +96,18 @@
 					  width="90%"
 					  id="promoteButton0"
 					  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
+			<s:Button includeInLayout="false"
+					  visible="false"
+					  width="90%"
+					  id="lockButton0"
+					  label="{resourceManager.getString('resources', 'userDetail.lockButton.text')}"
+					  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
+			<s:Button includeInLayout="false"
+					  visible="false"
+					  width="90%"
+					  id="unlockButton0"
+					  label="{resourceManager.getString('resources', 'userDetail.unlockButton.text')}"
+					  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
 		</s:Group>
 	</s:Group>
 </view:NoTabView>

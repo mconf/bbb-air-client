@@ -209,6 +209,7 @@ package org.bigbluebutton.model {
 			_guestList = new UserList();
 			_presentationList = new PresentationList();
 			_lockSettings = new LockSettings();
+			userList.userChangeSignal.add(userChangedHandler);
 		}
 		
 		public function get presentationList():PresentationList {
@@ -270,6 +271,20 @@ package org.bigbluebutton.model {
 		
 		public function set joinUrl(value:String):void {
 			_joinUrl = value;
+		}
+		
+		private function userChangedHandler(user:User, type:int):void {
+			if (user.me && (type == UserList.PRESENTER) || (type == UserList.MODERATOR)) {
+				dispatchLockSettings();
+			}
+		}
+		
+		public function dispatchLockSettings():void {
+			var userLocked:Boolean = (userList.me.role != User.MODERATOR && !userList.me.presenter && userList.me.locked);
+			lockSettings.disableCamSignal.dispatch(lockSettings.disableCam && userLocked);
+			lockSettings.disableMicSignal.dispatch(lockSettings.disableMic && userLocked);
+			lockSettings.disablePrivateChatSignal.dispatch(lockSettings.disablePrivateChat && userLocked);
+			lockSettings.disablePublicChatSignal.dispatch(lockSettings.disablePublicChat && userLocked);
 		}
 	}
 }

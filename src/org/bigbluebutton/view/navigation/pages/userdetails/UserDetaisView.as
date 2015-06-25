@@ -97,6 +97,27 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			}
 		}
 		
+		public function updateLockButtons(isRoomLocked:Boolean) {
+			if (_userMe.role == User.MODERATOR && isRoomLocked && _user.role != User.MODERATOR) {
+				if (_user.locked) {
+					unlockButton.visible = true;
+					unlockButton.includeInLayout = true;
+					lockButton.visible = false;
+					lockButton.includeInLayout = false;
+				} else {
+					unlockButton.visible = false;
+					unlockButton.includeInLayout = false;
+					lockButton.visible = true;
+					lockButton.includeInLayout = true;
+				}
+			} else {
+				unlockButton.visible = false;
+				unlockButton.includeInLayout = false;
+				lockButton.visible = false;
+				lockButton.includeInLayout = false;
+			}
+		}
+		
 		public function dispose():void {
 		}
 		
@@ -118,6 +139,14 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 		
 		public function get makePresenterButton():Button {
 			return makePresenterButton0;
+		}
+		
+		public function get lockButton():Button {
+			return lockButton0;
+		}
+		
+		public function get unlockButton():Button {
+			return unlockButton0;
 		}
 	}
 }

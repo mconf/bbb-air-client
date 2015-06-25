@@ -28,6 +28,8 @@ package org.bigbluebutton.core {
 		
 		protected var _unsuccessConnected:ISignal = new Signal();
 		
+		protected var _hangUpSuccessSignal:ISignal = new Signal();
+		
 		protected var _applicationURI:String;
 		
 		protected var _username:String;
@@ -48,15 +50,20 @@ package org.bigbluebutton.core {
 		private function disableMic(disable:Boolean):void {
 			if (disable && _callActive) {
 				var audioOptions:Object = new Object();
-				audioOptions.shareMic = userSession.userList.me.voiceJoined = !userSession.userList.me.voiceJoined;
+				audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
 				audioOptions.listenOnly = userSession.userList.me.listenOnly = false;
 				shareMicrophoneSignal.dispatch(audioOptions);
-				_callActive = false;
-				audioOptions.listenOnly = !userSession.userList.me.listenOnly;
-				userSession.userList.me.listenOnly = !userSession.userList.me.listenOnly
-				audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
-				shareMicrophoneSignal.dispatch(audioOptions);
+				_hangUpSuccessSignal.add(enableListenOnly);
 			}
+		}
+		
+		private function enableListenOnly() {
+			_hangUpSuccessSignal.remove(enableListenOnly);
+			var audioOptions:Object = new Object();
+			audioOptions.listenOnly = !userSession.userList.me.listenOnly;
+			userSession.userList.me.listenOnly = !userSession.userList.me.listenOnly
+			audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
+			shareMicrophoneSignal.dispatch(audioOptions);
 		}
 		
 		private function onConnectionUnsuccess(reason:String):void {
@@ -172,6 +179,7 @@ package org.bigbluebutton.core {
 		private function hangUpOnSucess(result:Object):void {
 			trace(LOG + "hangUpOnSucess(): " + ObjectUtil.toString(result));
 			_callActive = false;
+			_hangUpSuccessSignal.dispatch();
 		}
 		
 		private function hangUpUnsucess(status:Object):void {

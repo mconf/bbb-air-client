@@ -103,8 +103,23 @@ package org.bigbluebutton.core {
 					break;
 				case "meetingMuted":
 					handleMeetingMuted(message);
+					break;
+				case "userLocked":
+					handleUserLocked(message);
+					break;
 				default:
 					break;
+			}
+		}
+		
+		private function handleUserLocked(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("handleUserLocked: " + ObjectUtil.toString(msg));
+			trace("your id: " + userSession.userList.me.userID)
+			var user:User = userSession.userList.getUserByUserId(msg.user);
+			user.locked = msg.lock;
+			if (userSession.userList.me.userID == msg.user) {
+				userSession.dispatchLockSettings();
 			}
 		}
 		
@@ -117,27 +132,28 @@ package org.bigbluebutton.core {
 		private function handleMeetingState(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			userSession.meetingMuted = msg.meetingMuted;
-			userSession.lockSettings.disableCam = msg.permissions.disableCam;
-			userSession.lockSettings.disableMic = msg.permissions.disableMic;
-			userSession.lockSettings.disablePrivateChat = msg.permissions.disablePrivChat;
-			userSession.lockSettings.disablePublicChat = msg.permissions.disablePubChat;
-			userSession.lockSettings.lockedLayout = msg.permissions.lockedLayout;
+			updateLockSettings(msg.permissions);
 		}
 		
 		private function handlePermissionsSettingsChanged(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			trace("permissionsSettingsChanged: " + ObjectUtil.toString(msg));
-			userSession.lockSettings.disableCam = msg.disableCam;
-			userSession.lockSettings.disableMic = msg.disableMic;
-			userSession.lockSettings.disablePrivateChat = msg.disablePrivChat;
-			userSession.lockSettings.disablePublicChat = msg.disablePubChat;
-			userSession.lockSettings.lockedLayout = msg.lockedLayout;
+			updateLockSettings(msg);
 		}
 		
 		private function handleParticipantRaisedHand(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			trace("ParticipantRaisedHand: " + ObjectUtil.toString(msg));
 			userSession.userList.statusChange(msg.userId, User.RAISE_HAND);
+		}
+		
+		private function updateLockSettings(msg:Object):void {
+			userSession.lockSettings.disableCam = msg.disableCam;
+			userSession.lockSettings.disableMic = msg.disableMic;
+			userSession.lockSettings.disablePrivateChat = msg.disablePrivChat;
+			userSession.lockSettings.disablePublicChat = msg.disablePubChat;
+			userSession.lockSettings.lockedLayout = msg.lockedLayout;
+			userSession.dispatchLockSettings();
 		}
 		
 		private function handleParticipantLoweredHand(m:Object):void {

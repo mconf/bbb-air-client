@@ -60,7 +60,7 @@ package org.bigbluebutton.core {
 		}
 		
 		private function disableCam(disable:Boolean) {
-			if (disable) {
+			if (disable && userSession.userList.me.locked && !userSession.userList.me.presenter) {
 				shareCameraSignal.dispatch(false, null);
 			}
 		}

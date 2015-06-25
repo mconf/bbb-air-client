@@ -132,7 +132,11 @@ package org.bigbluebutton.core {
 		}
 		
 		public function setUserLock(internalUserID:String, lock:Boolean):void {
-			trace("UsersMessageSender::setUserLock() -- Sending [setUserLock] message to server");
+			trace("UsersMessageSender::setUserLock() -- Sending [setUserLock] message to server - userId: [" + internalUserID + "] lock: [" + lock + "]");
+			var message:Object = new Object();
+			message["userId"] = internalUserID;
+			message["lock"] = lock;
+			userSession.mainConnection.sendMessage("lock.setUserLock", defaultSuccessResponse, defaultFailureResponse, message);
 		}
 		
 		public function getLockSettings():void {

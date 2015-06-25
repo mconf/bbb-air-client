@@ -51,7 +51,6 @@ package org.bigbluebutton.model {
 		public function set disableCam(disable:Boolean):void {
 			if (_disableCam != disable) {
 				_disableCam = disable;
-				disableCamSignal.dispatch(disableCam);
 			}
 		}
 		
@@ -62,7 +61,6 @@ package org.bigbluebutton.model {
 		public function set disableMic(disable:Boolean):void {
 			if (_disableMic != disable) {
 				_disableMic = disable;
-				disableMicSignal.dispatch(disableMic);
 			}
 		}
 		
@@ -73,7 +71,6 @@ package org.bigbluebutton.model {
 		public function set disablePrivateChat(disable:Boolean):void {
 			if (_disablePrivateChat != disable) {
 				_disablePrivateChat = disable;
-				disablePrivateChatSignal.dispatch(disablePrivateChat);
 			}
 		}
 		
@@ -84,7 +81,6 @@ package org.bigbluebutton.model {
 		public function set disablePublicChat(disable:Boolean):void {
 			if (_disablePublicChat != disable) {
 				_disablePublicChat = disable;
-				disablePublicChatSignal.dispatch(disablePublicChat);
 			}
 		}
 		

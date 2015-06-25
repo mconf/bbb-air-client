@@ -60,5 +60,6 @@ package org.bigbluebutton.model {
 		function get lockSettings():LockSettings;
 		function set meetingMuted(mute:Boolean):void;
 		function get meetingMuted():Boolean;
+		function dispatchLockSettings():void;
 	}
 }

@@ -65,11 +65,12 @@ package org.bigbluebutton.view.navigation.pages.chat {
 				openChat(data);
 			}
 			if (userSession.userList.me.role != User.MODERATOR) {
+				var userLocked:Boolean = (!userSession.userList.me.presenter && userSession.userList.me.locked);
 				if (publicChat) {
-					disableChat(userSession.lockSettings.disablePublicChat);
+					disableChat(userSession.lockSettings.disablePublicChat && userLocked);
 					userSession.lockSettings.disablePublicChatSignal.add(disableChat);
 				} else {
-					disableChat(userSession.lockSettings.disablePrivateChat);
+					disableChat(userSession.lockSettings.disablePrivateChat && userLocked);
 					userSession.lockSettings.disablePrivateChatSignal.add(disableChat);
 				}
 			} else {
