@@ -484,6 +484,11 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/microphone.png");
 	}
 	
+	s|Image.lockIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/lock.png");
+	}
+	
 	s|Image.listenOnlyIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_headset.png");
@@ -909,6 +914,11 @@ global
 	s|Image.micIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/microphone.png");
+	}
+	
+	s|Image.lockIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/lock.png");
 	}
 	
 	s|Image.micOffIconStyle
@@ -1338,6 +1348,11 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/microphone.png");
 	}
 	
+	s|Image.lockIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/lock.png");
+	}
+	
 	s|Image.micOffIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/micOffIcon_dark.png");
@@ -1764,6 +1779,11 @@ global
 	s|Image.micIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/microphone.png");
+	}
+	
+	s|Image.lockIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/lock.png");
 	}
 	
 	s|Image.micOffIconStyle

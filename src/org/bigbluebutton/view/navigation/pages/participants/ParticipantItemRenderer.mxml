@@ -17,6 +17,7 @@
 					profileIcon.includeInLayout = (!obj.presenter) && (obj.status == User.NO_STATUS);
 					cameraIcon.visible = obj.hasStream;
 					micIcon.visible = micIcon.includeInLayout = (obj.voiceJoined && !obj.muted);
+					lockIcon.visible = lockIcon.includeInLayout = obj.locked;
 					micOffIcon.visible = micOffIcon.includeInLayout = (obj.voiceJoined && obj.muted);
 					listenOnlyIcon.visible = listenOnlyIcon.includeInLayout = (!obj.voiceJoined && obj.listenOnly);
 					soundIcon.visible = obj.talking;
@@ -122,6 +123,9 @@
 				 height="100%" />
 		<s:Image id="soundIcon"
 				 styleName="iconStyle soundIconStyle"
+				 height="100%" />
+		<s:Image id="lockIcon"
+				 styleName="iconStyle lockIconStyle"
 				 height="100%" />
 	</s:Group>
 	<s:Line width="100%">
