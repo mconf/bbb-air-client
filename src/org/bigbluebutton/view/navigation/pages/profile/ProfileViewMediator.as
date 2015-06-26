@@ -82,9 +82,9 @@ package org.bigbluebutton.view.navigation.pages.profile {
 					view.clearStatusButton.includeInLayout = false;
 					break;
 			}
+			disableCamButton(userSession.lockSettings.disableCam && !userMe.presenter && userMe.locked && userMe.role != User.MODERATOR);
+			userSession.lockSettings.disableCamSignal.add(disableCamButton);
 			if (userMe.role != User.MODERATOR) {
-				disableCamButton(userSession.lockSettings.disableCam && !userMe.presenter && userMe.locked);
-				userSession.lockSettings.disableCamSignal.add(disableCamButton);
 				displayManagementButtons(false);
 			} else {
 				setMuteState(userSession.meetingMuted);

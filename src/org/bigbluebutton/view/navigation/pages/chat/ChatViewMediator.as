@@ -58,28 +58,24 @@ package org.bigbluebutton.view.navigation.pages.chat {
 		protected var deltaHeight:Number;
 		
 		override public function initialize():void {
+			var userMe:User = userSession.userList.me;
 			data = userUISession.currentPageDetails;
 			if (data is User) {
 				createNewChat(data as User);
 			} else {
 				openChat(data);
 			}
-			if (userSession.userList.me.role != User.MODERATOR) {
-				var userLocked:Boolean = (!userSession.userList.me.presenter && userSession.userList.me.locked);
-				if (publicChat) {
-					disableChat(userSession.lockSettings.disablePublicChat && userLocked);
-					userSession.lockSettings.disablePublicChatSignal.add(disableChat);
-				} else {
-					disableChat(userSession.lockSettings.disablePrivateChat && userLocked);
-					userSession.lockSettings.disablePrivateChatSignal.add(disableChat);
-				}
+			var userLocked:Boolean = (!userSession.userList.me.presenter && userSession.userList.me.locked && userSession.userList.me.role != User.MODERATOR);
+			if (publicChat) {
+				disableChat(userSession.lockSettings.disablePublicChat && !userMe.presenter && userMe.locked);
+				userSession.lockSettings.disablePublicChatSignal.add(disableChat);
 			} else {
-				disableChat(false);
+				disableChat(userSession.lockSettings.disablePrivateChat && !userMe.presenter && userMe.locked);
+				userSession.lockSettings.disablePrivateChatSignal.add(disableChat);
 			}
 			chatMessageService.sendMessageOnSuccessSignal.add(onSendSucess);
 			chatMessageService.sendMessageOnFailureSignal.add(onSendFailure);
 			list.addEventListener(FlexEvent.UPDATE_COMPLETE, scrollUpdate);
-			view.sendButton.addEventListener(MouseEvent.CLICK, onSendButtonClick);
 			userSession.userList.userRemovedSignal.add(userRemoved);
 			userSession.userList.userAddedSignal.add(userAdded);
 			(view as View).addEventListener(ViewNavigatorEvent.VIEW_DEACTIVATE, viewDeactivateHandler);
@@ -92,10 +88,12 @@ package org.bigbluebutton.view.navigation.pages.chat {
 				view.inputMessage.enabled = false;
 				view.sendButton.enabled = false;
 				(view as View).removeEventListener(KeyboardEvent.KEY_DOWN, KeyHandler);
+				view.sendButton.removeEventListener(MouseEvent.CLICK, onSendButtonClick);
 			} else {
 				view.inputMessage.enabled = true;
 				view.sendButton.enabled = true;
 				(view as View).addEventListener(KeyboardEvent.KEY_DOWN, KeyHandler);
+				view.sendButton.addEventListener(MouseEvent.CLICK, onSendButtonClick);
 			}
 		}
 		
