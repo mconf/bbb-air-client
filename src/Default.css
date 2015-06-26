@@ -17,7 +17,8 @@ s|Group.videoTextFieldStyle
 
 s|ToggleSwitch.lockSettingsToggleSwitch
 {
-	chromeColor:#43434B;
+	chromeColor:#F4F4F4;
+	accentColor:#43434B;
 	skinClass:    ClassReference("spark.skins.mobile.ToggleSwitchSkin");
 }
 
