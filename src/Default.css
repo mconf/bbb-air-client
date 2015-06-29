@@ -484,6 +484,11 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/microphone.png");
 	}
 	
+	s|Image.speakingMicIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/microphone_talk.png");
+	}
+	
 	s|Image.lockIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/lock.png");
@@ -914,6 +919,11 @@ global
 	s|Image.micIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/microphone.png");
+	}
+	
+	s|Image.speakingMicIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/microphone_talk.png");
 	}
 	
 	s|Image.lockIconStyle
@@ -1348,6 +1358,11 @@ global
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/microphone.png");
 	}
 	
+	s|Image.speakingMicIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/microphone_talk.png");
+	}
+	
 	s|Image.lockIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/lock.png");
@@ -1779,6 +1794,11 @@ global
 	s|Image.micIconStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/microphone.png");
+	}
+	
+	s|Image.speakingMicIconStyle
+	{
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/microphone_talk.png");
 	}
 	
 	s|Image.lockIconStyle

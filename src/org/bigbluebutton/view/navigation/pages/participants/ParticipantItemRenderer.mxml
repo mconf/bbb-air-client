@@ -17,10 +17,11 @@
 					profileIcon.includeInLayout = (!obj.presenter) && (obj.status == User.NO_STATUS);
 					cameraIcon.visible = obj.hasStream;
 					micIcon.visible = micIcon.includeInLayout = (obj.voiceJoined && !obj.muted);
-					lockIcon.visible = lockIcon.includeInLayout = obj.locked;
+					lockIcon.visible = obj.locked;
 					micOffIcon.visible = micOffIcon.includeInLayout = (obj.voiceJoined && obj.muted);
-					listenOnlyIcon.visible = listenOnlyIcon.includeInLayout = (!obj.voiceJoined && obj.listenOnly);
-					soundIcon.visible = obj.talking;
+					listenOnlyIcon.includeInLayout = !micIcon.visible;
+					listenOnlyIcon.visible = (!obj.voiceJoined && obj.listenOnly);
+					micIcon.styleName = (obj.talking) ? "iconStyle speakingMicIconStyle" : "iconStyle micIconStyle";
 					if (obj.me) {
 						labelDisplay.text = obj.name + " " + resourceManager.getString('resources', 'userDetail.you');
 					} else {
@@ -121,12 +122,10 @@
 		<s:Image id="listenOnlyIcon"
 				 styleName="iconStyle listenOnlyIconStyle"
 				 height="100%" />
-		<s:Image id="soundIcon"
-				 styleName="iconStyle soundIconStyle"
-				 height="100%" />
 		<s:Image id="lockIcon"
 				 styleName="iconStyle lockIconStyle"
 				 height="100%" />
+
 	</s:Group>
 	<s:Line width="100%">
 		<s:stroke>

@@ -16,8 +16,9 @@
 					}
 					micIcon.visible = micIcon.includeInLayout = (obj.user.voiceJoined && !obj.user.muted);
 					micOffIcon.visible = micOffIcon.includeInLayout = (obj.user.voiceJoined && obj.user.muted);
+					listenOnlyIcon.includeInLayout = !micIcon.visible;
 					listenOnlyIcon.visible = listenOnlyIcon.includeInLayout = (!obj.user.voiceJoined && obj.user.listenOnly);
-					soundIcon.visible = obj.user.talking;
+					micIcon.styleName = (obj.user.talking) ? "iconStyle speakingMicIconStyle" : "iconStyle micIconStyle";
 					presentationIcon.visible = obj.user.presenter;
 				}
 			}
@@ -46,9 +47,6 @@
 				 height="100%" />
 		<s:Image id="listenOnlyIcon"
 				 styleName="iconStyle listenOnlyIconStyle"
-				 height="100%" />
-		<s:Image id="soundIcon"
-				 styleName="iconStyle soundIconStyle"
 				 height="100%" />
 	</s:Group>
 </s:ItemRenderer>
