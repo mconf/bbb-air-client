@@ -180,7 +180,7 @@ package org.bigbluebutton.command {
 			if (!rooms) {
 				rooms = new ArrayCollection();
 			}
-			var roomName:String = conferenceParameters.externMeetingID;
+			var roomName:String = conferenceParameters.meetingName;
 			var roomUrl:String = (conferenceParameters.metadata && conferenceParameters.metadata.hasOwnProperty("invitation-url")) ? conferenceParameters.metadata['invitation-url'] : null;
 			if (roomName) {
 				var roomExists:Boolean = false;
@@ -215,6 +215,7 @@ package org.bigbluebutton.command {
 			if (FlexGlobals.topLevelApplication.hasOwnProperty("topActionBar") && FlexGlobals.topLevelApplication.hasOwnProperty("bottomMenu")) {
 				FlexGlobals.topLevelApplication.topActionBar.visible = true;
 				FlexGlobals.topLevelApplication.bottomMenu.visible = true;
+				FlexGlobals.topLevelApplication.bottomMenu.includeInLayout = true;
 			}
 			userUISession.loading = false;
 			userUISession.pushPage(PagesENUM.PARTICIPANTS);
