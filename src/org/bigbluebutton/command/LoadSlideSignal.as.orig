@@ -3,9 +3,17 @@ package org.bigbluebutton.command {
 	import org.bigbluebutton.model.presentation.Slide;
 	import org.osflash.signals.Signal;
 	
+<<<<<<< HEAD
 	public class LoadSlideSignal extends Signal {
 		public function LoadSlideSignal() {
+			super(Slide);
+=======
+	public class LoadSlideSignal extends Signal
+	{
+		public function LoadSlideSignal()
+		{
 			super(Slide, String);
+>>>>>>> whiteboard-on-090
 		}
 	}
 }

@@ -1,12 +1,18 @@
+<<<<<<< HEAD
 package org.bigbluebutton.model.presentation {
 	
-	import org.bigbluebutton.model.whiteboard.AnnotationStatus;
-	import org.bigbluebutton.model.whiteboard.IAnnotation;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import mx.collections.ArrayCollection;
+=======
+package org.bigbluebutton.model.presentation
+{
+	import org.bigbluebutton.model.whiteboard.AnnotationStatus;
+	import org.bigbluebutton.model.whiteboard.IAnnotation;
+	
+>>>>>>> whiteboard-on-090
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
@@ -24,8 +30,6 @@ package org.bigbluebutton.model.presentation {
 		private var _current:Boolean = false;
 		
 		private var _slideChangeSignal:ISignal = new Signal();
-		
-		private var _loaded:Boolean = false;
 		
 		public function Presentation(fileName:String, id:String, changePresentation:Function, numOfSlides:int, isCurrent:Boolean):void {
 			_fileName = fileName;
@@ -68,15 +72,6 @@ package org.bigbluebutton.model.presentation {
 		
 		public function show():void {
 			_changePresentation(this);
-		}
-		
-		public function finishedLoading(currentSlideNum:int):void {
-			_loaded = true;
-			_changePresentation(this, currentSlideNum);
-		}
-		
-		public function get loaded():Boolean {
-			return _loaded;
 		}
 		
 		public function set currentSlideNum(n:int):void {
