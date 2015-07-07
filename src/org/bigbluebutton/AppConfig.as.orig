@@ -24,11 +24,15 @@ package org.bigbluebutton {
 	import org.bigbluebutton.core.IDeskshareConnection;
 	import org.bigbluebutton.core.ILoginService;
 	import org.bigbluebutton.core.IPresentationService;
+<<<<<<< HEAD
 	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.core.IUsersService;
-	import org.bigbluebutton.core.IVideoConnection;
+=======
 	import org.bigbluebutton.core.IVoiceConnection;
 	import org.bigbluebutton.core.IWhiteboardService;
+>>>>>>> whiteboard-on-090
+	import org.bigbluebutton.core.IVideoConnection;
+	import org.bigbluebutton.core.IVoiceConnection;
 	import org.bigbluebutton.core.LoginService;
 	import org.bigbluebutton.core.PresentationService;
 	import org.bigbluebutton.core.SaveData;

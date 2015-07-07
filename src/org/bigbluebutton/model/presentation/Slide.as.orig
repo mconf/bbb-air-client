@@ -6,8 +6,11 @@ package org.bigbluebutton.model.presentation {
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	import mx.controls.SWFLoader;
-	import mx.utils.ObjectUtil;
+<<<<<<< HEAD
+=======
+	
 	import org.bigbluebutton.model.whiteboard.IAnnotation;
+>>>>>>> whiteboard-on-090
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
@@ -21,38 +24,30 @@ package org.bigbluebutton.model.presentation {
 		private var _thumbURI:String;
 		
 		private var _txtURI:String;
+<<<<<<< HEAD
 		
 		private var _current:Boolean;
 		
+=======
+>>>>>>> whiteboard-on-090
 		private var _data:ByteArray;
 		
 		private var _swfFile:SWFLoader = new SWFLoader();
-		
 		private var _annotations:Array = [];
 		
 		private var _x:Number = 0;
-		
 		private var _y:Number = 0;
-		
 		private var _widthPercent:Number = 100;
-		
 		private var _heightPercent:Number = 100;
-		
 		private var _sizeSynced:Boolean = false;
 		
 		private var _slideLoadedSignal:ISignal = new Signal;
 		
-		public function Slide(slideNum:Number, slideURI:String, thumbURI:String, txtURI:String, current:Boolean, x:Number, y:Number, widthPercent:Number, heightPercent:Number) {
+		public function Slide(slideNum:Number, slideURI:String, thumbURI:String, txtURI:String) {
 			_slideNum = slideNum;
 			_slideURI = slideURI;
 			_thumbURI = thumbURI;
 			_txtURI = txtURI;
-			_current = current;
-			_x = x;
-			_y = y;
-			_widthPercent = widthPercent;
-			_heightPercent = heightPercent;
-			_sizeSynced = true;
 		}
 		
 		public function get thumb():String {
@@ -97,14 +92,6 @@ package org.bigbluebutton.model.presentation {
 		
 		public function get slideLoadedSignal():ISignal {
 			return _slideLoadedSignal;
-		}
-		
-		public function set current(b:Boolean):void {
-			_current = b;
-		}
-		
-		public function get current():Boolean {
-			return _current;
 		}
 		
 		public function get annotations():Array {
@@ -167,6 +154,7 @@ package org.bigbluebutton.model.presentation {
 			_y = y;
 			_widthPercent = widthPercent;
 			_heightPercent = heightPercent;
+			
 			_sizeSynced = true;
 		}
 	}

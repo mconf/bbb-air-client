@@ -54,7 +54,12 @@
 			import org.bigbluebutton.view.navigation.pages.status.StatusConfig;
 			import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisConfig;
 			import org.bigbluebutton.view.navigation.pages.videochat.VideoChatConfig;
-			import org.bigbluebutton.view.navigation.pages.whiteboard.WhiteboardConfig;			import org.bigbluebutton.view.ui.NavigationButtonConfig;
+<<<<<<< HEAD
+=======
+      import org.bigbluebutton.view.navigation.pages.whiteboard.WhiteboardConfig;
+			import org.bigbluebutton.view.ui.MicButtonConfig;
+>>>>>>> whiteboard-on-090
+			import org.bigbluebutton.view.ui.NavigationButtonConfig;
 			import org.bigbluebutton.view.ui.RecordingStatusConfig;
 			import org.bigbluebutton.view.ui.SwapCameraConfig;
 			import org.bigbluebutton.view.ui.loading.LoadingScreenConfig;
@@ -136,8 +141,13 @@
 					.configure(RecordingStatusConfig)
 					.configure(CameraSettingsConfig)
 					.configure(AudioSettingsConfig)
+<<<<<<< HEAD
 					.configure(MenuButtonsConfig)
+					
+=======
 					.configure(WhiteboardConfig)
+          
+>>>>>>> whiteboard-on-090
 					.configure(new ContextView(this));
 				// If you wish to change the log level then uncomment the line below and set 
 				// the logLevel to the value you desire. The default logLevel is DEBUG, which 
