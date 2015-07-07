@@ -9,7 +9,8 @@
 			 width="100%"
 			 height="100%">
 		<s:layout>
-			<s:VerticalLayout />
+			<s:VerticalLayout horizontalAlign="center"
+							  verticalAlign="middle" />
 		</s:layout>
 		<s:Group id="viewport0"
 				 clipAndEnableScrolling="true"
