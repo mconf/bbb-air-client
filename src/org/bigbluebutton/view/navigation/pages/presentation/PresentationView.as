@@ -67,18 +67,22 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 		override public function rotationHandler(rotation:String):void {
 			switch (rotation) {
 				case StageOrientation.ROTATED_LEFT:
-					slide.rotation = -90;
+					viewport.rotation = -90;
+					viewport.scaleX = viewport.scaleY = slide.height / slide.width;
 					break;
 				case StageOrientation.ROTATED_RIGHT:
-					slide.rotation = 90;
+					viewport.rotation = 90;
+					viewport.scaleX = viewport.scaleY = slide.height / slide.width;
 					break;
 				case StageOrientation.UPSIDE_DOWN:
-					slide.rotation = 180;
+					viewport.rotation = 180;
+					viewport.scaleX = viewport.scaleY = 1;
 					break;
 				case StageOrientation.DEFAULT:
 				case StageOrientation.UNKNOWN:
 				default:
-					slide.rotation = 0;
+					viewport.rotation = 0;
+					viewport.scaleX = viewport.scaleY = 1;
 			}
 		}
 		

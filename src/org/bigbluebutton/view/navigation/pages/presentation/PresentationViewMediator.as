@@ -50,7 +50,6 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 			//setCurrentSlideNum(userSession.presentationList.currentSlideNum);
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
-			view.rotationHandler(FlexGlobals.topLevelApplication.currentOrientation);
 		}
 		
 		private function swipehandler(e:TransformGestureEvent):void {
@@ -97,6 +96,7 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 				_cursor.draw(view.viewport, userSession.presentationList.cursorXPercent, userSession.presentationList.cursorYPercent);
 					//resetSize(_currentSlide.x, _currentSlide.y, _currentSlide.widthPercent, _currentSlide.heightPercent);
 			}
+			view.rotationHandler(FlexGlobals.topLevelApplication.currentOrientation);
 		}
 		
 		private function resetSize(x:Number, y:Number, widthPercent:Number, heightPercent:Number):void {
