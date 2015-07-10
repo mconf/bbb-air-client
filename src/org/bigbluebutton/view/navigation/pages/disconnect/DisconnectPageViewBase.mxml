@@ -30,8 +30,12 @@
 				 text.USER_LOGGED_OUT="{resourceManager.getString('resources', 'disconnect.reason.userLoggedOut')}"
 				 text.MODERATOR_DENIED="{resourceManager.getString('resources', 'disconnect.reason.accessDenied')}">
 		</s:Label>
-		<s:Button visible.MODERATOR_DENIED="false"
-				  includeInLayout.MODERATOR_DENIED="false"
+		<s:Button visible="false"
+				  includeInLayout="false"
+				  visible.USER_LOGGED_OUT="true"
+				  includeInLayout.USER_LOGGED_OUT="true"
+				  visible.CONNECTION_DROPPED="true"
+				  includeInLayout.CONNECTION_DROPPED="true"
 				  id="reconnectButton0"
 				  width="90%"
 				  label="{resourceManager.getString('resources', 'disconnect.reconnect')}"

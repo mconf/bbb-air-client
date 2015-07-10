@@ -2,10 +2,12 @@ package org.bigbluebutton.core {
 	
 	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.command.AuthenticationSignal;
+	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserSession;
+	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	import org.osmf.logging.Log;
@@ -16,6 +18,8 @@ package org.bigbluebutton.core {
 		public var userSession:IUserSession;
 		
 		public var authenticationSignal:AuthenticationSignal;
+		
+		public var disconnectUserSignal:DisconnectUserSignal;
 		
 		public function UsersMessageReceiver() {
 		}
@@ -65,10 +69,8 @@ package org.bigbluebutton.core {
 					handleGetRecordingStatusReply(message);
 					break;
 				case "meetingHasEnded":
-					handleMeetingHasEnded(message);
-					break;
 				case "meetingEnded":
-					handleLogout(message);
+					handleMeetingHasEnded(message);
 					break;
 				case "participantStatusChange":
 					handleStatusChange(message);
@@ -372,6 +374,7 @@ package org.bigbluebutton.core {
 			var msg:Object = JSON.parse(m.msg);
 			trace(LOG + "handleMeetingHasEnded() -- meeting has ended");
 			userSession.logoutSignal.dispatch();
+			disconnectUserSignal.dispatch(DisconnectEnum.CONNECTION_STATUS_MEETING_ENDED);
 		}
 		
 		private function handleLogout(m:Object):void {

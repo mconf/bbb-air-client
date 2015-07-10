@@ -1,6 +1,7 @@
 package org.bigbluebutton.core {
 	
 	import org.bigbluebutton.command.AuthenticationSignal;
+	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
@@ -19,6 +20,9 @@ package org.bigbluebutton.core {
 		[Inject]
 		public var authenticationSignal:AuthenticationSignal;
 		
+		[Inject]
+		public var disconnectUserSignal:DisconnectUserSignal;
+		
 		public var usersMessageSender:UsersMessageSender;
 		
 		public var usersMessageReceiver:UsersMessageReceiver;
@@ -31,6 +35,7 @@ package org.bigbluebutton.core {
 		public function setupMessageSenderReceiver():void {
 			usersMessageReceiver.userSession = userSession;
 			usersMessageReceiver.authenticationSignal = authenticationSignal;
+			usersMessageReceiver.disconnectUserSignal = disconnectUserSignal;
 			usersMessageSender.userSession = userSession;
 			usersMessageSender.conferenceParameters = conferenceParameters;
 			userSession.mainConnection.addMessageListener(usersMessageReceiver as IMessageListener);
