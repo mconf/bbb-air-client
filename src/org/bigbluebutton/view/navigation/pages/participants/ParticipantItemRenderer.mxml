@@ -19,7 +19,7 @@
 					micIcon.visible = micIcon.includeInLayout = (obj.voiceJoined && !obj.muted);
 					lockIcon.visible = obj.locked;
 					micOffIcon.visible = micOffIcon.includeInLayout = (obj.voiceJoined && obj.muted);
-					listenOnlyIcon.includeInLayout = !micIcon.visible;
+					listenOnlyIcon.includeInLayout = (!micIcon.visible && !micOffIcon.visible);
 					listenOnlyIcon.visible = (!obj.voiceJoined && obj.listenOnly);
 					micIcon.styleName = (obj.talking) ? "iconStyle speakingMicIconStyle" : "iconStyle micIconStyle";
 					if (obj.me) {
