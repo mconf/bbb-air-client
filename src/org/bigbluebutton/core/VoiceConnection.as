@@ -103,7 +103,7 @@ package org.bigbluebutton.core {
 			_conferenceParameters = confParams;
 			trace(confParams.username + ", " + confParams.role + ", " + confParams.meetingName + ", " + confParams.externUserID);
 			_username = encodeURIComponent(confParams.externUserID + "-bbbID-" + confParams.username);
-			baseConnection.connect(_applicationURI, confParams.username, _username, confParams.externMeetingID);
+			baseConnection.connect(_applicationURI, confParams.conference, userSession.userId, confParams.username, confParams.voicebridge);
 		}
 		
 		public function disconnect(onUserCommand:Boolean):void {

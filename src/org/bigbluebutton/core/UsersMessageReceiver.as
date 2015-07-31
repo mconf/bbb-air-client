@@ -109,8 +109,21 @@ package org.bigbluebutton.core {
 				case "userLocked":
 					handleUserLocked(message);
 					break;
+				case "sipVideoUpdate":
+					handleSipVideoUpdate(message);
+					break;
 				default:
 					break;
+			}
+		}
+		
+		private function handleSipVideoUpdate(msg:Object) {
+			trace("handleSipVideoUpdate " + msg.msg);
+			var map:Object = JSON.parse(msg.msg);
+			if (map.isSipVideoPresent) {
+				userSession.globalVideoStreamName = map.sipVideoStreamName
+			} else {
+				userSession.globalVideoStreamName = "";
 			}
 		}
 		

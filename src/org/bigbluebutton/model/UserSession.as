@@ -56,6 +56,8 @@ package org.bigbluebutton.model {
 		
 		protected var _joinUrl:String;
 		
+		protected var _globalVideoStreamName:String;
+		
 		protected var _lockSettings:LockSettings;
 		
 		protected var _guestPolicySignal:ISignal = new Signal();
@@ -75,6 +77,8 @@ package org.bigbluebutton.model {
 		protected var _logoutSignal:Signal = new Signal();
 		
 		protected var _authTokenSignal:ISignal = new Signal();
+		
+		protected var _globalVideoSignal:ISignal = new Signal();
 		
 		protected var _videoProfileManager:VideoProfileManager = new VideoProfileManager();
 		
@@ -252,6 +256,10 @@ package org.bigbluebutton.model {
 			return _logoutSignal;
 		}
 		
+		public function get globalVideoSignal():ISignal {
+			return _globalVideoSignal;
+		}
+		
 		public function get recordingStatusChangedSignal():ISignal {
 			return _recordingStatusChangedSignal;
 		}
@@ -271,6 +279,15 @@ package org.bigbluebutton.model {
 		
 		public function set joinUrl(value:String):void {
 			_joinUrl = value;
+		}
+		
+		public function set globalVideoStreamName(value:String):void {
+			_globalVideoStreamName = value;
+			globalVideoSignal.dispatch();
+		}
+		
+		public function get globalVideoStreamName():String {
+			return _globalVideoStreamName;
 		}
 		
 		private function userChangedHandler(user:User, type:int):void {
