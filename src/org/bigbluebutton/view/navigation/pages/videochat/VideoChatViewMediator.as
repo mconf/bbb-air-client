@@ -77,17 +77,21 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		}
 		
 		private function globalVideoStreamNameHandler() {
+			trace("++ " + userSession.globalVideoStreamName);
 			if (userSession.globalVideoStreamName != "") {
+				trace("++showing speaker");
 				speaker = new User();
 				speaker.name = ResourceManager.getInstance().getString('resources', 'videoChat.speaker');
 				speaker.userID = "sipVideoUser";
 				speaker.streamName = userSession.globalVideoStreamName;
 				speaker.hasStream = true;
-				var userStreamName:UserStreamName = new UserStreamName(userSession.globalVideoStreamName, speaker);
+				var userStreamName:UserStreamName = new UserStreamName(speaker.streamName, speaker);
 				removeUserFromDataProvider(speaker.userID);
 				dataProvider.addItem(userStreamName);
 			} else {
+				trace("++no speaker?");
 				if (speaker) {
+					trace("++no speaker.");
 					removeUserFromDataProvider(speaker.userID);
 					speaker = null;
 				}

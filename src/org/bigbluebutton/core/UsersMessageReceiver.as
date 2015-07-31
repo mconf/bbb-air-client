@@ -121,7 +121,9 @@ package org.bigbluebutton.core {
 			trace("handleSipVideoUpdate " + msg.msg);
 			var map:Object = JSON.parse(msg.msg);
 			if (map.isSipVideoPresent) {
-				userSession.globalVideoStreamName = map.sipVideoStreamName
+				if (userSession.globalVideoStreamName != map.sipVideoStreamName) {
+					userSession.globalVideoStreamName = map.sipVideoStreamName
+				}
 			} else {
 				userSession.globalVideoStreamName = "";
 			}
