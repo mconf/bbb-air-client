@@ -107,7 +107,9 @@ package org.bigbluebutton.command {
 		
 		private function disableCamera():void {
 			usersService.removeStream(userSession.userId, userSession.userList.me.streamName);
-			userSession.videoConnection.stopPublishing();
+			if (userSession.videoConnection) {
+				userSession.videoConnection.stopPublishing();
+			}
 		}
 	}
 }
