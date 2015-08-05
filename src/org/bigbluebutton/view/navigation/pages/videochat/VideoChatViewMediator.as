@@ -52,7 +52,6 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 					addUserStreamNames(u);
 				}
 			}
-			globalVideoStreamNameHandler();
 			var selectedUserProfile:User = userUISession.currentPageDetails as User;
 			var displayUserStreamName:UserStreamName = null;
 			if (selectedUserProfile) {
@@ -65,7 +64,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 				startStream(selectedUserProfile, displayUserStreamName.streamName);
 				displayVideo(true);
 			} else {
-				checkVideo();
+				globalVideoStreamNameHandler();
 			}
 		}
 		
@@ -77,9 +76,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		}
 		
 		private function globalVideoStreamNameHandler() {
-			trace("++ " + userSession.globalVideoStreamName);
 			if (userSession.globalVideoStreamName != "") {
-				trace("++showing speaker");
 				speaker = new User();
 				speaker.name = ResourceManager.getInstance().getString('resources', 'videoChat.speaker');
 				speaker.userID = "sipVideoUser";
@@ -89,9 +86,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 				removeUserFromDataProvider(speaker.userID);
 				dataProvider.addItem(userStreamName);
 			} else {
-				trace("++no speaker?");
 				if (speaker) {
-					trace("++no speaker.");
 					removeUserFromDataProvider(speaker.userID);
 					speaker = null;
 				}
@@ -340,6 +335,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 						}
 						if (view) {
 							view.stopStream();
+							trace("++ go startStream");
 							startStream(newUser, displayUserStreamName.streamName);
 							displayVideo(true);
 						}
