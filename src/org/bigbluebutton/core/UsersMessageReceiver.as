@@ -48,6 +48,7 @@ package org.bigbluebutton.core {
 					handleUserUnsharedWebcam(message);
 					break;
 				case "user_listening_only":
+				case "userListeningOnly":
 					handleUserListeningOnly(message);
 					break;
 				case "assignPresenterCallback":

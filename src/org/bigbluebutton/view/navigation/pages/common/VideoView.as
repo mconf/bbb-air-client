@@ -46,7 +46,6 @@ package org.bigbluebutton.view.navigation.pages.common {
 			this.userID = userID;
 			this.streamName = streamName;
 			this.connection = connection;
-			trace("netStream antes: " + ns);
 			ns = new NetStream(connection);
 			ns.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);
 			ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncError);
@@ -62,7 +61,6 @@ package org.bigbluebutton.view.navigation.pages.common {
 			} else {
 				ns.play(streamName);
 			}
-			trace(streamName);
 		}
 		
 		public function initializeScreenSizeValues(screenHeight0:Number, screenWidth0:Number, topMenuBarHeight0:Number, bottomMenuBarHeight0:Number, originalVideoWidth0:Number, originalVideoHeight0:Number):void {
