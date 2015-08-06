@@ -49,6 +49,7 @@ package org.bigbluebutton.model {
 		function get loadedMessageHistorySignal():ISignal;
 		function get assignedDeskshareSignal():ISignal;
 		function get logoutSignal():Signal;
+		function get globalVideoSignal():ISignal;
 		function get recordingStatusChangedSignal():ISignal;
 		function joinMeetingResponse(msg:Object):void;
 		function recordingStatusChanged(recording:Boolean):void;
@@ -60,6 +61,8 @@ package org.bigbluebutton.model {
 		function get lockSettings():LockSettings;
 		function set meetingMuted(mute:Boolean):void;
 		function get meetingMuted():Boolean;
+		function get globalVideoStreamName():String;
 		function dispatchLockSettings():void;
+		function set globalVideoStreamName(value:String):void;
 	}
 }

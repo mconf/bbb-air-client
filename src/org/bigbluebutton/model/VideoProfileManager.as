@@ -74,9 +74,9 @@ package org.bigbluebutton.model {
 						return profile;
 					}
 				}
-				return null;
+				return defaultVideoProfile;
 			} else {
-				return null;
+				return defaultVideoProfile;
 			}
 		}
 		
