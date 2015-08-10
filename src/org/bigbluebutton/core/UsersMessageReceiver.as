@@ -21,6 +21,8 @@ package org.bigbluebutton.core {
 		
 		public var disconnectUserSignal:DisconnectUserSignal;
 		
+		private var lastSipEvent:Object = null;
+		
 		public function UsersMessageReceiver() {
 		}
 		
@@ -121,12 +123,15 @@ package org.bigbluebutton.core {
 		private function handleSipVideoUpdate(msg:Object) {
 			trace("handleSipVideoUpdate " + msg.msg);
 			var map:Object = JSON.parse(msg.msg);
-			if (map.isSipVideoPresent) {
-				if (userSession.globalVideoStreamName != map.sipVideoStreamName) {
-					userSession.globalVideoStreamName = map.sipVideoStreamName
+			if (lastSipEvent != map) {
+				if (map.isSipVideoPresent) {
+					if (userSession.globalVideoStreamName != map.sipVideoStreamName) {
+						userSession.globalVideoStreamName = map.sipVideoStreamName
+					}
+				} else {
+					userSession.globalVideoStreamName = "";
 				}
-			} else {
-				userSession.globalVideoStreamName = "";
+				lastSipEvent = map;
 			}
 		}
 		
@@ -245,7 +250,7 @@ package org.bigbluebutton.core {
 		
 		private function handleVoiceUserTalking(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
-			trace(LOG + "handleVoiceUserTalking() -- user [" + +msg.voiceUserId + "," + msg.talking + "] ");
+			//trace(LOG + "handleVoiceUserTalking() -- user [" + +msg.voiceUserId + "," + msg.talking + "] ");
 			userSession.userList.userTalkingChange(msg.voiceUserId, msg.talking);
 		}
 		

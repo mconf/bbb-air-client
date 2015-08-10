@@ -226,7 +226,9 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 						dataProvider.removeItemAt(dataProvider.getItemIndex(userStreamName));
 						if (userUISession.currentStreamName == userStreamName.streamName) {
 							userUISession.currentStreamName = "";
-							checkVideo();
+							if (!speaker) {
+								checkVideo();
+							}
 						}
 					}
 				}
@@ -234,11 +236,15 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 					var camNumber:int = dataProvider.length;
 					addUserStreamNames(user);
 					if (userUISession.currentStreamName == userSession.userList.me.streamName && camNumber == 1) {
-						checkVideo();
+						if (!speaker) {
+							checkVideo();
+						}
 					}
 				}
 				if (userUISession.currentStreamName == "") {
-					checkVideo();
+					if (!speaker) {
+						checkVideo();
+					}
 				}
 				if (dataProvider.length == 0) {
 					displayVideo(false);
@@ -246,7 +252,9 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 					displayVideo(true);
 				}
 			} else if (property == UserList.PRESENTER) {
-				checkVideo();
+				if (!speaker) {
+					checkVideo();
+				}
 			}
 			dataProvider.refresh();
 		}

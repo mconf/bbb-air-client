@@ -56,7 +56,7 @@ package org.bigbluebutton.model {
 		
 		protected var _joinUrl:String;
 		
-		protected var _globalVideoStreamName:String;
+		protected var _globalVideoStreamName:String = "";
 		
 		protected var _lockSettings:LockSettings;
 		
@@ -291,7 +291,7 @@ package org.bigbluebutton.model {
 		}
 		
 		private function userChangedHandler(user:User, type:int):void {
-			if (user.me && (type == UserList.PRESENTER) || (type == UserList.MODERATOR)) {
+			if (user && user.me && (type == UserList.PRESENTER) || (type == UserList.MODERATOR)) {
 				dispatchLockSettings();
 			}
 		}
