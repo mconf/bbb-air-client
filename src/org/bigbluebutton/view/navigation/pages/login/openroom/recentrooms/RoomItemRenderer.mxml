@@ -29,7 +29,7 @@
 						if (obj.url) {
 							url.text = obj.url;
 						} else {
-							url.text = resourceManager.getString('resources', 'rooms.noURL');
+							url.text = resourceManager.getString('resources', 'recentRooms.noURL');
 						}
 					}
 				}

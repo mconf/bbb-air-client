@@ -46,7 +46,8 @@
 			import org.bigbluebutton.view.navigation.pages.guest.GuestPageConfig;
 			import org.bigbluebutton.view.navigation.pages.locksettings.LockSettingsConfig;
 			import org.bigbluebutton.view.navigation.pages.login.LoginPageConfig;
-			import org.bigbluebutton.view.navigation.pages.login.rooms.RoomsConfig;
+			import org.bigbluebutton.view.navigation.pages.login.openroom.OpenRoomConfig;
+			import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.RecentRoomsConfig;
 			import org.bigbluebutton.view.navigation.pages.participants.ParticipantsConfig;
 			import org.bigbluebutton.view.navigation.pages.presentation.PresentationConfig;
 			import org.bigbluebutton.view.navigation.pages.profile.ProfileConfig;
@@ -54,7 +55,8 @@
 			import org.bigbluebutton.view.navigation.pages.status.StatusConfig;
 			import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisConfig;
 			import org.bigbluebutton.view.navigation.pages.videochat.VideoChatConfig;
-			import org.bigbluebutton.view.navigation.pages.whiteboard.WhiteboardConfig;			import org.bigbluebutton.view.ui.NavigationButtonConfig;
+			import org.bigbluebutton.view.navigation.pages.whiteboard.WhiteboardConfig;
+			import org.bigbluebutton.view.ui.NavigationButtonConfig;
 			import org.bigbluebutton.view.ui.RecordingStatusConfig;
 			import org.bigbluebutton.view.ui.SwapCameraConfig;
 			import org.bigbluebutton.view.ui.loading.LoadingScreenConfig;
@@ -121,7 +123,8 @@
 					.configure(VideoChatConfig)
 					.configure(ProfileConfig)
 					.configure(StatusConfig)
-					.configure(RoomsConfig)
+					.configure(RecentRoomsConfig)
+					.configure(OpenRoomConfig)
 					.configure(UserDetaisConfig)
 					.configure(ParticipantsConfig)
 					.configure(SelectParticipantConfig)

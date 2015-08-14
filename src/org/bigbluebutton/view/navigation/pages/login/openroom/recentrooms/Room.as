@@ -1,4 +1,4 @@
-package org.bigbluebutton.view.navigation.pages.login.rooms {
+package org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms {
 	
 	import org.bigbluebutton.model.User;
 	

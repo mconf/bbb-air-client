@@ -21,7 +21,7 @@ package org.bigbluebutton.command {
 	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
-	import org.bigbluebutton.view.navigation.pages.login.rooms.Room;
+	import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.Room;
 	import robotlegs.bender.bundles.mvcs.Command;
 	
 	public class ConnectCommand extends Command {

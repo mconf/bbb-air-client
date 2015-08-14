@@ -1,11 +1,12 @@
-package org.bigbluebutton.view.navigation.pages.login.rooms {
+package org.bigbluebutton.view.navigation.pages.login.openroom {
 	
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
+	import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.IRecentRoomsView;
 	
-	public class RoomsConfig implements IConfig {
+	public class OpenRoomConfig implements IConfig {
 		
 		[Inject]
 		public var injector:IInjector;
@@ -34,7 +35,7 @@ package org.bigbluebutton.view.navigation.pages.login.rooms {
 		 * Maps view mediators to views.
 		 */
 		private function mediators():void {
-			mediatorMap.map(IRoomsView).toMediator(RoomsViewMediator);
+			mediatorMap.map(IOpenRoomView).toMediator(OpenRoomViewMediator);
 		}
 		
 		/**
