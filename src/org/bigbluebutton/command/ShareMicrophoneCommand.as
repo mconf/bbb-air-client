@@ -48,6 +48,7 @@ package org.bigbluebutton.command {
 		
 		private function enableAudio():void {
 			voiceConnection = userSession.voiceConnection;
+			voiceConnection.hangUpSuccessSignal.remove(enableAudio);
 			if (!voiceConnection.connection.connected) {
 				voiceConnection.connect(conferenceParameters);
 				voiceConnection.successConnected.add(mediaSuccessConnected);
@@ -56,6 +57,9 @@ package org.bigbluebutton.command {
 				voiceConnection.call(_listenOnly);
 				voiceConnection.successConnected.add(mediaSuccessConnected);
 				voiceConnection.unsuccessConnected.add(mediaUnsuccessConnected);
+			} else {
+				voiceConnection.hangUp();
+				voiceConnection.hangUpSuccessSignal.add(enableAudio);
 			}
 		}
 		

@@ -27,37 +27,33 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		
 		private var autoJoined:Boolean;
 		
-		private var lockedMic:Boolean;
-		
 		override public function initialize():void {
-			userSession.userList.userChangeSignal.add(userChangeHandler);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'audioSettings.title');
 			var userMe:User = userSession.userList.me;
-			view.shareMicButton.addEventListener(MouseEvent.CLICK, onShareMicClick);
-			view.listenOnlyButton.addEventListener(MouseEvent.CLICK, onListenOnlyClick);
+			view.applyBtn.addEventListener(MouseEvent.CLICK, onApplyClick);
+			view.enableAudio.addEventListener(MouseEvent.CLICK, onEnableAudioClick);
+			view.enableMic.addEventListener(MouseEvent.CLICK, onEnableMicClick);
 			userSession.lockSettings.disableMicSignal.add(disableMic);
-			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter);
-			view.listenOnlyButton.visible = !userMe.voiceJoined;
-			view.shareMicButton.label = ResourceManager.getInstance().getString('resources', userMe.voiceJoined ? 'audioSettings.shareMicrophone.off' : 'audioSettings.shareMicrophone.on');
-			view.listenOnlyButton.label = ResourceManager.getInstance().getString('resources', userMe.listenOnly ? 'audioSettings.listenOnly.off' : 'audioSettings.listenOnly.on');
+			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter && userMe.locked);
+			view.enableAudio.selected = (userMe.voiceJoined || userMe.listenOnly);
+			view.enableMic.selected = userMe.voiceJoined;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 		}
 		
 		private function disableMic(disable:Boolean):void {
 			if (disable) {
-				lockedMic = true;
-				view.shareMicButton.visible = false;
+				view.enableMic.enabled = false;
+				view.enableMic.selected = false;
 			} else {
-				lockedMic = false;
-				view.shareMicButton.visible = !userSession.userList.me.listenOnly;
+				view.enableMic.enabled = true;
 			}
 		}
 		
-		private function onShareMicClick(event:MouseEvent):void {
+		private function onApplyClick(event:MouseEvent):void {
 			var audioOptions:Object = new Object();
-			audioOptions.shareMic = userSession.userList.me.voiceJoined = !userSession.userList.me.voiceJoined;
-			audioOptions.listenOnly = userSession.userList.me.listenOnly = false;
+			audioOptions.shareMic = userSession.userList.me.voiceJoined = view.enableMic.selected && view.enableAudio.selected;
+			audioOptions.listenOnly = userSession.userList.me.listenOnly = !view.enableMic.selected && view.enableAudio.selected;
 			shareMicrophoneSignal.dispatch(audioOptions);
 			if (userSession.phoneAutoJoin && !userSession.phoneSkipCheck) {
 				userSession.phoneAutoJoin = false;
@@ -65,33 +61,24 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			}
 		}
 		
-		private function onListenOnlyClick(event:MouseEvent):void {
-			var audioOptions:Object = new Object();
-			audioOptions.listenOnly = !userSession.userList.me.listenOnly;
-			userSession.userList.me.listenOnly = !userSession.userList.me.listenOnly
-			audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
-			shareMicrophoneSignal.dispatch(audioOptions);
-			if (userSession.phoneAutoJoin && !userSession.phoneSkipCheck) {
-				userSession.phoneAutoJoin = false;
-				userUISession.popPage();
+		private function onEnableAudioClick(event:MouseEvent):void {
+			if (view.enableAudio.selected) {
+				view.enableMic.selected = false;
 			}
 		}
 		
-		private function userChangeHandler(user:User, type:int):void {
-			if (user.me && type == UserList.JOIN_AUDIO) {
-				view.shareMicButton.label = ResourceManager.getInstance().getString('resources', user.voiceJoined ? 'audioSettings.shareMicrophone.off' : 'audioSettings.shareMicrophone.on');
-			} else if (user.me && type == UserList.LISTEN_ONLY) {
-				view.listenOnlyButton.label = ResourceManager.getInstance().getString('resources', user.listenOnly ? 'audioSettings.listenOnly.off' : 'audioSettings.listenOnly.on');
+		private function onEnableMicClick(event:MouseEvent):void {
+			if (!view.enableMic.selected) {
+				view.enableAudio.selected = true;
 			}
-			view.shareMicButton.visible = !userSession.userList.me.listenOnly && !lockedMic;
-			view.listenOnlyButton.visible = !userSession.userList.me.voiceJoined;
 		}
 		
 		override public function destroy():void {
 			super.destroy();
 			userSession.lockSettings.disableMicSignal.remove(disableMic);
-			view.shareMicButton.removeEventListener(MouseEvent.CLICK, onShareMicClick);
-			view.listenOnlyButton.removeEventListener(MouseEvent.CLICK, onListenOnlyClick);
+			view.applyBtn.removeEventListener(MouseEvent.CLICK, onApplyClick);
+			view.enableAudio.removeEventListener(MouseEvent.CLICK, onEnableAudioClick);
+			view.enableMic.removeEventListener(MouseEvent.CLICK, onEnableMicClick);
 			userSession.phoneAutoJoin = false;
 		}
 	}

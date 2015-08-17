@@ -27,8 +27,7 @@
 				  horizontalAlign="right">
 			<s:Label width="100%"
 					 text="{resourceManager.getString('resources', 'lockSettings.cam')}" />
-			<s:ToggleSwitch id="cam"
-							styleName="lockSettingsToggleSwitch" />
+			<s:ToggleSwitch id="cam" />
 		</s:HGroup>
 		<s:Line width="100%">
 			<s:stroke>
@@ -43,8 +42,7 @@
 
 			<s:Label width="100%"
 					 text="{resourceManager.getString('resources', 'lockSettings.mic')}" />
-			<s:ToggleSwitch id="mic"
-							styleName="lockSettingsToggleSwitch" />
+			<s:ToggleSwitch id="mic" />
 		</s:HGroup>
 		<s:Line width="100%">
 			<s:stroke>
@@ -58,8 +56,7 @@
 				  horizontalAlign="right">
 			<s:Label width="100%"
 					 text="{resourceManager.getString('resources', 'lockSettings.publicChat')}" />
-			<s:ToggleSwitch id="publicChat"
-							styleName="lockSettingsToggleSwitch" />
+			<s:ToggleSwitch id="publicChat" />
 		</s:HGroup>
 		<s:Line width="100%">
 			<s:stroke>
@@ -73,8 +70,7 @@
 				  horizontalAlign="right">
 			<s:Label width="100%"
 					 text="{resourceManager.getString('resources', 'lockSettings.privateChat')}" />
-			<s:ToggleSwitch id="privateChat"
-							styleName="lockSettingsToggleSwitch" />
+			<s:ToggleSwitch id="privateChat" />
 		</s:HGroup>
 		<s:Line width="100%">
 			<s:stroke>
@@ -88,8 +84,7 @@
 				  horizontalAlign="right">
 			<s:Label width="100%"
 					 text="{resourceManager.getString('resources', 'lockSettings.layout')}" />
-			<s:ToggleSwitch id="layout0"
-							styleName="lockSettingsToggleSwitch" />
+			<s:ToggleSwitch id="layout0" />
 		</s:HGroup>
 		<s:Line width="100%">
 			<s:stroke>

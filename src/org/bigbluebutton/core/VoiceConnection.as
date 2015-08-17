@@ -51,19 +51,9 @@ package org.bigbluebutton.core {
 			if (disable && _callActive) {
 				var audioOptions:Object = new Object();
 				audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
-				audioOptions.listenOnly = userSession.userList.me.listenOnly = false;
+				audioOptions.listenOnly = userSession.userList.me.listenOnly = true;
 				shareMicrophoneSignal.dispatch(audioOptions);
-				_hangUpSuccessSignal.add(enableListenOnly);
 			}
-		}
-		
-		private function enableListenOnly() {
-			_hangUpSuccessSignal.remove(enableListenOnly);
-			var audioOptions:Object = new Object();
-			audioOptions.listenOnly = !userSession.userList.me.listenOnly;
-			userSession.userList.me.listenOnly = !userSession.userList.me.listenOnly
-			audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
-			shareMicrophoneSignal.dispatch(audioOptions);
 		}
 		
 		private function onConnectionUnsuccess(reason:String):void {
@@ -96,6 +86,10 @@ package org.bigbluebutton.core {
 		
 		public function get callActive():Boolean {
 			return _callActive;
+		}
+		
+		public function get hangUpSuccessSignal():ISignal {
+			return _hangUpSuccessSignal;
 		}
 		
 		public function connect(confParams:IConferenceParameters):void {
