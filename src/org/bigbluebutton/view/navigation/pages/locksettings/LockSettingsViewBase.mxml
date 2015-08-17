@@ -2,7 +2,8 @@
 <view:NoTabView xmlns:fx="http://ns.adobe.com/mxml/2009"
 				xmlns:s="library://ns.adobe.com/flex/spark"
 				xmlns:mx="library://ns.adobe.com/flex/mx"
-				xmlns:view="org.bigbluebutton.core.view.*">
+				xmlns:view="org.bigbluebutton.core.view.*"
+				styleName="lockSettingsStyle">
 
 	<fx:Script>
 		<![CDATA[
@@ -14,7 +15,14 @@
 	<s:VGroup width="90%"
 			  height="100%"
 			  horizontalCenter="0">
+		<s:Line width="100%">
+			<s:stroke>
+				<s:SolidColorStroke color="{getStyle('lineColor')}"
+									weight="{getStyle('lineWeight')}" />
+			</s:stroke>
+		</s:Line>
 		<s:HGroup width="100%"
+				  height="7%"
 				  verticalAlign="middle"
 				  horizontalAlign="right">
 			<s:Label width="100%"
@@ -22,7 +30,14 @@
 			<s:ToggleSwitch id="cam"
 							styleName="lockSettingsToggleSwitch" />
 		</s:HGroup>
+		<s:Line width="100%">
+			<s:stroke>
+				<s:SolidColorStroke color="{getStyle('lineColor')}"
+									weight="{getStyle('lineWeight')}" />
+			</s:stroke>
+		</s:Line>
 		<s:HGroup width="100%"
+				  height="7%"
 				  verticalAlign="middle"
 				  horizontalAlign="right">
 
@@ -31,7 +46,14 @@
 			<s:ToggleSwitch id="mic"
 							styleName="lockSettingsToggleSwitch" />
 		</s:HGroup>
+		<s:Line width="100%">
+			<s:stroke>
+				<s:SolidColorStroke color="{getStyle('lineColor')}"
+									weight="{getStyle('lineWeight')}" />
+			</s:stroke>
+		</s:Line>
 		<s:HGroup width="100%"
+				  height="7%"
 				  verticalAlign="middle"
 				  horizontalAlign="right">
 			<s:Label width="100%"
@@ -39,7 +61,14 @@
 			<s:ToggleSwitch id="publicChat"
 							styleName="lockSettingsToggleSwitch" />
 		</s:HGroup>
+		<s:Line width="100%">
+			<s:stroke>
+				<s:SolidColorStroke color="{getStyle('lineColor')}"
+									weight="{getStyle('lineWeight')}" />
+			</s:stroke>
+		</s:Line>
 		<s:HGroup width="100%"
+				  height="7%"
 				  verticalAlign="middle"
 				  horizontalAlign="right">
 			<s:Label width="100%"
@@ -47,7 +76,14 @@
 			<s:ToggleSwitch id="privateChat"
 							styleName="lockSettingsToggleSwitch" />
 		</s:HGroup>
+		<s:Line width="100%">
+			<s:stroke>
+				<s:SolidColorStroke color="{getStyle('lineColor')}"
+									weight="{getStyle('lineWeight')}" />
+			</s:stroke>
+		</s:Line>
 		<s:HGroup width="100%"
+				  height="7%"
 				  verticalAlign="middle"
 				  horizontalAlign="right">
 			<s:Label width="100%"
@@ -55,6 +91,13 @@
 			<s:ToggleSwitch id="layout0"
 							styleName="lockSettingsToggleSwitch" />
 		</s:HGroup>
+		<s:Line width="100%">
+			<s:stroke>
+				<s:SolidColorStroke color="{getStyle('lineColor')}"
+									weight="{getStyle('lineWeight')}" />
+			</s:stroke>
+		</s:Line>
+		<s:Spacer height="10%" />
 		<s:Button id="apply"
 				  width="100%"
 				  label="{resourceManager.getString('resources', 'lockSettings.apply')}"

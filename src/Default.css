@@ -316,7 +316,7 @@ global
 		itemPaddingRight:6;
 	}
 	
-	s|ItemRenderer.chatRoomItemStyle
+	s|ItemRenderer.chatRoomItemStyle, s|View.lockSettingsStyle
 	{
 		lineColor: #F2F2F2;
 		lineWeight:0.5;
@@ -759,7 +759,7 @@ global
 		itemPaddingRight:9;
 	}
 	
-	s|ItemRenderer.chatRoomItemStyle
+	s|ItemRenderer.chatRoomItemStyle, s|View.lockSettingsStyle
 	{
 		lineColor: #F2F2F2;
 		lineWeight:0.75;
@@ -1196,7 +1196,7 @@ global
 		itemPaddingRight:12;
 	}
 	
-	s|ItemRenderer.chatRoomItemStyle
+	s|ItemRenderer.chatRoomItemStyle, s|View.lockSettingsStyle
 	{
 		lineColor: #F2F2F2;
 		lineWeight:1;
@@ -1628,7 +1628,7 @@ global
 	}
 	
 	
-	s|ItemRenderer.chatRoomItemStyle
+	s|ItemRenderer.chatRoomItemStyle, s|View.lockSettingsStyle
 	{
 		lineColor: #F2F2F2;
 		lineWeight:1.5;
