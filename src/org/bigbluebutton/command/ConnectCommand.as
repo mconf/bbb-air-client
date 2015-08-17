@@ -223,7 +223,7 @@ package org.bigbluebutton.command {
 				FlexGlobals.topLevelApplication.bottomMenu.includeInLayout = true;
 			}
 			userUISession.loading = false;
-			userUISession.pushPage(PagesENUM.PARTICIPANTS);
+			userUISession.pushPage(PagesENUM.VIDEO_CHAT);
 			if (userSession.phoneAutoJoin && !userSession.phoneSkipCheck) {
 				userUISession.pushPage(PagesENUM.AUDIOSETTINGS);
 			}
