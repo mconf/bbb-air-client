@@ -40,7 +40,9 @@ package org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms {
 		protected var dataProvider:ArrayCollection;
 		
 		override public function initialize():void {
-			dataProvider = new ArrayCollection((saveData.read("rooms") as ArrayCollection).toArray().reverse());
+			if (saveData.read("rooms")) {
+				dataProvider = new ArrayCollection((saveData.read("rooms") as ArrayCollection).toArray().reverse());
+			}
 			view.roomsList.dataProvider = dataProvider;
 			view.roomsList.addEventListener(MouseEvent.CLICK, selectRoom);
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
