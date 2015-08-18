@@ -162,6 +162,11 @@ global
 	color: #777777;
 }
 
+s|Image.bigbbbLogoStyle
+{
+	skinClass: ClassReference("org.bigbluebutton.view.skins.BBBLogoSkin");
+}
+
 @media (application-dpi: 160) {
 	
 	s|Application.mainshellStyle
@@ -596,6 +601,11 @@ global
 	s|Image.bbbLogoStyle
 	{
 		imageSource: Embed(source="assets/res/drawable-mdpi/ic_launcher.png");
+	}
+	
+	s|Image.bigbbbLogoStyle
+	{
+		imageSource: Embed(source="assets/res/drawable-xhdpi/ic_launcher.png");
 	}
 }
 
@@ -1034,6 +1044,11 @@ global
 	{
 		imageSource: Embed(source="assets/res/drawable-hdpi/ic_launcher.png");
 	}
+	
+	s|Image.bigbbbLogoStyle
+	{
+		imageSource: Embed(source="assets/res/drawable-xxhdpi/ic_launcher.png");
+	}
 }
 
 @media (application-dpi: 320) {
@@ -1471,6 +1486,11 @@ global
 	{
 		imageSource: Embed(source="assets/res/drawable-xhdpi/ic_launcher.png");
 	}
+	
+	s|Image.bigbbbLogoStyle
+	{
+		imageSource: Embed(source="assets/res/drawable-xxxhdpi/ic_launcher.png");
+	}
 }
 
 @media (application-dpi: 480) {
@@ -1898,6 +1918,11 @@ global
 	s|Image.bbbLogoStyle
 	{
 		imageSource: Embed(source="assets/res/drawable-xxhdpi/ic_launcher.png");
+	}
+	
+	s|Image.bigbbbLogoStyle
+	{
+		imageSource: Embed(source="assets/res/drawable-xxxhdpi/ic_launcher.png");
 	}
 	
 	s|RadioButton
