@@ -56,10 +56,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			audioOptions.shareMic = userSession.userList.me.voiceJoined = view.enableMic.selected && view.enableAudio.selected;
 			audioOptions.listenOnly = userSession.userList.me.listenOnly = !view.enableMic.selected && view.enableAudio.selected;
 			shareMicrophoneSignal.dispatch(audioOptions);
-			if (userSession.phoneAutoJoin && !userSession.phoneSkipCheck) {
-				userSession.phoneAutoJoin = false;
-				userUISession.popPage();
-			}
+			userUISession.popPage();
 		}
 		
 		private function onEnableAudioClick(event:MouseEvent):void {
