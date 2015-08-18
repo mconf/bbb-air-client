@@ -38,7 +38,6 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter && userMe.locked);
 			view.enableAudio.selected = (userMe.voiceJoined || userMe.listenOnly);
 			view.enableMic.selected = userMe.voiceJoined;
-			trace("++ hello from audiosettingsview " + view.enableAudio.selected);
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 		}

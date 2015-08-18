@@ -198,16 +198,10 @@ package org.bigbluebutton.model {
 		private var _listenOnly:Boolean;
 		
 		public function get listenOnly():Boolean {
-			if (me) {
-				trace("++ get listenonly with " + _listenOnly);
-			}
 			return _listenOnly;
 		}
 		
 		public function set listenOnly(value:Boolean):void {
-			if (me) {
-				trace("++ set listenonly to " + value);
-			}
 			_listenOnly = value;
 		}
 		

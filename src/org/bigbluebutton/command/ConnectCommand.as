@@ -166,9 +166,7 @@ package org.bigbluebutton.command {
 			} else {
 				var audioOptions:Object = new Object();
 				audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
-				trace("++ gogo listen only " + userSession.userList.me.listenOnly);
 				audioOptions.listenOnly = userSession.userList.me.listenOnly = true;
-				trace("++ wentwent listen only " + userSession.userList.me.listenOnly);
 				shareMicrophoneSignal.dispatch(audioOptions);
 			}
 			deskshareConnection.applicationURI = userSession.config.getConfigFor("DeskShareModule").@uri;
@@ -178,11 +176,9 @@ package org.bigbluebutton.command {
 			// Query the server for chat, users, and presentation info
 			chatService.sendWelcomeMessage();
 			userSession.userList.allUsersAddedSignal.add(successUsersAdded);
-			if (!conferenceParameters.serverIsMconf) {
-				chatService.getPublicChatMessages();
-				presentationService.getPresentationInfo();
-				usersService.queryForParticipants();
-			}
+			chatService.getPublicChatMessages();
+			presentationService.getPresentationInfo();
+			usersService.queryForParticipants();
 			usersService.queryForRecordingStatus();
 			userSession.successJoiningMeetingSignal.remove(successJoiningMeeting);
 			userSession.unsuccessJoiningMeetingSignal.remove(unsuccessJoiningMeeting);
