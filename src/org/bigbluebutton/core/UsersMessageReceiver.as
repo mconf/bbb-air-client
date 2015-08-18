@@ -23,8 +23,6 @@ package org.bigbluebutton.core {
 		
 		private var lastSipEvent:Object = null;
 		
-		private var getUsersReplyCalled:Boolean = false;
-		
 		public function UsersMessageReceiver() {
 		}
 		
@@ -257,15 +255,12 @@ package org.bigbluebutton.core {
 		}
 		
 		private function handleGetUsersReply(m:Object):void {
-			if (!getUsersReplyCalled) {
-				getUsersReplyCalled = true;
-				var msg:Object = JSON.parse(m.msg);
-				for (var i:int; i < msg.users.length; i++) {
-					var newUser:Object = msg.users[i];
-					addParticipant(newUser);
-				}
-				userSession.userList.allUsersAddedSignal.dispatch();
+			var msg:Object = JSON.parse(m.msg);
+			for (var i:int; i < msg.users.length; i++) {
+				var newUser:Object = msg.users[i];
+				addParticipant(newUser);
 			}
+			userSession.userList.allUsersAddedSignal.dispatch();
 		}
 		
 		private function handleParticipantJoined(m:Object):void {
