@@ -36,6 +36,8 @@ package org.bigbluebutton.core {
 		
 		protected var _conferenceParameters:IConferenceParameters;
 		
+		protected var _listenOnly:Boolean;
+		
 		public function VoiceConnection() {
 		}
 		
@@ -61,7 +63,8 @@ package org.bigbluebutton.core {
 		}
 		
 		private function onConnectionSuccess():void {
-			call(userSession.userList.me.listenOnly);
+			userSession.userList.me.listenOnly = _listenOnly;
+			call(_listenOnly);
 		}
 		
 		public function get unsuccessConnected():ISignal {
@@ -92,9 +95,10 @@ package org.bigbluebutton.core {
 			return _hangUpSuccessSignal;
 		}
 		
-		public function connect(confParams:IConferenceParameters):void {
+		public function connect(confParams:IConferenceParameters, listenOnly:Boolean):void {
 			// we don't use scope in the voice communication (many hours lost on it)
 			_conferenceParameters = confParams;
+			_listenOnly = listenOnly;
 			trace(confParams.username + ", " + confParams.role + ", " + confParams.meetingName + ", " + confParams.externUserID);
 			_username = encodeURIComponent(confParams.externUserID + "-bbbID-" + confParams.username);
 			baseConnection.connect(_applicationURI, confParams.conference, userSession.userId, _username, confParams.voicebridge);

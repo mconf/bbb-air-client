@@ -58,7 +58,7 @@ package org.bigbluebutton.command {
 			audioOptions.listenOnly = true;
 			shareMicrophoneCommand.audioOptions = audioOptions;
 			shareMicrophoneCommand.execute();
-			verify().that(voiceConnection.connect(any()));
+			verify().that(voiceConnection.connect(any(), any()));
 			verify().that(successConnected.add(any()));
 			verify().that(unsuccessConnected.add(any()));
 		}

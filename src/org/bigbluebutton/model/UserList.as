@@ -179,6 +179,7 @@ package org.bigbluebutton.model {
 					//TODO check if this is correct
 					// if we don't set _me to the just added user, _me won't get any update ever, it wouldn't be
 					// possible to use me.isModerator(), for instance
+					newuser.listenOnly = _me.listenOnly;
 					_me = newuser;
 				}
 				_users.addItem(newuser);

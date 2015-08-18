@@ -163,17 +163,26 @@ package org.bigbluebutton.command {
 				audioOptions.shareMic = userSession.userList.me.voiceJoined = !forceListenOnly;
 				audioOptions.listenOnly = userSession.userList.me.listenOnly = forceListenOnly;
 				shareMicrophoneSignal.dispatch(audioOptions);
+			} else {
+				var audioOptions:Object = new Object();
+				audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
+				trace("++ gogo listen only " + userSession.userList.me.listenOnly);
+				audioOptions.listenOnly = userSession.userList.me.listenOnly = true;
+				trace("++ wentwent listen only " + userSession.userList.me.listenOnly);
+				shareMicrophoneSignal.dispatch(audioOptions);
 			}
 			deskshareConnection.applicationURI = userSession.config.getConfigFor("DeskShareModule").@uri;
 			deskshareConnection.room = conferenceParameters.room;
 			deskshareConnection.connect();
 			userSession.deskshareConnection = deskshareConnection;
 			// Query the server for chat, users, and presentation info
-			chatService.getPublicChatMessages();
 			chatService.sendWelcomeMessage();
-			presentationService.getPresentationInfo();
 			userSession.userList.allUsersAddedSignal.add(successUsersAdded);
-			usersService.queryForParticipants();
+			if (!conferenceParameters.serverIsMconf) {
+				chatService.getPublicChatMessages();
+				presentationService.getPresentationInfo();
+				usersService.queryForParticipants();
+			}
 			usersService.queryForRecordingStatus();
 			userSession.successJoiningMeetingSignal.remove(successJoiningMeeting);
 			userSession.unsuccessJoiningMeetingSignal.remove(unsuccessJoiningMeeting);
@@ -224,13 +233,24 @@ package org.bigbluebutton.command {
 			}
 			userUISession.loading = false;
 			userUISession.pushPage(PagesENUM.VIDEO_CHAT);
-			if (userSession.phoneAutoJoin && !userSession.phoneSkipCheck) {
-				userUISession.pushPage(PagesENUM.AUDIOSETTINGS);
+			if (conferenceParameters.serverIsMconf) {
+				userSession.lockSettings.disableMicSignal.add(displayAudioSettings);
+			} else {
+				displayAudioSettings();
 			}
 			if (userSession.videoAutoStart && !userSession.skipCamSettingsCheck) {
 				userUISession.pushPage(PagesENUM.CAMERASETTINGS);
 			}
 			userSession.userList.allUsersAddedSignal.remove(successUsersAdded);
+		}
+		
+		private function displayAudioSettings(micLocked:Boolean = false) {
+			userSession.lockSettings.disableMicSignal.remove(displayAudioSettings);
+			if (userSession.phoneAutoJoin && !userSession.phoneSkipCheck && (userSession.userList.me.isModerator() || !userSession.lockSettings.disableMic)) {
+				userUISession.pushPage(PagesENUM.AUDIOSETTINGS);
+			} else {
+				userSession.phoneAutoJoin = false;
+			}
 		}
 		
 		private function loadConfigOptions():void {

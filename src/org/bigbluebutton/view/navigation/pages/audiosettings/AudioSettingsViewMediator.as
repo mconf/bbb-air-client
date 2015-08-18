@@ -28,6 +28,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		private var autoJoined:Boolean;
 		
 		override public function initialize():void {
+			userSession.userList.userChangeSignal.add(userChangeHandler);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'audioSettings.title');
 			var userMe:User = userSession.userList.me;
 			view.applyBtn.addEventListener(MouseEvent.CLICK, onApplyClick);
@@ -37,6 +38,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter && userMe.locked);
 			view.enableAudio.selected = (userMe.voiceJoined || userMe.listenOnly);
 			view.enableMic.selected = userMe.voiceJoined;
+			trace("++ hello from audiosettingsview " + view.enableAudio.selected);
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 		}
@@ -73,12 +75,22 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			}
 		}
 		
+		private function userChangeHandler(user:User, type:int):void {
+			if (user.me) {
+				if (type == UserList.LISTEN_ONLY) {
+					view.enableAudio.selected = user.voiceJoined || user.listenOnly;
+					view.enableMic.selected = user.voiceJoined;
+				}
+			}
+		}
+		
 		override public function destroy():void {
 			super.destroy();
 			userSession.lockSettings.disableMicSignal.remove(disableMic);
 			view.applyBtn.removeEventListener(MouseEvent.CLICK, onApplyClick);
 			view.enableAudio.removeEventListener(MouseEvent.CLICK, onEnableAudioClick);
 			view.enableMic.removeEventListener(MouseEvent.CLICK, onEnableMicClick);
+			userSession.userList.userChangeSignal.remove(userChangeHandler);
 			userSession.phoneAutoJoin = false;
 		}
 	}

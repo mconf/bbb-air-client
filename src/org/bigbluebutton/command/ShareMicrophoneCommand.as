@@ -50,13 +50,13 @@ package org.bigbluebutton.command {
 			voiceConnection = userSession.voiceConnection;
 			voiceConnection.hangUpSuccessSignal.remove(enableAudio);
 			if (!voiceConnection.connection.connected) {
-				voiceConnection.connect(conferenceParameters);
 				voiceConnection.successConnected.add(mediaSuccessConnected);
 				voiceConnection.unsuccessConnected.add(mediaUnsuccessConnected);
+				voiceConnection.connect(conferenceParameters, _listenOnly);
 			} else if (!voiceConnection.callActive) {
-				voiceConnection.call(_listenOnly);
 				voiceConnection.successConnected.add(mediaSuccessConnected);
 				voiceConnection.unsuccessConnected.add(mediaUnsuccessConnected);
+				voiceConnection.call(_listenOnly);
 			} else {
 				voiceConnection.hangUp();
 				voiceConnection.hangUpSuccessSignal.add(enableAudio);

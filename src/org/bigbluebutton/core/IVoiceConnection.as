@@ -13,7 +13,7 @@ package org.bigbluebutton.core {
 		function get connection():NetConnection
 		function get callActive():Boolean
 		function get hangUpSuccessSignal():ISignal;
-		function connect(confParams:IConferenceParameters):void
+		function connect(confParams:IConferenceParameters, listenOnly:Boolean):void
 		function disconnect(onUserCommand:Boolean):void
 		function failedToJoinVoiceConferenceCallback(msg:String):*
 		function disconnectedFromJoinVoiceConferenceCallback(msg:String):*
