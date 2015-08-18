@@ -56,7 +56,7 @@
 								 width="90%"
 								 label="{resourceManager.getString('resources', 'openRoom.showRecentRooms')}"
 								 navigateTo="{[PagesENUM.RECENTROOMS]}"
-								 styleName="videoAudioSettingStyle"
+								 styleName="videoAudioSettingStyle profileSettingsButtonStyle"
 								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
 		</s:Group>
 	</s:Group>
