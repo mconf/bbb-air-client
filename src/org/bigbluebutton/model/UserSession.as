@@ -298,6 +298,7 @@ package org.bigbluebutton.model {
 		
 		public function dispatchLockSettings():void {
 			var userLocked:Boolean = (userList.me.role != User.MODERATOR && !userList.me.presenter && userList.me.locked);
+			lockSettings.loaded = true;
 			lockSettings.disableCamSignal.dispatch(lockSettings.disableCam && userLocked);
 			lockSettings.disableMicSignal.dispatch(lockSettings.disableMic && userLocked);
 			lockSettings.disablePrivateChatSignal.dispatch(lockSettings.disablePrivateChat && userLocked);

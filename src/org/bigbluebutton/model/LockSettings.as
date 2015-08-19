@@ -21,6 +21,8 @@ package org.bigbluebutton.model {
 		
 		private var _lockedLayout:Boolean;
 		
+		private var _loaded:Boolean = false;
+		
 		public function LockSettings() {
 		}
 		
@@ -76,6 +78,14 @@ package org.bigbluebutton.model {
 		
 		public function get disablePublicChat():Boolean {
 			return _disablePublicChat;
+		}
+		
+		public function get loaded():Boolean {
+			return _loaded;
+		}
+		
+		public function set loaded(value:Boolean):void {
+			_loaded = value;
 		}
 		
 		public function set disablePublicChat(disable:Boolean):void {
