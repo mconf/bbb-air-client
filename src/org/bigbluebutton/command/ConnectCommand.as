@@ -242,9 +242,7 @@ package org.bigbluebutton.command {
 		
 		private function displayAudioSettings(micLocked:Boolean = false) {
 			userSession.lockSettings.disableMicSignal.remove(displayAudioSettings);
-			trace("++ should i go?");
 			if (userSession.phoneAutoJoin && !userSession.phoneSkipCheck && (userSession.userList.me.isModerator() || !userSession.lockSettings.disableMic)) {
-				trace("++ GOGO audiosettings!");
 				userUISession.pushPage(PagesENUM.AUDIOSETTINGS);
 			} else {
 				userSession.phoneAutoJoin = false;
