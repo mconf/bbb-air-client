@@ -66,10 +66,13 @@ package org.bigbluebutton.model {
 		}
 		
 		public function getVideoProfileByStreamName(streamName:String):VideoProfile {
-			var pattern:RegExp = new RegExp("([a-z0-9]+)-([A-Za-z0-9_]+)-\\d+", "");
+			trace("++ streamName: " + streamName);
+			var pattern:RegExp = new RegExp("(\\w+)-(\\w+)-(\\d+)", "");
 			if (pattern.test(streamName)) {
 				var profileID:String = pattern.exec(streamName)[1]
+				trace("++ profileID: " + profileID);
 				for each (var profile:VideoProfile in _profiles) {
+					trace("++ streamNwwwwwme: " + profile.id);
 					if (profile.id == profileID) {
 						return profile;
 					}
