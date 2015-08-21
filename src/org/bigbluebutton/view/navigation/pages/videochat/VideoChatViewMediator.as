@@ -188,17 +188,17 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		
 		private function userRemovedHandler(userID:String):void {
 			var displayedUser:User = getDisplayedUser();
+			removeUserFromDataProvider(userID);
 			if (displayedUser) {
 				if (displayedUser.userID == userID) {
 					stopStream(userID);
+					if (dataProvider.length == 0) {
+						displayVideo(false);
+					} else {
+						displayVideo(true);
+						checkVideo();
+					}
 				}
-			}
-			removeUserFromDataProvider(userID);
-			if (dataProvider.length == 0) {
-				displayVideo(false);
-			} else {
-				displayVideo(true);
-				checkVideo();
 			}
 		}
 		
@@ -285,7 +285,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		}
 		
 		private function checkVideo(changedUser:User = null):void {
-			if (!manualSelection || userUISession.currentStreamName == "") {
+			if (!manualSelection || userUISession.currentStreamName == "" && userSession.videoConnection.connection) {
 				// get id of the user that is currently displayed
 				var currentUser:User = getDisplayedUser();
 				// get presenter user
@@ -343,6 +343,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 						}
 						if (view) {
 							view.stopStream();
+							trace("++ play new video!!!");
 							startStream(newUser, displayUserStreamName.streamName);
 							displayVideo(true);
 						}

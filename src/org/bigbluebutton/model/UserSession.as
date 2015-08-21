@@ -282,8 +282,10 @@ package org.bigbluebutton.model {
 		}
 		
 		public function set globalVideoStreamName(value:String):void {
-			_globalVideoStreamName = value;
-			globalVideoSignal.dispatch();
+			if (value != _globalVideoStreamName) {
+				_globalVideoStreamName = value;
+				globalVideoSignal.dispatch();
+			}
 		}
 		
 		public function get globalVideoStreamName():String {
