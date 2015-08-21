@@ -343,7 +343,6 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 						}
 						if (view) {
 							view.stopStream();
-							trace("++ play new video!!!");
 							startStream(newUser, displayUserStreamName.streamName);
 							displayVideo(true);
 						}
