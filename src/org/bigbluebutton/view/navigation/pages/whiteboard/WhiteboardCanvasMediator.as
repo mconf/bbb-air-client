@@ -30,7 +30,7 @@ package org.bigbluebutton.view.navigation.pages.whiteboard {
 		}
 		
 		private function annotationUpdatedHandler(annotation:IAnnotation):void {
-			annotation.draw(view, 1);
+			annotation.draw(view, _zoom);
 		}
 		
 		private function annotationUndoHandler(annotation:IAnnotation):void {
