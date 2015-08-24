@@ -40,6 +40,7 @@ package org.bigbluebutton.core {
 			var messages = JSON.parse(message.msg as String);
 			var msgCount:Number = messages.length;
 			chatMessagesSession.publicChat.messages = new ArrayCollection();
+			chatMessagesSession.publicChat.resetNewMessages();
 			for (var i:int = 0; i < msgCount; i++) {
 				handleChatReceivePublicMessageCommand(messages[i]);
 			}
