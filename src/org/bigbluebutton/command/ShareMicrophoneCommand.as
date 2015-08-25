@@ -58,7 +58,7 @@ package org.bigbluebutton.command {
 				voiceConnection.unsuccessConnected.add(mediaUnsuccessConnected);
 				voiceConnection.call(_listenOnly);
 			} else {
-				voiceConnection.hangUp();
+				disableAudio();
 				voiceConnection.hangUpSuccessSignal.add(enableAudio);
 			}
 		}
