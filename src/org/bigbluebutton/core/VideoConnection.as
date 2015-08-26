@@ -117,7 +117,7 @@ package org.bigbluebutton.core {
 		}
 		
 		public function connect():void {
-			baseConnection.connect(uri, conferenceParameters.externMeetingID, conferenceParameters.username);
+			baseConnection.connect(uri, conferenceParameters.meetingID, userSession.userId);
 		}
 		
 		public function disconnect(onUserCommand:Boolean):void {

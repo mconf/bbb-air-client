@@ -120,6 +120,10 @@ package org.bigbluebutton.model {
 			return _externMeetingID;
 		}
 		
+		public function get meetingID():String {
+			return _meetingID;
+		}
+		
 		public function set externMeetingID(externMeetingID:String):void {
 			_externMeetingID = externMeetingID;
 			_changedSignal.dispatch();
