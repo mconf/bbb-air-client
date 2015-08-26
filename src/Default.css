@@ -404,6 +404,11 @@ s|Image.bigbbbLogoStyle
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/arrowRight.png");
 	}
 	
+	s|Button.shareCameraButtonStyle
+	{
+		iconImage: Embed(source="assets/res/drawable-mdpi/video.png");
+	}
+	
 	s|Button.audioSettingsShareMicButtonStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-mdpi/microphone.png");
@@ -821,6 +826,12 @@ s|Image.bigbbbLogoStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-hdpi/arrowRight.png");
 	}
+	
+	s|Button.shareCameraButtonStyle
+	{
+		iconImage: Embed(source="assets/res/drawable-hdpi/video.png");
+	}
+	
 	
 	s|Button.audioSettingsShareMicButtonStyle
 	{
@@ -1262,6 +1273,11 @@ s|Image.bigbbbLogoStyle
 	s|Button.profileSettingsButtonStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xhdpi/arrowRight.png");
+	}
+	
+	s|Button.shareCameraButtonStyle
+	{
+		iconImage: Embed(source="assets/res/drawable-xhdpi/video.png");
 	}
 	
 	s|Button.audioSettingsShareMicButtonStyle
@@ -1729,6 +1745,11 @@ s|Image.bigbbbLogoStyle
 	s|Button.profileSettingsButtonStyle
 	{
 		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/arrowRight.png");
+	}
+	
+	s|Button.shareCameraButtonStyle
+	{
+		iconImage: Embed(source="assets/res/drawable-xxhdpi/video.png");
 	}
 	
 	s|Button.audioSettingsShareMicButtonStyle
