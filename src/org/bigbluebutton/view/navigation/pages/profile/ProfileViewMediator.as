@@ -42,7 +42,6 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		override public function initialize():void {
 			view.currentState = (conferenceParameters.serverIsMconf) ? "mconf" : "bbb";
 			var userMe:User = userSession.userList.me;
-			view.userNameButton.label = userMe.name;
 			switch (userMe.status) {
 				case User.RAISE_HAND:
 					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.handRaise');
@@ -191,8 +190,6 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		}
 		
 		private function displayManagementButtons(display:Boolean):void {
-			view.managementLabel.visible = display;
-			view.managementLabel.includeInLayout = display;
 			view.clearAllStatusButton.visible = display;
 			view.clearAllStatusButton.includeInLayout = display;
 			view.muteAllButton.visible = display;
