@@ -87,14 +87,9 @@ s|Button.videoAudioSettingStyle
 	skinClass: ClassReference("org.bigbluebutton.view.skins.VideoAudioSettingsBtnSkin");
 }
 
-s|Button.profileSettingsButtonStyle,s|Button.chatButtonStyle,s|Button.audioSettingsShareMicButtonStyle, s|Button.clearButtonStyle, s|Button.lowerAllHandsButtonStyle, s|Button.MuteButtonStyle, s|Button.audioSettingsListenOnlyButtonStyle, s|Button.raiseHandButtonStyle
+s|Button.profileSettingsButtonStyle,s|Button.chatButtonStyle,s|Button.audioSettingsShareMicButtonStyle, s|Button.clearButtonStyle, s|Button.lowerAllHandsButtonStyle, s|Button.MuteButtonStyle, s|Button.audioSettingsListenOnlyButtonStyle, s|Button.raiseHandButtonStyle, s|Button.cameraSettingsStartButtonStyle, s|Button.cameraSettingsSwapButtonStyle, s|Button.cameraSettingsRotateButtonStyle
 {
 	labelTextAlign:left;
-}
-
-s|Button.cameraSettingsStartButtonStyle,s|Button.cameraSettingsSwapButtonStyle, s|Button.cameraSettingsRotateButtonStyle
-{
-	labelTextAlign:center;
 }
 
 s|Label.pageNameStyle
@@ -243,17 +238,17 @@ s|Image.bigbbbLogoStyle
 	
 	s|Button.cameraSettingsStartButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/video.png");
+		iconImage: Embed(source="assets/res/drawable-mdpi/video.png");
 	}
 	
 	s|Button.cameraSettingsRotateButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/rotateRight.png");
+		iconImage: Embed(source="assets/res/drawable-mdpi/rotateRight.png");
 	}
 	
 	s|Button.cameraSettingsSwapButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/SwapCamera_up.png");
+		iconImage: Embed(source="assets/res/drawable-mdpi/SwapCamera_up.png");
 	}
 	
 	s|View.cameraSettingsViewStyle
@@ -432,6 +427,11 @@ s|Image.bigbbbLogoStyle
 	s|Button.lockParticipantsButtonStyle
 	{
 		iconImage: Embed(source="assets/res/drawable-mdpi/lock.png");
+	}
+	
+	s|Button.changeStatusButtonStyle
+	{
+		iconImage: Embed(source="assets/res/drawable-mdpi/icon-6-smiling-face.png");
 	}
 	
 	s|Button.clearButtonStyle
@@ -700,17 +700,17 @@ s|Image.bigbbbLogoStyle
 	
 	s|Button.cameraSettingsStartButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/video.png");
+		iconImage: Embed(source="assets/res/drawable-hdpi/video.png");
 	}
 	
 	s|Button.cameraSettingsRotateButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/rotateRight.png");
+		iconImage: Embed(source="assets/res/drawable-hdpi/rotateRight.png");
 	}
 	
 	s|Button.cameraSettingsSwapButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/SwapCamera_up.png");
+		iconImage: Embed(source="assets/res/drawable-hdpi/SwapCamera_up.png");
 	}
 	
 	s|View.cameraSettingsViewStyle
@@ -865,6 +865,11 @@ s|Image.bigbbbLogoStyle
 	s|Button.lockParticipantsButtonStyle
 	{
 		iconImage: Embed(source="assets/res/drawable-hdpi/lock.png");
+	}
+	
+	s|Button.changeStatusButtonStyle
+	{
+		iconImage: Embed(source="assets/res/drawable-hdpi/icon-6-smiling-face.png");
 	}
 	
 	s|Button.clearButtonStyle
@@ -1169,17 +1174,17 @@ s|Image.bigbbbLogoStyle
 	
 	s|Button.cameraSettingsStartButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/video.png");
+		iconImage: Embed(source="assets/res/drawable-xhdpi/video.png");
 	}
 	
 	s|Button.cameraSettingsRotateButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/rotateRight.png");
+		iconImage: Embed(source="assets/res/drawable-xhdpi/rotateRight.png");
 	}
 	
 	s|Button.cameraSettingsSwapButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/SwapCamera_up.png");
+		iconImage: Embed(source="assets/res/drawable-xhdpi/SwapCamera_up.png");
 	}
 	
 	s|View.cameraSettingsViewStyle
@@ -1322,6 +1327,11 @@ s|Image.bigbbbLogoStyle
 	s|Button.lockParticipantsButtonStyle
 	{
 		iconImage: Embed(source="assets/res/drawable-xhdpi/lock.png");
+	}
+	
+	s|Button.changeStatusButtonStyle
+	{
+		iconImage: Embed(source="assets/res/drawable-xhdpi/icon-6-smiling-face.png");
 	}
 	
 	s|Button.clearButtonStyle
@@ -1634,17 +1644,17 @@ s|Image.bigbbbLogoStyle
 	
 	s|Button.cameraSettingsStartButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/video.png");
+		iconImage: Embed(source="assets/res/drawable-xxhdpi/video.png");
 	}
 	
 	s|Button.cameraSettingsRotateButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/rotateRight.png");
+		iconImage: Embed(source="assets/res/drawable-xxhdpi/rotateRight.png");
 	}
 	
 	s|Button.cameraSettingsSwapButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/SwapCamera_up.png");
+		iconImage: Embed(source="assets/res/drawable-xxhdpi/SwapCamera_up.png");
 	}
 	
 	s|View.cameraSettingsViewStyle
@@ -1804,6 +1814,11 @@ s|Image.bigbbbLogoStyle
 	s|Button.lockParticipantsButtonStyle
 	{
 		iconImage: Embed(source="assets/res/drawable-xxhdpi/lock.png");
+	}
+	
+	s|Button.changeStatusButtonStyle
+	{
+		iconImage: Embed(source="assets/res/drawable-xxhdpi/icon-6-smiling-face.png");
 	}
 	
 	s|Button.clearButtonStyle
