@@ -179,6 +179,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 		public function close():void {
 			if (video && video.parent) {
 				video.parent.removeChild(video);
+				video.attachNetStream(null);
 				video = null;
 			}
 			if (ns) {
