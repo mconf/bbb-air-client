@@ -12,92 +12,95 @@
 		]]>
 	</fx:Script>
 
-	<s:VGroup width="90%"
-			  height="100%"
-			  horizontalCenter="0">
-		<s:Line width="100%">
-			<s:stroke>
-				<s:SolidColorStroke color="{getStyle('lineColor')}"
-									weight="{getStyle('lineWeight')}" />
-			</s:stroke>
-		</s:Line>
-		<s:HGroup width="100%"
-				  height="7%"
-				  verticalAlign="middle"
-				  horizontalAlign="right">
-			<s:Label width="100%"
-					 text="{resourceManager.getString('resources', 'lockSettings.cam')}" />
-			<s:ToggleSwitch id="cam" />
-		</s:HGroup>
-		<s:Line width="100%">
-			<s:stroke>
-				<s:SolidColorStroke color="{getStyle('lineColor')}"
-									weight="{getStyle('lineWeight')}" />
-			</s:stroke>
-		</s:Line>
-		<s:HGroup width="100%"
-				  height="7%"
-				  verticalAlign="middle"
-				  horizontalAlign="right">
+	<s:Scroller width="100%"
+				height="100%">
+		<s:VGroup width="100%"
+				  height="100%"
+				  horizontalAlign="center">
+			<s:Line width="90%">
+				<s:stroke>
+					<s:SolidColorStroke color="{getStyle('lineColor')}"
+										weight="{getStyle('lineWeight')}" />
+				</s:stroke>
+			</s:Line>
+			<s:HGroup width="90%"
+					  height="7%"
+					  verticalAlign="middle"
+					  horizontalAlign="right">
+				<s:Label width="100%"
+						 text="{resourceManager.getString('resources', 'lockSettings.cam')}" />
+				<s:ToggleSwitch id="cam" />
+			</s:HGroup>
+			<s:Line width="90%">
+				<s:stroke>
+					<s:SolidColorStroke color="{getStyle('lineColor')}"
+										weight="{getStyle('lineWeight')}" />
+				</s:stroke>
+			</s:Line>
+			<s:HGroup width="90%"
+					  height="7%"
+					  verticalAlign="middle"
+					  horizontalAlign="right">
 
-			<s:Label width="100%"
-					 text="{resourceManager.getString('resources', 'lockSettings.mic')}" />
-			<s:ToggleSwitch id="mic" />
-		</s:HGroup>
-		<s:Line width="100%">
-			<s:stroke>
-				<s:SolidColorStroke color="{getStyle('lineColor')}"
-									weight="{getStyle('lineWeight')}" />
-			</s:stroke>
-		</s:Line>
-		<s:HGroup width="100%"
-				  height="7%"
-				  verticalAlign="middle"
-				  horizontalAlign="right">
-			<s:Label width="100%"
-					 text="{resourceManager.getString('resources', 'lockSettings.publicChat')}" />
-			<s:ToggleSwitch id="publicChat" />
-		</s:HGroup>
-		<s:Line width="100%">
-			<s:stroke>
-				<s:SolidColorStroke color="{getStyle('lineColor')}"
-									weight="{getStyle('lineWeight')}" />
-			</s:stroke>
-		</s:Line>
-		<s:HGroup width="100%"
-				  height="7%"
-				  verticalAlign="middle"
-				  horizontalAlign="right">
-			<s:Label width="100%"
-					 text="{resourceManager.getString('resources', 'lockSettings.privateChat')}" />
-			<s:ToggleSwitch id="privateChat" />
-		</s:HGroup>
-		<s:Line width="100%">
-			<s:stroke>
-				<s:SolidColorStroke color="{getStyle('lineColor')}"
-									weight="{getStyle('lineWeight')}" />
-			</s:stroke>
-		</s:Line>
-		<s:HGroup width="100%"
-				  height="7%"
-				  verticalAlign="middle"
-				  horizontalAlign="right">
-			<s:Label width="100%"
-					 text="{resourceManager.getString('resources', 'lockSettings.layout')}" />
-			<s:ToggleSwitch id="layout0" />
-		</s:HGroup>
-		<s:Line width="100%">
-			<s:stroke>
-				<s:SolidColorStroke color="{getStyle('lineColor')}"
-									weight="{getStyle('lineWeight')}" />
-			</s:stroke>
-		</s:Line>
-		<s:Spacer height="10%" />
-		<s:Button id="apply"
-				  width="100%"
-				  label="{resourceManager.getString('resources', 'lockSettings.apply')}"
-				  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
+				<s:Label width="100%"
+						 text="{resourceManager.getString('resources', 'lockSettings.mic')}" />
+				<s:ToggleSwitch id="mic" />
+			</s:HGroup>
+			<s:Line width="190%">
+				<s:stroke>
+					<s:SolidColorStroke color="{getStyle('lineColor')}"
+										weight="{getStyle('lineWeight')}" />
+				</s:stroke>
+			</s:Line>
+			<s:HGroup width="90%"
+					  height="7%"
+					  verticalAlign="middle"
+					  horizontalAlign="right">
+				<s:Label width="100%"
+						 text="{resourceManager.getString('resources', 'lockSettings.publicChat')}" />
+				<s:ToggleSwitch id="publicChat" />
+			</s:HGroup>
+			<s:Line width="90%">
+				<s:stroke>
+					<s:SolidColorStroke color="{getStyle('lineColor')}"
+										weight="{getStyle('lineWeight')}" />
+				</s:stroke>
+			</s:Line>
+			<s:HGroup width="90%"
+					  height="7%"
+					  verticalAlign="middle"
+					  horizontalAlign="right">
+				<s:Label width="100%"
+						 text="{resourceManager.getString('resources', 'lockSettings.privateChat')}" />
+				<s:ToggleSwitch id="privateChat" />
+			</s:HGroup>
+			<s:Line width="90%">
+				<s:stroke>
+					<s:SolidColorStroke color="{getStyle('lineColor')}"
+										weight="{getStyle('lineWeight')}" />
+				</s:stroke>
+			</s:Line>
+			<s:HGroup width="90%"
+					  height="7%"
+					  verticalAlign="middle"
+					  horizontalAlign="right">
+				<s:Label width="100%"
+						 text="{resourceManager.getString('resources', 'lockSettings.layout')}" />
+				<s:ToggleSwitch id="layout0" />
+			</s:HGroup>
+			<s:Line width="90%">
+				<s:stroke>
+					<s:SolidColorStroke color="{getStyle('lineColor')}"
+										weight="{getStyle('lineWeight')}" />
+				</s:stroke>
+			</s:Line>
+			<s:Spacer height="10%" />
+			<s:Button id="apply"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'lockSettings.apply')}"
+					  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
 
 
-	</s:VGroup>
+		</s:VGroup>
+	</s:Scroller>
 </view:NoTabView>
