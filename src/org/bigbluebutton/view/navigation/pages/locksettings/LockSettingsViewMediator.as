@@ -54,7 +54,9 @@ package org.bigbluebutton.view.navigation.pages.locksettings {
 			newLockSettings.lockedLayout = !view.layoutSwitch.selected;
 			userService.saveLockSettings(newLockSettings);
 			userUISession.popPage();
-			userUISession.popPage();
+			if (!FlexGlobals.topLevelApplication.isTabletLandscape()) {
+				userUISession.popPage();
+			}
 		}
 		
 		private function loadLockSettings() {

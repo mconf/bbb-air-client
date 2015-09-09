@@ -40,7 +40,9 @@ package org.bigbluebutton.view.navigation.pages.status {
 			obj = view.moodList.selectedItem;
 			moodSignal.dispatch(view.moodList.selectedItem.signal);
 			userUISession.popPage();
-			userUISession.popPage();
+			if (!FlexGlobals.topLevelApplication.isTabletLandscape()) {
+				userUISession.popPage();
+			}
 		}
 		
 		override public function destroy():void {

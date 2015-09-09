@@ -13,7 +13,10 @@ package org.bigbluebutton.view.navigation.pages.profile {
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
+	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitViewEvent;
+	import org.osflash.signals.Signal;
 	import robotlegs.bender.bundles.mvcs.Mediator;
+	import spark.components.Button;
 	import spark.events.IndexChangeEvent;
 	
 	public class ProfileViewMediator extends Mediator {
@@ -38,6 +41,14 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		
 		[Inject]
 		public var userService:IUsersService;
+		
+		private var navigateToStatus:Function = navigateTo(PagesENUM.STATUS);
+		
+		private var navigateToCameraSettings:Function = navigateTo(PagesENUM.CAMERASETTINGS);
+		
+		private var navigateToAudioSettings:Function = navigateTo(PagesENUM.AUDIOSETTINGS);
+		
+		private var navigateToLockSettings:Function = navigateTo(PagesENUM.LOCKSETTINGS);
 		
 		override public function initialize():void {
 			view.currentState = (conferenceParameters.serverIsMconf) ? "mconf" : "bbb";
@@ -103,6 +114,31 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
+			addNavigationListeners();
+		}
+		
+		private function addNavigationListeners():void {
+			view.statusButton.addEventListener(MouseEvent.CLICK, navigateToStatus);
+			view.shareCameraButton.addEventListener(MouseEvent.CLICK, navigateToCameraSettings);
+			view.shareMicButton.addEventListener(MouseEvent.CLICK, navigateToAudioSettings);
+			view.lockViewersButton.addEventListener(MouseEvent.CLICK, navigateToLockSettings);
+		}
+		
+		private function removeNavigationListeners():void {
+			view.statusButton.removeEventListener(MouseEvent.CLICK, navigateToStatus);
+			view.shareCameraButton.removeEventListener(MouseEvent.CLICK, navigateToCameraSettings);
+			view.shareMicButton.removeEventListener(MouseEvent.CLICK, navigateToAudioSettings);
+			view.lockViewersButton.removeEventListener(MouseEvent.CLICK, navigateToLockSettings);
+		}
+		
+		private function navigateTo(view:String) {
+			return function(e:MouseEvent):void {
+				if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+					eventDispatcher.dispatchEvent(new SplitViewEvent(SplitViewEvent.CHANGE_VIEW, PagesENUM.getClassfromName(view), true))
+				} else {
+					userUISession.pushPage(view);
+				}
+			}
 		}
 		
 		private function setMuteState(muted:Boolean) {
@@ -219,6 +255,7 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			view.clearStatusButton.removeEventListener(MouseEvent.CLICK, clearStatusClick);
 			userSession.lockSettings.disableCamSignal.remove(disableCamButton);
 			userSession.userList.userChangeSignal.remove(userChanged);
+			removeNavigationListeners();
 			view.dispose();
 			view = null;
 		}

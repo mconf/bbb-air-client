@@ -11,9 +11,10 @@
 	</view:states>
 	<fx:Script>
 		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
 			import org.bigbluebutton.view.navigation.pages.PagesENUM;
 			import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
-			import mx.events.FlexEvent;
 		]]>
 	</fx:Script>
 
@@ -38,14 +39,12 @@
 						  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
 			</s:HGroup>
 
-			<ui:NavigationButton id="statusBtn0"
-								 visible.bbb="false"
-								 includeInLayout.bbb="false"
-								 width="90%"
-								 label="{resourceManager.getString('resources', 'profile.status.title')}"
-								 navigateTo="{[PagesENUM.STATUS]}"
-								 styleName="changeStatusButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
-								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
+			<s:Button id="statusBtn0"
+					  visible.bbb="false"
+					  includeInLayout.bbb="false"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'profile.status.title')}"
+					  styleName="changeStatusButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize" />
 
 			<s:Button id="handBtn0"
 					  visible.mconf="false"
@@ -54,24 +53,18 @@
 					  label="{resourceManager.getString('resources', 'profile.settings.handRaise')}"
 					  styleName="raiseHandButtonStyle videoAudioSettingStyle contentFontSize" />
 
-			<ui:NavigationButton id="shareCameraBtn0"
-								 width="90%"
-								 label="{resourceManager.getString('resources', 'cameraSettings.title')}"
-								 navigateTo="{[PagesENUM.CAMERASETTINGS]}"
-								 styleName="cameraSettingsButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
-								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
-			<ui:NavigationButton id="shareMicBtn0"
-								 width="90%"
-								 label="{resourceManager.getString('resources', 'audioSettings.title')}"
-								 navigateTo="{[PagesENUM.AUDIOSETTINGS]}"
-								 styleName="audioSettingsButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
-								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
-			<ui:NavigationButton id="lockViewersBtn"
-								 width="90%"
-								 label="{resourceManager.getString('resources', 'management.lockViewers')}"
-								 navigateTo="{[PagesENUM.LOCKSETTINGS]}"
-								 styleName="lockParticipantsButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize"
-								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
+			<s:Button id="shareCameraBtn0"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'cameraSettings.title')}"
+					  styleName="cameraSettingsButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize" />
+			<s:Button id="shareMicBtn0"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'audioSettings.title')}"
+					  styleName="audioSettingsButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize" />
+			<s:Button id="lockViewersBtn"
+					  width="90%"
+					  label="{resourceManager.getString('resources', 'management.lockViewers')}"
+					  styleName="lockParticipantsButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize" />
 			<s:Button id="clearAllStatusBtn"
 					  width="90%"
 					  label="{resourceManager.getString('resources', 'management.clearAllStatus')}"
