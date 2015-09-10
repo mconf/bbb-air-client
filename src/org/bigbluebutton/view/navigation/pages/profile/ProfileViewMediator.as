@@ -55,35 +55,35 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			var userMe:User = userSession.userList.me;
 			switch (userMe.status) {
 				case User.RAISE_HAND:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.handRaise');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.handRaise');
 					view.handButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.handLower');
 					break;
 				case User.AGREE:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.agree');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.agree');
 					break;
 				case User.DISAGREE:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.disagree');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.disagree');
 					break;
 				case User.SPEAK_LOUDER:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakLouder');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.speakLouder');
 					break;
 				case User.SPEAK_LOWER:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSofter');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSofter');
 					break;
 				case User.SPEAK_FASTER:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakFaster');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.speakFaster');
 					break;
 				case User.SPEAK_SLOWER:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSlower');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSlower');
 					break;
 				case User.BE_RIGHT_BACK:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.beRightBack');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.beRightBack');
 					break;
 				case User.LAUGHTER:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.laughter');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.laughter');
 					break;
 				case User.SAD:
-					view.userStatusButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.sad');
+					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.sad');
 					break;
 				case User.NO_STATUS:
 					view.userStatusButton.visible = false;

@@ -15,7 +15,7 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		public function dispose():void {
 		}
 		
-		public function get userStatusButton():Button {
+		public function get userStatusButton():Label {
 			return userStatus0;
 		}
 		

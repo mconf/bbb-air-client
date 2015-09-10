@@ -98,6 +98,11 @@ s|Label.pageNameStyle
 	color: #FFFFFF;
 }
 
+s|Label.mood
+{
+	textAlign: center;
+}
+
 s|Label.participantStatusStyle, s|Label.roomUrlStyle
 {
 	color: #999999;
