@@ -192,7 +192,7 @@ s|Image.bigbbbLogoStyle
 		labelPaddingLeft:6;
 	}
 	
-	s|Label.cameraSettingStyle,s|Label.audioSettingStyle
+	s|Label.cameraSettingStyle,s|Label.audioSettingStyle, s|ItemRenderer.cameraItemRenderer
 	{
 		paddingTop:16;
 		paddingBottom:16;
@@ -655,7 +655,7 @@ s|Image.bigbbbLogoStyle
 		labelPaddingLeft:9;
 	}
 	
-	s|Label.cameraSettingStyle,s|Label.audioSettingStyle
+	s|Label.cameraSettingStyle,s|Label.audioSettingStyle, s|ItemRenderer.cameraItemRenderer
 	{
 		paddingTop:24;
 		paddingBottom:24;
@@ -1116,7 +1116,7 @@ s|Image.bigbbbLogoStyle
 		labelPaddingLeft:12;
 	}
 	
-	s|Label.cameraSettingStyle,s|Label.audioSettingStyle
+	s|Label.cameraSettingStyle,s|Label.audioSettingStyle, s|ItemRenderer.cameraItemRenderer
 	{
 		paddingTop:32;
 		paddingBottom:32;
@@ -1578,7 +1578,7 @@ s|Image.bigbbbLogoStyle
 		labelPaddingLeft:18;
 	}
 	
-	s|Label.cameraSettingStyle,s|Label.audioSettingStyle
+	s|Label.cameraSettingStyle,s|Label.audioSettingStyle, s|ItemRenderer.cameraItemRenderer
 	{
 		paddingTop:48;
 		paddingBottom:48;
