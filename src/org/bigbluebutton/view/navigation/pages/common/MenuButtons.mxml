@@ -8,6 +8,7 @@
 		 height="100%">
 	<fx:Script>
 		<![CDATA[
+			import mx.core.FlexGlobals;
 			import org.bigbluebutton.view.navigation.pages.PagesENUM;
 		]]>
 	</fx:Script>
@@ -40,7 +41,7 @@
 						 height="100%"
 						 styleName="chatBtnStyle" />
 	<ui:NavigationButton id="participantsBtn0"
-						 navigateTo="{[PagesENUM.PARTICIPANTS,PagesENUM.USER_DETAIS]}"
+						 navigateTo="{FlexGlobals.topLevelApplication.isTabletLandscape() ? [PagesENUM.SPLITPARTICIPANTS] : [PagesENUM.PARTICIPANTS,PagesENUM.USER_DETAIS]}"
 						 width="100%"
 						 height="100%"
 						 styleName="participantsBtnStyle" />

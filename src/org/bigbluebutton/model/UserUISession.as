@@ -71,6 +71,8 @@ package org.bigbluebutton.model {
 				_listPages.addItem({value: value, details: details});
 				var removeView:Boolean = false;
 				_pageChangedSignal.dispatch(currentPage, removeView, animation);
+			} else {
+				_listPages.addItem({value: value, details: details});
 			}
 		}
 		
