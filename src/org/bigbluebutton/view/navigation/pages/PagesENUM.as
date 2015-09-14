@@ -17,6 +17,7 @@ package org.bigbluebutton.view.navigation.pages {
 	import org.bigbluebutton.view.navigation.pages.presentation.PresentationView;
 	import org.bigbluebutton.view.navigation.pages.profile.ProfileView;
 	import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantView;
+	import org.bigbluebutton.view.navigation.pages.splitchat.SplitChatView;
 	import org.bigbluebutton.view.navigation.pages.splitparticipants.SplitParticipantsView;
 	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitSettingsView;
 	import org.bigbluebutton.view.navigation.pages.status.StatusView;
@@ -66,6 +67,8 @@ package org.bigbluebutton.view.navigation.pages {
 		
 		public static const SPLITPARTICIPANTS:String = "SplitParticipants";
 		
+		public static const SPLITCHAT:String = "SplitChat";
+		
 		/**
 		 * Especials
 		 */
@@ -94,6 +97,7 @@ package org.bigbluebutton.view.navigation.pages {
 				dic[LOCKSETTINGS] = LockSettingsView;
 				dic[SPLITSETTINGS] = SplitSettingsView;
 				dic[SPLITPARTICIPANTS] = SplitParticipantsView;
+				dic[SPLITCHAT] = SplitChatView;
 				dicInitiated = true;
 			}
 		}

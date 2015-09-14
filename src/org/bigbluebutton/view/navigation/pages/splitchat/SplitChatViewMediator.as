@@ -1,4 +1,4 @@
-package org.bigbluebutton.view.navigation.pages.splitparticipants {
+package org.bigbluebutton.view.navigation.pages.splitchat {
 	
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
@@ -18,22 +18,22 @@ package org.bigbluebutton.view.navigation.pages.splitparticipants {
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import spark.events.IndexChangeEvent;
 	
-	public class SplitParticipantsViewMediator extends Mediator {
+	public class SplitChatViewMediator extends Mediator {
 		
 		[Inject]
-		public var view:ISplitParticipantsView;
+		public var view:ISplitChatView;
 		
 		[Inject]
 		public var userUISession:IUserUISession;
 		
 		override public function initialize():void {
 			eventDispatcher.addEventListener(SplitViewEvent.CHANGE_VIEW, changeView);
-			view.participantsList.pushView(PagesENUM.getClassfromName(PagesENUM.PARTICIPANTS));
+			view.participantsList.pushView(PagesENUM.getClassfromName(PagesENUM.CHATROOMS));
 		}
 		
 		private function changeView(event:SplitViewEvent) {
 			view.participantDetails.pushView(event.view);
-			userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS, event.details)
+			userUISession.pushPage(PagesENUM.SPLITCHAT, event.details)
 		}
 		
 		override public function destroy():void {

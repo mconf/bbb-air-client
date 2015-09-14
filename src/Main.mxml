@@ -34,7 +34,6 @@
 			import org.bigbluebutton.util.BigBlueButtonLoggerFactory;
 			import org.bigbluebutton.view.navigation.PagesNavigatorConfig;
 			import org.bigbluebutton.view.navigation.pages.PagesENUM;
-			import org.bigbluebutton.view.navigation.pages.splitparticipants.SplitParticipantsConfig;
 			import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
 			import org.bigbluebutton.view.navigation.pages.audiosettings.AudioSettingsConfig;
 			import org.bigbluebutton.view.navigation.pages.camerasettings.CameraSettingsConfig;
@@ -53,6 +52,8 @@
 			import org.bigbluebutton.view.navigation.pages.presentation.PresentationConfig;
 			import org.bigbluebutton.view.navigation.pages.profile.ProfileConfig;
 			import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantConfig;
+			import org.bigbluebutton.view.navigation.pages.splitchat.SplitChatConfig;
+			import org.bigbluebutton.view.navigation.pages.splitparticipants.SplitParticipantsConfig;
 			import org.bigbluebutton.view.navigation.pages.splitsettings.SplitSettingsConfig;
 			import org.bigbluebutton.view.navigation.pages.status.StatusConfig;
 			import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisConfig;
@@ -126,6 +127,7 @@
 					.configure(ProfileConfig)
 					.configure(SplitSettingsConfig)
 					.configure(SplitParticipantsConfig)
+					.configure(SplitChatConfig)
 					.configure(StatusConfig)
 					.configure(RecentRoomsConfig)
 					.configure(OpenRoomConfig)
