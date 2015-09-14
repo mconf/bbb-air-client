@@ -86,7 +86,7 @@ package org.bigbluebutton.view.navigation.pages.participants {
 				view.allGuests.includeInLayout = true;
 			}
 			if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
-				selectFirstUser();
+				view.list.setSelectedIndex(0, true);
 			}
 		}
 		
@@ -116,13 +116,8 @@ package org.bigbluebutton.view.navigation.pages.participants {
 			dicUserIdtoUser[user.userID] = null;
 			setPageTitle();
 			if (FlexGlobals.topLevelApplication.isTabletLandscape() && userUISession.currentPageDetails == user) {
-				selectFirstUser();
+				view.list.setSelectedIndex(0, true);
 			}
-		}
-		
-		private function selectFirstUser() {
-			view.list.setSelectedIndex(0);
-			view.list.dispatchEvent(new IndexChangeEvent(IndexChangeEvent.CHANGE, false, false, -1, 0));
 		}
 		
 		private function guestRemoved(userID:String):void {
