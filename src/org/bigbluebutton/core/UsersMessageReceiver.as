@@ -214,6 +214,7 @@ package org.bigbluebutton.core {
 				case "RAISE_HAND":
 					userSession.userList.statusChange(msg.userID, User.RAISE_HAND);
 					break;
+				case "CLEAR_STATUS":
 				case "CLEAR_MOOD":
 				case "NO_STATUS":
 					userSession.userList.statusChange(msg.userID, User.NO_STATUS);

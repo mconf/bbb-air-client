@@ -53,45 +53,7 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		override public function initialize():void {
 			view.currentState = (conferenceParameters.serverIsMconf) ? "mconf" : "bbb";
 			var userMe:User = userSession.userList.me;
-			switch (userMe.status) {
-				case User.RAISE_HAND:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.handRaise');
-					view.handButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.handLower');
-					break;
-				case User.AGREE:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.agree');
-					break;
-				case User.DISAGREE:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.disagree');
-					break;
-				case User.SPEAK_LOUDER:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.speakLouder');
-					break;
-				case User.SPEAK_LOWER:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSofter');
-					break;
-				case User.SPEAK_FASTER:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.speakFaster');
-					break;
-				case User.SPEAK_SLOWER:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.speakSlower');
-					break;
-				case User.BE_RIGHT_BACK:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.beRightBack');
-					break;
-				case User.LAUGHTER:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.laughter');
-					break;
-				case User.SAD:
-					view.userStatusButton.text = ResourceManager.getInstance().getString('resources', 'profile.settings.sad');
-					break;
-				case User.NO_STATUS:
-					view.userStatusButton.visible = false;
-					view.clearStatusButton.visible = false;
-					view.userStatusButton.includeInLayout = false;
-					view.clearStatusButton.includeInLayout = false;
-					break;
-			}
+			changeStatusIcon(userMe.status);
 			disableCamButton(userSession.lockSettings.disableCam && !userMe.presenter && userMe.locked && userMe.role != User.MODERATOR);
 			userSession.lockSettings.disableCamSignal.add(disableCamButton);
 			if (userMe.role != User.MODERATOR) {
@@ -109,12 +71,51 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			}
 			userSession.userList.userChangeSignal.add(userChanged);
 			view.logoutButton.addEventListener(MouseEvent.CLICK, logoutClick);
-			view.clearStatusButton.addEventListener(MouseEvent.CLICK, clearStatusClick);
 			view.handButton.addEventListener(MouseEvent.CLICK, raiseHandClick);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			addNavigationListeners();
+		}
+		
+		private function changeStatusIcon(status:String) {
+			switch (status) {
+				case User.RAISE_HAND:
+					view.statusButton.styleName = "handStatusButtonStyle videoAudioSettingStyle contentFontSize";
+					view.handButton.label = ResourceManager.getInstance().getString('resources', 'profile.settings.handLower');
+					break;
+				case User.AGREE:
+					view.statusButton.styleName = "agreeStatusButtonStyle";
+					break;
+				case User.DISAGREE:
+					view.statusButton.styleName = "disagreeStatusButtonStyle";
+					break;
+				case User.SPEAK_LOUDER:
+					view.statusButton.styleName = "speakLouderStatusButtonStyle";
+					break;
+				case User.SPEAK_LOWER:
+					view.statusButton.styleName = "speakSofterStatusButtonStyle";
+					break;
+				case User.SPEAK_FASTER:
+					view.statusButton.styleName = "speakFasterStatusButtonStyle";
+					break;
+				case User.SPEAK_SLOWER:
+					view.statusButton.styleName = "speakSlowerStatusButtonStyle";
+					break;
+				case User.BE_RIGHT_BACK:
+					view.statusButton.styleName = "beRightBackStatusButtonStyle";
+					break;
+				case User.LAUGHTER:
+					view.statusButton.styleName = "laughterStatusButtonStyle";
+					break;
+				case User.SAD:
+					view.statusButton.styleName = "sadStatusButtonStyle";
+					break;
+				case User.NO_STATUS:
+					view.statusButton.styleName = "noStatusButtonStyle";
+					break;
+			}
+			view.statusButton.styleName += " profileSettingsButtonStyle videoAudioSettingStyle contentFontSize";
 		}
 		
 		private function addNavigationListeners():void {
@@ -176,20 +177,6 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			userUISession.pushPage(PagesENUM.EXIT);
 		}
 		
-		/**
-		 * User pressed clean status button
-		 */
-		public function clearStatusClick(event:MouseEvent):void {
-			var obj:Object;
-			obj = User.NO_STATUS;
-			moodSignal.dispatch(User.NO_STATUS);
-			view.userStatusButton.visible = false;
-			view.clearStatusButton.visible = false;
-			view.userStatusButton.includeInLayout = false;
-			view.clearStatusButton.includeInLayout = false;
-			userSession.userList.me.status = User.NO_STATUS;
-		}
-		
 		public function raiseHandClick(event:MouseEvent):void {
 			if (userSession.userList.me.status == User.RAISE_HAND) {
 				moodSignal.dispatch(User.NO_STATUS);
@@ -240,6 +227,7 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		
 		private function userChanged(user:User, type:int):void {
 			if (userSession.userList.me.userID == user.userID) {
+				changeStatusIcon(user.status);
 				if (userSession.userList.me.role == User.MODERATOR) {
 					displayManagementButtons(true);
 					setMuteState(userSession.meetingMuted);
@@ -252,7 +240,6 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		override public function destroy():void {
 			super.destroy();
 			view.logoutButton.removeEventListener(MouseEvent.CLICK, logoutClick);
-			view.clearStatusButton.removeEventListener(MouseEvent.CLICK, clearStatusClick);
 			userSession.lockSettings.disableCamSignal.remove(disableCamButton);
 			userSession.userList.userChangeSignal.remove(userChanged);
 			removeNavigationListeners();

@@ -24,70 +24,54 @@
 				  height="100%"
 				  horizontalAlign="center"
 				  gap="1">
-			<s:HGroup horizontalAlign="right"
-					  verticalAlign="middle"
-					  width="90%"
-					  visible.bbb="false"
-					  includeInLayout.bbb="false">
-				<s:Label width="90%"
-						 id="userStatus0"
-						 verticalCenter=""
-						 buttonMode="false"
-						 mouseEnabled="false"
-						 styleName=" mood contentFontSize" />
-				<s:Button width="40%"
-						  label="X"
-						  id="clearStatusButton0"
-						  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
-			</s:HGroup>
 
 			<s:Button id="statusBtn0"
 					  visible.bbb="false"
 					  includeInLayout.bbb="false"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'profile.status.title')}"
-					  styleName="changeStatusButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize" />
+					  styleName="videoAudioSettingStyle contentFontSize" />
 
 			<s:Button id="handBtn0"
 					  visible.mconf="false"
 					  includeInLayout.mconf="false"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'profile.settings.handRaise')}"
 					  styleName="raiseHandButtonStyle videoAudioSettingStyle contentFontSize" />
 
 			<s:Button id="shareCameraBtn0"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'cameraSettings.title')}"
 					  styleName="cameraSettingsButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize" />
 			<s:Button id="shareMicBtn0"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'audioSettings.title')}"
 					  styleName="audioSettingsButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize" />
 			<s:Button id="lockViewersBtn"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'management.lockViewers')}"
 					  styleName="lockParticipantsButtonStyle profileSettingsButtonStyle videoAudioSettingStyle contentFontSize" />
 			<s:Button id="clearAllStatusBtn"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'management.clearAllStatus')}"
 					  styleName="clearButtonStyle videoAudioSettingStyle contentFontSize" />
 			<s:Button id="unmuteAllBtn"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'management.unmuteAll')}"
 					  styleName="audioSettingsShareMicButtonStyle videoAudioSettingStyle contentFontSize" />
 			<s:Button id="muteAllBtn"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'management.muteAll')}"
 					  styleName="MuteButtonStyle videoAudioSettingStyle contentFontSize" />
 			<s:Button id="muteAllExceptPresenterBtn"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'management.muteAllExceptPresenter')}"
 					  styleName="MuteButtonStyle videoAudioSettingStyle contentFontSize" />
 
 			<s:Button id="logoutButton0"
-					  width="90%"
+					  width="100%"
 					  label="{resourceManager.getString('resources', 'profile.logout')}"
-					  styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize" />
+					  styleName="QuitButtonStyle videoAudioSettingStyle contentFontSize" />
 		</s:VGroup>
 	</s:Scroller>
 </view:NoTabView>
