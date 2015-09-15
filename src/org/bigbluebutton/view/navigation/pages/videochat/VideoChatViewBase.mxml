@@ -22,14 +22,16 @@
 								styleName="videoTextFieldStyle" />
 			</s:Group>
 
-			<s:Group id="videoStreamsGroup0"
-					 width="100%"
-					 height="100%">
-				<s:List id="videoStreamsList"
-						verticalScrollPolicy="off"
-						width="100%"
-						itemRenderer="org.bigbluebutton.view.navigation.pages.videochat.VideoStreamsItemRenderer" />
-			</s:Group>
+			<s:List id="videoStreamsList"
+					width="100%"
+					itemRenderer="org.bigbluebutton.view.navigation.pages.videochat.VideoStreamsItemRenderer">
+				<s:layout>
+					<s:VerticalLayout horizontalAlign="contentJustify"
+									  gap="0"
+									  verticalAlign="middle"
+									  variableRowHeight="false" />
+				</s:layout>
+			</s:List>
 		</s:VGroup>
 	</s:Scroller>
 </view:NoTabView>
