@@ -165,7 +165,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 			var camera:Camera = getCamera(userSession.videoConnection.cameraPosition);
 			if (camera) {
 				var myCam:Video = new Video();
-				var screenAspectRatio:Number = view.cameraSettingsScroller.width / view.cameraSettingsScroller.height;
+				var screenAspectRatio:Number = (view.cameraSettingsScroller.width / profile.width) / (view.cameraSettingsScroller.height / profile.height);
 				if (screenAspectRatio > 1) { //landscape
 					myCam.height = view.cameraSettingsScroller.height;
 					myCam.width = profile.width * view.cameraSettingsScroller.height / profile.height;
