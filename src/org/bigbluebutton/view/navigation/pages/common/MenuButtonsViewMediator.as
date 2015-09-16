@@ -98,15 +98,19 @@ package org.bigbluebutton.view.navigation.pages.common {
 		
 		private function updateMessagesNotification(userID:String, publicChat:Boolean):void {
 			var notification = (view.menuChatButton.skin as NavigationButtonSkin).notification;
-			var data = userUISession.currentPageDetails;
-			var currentPageIsPublicChat:Boolean = data && data.hasOwnProperty("user") && !data.user;
-			var currentPageIsPrivateChatOfTheSender:Boolean = (data is User && userID == data.userID) || (data && data.hasOwnProperty("user") && data.user && data.user.userID == userID);
-			var iAmSender = (userID == userSession.userId);
-			if (!iAmSender) {
-				if (userUISession.currentPage != PagesENUM.CHATROOMS && !(currentPageIsPrivateChatOfTheSender && !publicChat) && !(currentPageIsPublicChat && publicChat)) {
-					notification.visible = true;
-				} else {
-					notification.visible = false;
+			if (userUISession.currentPage == PagesENUM.SPLITCHAT) {
+				notification.visible = false;
+			} else {
+				var data = userUISession.currentPageDetails;
+				var currentPageIsPublicChat:Boolean = data && data.hasOwnProperty("user") && !data.user;
+				var currentPageIsPrivateChatOfTheSender:Boolean = (data is User && userID == data.userID) || (data && data.hasOwnProperty("user") && data.user && data.user.userID == userID);
+				var iAmSender = (userID == userSession.userId);
+				if (!iAmSender) {
+					if (userUISession.currentPage != PagesENUM.CHATROOMS && !(currentPageIsPrivateChatOfTheSender && !publicChat) && !(currentPageIsPublicChat && publicChat)) {
+						notification.visible = true;
+					} else {
+						notification.visible = false;
+					}
 				}
 			}
 		}
@@ -118,7 +122,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 			if (pageName == PagesENUM.PRESENTATION) {
 				updatePresentationNotification();
 			}
-			if (pageName == PagesENUM.CHATROOMS) {
+			if (pageName == PagesENUM.CHATROOMS || pageName == PagesENUM.SPLITCHAT) {
 				(view.menuChatButton.skin as NavigationButtonSkin).notification.visible = false;
 			}
 		}

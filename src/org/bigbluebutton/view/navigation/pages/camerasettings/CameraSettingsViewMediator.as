@@ -165,13 +165,13 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 			var camera:Camera = getCamera(userSession.videoConnection.cameraPosition);
 			if (camera) {
 				var myCam:Video = new Video();
-				var screenAspectRatio:Number = FlexGlobals.topLevelApplication.width / view.cameraSettingsScroller.height;
+				var screenAspectRatio:Number = view.cameraSettingsScroller.width / view.cameraSettingsScroller.height;
 				if (screenAspectRatio > 1) { //landscape
 					myCam.height = view.cameraSettingsScroller.height;
 					myCam.width = profile.width * view.cameraSettingsScroller.height / profile.height;
 				} else { //portrait
-					myCam.width = FlexGlobals.topLevelApplication.width;
-					myCam.height = profile.height * FlexGlobals.topLevelApplication.width / profile.width;
+					myCam.width = view.cameraSettingsScroller.width;
+					myCam.height = profile.height * view.cameraSettingsScroller.width / profile.width;
 				}
 				if (isCamRotatedSideways()) {
 					camera.setMode(profile.height, profile.width, profile.modeFps);
@@ -182,14 +182,14 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 					camera.setMode(profile.width, profile.height, profile.modeFps);
 				}
 				rotateObjectAroundInternalPoint(myCam, myCam.x + myCam.width / 2, myCam.y + myCam.height / 2, userSession.videoConnection.selectedCameraRotation);
-				myCam.x = (FlexGlobals.topLevelApplication.width - myCam.width) / 2;
+				myCam.x = (view.cameraSettingsScroller.width - myCam.width) / 2;
 				if (userSession.videoConnection.selectedCameraRotation == 90) {
 					myCam.y = 0;
-					myCam.x = (FlexGlobals.topLevelApplication.width + myCam.width) / 2;
+					myCam.x = (view.cameraSettingsScroller.width + myCam.width) / 2;
 				} else if (userSession.videoConnection.selectedCameraRotation == 270) {
 					myCam.y = myCam.height;
 				} else if (userSession.videoConnection.selectedCameraRotation == 180) {
-					myCam.x = (FlexGlobals.topLevelApplication.width + myCam.width) / 2;
+					myCam.x = (view.cameraSettingsScroller.width + myCam.width) / 2;
 					myCam.y = myCam.height;
 				}
 				myCam.attachCamera(camera);

@@ -60,21 +60,23 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			view.updateLockButtons(isRoomLocked());
 			view.lockButton.addEventListener(MouseEvent.CLICK, onLockUser);
 			view.unlockButton.addEventListener(MouseEvent.CLICK, onUnlockUser);
-			FlexGlobals.topLevelApplication.pageName.text = view.user.name;
-			FlexGlobals.topLevelApplication.backBtn.visible = true;
-			FlexGlobals.topLevelApplication.profileBtn.visible = false;
+			if (!FlexGlobals.topLevelApplication.isTabletLandscape()) {
+				FlexGlobals.topLevelApplication.pageName.text = view.user.name;
+			}
+			FlexGlobals.topLevelApplication.backBtn.visible = !FlexGlobals.topLevelApplication.isTabletLandscape();
+			FlexGlobals.topLevelApplication.profileBtn.visible = FlexGlobals.topLevelApplication.isTabletLandscape();
 		}
 		
 		protected function onLockUser(event:MouseEvent):void {
 			//dispatch lock signal
 			lockUserSignal.dispatch(_user.userID, true);
-			userUISession.popPage();
+			popPage();
 		}
 		
 		protected function onUnlockUser(event:MouseEvent):void {
 			//dispatch lock signal
 			lockUserSignal.dispatch(_user.userID, false);
-			userUISession.popPage();
+			popPage();
 		}
 		
 		private function isRoomLocked() {
@@ -98,7 +100,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			userSession.userList.getUser(_user.userID).status = User.NO_STATUS;
 			view.clearStatusButton.includeInLayout = false;
 			view.clearStatusButton.visible = false;
-			userUISession.popPage();
+			popPage();
 		}
 		
 		protected function onPromoteButton(event:MouseEvent):void {
@@ -106,16 +108,22 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			roleOptions.userID = _user.userID;
 			roleOptions.role = (_user.role == User.MODERATOR) ? User.VIEWER : User.MODERATOR;
 			changeRoleSignal.dispatch(roleOptions);
-			userUISession.popPage();
+			popPage();
 		}
 		
 		protected function onMakePresenterButton(event:MouseEvent):void {
 			presenterSignal.dispatch(_user, userSession.userList.me.userID);
-			userUISession.popPage();
+			popPage();
 		}
 		
 		private function userRemoved(userID:String):void {
 			if (_user.userID == userID) {
+				popPage();
+			}
+		}
+		
+		private function popPage() {
+			if (!FlexGlobals.topLevelApplication.isTabletLandscape()) {
 				userUISession.popPage();
 			}
 		}

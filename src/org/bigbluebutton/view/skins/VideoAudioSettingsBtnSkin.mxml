@@ -20,9 +20,6 @@
 			radiusY="{getStyle('radiusY')}"
 			height="{hostComponent.getStyle('height')}"
 			width="100%">
-		<s:stroke>
-			<s:LinearGradientStroke weight="{getStyle('weight')}" />
-		</s:stroke>
 		<s:fill>
 			<s:SolidColor color="{hostComponent.getStyle('backgroundColor')}"
 						  color.down="{hostComponent.getStyle('onClickBackgroundColor')}" />
@@ -30,13 +27,26 @@
 	</s:Rect>
 	<s:BitmapImage source="{getStyle('backgroundImage')}"
 				   verticalCenter="0"
-				   right="{getStyle('imageAlign')}"
+				   id="iconImage"
+				   left="{getStyle('imageAlign')}"
 				   alpha.disabled="0.5" />
+
 	<s:Label width="100%"
+			 left="{getStyle('imageAlign') + iconImage.width}"
 			 id="labelDisplay"
 			 text="{hostComponent.label}"
 			 paddingLeft="{getStyle('labelPaddingLeft')}"
 			 textAlign="{getStyle('labelTextAlign')}"
 			 verticalCenter="0"
 			 alpha.disabled="0.5" />
+	<s:BitmapImage source="{getStyle('navigateImage')}"
+				   verticalCenter="0"
+				   right="{getStyle('imageAlign')}"
+				   alpha.disabled="0.5" />
+	<s:Line width="100%">
+		<s:stroke>
+			<s:SolidColorStroke color="{getStyle('lineColor')}"
+								weight="{getStyle('lineWeight')}" />
+		</s:stroke>
+	</s:Line>
 </s:Skin>

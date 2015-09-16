@@ -16,6 +16,7 @@ package org.bigbluebutton.view.navigation.pages.participants {
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
 	import org.bigbluebutton.view.navigation.pages.participants.guests.GuestResponseEvent;
+	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitViewEvent;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	import robotlegs.bender.bundles.mvcs.Mediator;
@@ -84,6 +85,9 @@ package org.bigbluebutton.view.navigation.pages.participants {
 				view.allGuests.visible = true;
 				view.allGuests.includeInLayout = true;
 			}
+			if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+				view.list.setSelectedIndex(0, true);
+			}
 		}
 		
 		private function addUser(user:User):void {
@@ -111,6 +115,9 @@ package org.bigbluebutton.view.navigation.pages.participants {
 			dataProvider.removeItemAt(index);
 			dicUserIdtoUser[user.userID] = null;
 			setPageTitle();
+			if (FlexGlobals.topLevelApplication.isTabletLandscape() && userUISession.currentPageDetails == user) {
+				view.list.setSelectedIndex(0, true);
+			}
 		}
 		
 		private function guestRemoved(userID:String):void {
@@ -146,7 +153,11 @@ package org.bigbluebutton.view.navigation.pages.participants {
 		protected function onSelectParticipant(event:IndexChangeEvent):void {
 			if (event.newIndex >= 0) {
 				var user:User = dataProvider.getItemAt(event.newIndex) as User;
-				userUISession.pushPage(PagesENUM.USER_DETAIS, user, TransitionAnimationENUM.SLIDE_LEFT);
+				if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+					eventDispatcher.dispatchEvent(new SplitViewEvent(SplitViewEvent.CHANGE_VIEW, PagesENUM.getClassfromName(PagesENUM.USER_DETAIS), user, true))
+				} else {
+					userUISession.pushPage(PagesENUM.USER_DETAIS, user, TransitionAnimationENUM.SLIDE_LEFT);
+				}
 			}
 		}
 		

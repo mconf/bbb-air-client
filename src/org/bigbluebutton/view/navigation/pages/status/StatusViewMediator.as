@@ -30,22 +30,42 @@ package org.bigbluebutton.view.navigation.pages.status {
 		override public function initialize():void {
 			var userMe:User = userSession.userList.me;
 			view.moodList.addEventListener(IndexChangeEvent.CHANGE, onMoodChange);
+			userSession.userList.userChangeSignal.add(userChanged);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.status');
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
+			selectMood(userMe.status);
+		}
+		
+		private function userChanged(user:User, type:int):void {
+			if (user == userSession.userList.me) {
+				selectMood(user.status);
+			}
+		}
+		
+		private function selectMood(mood:String):void {
+			for (var i:Number = 0; i < view.moodList.dataProvider.length; i++) {
+				if (mood == view.moodList.dataProvider.getItemAt(i).signal) {
+					view.moodList.setSelectedIndex(i);
+					break;
+				}
+			}
 		}
 		
 		protected function onMoodChange(event:IndexChangeEvent):void {
 			var obj:Object;
 			obj = view.moodList.selectedItem;
 			moodSignal.dispatch(view.moodList.selectedItem.signal);
-			userUISession.popPage();
-			userUISession.popPage();
+			if (!FlexGlobals.topLevelApplication.isTabletLandscape()) {
+				userUISession.popPage();
+				userUISession.popPage();
+			}
 		}
 		
 		override public function destroy():void {
 			super.destroy();
 			view.moodList.removeEventListener(IndexChangeEvent.CHANGE, onMoodChange);
+			userSession.userList.userChangeSignal.remove(userChanged);
 			view.dispose();
 			view = null;
 		}

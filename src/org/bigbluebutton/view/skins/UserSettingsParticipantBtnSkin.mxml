@@ -18,9 +18,6 @@
 			radiusY="{getStyle('radiusY')}"
 			height="{hostComponent.getStyle('height')}"
 			width="100%">
-		<s:stroke>
-			<s:LinearGradientStroke weight="{getStyle('weight')}" />
-		</s:stroke>
 		<s:fill>
 			<s:SolidColor color="{hostComponent.getStyle('backgroundColor')}"
 						  color.down="{hostComponent.getStyle('onClickBackgroundColor')}" />

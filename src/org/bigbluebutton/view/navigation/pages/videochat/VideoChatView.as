@@ -44,10 +44,6 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			return videoGroup0;
 		}
 		
-		public function get videoStreamsGroup():Group {
-			return videoStreamsGroup0;
-		}
-		
 		public function get streamListScroller():Scroller {
 			return streamListScroller0;
 		}

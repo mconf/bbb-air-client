@@ -12,9 +12,12 @@
 
 			<s:List id="moodList0"
 					width="100%"
+					itemRenderer="org.bigbluebutton.view.navigation.pages.status.StatusItemRenderer"
 					height="100%"
 					labelField="data">
 				<s:ArrayList>
+					<fx:Object data="{resourceManager.getString('resources', 'profile.settings.clearMood')}"
+							   signal="NO_STATUS" />
 					<fx:Object data="{resourceManager.getString('resources', 'profile.settings.handRaise')}"
 							   signal="RAISE_HAND" />
 					<fx:Object data="{resourceManager.getString('resources', 'profile.settings.agree')}"
@@ -35,8 +38,6 @@
 							   signal="LAUGHTER" />
 					<fx:Object data="{resourceManager.getString('resources', 'profile.settings.sad')}"
 							   signal="SAD" />
-					<fx:Object data="{resourceManager.getString('resources', 'profile.settings.clearMood')}"
-							   signal="CLEAR_MOOD" />
 				</s:ArrayList>
 			</s:List>
 		</s:VGroup>

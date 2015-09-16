@@ -44,12 +44,13 @@
 						 height="100%"
 						 id="settingsGroup0">
 					<s:layout>
-						<s:VerticalLayout horizontalAlign="center" />
+						<s:VerticalLayout horizontalAlign="center"
+										  gap="1" />
 					</s:layout>
 					<cameraprofiles:CameraProfilesList id="cameraprofileslist"
-													   width="90%" />
+													   width="100%" />
 
-					<s:HGroup width="90%">
+					<s:HGroup width="100%">
 						<s:Button visible.bbb="false"
 								  includeInLayout.bbb="false"
 								  width="100%"
@@ -59,11 +60,11 @@
 					</s:HGroup>
 					<s:Button id="swapCameraBtn0"
 							  styleName="cameraSettingsSwapButtonStyle videoAudioSettingStyle contentFontSize"
-							  width="90%"
+							  width="100%"
 							  label="{resourceManager.getString('resources', 'cameraSettings.swap')}" />
 					<s:Button id="startCameraButton0"
 							  styleName="cameraSettingsStartButtonStyle videoAudioSettingStyle contentFontSize"
-							  width="90%"
+							  width="100%"
 							  label="{resourceManager.getString('resources', 'userDetail.cameraBtn.text')}" />
 				</s:Group>
 

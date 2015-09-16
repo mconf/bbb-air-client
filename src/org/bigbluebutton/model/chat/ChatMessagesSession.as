@@ -53,6 +53,7 @@ package org.bigbluebutton.model.chat {
 				for each (var privateMessage:PrivateChatMessage in _privateChats) {
 					if (privateMessage.userID == userId) {
 						privateMessage.privateChat.newChatMessage(newMessage);
+						chatMessageDispatchSignal(userId);
 						return;
 					}
 				}

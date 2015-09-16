@@ -52,6 +52,9 @@
 			import org.bigbluebutton.view.navigation.pages.presentation.PresentationConfig;
 			import org.bigbluebutton.view.navigation.pages.profile.ProfileConfig;
 			import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantConfig;
+			import org.bigbluebutton.view.navigation.pages.splitchat.SplitChatConfig;
+			import org.bigbluebutton.view.navigation.pages.splitparticipants.SplitParticipantsConfig;
+			import org.bigbluebutton.view.navigation.pages.splitsettings.SplitSettingsConfig;
 			import org.bigbluebutton.view.navigation.pages.status.StatusConfig;
 			import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisConfig;
 			import org.bigbluebutton.view.navigation.pages.videochat.VideoChatConfig;
@@ -122,6 +125,9 @@
 					.configure(ChatRoomsConfig)
 					.configure(VideoChatConfig)
 					.configure(ProfileConfig)
+					.configure(SplitSettingsConfig)
+					.configure(SplitParticipantsConfig)
+					.configure(SplitChatConfig)
 					.configure(StatusConfig)
 					.configure(RecentRoomsConfig)
 					.configure(OpenRoomConfig)
@@ -184,6 +190,15 @@
 				currentOrientation = _orientationCalc.currentOrientation;
 				(pagesNavigatorView.activeView as NoTabView).rotationHandler(_orientationCalc.currentOrientation);
 			}
+			
+			public function isTabletLandscape():Boolean {
+				var landscape:Boolean = (this.width > this.height);
+				if (landscape) {
+					var screenInches:Number = this.width / Capabilities.screenDPI;
+					return (screenInches >= 7);
+				}
+				return false;
+			}
 		]]>
 	</fx:Script>
 
@@ -211,7 +226,7 @@
 				<s:Group>
 					<ui:NavigationButton id="profileBtn"
 										 styleName="profileButtonStyle topButtonStyle"
-										 navigateTo="{[PagesENUM.PROFILE]}"
+										 navigateTo="{isTabletLandscape() ? [PagesENUM.SPLITSETTINGS] : [PagesENUM.PROFILE]}"
 										 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
 					<ui:NavigationButton id="backBtn"
 										 styleName="backButtonStyle topButtonStyle"

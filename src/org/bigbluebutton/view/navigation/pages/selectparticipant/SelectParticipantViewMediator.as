@@ -11,6 +11,7 @@ package org.bigbluebutton.view.navigation.pages.selectparticipant {
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
+	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitViewEvent;
 	import org.osflash.signals.ISignal;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import spark.events.IndexChangeEvent;
@@ -73,7 +74,11 @@ package org.bigbluebutton.view.navigation.pages.selectparticipant {
 		
 		protected function onSelectUser(event:IndexChangeEvent):void {
 			var user:User = dataProvider.getItemAt(event.newIndex) as User;
-			userUISession.pushPage(PagesENUM.CHAT, user, TransitionAnimationENUM.SLIDE_LEFT);
+			if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+				eventDispatcher.dispatchEvent(new SplitViewEvent(SplitViewEvent.CHANGE_VIEW, PagesENUM.getClassfromName(PagesENUM.CHAT), user, true));
+			} else {
+				userUISession.pushPage(PagesENUM.CHAT, user, TransitionAnimationENUM.SLIDE_LEFT);
+			}
 		}
 		
 		override public function destroy():void {
