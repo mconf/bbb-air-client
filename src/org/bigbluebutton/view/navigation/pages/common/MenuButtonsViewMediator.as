@@ -6,13 +6,18 @@ package org.bigbluebutton.view.navigation.pages.common {
 	import flash.desktop.SystemIdleMode;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
+	import flash.events.MouseEvent;
+	import flash.events.TouchEvent;
+	import flash.geom.Point;
 	import mx.core.FlexGlobals;
+	import mx.core.mx_internal;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
+	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.model.chat.IChatMessagesSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
@@ -49,6 +54,8 @@ package org.bigbluebutton.view.navigation.pages.common {
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, fl_Activate);
 			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, fl_Deactivate);
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvokeEvent);
+			view.pushToTalkButton.addEventListener(MouseEvent.MOUSE_DOWN, pushToTalkOn);
+			view.pushToTalkButton.addEventListener(MouseEvent.MOUSE_UP, pushToTalkOff);
 			userUISession.loadingSignal.add(loadingFinished);
 			userUISession.pageChangedSignal.add(pageChanged);
 			userSession.guestList.userAddedSignal.add(guestAdded);
@@ -56,8 +63,40 @@ package org.bigbluebutton.view.navigation.pages.common {
 			userSession.userList.userChangeSignal.add(userChanged);
 			chatMessagesSession.newChatMessageSignal.add(updateMessagesNotification);
 			userSession.presentationList.presentationChangeSignal.add(presentationChanged);
+			userSession.userList.userChangeSignal.add(userChangeHandler);
 			userSession.logoutSignal.add(loggingOutHandler);
 			userSession.assignedDeskshareSignal.add(configDeskshare);
+			userSession.pushToTalkSignal.add(pushToTalkChange);
+			pushToTalkChange();
+		}
+		
+		private function isPushToTalkOn() {
+			return userSession.pushToTalk && userSession.userList.me.voiceJoined;
+		}
+		
+		private function pushToTalkChange():void {
+			if (userSession.voiceConnection && userSession.voiceConnection.callActive) {
+				userSession.voiceStreamManager.muteMicGain(userSession.pushToTalk);
+			}
+			view.pushToTalkButton.visible = isPushToTalkOn();
+			view.pushToTalkSpacer.includeInLayout = isPushToTalkOn();
+		}
+		
+		/**
+		 * Update the view when there is a chenge in the model
+		 */
+		private function userChangeHandler(user:User, type:int):void {
+			if (user && user.me && type == UserList.MUTE) {
+				view.pushToTalkButton.enabled = !user.muted;
+			}
+		}
+		
+		private function pushToTalkOn(e:MouseEvent):void {
+			userSession.voiceStreamManager.muteMicGain(false);
+		}
+		
+		private function pushToTalkOff(e:MouseEvent):void {
+			userSession.voiceStreamManager.muteMicGain(true);
 		}
 		
 		private function onInvokeEvent(invocation:InvokeEvent):void {

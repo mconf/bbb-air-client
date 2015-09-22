@@ -34,10 +34,12 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			view.applyBtn.addEventListener(MouseEvent.CLICK, onApplyClick);
 			view.enableAudio.addEventListener(MouseEvent.CLICK, onEnableAudioClick);
 			view.enableMic.addEventListener(MouseEvent.CLICK, onEnableMicClick);
+			view.enablePushToTalk.addEventListener(MouseEvent.CLICK, onEnablePushToTalkClick);
 			userSession.lockSettings.disableMicSignal.add(disableMic);
 			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter && userMe.locked);
 			view.enableAudio.selected = (userMe.voiceJoined || userMe.listenOnly);
-			view.enableMic.selected = userMe.voiceJoined;
+			view.enablePushToTalk.enabled = view.enableMic.selected = userMe.voiceJoined;
+			view.enablePushToTalk.selected = userSession.pushToTalk;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 		}
@@ -62,13 +64,21 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		private function onEnableAudioClick(event:MouseEvent):void {
 			if (view.enableAudio.selected) {
 				view.enableMic.selected = false;
+				view.enablePushToTalk.enabled = false;
+				userSession.pushToTalk = false;
 			}
 		}
 		
 		private function onEnableMicClick(event:MouseEvent):void {
+			view.enablePushToTalk.enabled = !view.enableMic.selected;
 			if (!view.enableMic.selected) {
 				view.enableAudio.selected = true;
 			}
+			userSession.pushToTalk = (view.enablePushToTalk.selected && view.enablePushToTalk.enabled);
+		}
+		
+		private function onEnablePushToTalkClick(event:MouseEvent):void {
+			userSession.pushToTalk = !view.enablePushToTalk.selected;
 		}
 		
 		private function userChangeHandler(user:User, type:int):void {
@@ -86,6 +96,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			view.applyBtn.removeEventListener(MouseEvent.CLICK, onApplyClick);
 			view.enableAudio.removeEventListener(MouseEvent.CLICK, onEnableAudioClick);
 			view.enableMic.removeEventListener(MouseEvent.CLICK, onEnableMicClick);
+			view.enablePushToTalk.removeEventListener(MouseEvent.CLICK, onEnablePushToTalkClick);
 			userSession.userList.userChangeSignal.remove(userChangeHandler);
 			userSession.phoneAutoJoin = false;
 		}

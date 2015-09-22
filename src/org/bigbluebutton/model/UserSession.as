@@ -60,6 +60,8 @@ package org.bigbluebutton.model {
 		
 		protected var _lockSettings:LockSettings;
 		
+		protected var _pushToTalk:Boolean;
+		
 		protected var _guestPolicySignal:ISignal = new Signal();
 		
 		protected var _loadedMessageHistorySignal:ISignal = new Signal();
@@ -79,6 +81,8 @@ package org.bigbluebutton.model {
 		protected var _authTokenSignal:ISignal = new Signal();
 		
 		protected var _globalVideoSignal:ISignal = new Signal();
+		
+		protected var _pushToTalkSignal:ISignal = new Signal();
 		
 		protected var _videoProfileManager:VideoProfileManager = new VideoProfileManager();
 		
@@ -208,6 +212,15 @@ package org.bigbluebutton.model {
 			_assignedDeskshareSignal.dispatch();
 		}
 		
+		public function get pushToTalk():Boolean {
+			return _pushToTalk;
+		}
+		
+		public function set pushToTalk(value:Boolean):void {
+			_pushToTalk = value;
+			_pushToTalkSignal.dispatch();
+		}
+		
 		public function UserSession() {
 			_userList = new UserList();
 			_guestList = new UserList();
@@ -258,6 +271,10 @@ package org.bigbluebutton.model {
 		
 		public function get globalVideoSignal():ISignal {
 			return _globalVideoSignal;
+		}
+		
+		public function get pushToTalkSignal():ISignal {
+			return _pushToTalkSignal;
 		}
 		
 		public function get recordingStatusChangedSignal():ISignal {

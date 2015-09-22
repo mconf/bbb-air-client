@@ -1,6 +1,7 @@
 package org.bigbluebutton.view.navigation.pages.common {
 	
 	import org.bigbluebutton.view.ui.NavigationButton;
+	import spark.components.Button;
 	
 	public class MenuButtonsView extends MenuButtons implements IMenuButtonsView {
 		public function get menuDeskshareButton():NavigationButton {
@@ -13,6 +14,10 @@ package org.bigbluebutton.view.navigation.pages.common {
 		
 		public function get menuPresentationButton():NavigationButton {
 			return presentationBtn0;
+		}
+		
+		public function get pushToTalkButton():Button {
+			return pushToTalkButton0;
 		}
 		
 		public function get menuChatButton():NavigationButton {

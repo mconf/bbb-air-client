@@ -99,7 +99,7 @@ package org.bigbluebutton.command {
 			shareMicrophoneCommand.execute();
 			voiceConnection.successConnected.dispatch("publish name", "play name", "codec", voiceStreamManager);
 			verify().that(voiceStreamManager.play(connection, "play name"));
-			verify().that(voiceStreamManager.publish(connection, "publish name", "codec"));
+			verify().that(voiceStreamManager.publish(connection, "publish name", "codec", true));
 			verify().that(successConnected.remove(any()));
 			verify().that(unsuccessConnected.remove(any()));
 		}

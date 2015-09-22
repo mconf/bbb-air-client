@@ -79,11 +79,14 @@ package org.bigbluebutton.command {
 			}
 			manager.play(voiceConnection.connection, playName);
 			if (publishName != null && publishName.length != 0) {
-				manager.publish(voiceConnection.connection, publishName, codec);
+				manager.publish(voiceConnection.connection, publishName, codec, userSession.pushToTalk);
 			}
 			userSession.voiceStreamManager = manager;
 			voiceConnection.successConnected.remove(mediaSuccessConnected);
 			voiceConnection.unsuccessConnected.remove(mediaUnsuccessConnected);
+			if (userSession.pushToTalk) {
+				userSession.pushToTalkSignal.dispatch();
+			}
 		}
 		
 		private function mediaUnsuccessConnected(reason:String):void {

@@ -64,5 +64,8 @@ package org.bigbluebutton.model {
 		function get globalVideoStreamName():String;
 		function dispatchLockSettings():void;
 		function set globalVideoStreamName(value:String):void;
+		function get pushToTalk():Boolean;
+		function set pushToTalk(value:Boolean):void;
+		function get pushToTalkSignal():ISignal;
 	}
 }

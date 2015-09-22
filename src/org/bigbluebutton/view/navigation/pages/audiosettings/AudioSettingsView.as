@@ -19,6 +19,10 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			return enableAudio0;
 		}
 		
+		public function get enablePushToTalk():ToggleSwitch {
+			return enablePushToTalk0;
+		}
+		
 		public function get applyBtn():Button {
 			return apply;
 		}

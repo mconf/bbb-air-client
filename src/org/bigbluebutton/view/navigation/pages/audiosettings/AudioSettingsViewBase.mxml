@@ -53,6 +53,20 @@
 										weight="{getStyle('lineWeight')}" />
 				</s:stroke>
 			</s:Line>
+			<s:HGroup width="90%"
+					  height="7%"
+					  verticalAlign="middle"
+					  horizontalAlign="right">
+				<s:Label width="100%"
+						 text="{resourceManager.getString('resources', 'audioSettings.pushToTalk')}" />
+				<s:ToggleSwitch id="enablePushToTalk0" />
+			</s:HGroup>
+			<s:Line width="90%">
+				<s:stroke>
+					<s:SolidColorStroke color="{getStyle('lineColor')}"
+										weight="{getStyle('lineWeight')}" />
+				</s:stroke>
+			</s:Line>
 			<s:Spacer height="10%" />
 			<s:Button id="apply"
 					  width="90%"

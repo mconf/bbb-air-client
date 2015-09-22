@@ -80,6 +80,17 @@ s|Button.userSettingsRaseHandButtonStyle,s|Button.userSettingsUserNameStyle
 	backgroundColor: #F4F4F4;
 }
 
+
+s|Button.pushToTalkStyle
+{
+	backgroundColor:#3385FF;
+	onClickBackgroundColor:#DBDBDB;
+	skinClass: ClassReference("org.bigbluebutton.view.skins.PushToTalkBtnSkin");
+	labelTextAlign:left;
+	menuBackgroundColor:#F4F4F4;
+}
+
+
 s|Button.videoAudioSettingStyle
 {
 	backgroundColor:#FFFFFF;
@@ -168,7 +179,7 @@ s|Image.bigbbbLogoStyle
 	s|Application.mainshellStyle
 	{
 		toolBarHeight:48;
-		bottomToolBarHeight:48;
+		bottomToolBarHeight:64;
 	}
 	
 	s|View.participantsViewStyle
@@ -191,6 +202,13 @@ s|Image.bigbbbLogoStyle
 		radiusY:2;
 		imageAlign:10;
 		labelPaddingLeft:6;
+	}
+	
+	s|Button.pushToTalkStyle
+	{
+		EllipseHeight: 100;
+		EllipseWidth: 100;
+		bottomToolBarHeight:64;
 	}
 	
 	s|Label.cameraSettingStyle,s|Label.audioSettingStyle, s|ItemRenderer.cameraItemRenderer
@@ -641,7 +659,7 @@ s|Image.bigbbbLogoStyle
 	s|Application.mainshellStyle
 	{
 		toolBarHeight:72;
-		bottomToolBarHeight:72;
+		bottomToolBarHeight:96;
 	}
 	
 	s|View.participantsViewStyle
@@ -664,6 +682,13 @@ s|Image.bigbbbLogoStyle
 		radiusY:3;
 		imageAlign:15;
 		labelPaddingLeft:9;
+	}
+	
+	s|Button.pushToTalkStyle
+	{
+		EllipseHeight: 144;
+		EllipseWidth: 144;
+		bottomToolBarHeight:96;
 	}
 	
 	s|Label.cameraSettingStyle,s|Label.audioSettingStyle, s|ItemRenderer.cameraItemRenderer
@@ -1112,7 +1137,7 @@ s|Image.bigbbbLogoStyle
 	s|Application.mainshellStyle
 	{
 		toolBarHeight:96;
-		bottomToolBarHeight:96;
+		bottomToolBarHeight:128;
 	}
 	
 	s|View.participantsViewStyle
@@ -1135,6 +1160,13 @@ s|Image.bigbbbLogoStyle
 		radiusY:4;
 		imageAlign:20;
 		labelPaddingLeft:12;
+	}
+	
+	s|Button.pushToTalkStyle
+	{
+		EllipseHeight: 192;
+		EllipseWidth: 192;
+		bottomToolBarHeight:128;
 	}
 	
 	s|Label.cameraSettingStyle,s|Label.audioSettingStyle, s|ItemRenderer.cameraItemRenderer
@@ -1607,6 +1639,13 @@ s|Image.bigbbbLogoStyle
 		radiusY:6;
 		imageAlign:30;
 		labelPaddingLeft:18;
+	}
+	
+	s|Button.pushToTalkStyle
+	{
+		EllipseHeight: 230;
+		EllipseWidth: 230;
+		bottomToolBarHeight:144;
 	}
 	
 	s|Label.cameraSettingStyle,s|Label.audioSettingStyle, s|ItemRenderer.cameraItemRenderer
