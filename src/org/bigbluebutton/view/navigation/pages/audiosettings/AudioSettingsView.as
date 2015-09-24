@@ -1,7 +1,9 @@
 package org.bigbluebutton.view.navigation.pages.audiosettings {
 	
 	import spark.components.Button;
+	import spark.components.HSlider;
 	import spark.components.ToggleSwitch;
+	import spark.primitives.Rect;
 	
 	public class AudioSettingsView extends AudioSettingsViewBase implements IAudioSettingsView {
 		override protected function childrenCreated():void {
@@ -25,6 +27,18 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		
 		public function get applyBtn():Button {
 			return apply;
+		}
+		
+		public function get gainSlider():HSlider {
+			return gainSlider0;
+		}
+		
+		public function get micActivity():Rect {
+			return micActivity0;
+		}
+		
+		public function get micActivityMask():Rect {
+			return micActivityMask0;
 		}
 	}
 }

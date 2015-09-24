@@ -146,6 +146,14 @@ s|Image.iconStyle, s|Image.userDetailIconStyle
 	skinClass: ClassReference("org.bigbluebutton.view.skins.IconSkin");
 }
 
+
+s|View.audioSettingsStyle
+{
+	greenColor: #87F316;
+	yellowColor: #F7CC46;
+	redColor: #FC0914;
+}
+
 s|View.userDetailViewStyle
 {
 	bgColor:#F4F4F4;

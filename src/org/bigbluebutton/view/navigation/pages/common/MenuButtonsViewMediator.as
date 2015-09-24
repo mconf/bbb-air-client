@@ -71,7 +71,8 @@ package org.bigbluebutton.view.navigation.pages.common {
 		}
 		
 		private function isPushToTalkOn() {
-			return userSession.pushToTalk && userSession.userList.me.voiceJoined;
+			var micEnabled:Boolean = (userSession.voiceStreamManager && userSession.voiceStreamManager.mic) ? true : false;
+			return userSession.pushToTalk && micEnabled;
 		}
 		
 		private function pushToTalkChange():void {

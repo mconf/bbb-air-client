@@ -67,6 +67,54 @@
 										weight="{getStyle('lineWeight')}" />
 				</s:stroke>
 			</s:Line>
+
+
+			<s:HGroup width="90%"
+					  height="7%"
+					  verticalAlign="middle"
+					  horizontalAlign="right">
+				<s:Label width="100%"
+						 text="{resourceManager.getString('resources', 'audioSettings.micGain')}" />
+
+				<s:Rect id="micActivity0"
+						height="{gainSlider0.height/2}"
+						width="{gainSlider0.width}"
+						includeInLayout="false"
+						x="{gainSlider0.x}"
+						y="{gainSlider0.y + micActivity0.height/2}">
+					<s:fill>
+						<s:LinearGradient>
+							<s:GradientEntry color="{getStyle('greenColor')}"
+											 ratio="0.00" />
+							<s:GradientEntry color="{getStyle('yellowColor')}"
+											 ratio="0.8" />
+							<s:GradientEntry color="{getStyle('redColor')}"
+											 ratio="1" />
+
+						</s:LinearGradient>
+					</s:fill>
+				</s:Rect>
+
+				<s:Rect id="micActivityMask0"
+						height="{micActivity0.height}"
+						width="{micActivity0.width}"
+						includeInLayout="false"
+						x="{micActivity0.x}"
+						y="{micActivity0.y}">
+					<s:fill>
+						<s:SolidColor color="#FFFFFF" />
+					</s:fill>
+				</s:Rect>
+
+
+				<s:HSlider id="gainSlider0"
+						   width="90%"
+						   value="5"
+						   skinClass="spark.skins.android4.HSliderSkin" />
+			</s:HGroup>
+
+
+
 			<s:Spacer height="10%" />
 			<s:Button id="apply"
 					  width="90%"

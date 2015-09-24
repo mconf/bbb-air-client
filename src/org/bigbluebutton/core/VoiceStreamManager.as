@@ -1,6 +1,7 @@
 package org.bigbluebutton.core {
 	
 	import flash.events.AsyncErrorEvent;
+	import flash.events.Event;
 	import flash.events.NetDataEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.StatusEvent;
@@ -12,7 +13,10 @@ package org.bigbluebutton.core {
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.utils.Timer;
+	import mx.binding.utils.BindingUtils;
 	import mx.utils.ObjectUtil;
+	import org.osflash.signals.ISignal;
+	import org.osflash.signals.Signal;
 	
 	public class VoiceStreamManager {
 		protected var _incomingStream:NetStream = null;
@@ -23,7 +27,17 @@ package org.bigbluebutton.core {
 		
 		protected var _mic:Microphone = null;
 		
+		protected var _defaultMicGain = 50;
+		
 		protected var _heartbeat:Timer = new Timer(2000);
+		
+		public function setDefaultMicGain(value:Number) {
+			_defaultMicGain = value
+		}
+		
+		public function get mic():Microphone {
+			return _mic;
+		}
 		
 		public function VoiceStreamManager() {
 			_heartbeat.addEventListener(TimerEvent.TIMER, onHeartbeat);
@@ -36,7 +50,7 @@ package org.bigbluebutton.core {
 		
 		public function muteMicGain(value:Boolean):void {
 			if (_mic) {
-				_mic.gain = value ? 0 : 50;
+				_mic.gain = value ? 0 : _defaultMicGain;
 			}
 		}
 		
@@ -88,7 +102,7 @@ package org.bigbluebutton.core {
 				return;
 			}
 			_mic = getMicrophone(codec);
-			_mic.gain = pushToTalk ? 0 : 50;
+			_mic.gain = pushToTalk ? 0 : _defaultMicGain;
 		}
 		
 		/**

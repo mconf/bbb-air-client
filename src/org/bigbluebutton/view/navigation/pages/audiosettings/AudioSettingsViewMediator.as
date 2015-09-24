@@ -1,10 +1,14 @@
 package org.bigbluebutton.view.navigation.pages.audiosettings {
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	import mx.core.FlexGlobals;
 	import mx.events.ItemClickEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.ShareMicrophoneSignal;
+	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
@@ -23,9 +27,14 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		public var userUISession:IUserUISession;
 		
 		[Inject]
+		public var saveData:ISaveData;
+		
+		[Inject]
 		public var shareMicrophoneSignal:ShareMicrophoneSignal;
 		
 		private var autoJoined:Boolean;
+		
+		private var micActivityTimer:Timer = null;
 		
 		override public function initialize():void {
 			userSession.userList.userChangeSignal.add(userChangeHandler);
@@ -35,6 +44,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			view.enableAudio.addEventListener(MouseEvent.CLICK, onEnableAudioClick);
 			view.enableMic.addEventListener(MouseEvent.CLICK, onEnableMicClick);
 			view.enablePushToTalk.addEventListener(MouseEvent.CLICK, onEnablePushToTalkClick);
+			view.gainSlider.addEventListener(Event.CHANGE, gainChange);
 			userSession.lockSettings.disableMicSignal.add(disableMic);
 			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter && userMe.locked);
 			view.enableAudio.selected = (userMe.voiceJoined || userMe.listenOnly);
@@ -42,6 +52,42 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			view.enablePushToTalk.selected = userSession.pushToTalk;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
+			loadMicGain();
+			if (userSession.voiceStreamManager && userSession.voiceStreamManager.mic) {
+				micActivityTimer = new Timer(100);
+				micActivityTimer.addEventListener(TimerEvent.TIMER, micActivity);
+				micActivityTimer.start();
+			}
+		}
+		
+		private function loadMicGain() {
+			var gain = saveData.read("micGain");
+			if (gain) {
+				view.gainSlider.value = gain / 10;
+				setMicGain(gain);
+			}
+		}
+		
+		private function setMicGain(gain:Number) {
+			if (userSession.voiceStreamManager) {
+				userSession.voiceStreamManager.setDefaultMicGain(gain);
+				if (!userSession.pushToTalk && userSession.voiceStreamManager.mic) {
+					userSession.voiceStreamManager.mic.gain = gain;
+				}
+			}
+		}
+		
+		private function gainChange(e:Event) {
+			var gain:Number = e.target.value * 10
+			saveData.save("micGain", gain);
+			setMicGain(gain);
+		}
+		
+		private function micActivity(e:TimerEvent):void {
+			if (userSession.voiceStreamManager.mic) {
+				view.micActivityMask.width = view.gainSlider.width - (view.gainSlider.width * userSession.voiceStreamManager.mic.activityLevel / 100);
+				view.micActivityMask.x = view.micActivity.x + view.micActivity.width - view.micActivityMask.width;
+			}
 		}
 		
 		private function disableMic(disable:Boolean):void {
@@ -96,6 +142,9 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			view.applyBtn.removeEventListener(MouseEvent.CLICK, onApplyClick);
 			view.enableAudio.removeEventListener(MouseEvent.CLICK, onEnableAudioClick);
 			view.enableMic.removeEventListener(MouseEvent.CLICK, onEnableMicClick);
+			if (micActivityTimer) {
+				micActivityTimer.removeEventListener(TimerEvent.TIMER, micActivity);
+			}
 			view.enablePushToTalk.removeEventListener(MouseEvent.CLICK, onEnablePushToTalkClick);
 			userSession.userList.userChangeSignal.remove(userChangeHandler);
 			userSession.phoneAutoJoin = false;
