@@ -1,9 +1,14 @@
 package org.bigbluebutton.view.navigation.pages.videochat {
 	
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.core.VideoProfile;
@@ -14,6 +19,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.mockito.integrations.currentMockito;
+	import org.osmf.events.TimeEvent;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import spark.events.IndexChangeEvent;
 	
@@ -34,6 +40,8 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		
 		private var speaker:User = null;
 		
+		private var currentUser:User = null;
+		
 		override public function initialize():void {
 			userSession.userList.userRemovedSignal.add(userRemovedHandler);
 			userSession.userList.userAddedSignal.add(userAddedHandler);
@@ -41,6 +49,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			userUISession.pageTransitionStartSignal.add(onPageTransitionStart);
 			userSession.globalVideoSignal.add(globalVideoStreamNameHandler);
 			view.streamlist.addEventListener(MouseEvent.CLICK, onSelectStream);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'video.title');
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
@@ -65,6 +74,46 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 				displayVideo(true);
 			} else {
 				globalVideoStreamNameHandler();
+			}
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(userUISession.currentStreamName);
+			var newHeight:Number = FlexGlobals.topLevelApplication.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
+			var newWidth:Number = FlexGlobals.topLevelApplication.width;
+			view.video.parent.width = newWidth;
+			view.video.parent.height = newHeight;
+			view.startStream(userSession.videoConnection.connection, currentUser.name, userUISession.currentStreamName, currentUser.userID, videoProfile.width, videoProfile.height, newHeight, newWidth);
+			view.videoGroup.height = view.video.height;
+		}
+		
+		private function resizeVideo(screenWidth:Number, screenHeight:Number, originalVideoWidth:Number, originalVideoHeight:Number):void {
+			// if we have device where screen width less than screen height e.g. phone
+			if (screenWidth < screenHeight) {
+				// make the video width full width of the screen 
+				view.video.width = screenWidth;
+				// calculate height based on a video width, it order to keep the same aspect ratio
+				view.video.height = (view.video.width / originalVideoWidth) * originalVideoHeight;
+				// if calculated height appeared to be bigger than screen height, recalculuate the video size based on width
+				if (screenHeight < view.video.height) {
+					// make the video height full height of the screen
+					view.video.height = screenHeight;
+					// calculate width based on a video height, it order to keep the same aspect ratio
+					view.video.width = ((originalVideoWidth * view.video.height) / originalVideoHeight);
+				}
+			} // if we have device where screen height less than screen width e.g. tablet
+			else {
+				// make the video height full height of the screen
+				view.video.height = screenHeight;
+				// calculate width based on a video height, it order to keep the same aspect ratio
+				view.video.width = ((originalVideoWidth * view.video.height) / originalVideoHeight);
+				// if calculated width appeared to be bigger than screen width, recalculuate the video size based on height
+				if (screenWidth < view.video.width) {
+					// make the video width full width of the screen 
+					view.video.width = screenWidth;
+					// calculate height based on a video width, it order to keep the same aspect ratio
+					view.video.height = (view.video.width / originalVideoWidth) * originalVideoHeight;
+				}
 			}
 		}
 		
@@ -162,6 +211,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			userSession.userList.userChangeSignal.remove(userChangeHandler);
 			userSession.globalVideoSignal.remove(globalVideoStreamNameHandler);
 			userUISession.pageTransitionStartSignal.remove(onPageTransitionStart);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.dispose();
 			view = null;
 			super.destroy();
@@ -264,6 +314,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 				var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(streamName);
 				view.startStream(userSession.videoConnection.connection, user.name, streamName, user.userID, videoProfile.width, videoProfile.height, view.streamListScroller.height, view.streamListScroller.width);
 				userUISession.currentStreamName = streamName;
+				currentUser = user;
 				view.videoGroup.height = view.video.height;
 			}
 		}

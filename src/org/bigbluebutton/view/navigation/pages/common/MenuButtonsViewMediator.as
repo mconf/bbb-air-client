@@ -7,10 +7,12 @@ package org.bigbluebutton.view.navigation.pages.common {
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Point;
 	import mx.core.FlexGlobals;
 	import mx.core.mx_internal;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.core.IUsersService;
@@ -56,6 +58,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvokeEvent);
 			view.pushToTalkButton.addEventListener(MouseEvent.MOUSE_DOWN, pushToTalkOn);
 			view.pushToTalkButton.addEventListener(MouseEvent.MOUSE_UP, pushToTalkOff);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			userUISession.loadingSignal.add(loadingFinished);
 			userUISession.pageChangedSignal.add(pageChanged);
 			userSession.guestList.userAddedSignal.add(guestAdded);
@@ -68,6 +71,12 @@ package org.bigbluebutton.view.navigation.pages.common {
 			userSession.assignedDeskshareSignal.add(configDeskshare);
 			userSession.pushToTalkSignal.add(pushToTalkChange);
 			pushToTalkChange();
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			view.chatBtn0.navigateTo = FlexGlobals.topLevelApplication.isTabletLandscape() ? [PagesENUM.SPLITCHAT] : [PagesENUM.CHATROOMS, PagesENUM.CHAT, PagesENUM.SELECT_PARTICIPANT]
+			view.participantsBtn0.navigateTo = FlexGlobals.topLevelApplication.isTabletLandscape() ? [PagesENUM.SPLITPARTICIPANTS] : [PagesENUM.PARTICIPANTS, PagesENUM.USER_DETAIS]
+			//e.preventDefault();
 		}
 		
 		private function isPushToTalkOn() {

@@ -5,11 +5,13 @@ package org.bigbluebutton.view.navigation.pages.chat {
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
 	import mx.events.FlexEvent;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.core.IChatMessageService;
 	import org.bigbluebutton.model.IUserSession;
@@ -20,6 +22,7 @@ package org.bigbluebutton.view.navigation.pages.chat {
 	import org.bigbluebutton.model.chat.ChatMessageVO;
 	import org.bigbluebutton.model.chat.ChatMessages;
 	import org.bigbluebutton.model.chat.IChatMessagesSession;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.osflash.signals.ISignal;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import spark.components.List;
@@ -75,12 +78,25 @@ package org.bigbluebutton.view.navigation.pages.chat {
 			}
 			chatMessageService.sendMessageOnSuccessSignal.add(onSendSucess);
 			chatMessageService.sendMessageOnFailureSignal.add(onSendFailure);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			list.addEventListener(FlexEvent.UPDATE_COMPLETE, scrollUpdate);
 			userSession.userList.userRemovedSignal.add(userRemoved);
 			userSession.userList.userAddedSignal.add(userAdded);
 			(view as View).addEventListener(ViewNavigatorEvent.VIEW_DEACTIVATE, viewDeactivateHandler);
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
+			adjustForScreenRotation();
+		}
+		
+		private function adjustForScreenRotation() {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.pushPage(PagesENUM.SPLITCHAT, userUISession.currentPageDetails);
+			}
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			adjustForScreenRotation();
 		}
 		
 		private function disableChat(disable:Boolean) {
@@ -149,7 +165,7 @@ package org.bigbluebutton.view.navigation.pages.chat {
 		}
 		
 		protected function openChat(currentPageDetails:Object):void {
-			publicChat = currentPageDetails.publicChat;
+			publicChat = currentPageDetails.hasOwnProperty("publicChat") ? currentPageDetails.publicChat : null;
 			user = currentPageDetails.user;
 			view.pageName.text = currentPageDetails.name;
 			if (!publicChat) {
@@ -220,6 +236,7 @@ package org.bigbluebutton.view.navigation.pages.chat {
 			userSession.lockSettings.disablePrivateChatSignal.remove(disableChat);
 			userSession.userList.userRemovedSignal.remove(userRemoved);
 			userSession.userList.userAddedSignal.remove(userAdded);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			(view as View).removeEventListener(ViewNavigatorEvent.VIEW_DEACTIVATE, viewDeactivateHandler);
 			view.dispose();
 			view = null;

@@ -2,10 +2,10 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
-	import flash.geom.Point;
-	import flash.display.DisplayObject;
 	import flash.events.TransformGestureEvent;
+	import flash.geom.Point;
 	import mx.core.FlexGlobals;
+	import mx.events.ResizeEvent;
 	import org.bigbluebutton.command.LoadSlideSignal;
 	import org.bigbluebutton.core.IPresentationService;
 	import org.bigbluebutton.model.IUserSession;
@@ -44,6 +44,7 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 			view.slide.addEventListener(TransformGestureEvent.GESTURE_SWIPE, swipehandler);
 			userSession.presentationList.viewedRegionChangeSignal.add(viewedRegionChangeHandler);
 			userSession.presentationList.cursorUpdateSignal.add(cursorUpdateHandler);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.slide.addEventListener(Event.COMPLETE, handleLoadingComplete);
 			_slideModel.parentChange(view.content.width, view.content.height);
 			setPresentation(userSession.presentationList.currentPresentation);
@@ -88,7 +89,7 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 			resetSize(x, y, widthPercent, heightPercent);
 		}
 		
-		private function handleLoadingComplete(e:Event):void {
+		private function resizePresentation():void {
 			_slideModel.resetForNewSlide(view.slide.contentWidth, view.slide.contentHeight);
 			var currentSlide:Slide = userSession.presentationList.currentPresentation.getSlideAt(_currentSlideNum);
 			if (currentSlide) {
@@ -96,7 +97,18 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 				_cursor.draw(view.viewport, userSession.presentationList.cursorXPercent, userSession.presentationList.cursorYPercent);
 					//resetSize(_currentSlide.x, _currentSlide.y, _currentSlide.widthPercent, _currentSlide.heightPercent);
 			}
-			view.rotationHandler(FlexGlobals.topLevelApplication.currentOrientation);
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var newWidth:Number = FlexGlobals.topLevelApplication.width;
+			var newHeight:Number = FlexGlobals.topLevelApplication.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
+			_slideModel.parentChange(newWidth, newHeight);
+			resizePresentation();
+		}
+		
+		private function handleLoadingComplete(e:Event):void {
+			resizePresentation();
+			//view.rotationHandler(FlexGlobals.topLevelApplication.currentOrientation);
 		}
 		
 		private function resetSize(x:Number, y:Number, widthPercent:Number, heightPercent:Number):void {
@@ -171,6 +183,7 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 		
 		override public function destroy():void {
 			view.slide.removeEventListener(Event.COMPLETE, handleLoadingComplete);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			userSession.presentationList.presentationChangeSignal.remove(presentationChangeHandler);
 			userSession.presentationList.viewedRegionChangeSignal.remove(viewedRegionChangeHandler);
 			userSession.presentationList.cursorUpdateSignal.remove(cursorUpdateHandler);

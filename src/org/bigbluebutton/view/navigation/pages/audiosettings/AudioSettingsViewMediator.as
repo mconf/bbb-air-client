@@ -2,10 +2,12 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import mx.core.FlexGlobals;
 	import mx.events.ItemClickEvent;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.ShareMicrophoneSignal;
 	import org.bigbluebutton.core.ISaveData;
@@ -13,6 +15,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class AudioSettingsViewMediator extends Mediator {
@@ -44,6 +47,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			view.enableAudio.addEventListener(MouseEvent.CLICK, onEnableAudioClick);
 			view.enableMic.addEventListener(MouseEvent.CLICK, onEnableMicClick);
 			view.enablePushToTalk.addEventListener(MouseEvent.CLICK, onEnablePushToTalkClick);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.gainSlider.addEventListener(Event.CHANGE, gainChange);
 			userSession.lockSettings.disableMicSignal.add(disableMic);
 			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter && userMe.locked);
@@ -57,6 +61,17 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 				micActivityTimer = new Timer(100);
 				micActivityTimer.addEventListener(TimerEvent.TIMER, micActivity);
 				micActivityTimer.start();
+			}
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.popPage();
+				if (userUISession.currentPage == PagesENUM.PROFILE) {
+					userUISession.popPage();
+				}
+				userUISession.pushPage(PagesENUM.SPLITSETTINGS, PagesENUM.AUDIOSETTINGS);
 			}
 		}
 		
@@ -142,6 +157,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			view.applyBtn.removeEventListener(MouseEvent.CLICK, onApplyClick);
 			view.enableAudio.removeEventListener(MouseEvent.CLICK, onEnableAudioClick);
 			view.enableMic.removeEventListener(MouseEvent.CLICK, onEnableMicClick);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			if (micActivityTimer) {
 				micActivityTimer.removeEventListener(TimerEvent.TIMER, micActivity);
 			}

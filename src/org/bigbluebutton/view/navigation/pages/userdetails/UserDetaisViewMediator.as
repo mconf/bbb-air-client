@@ -1,8 +1,11 @@
 package org.bigbluebutton.view.navigation.pages.userdetails {
 	
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import mx.core.FlexGlobals;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import mx.states.Transition;
 	import org.bigbluebutton.command.ChangeRoleSignal;
@@ -57,6 +60,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			view.clearStatusButton.addEventListener(MouseEvent.CLICK, onClearStatusButton);
 			view.makePresenterButton.addEventListener(MouseEvent.CLICK, onMakePresenterButton);
 			view.promoteButton.addEventListener(MouseEvent.CLICK, onPromoteButton);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.updateLockButtons(isRoomLocked());
 			view.lockButton.addEventListener(MouseEvent.CLICK, onLockUser);
 			view.unlockButton.addEventListener(MouseEvent.CLICK, onUnlockUser);
@@ -65,6 +69,13 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			}
 			FlexGlobals.topLevelApplication.backBtn.visible = !FlexGlobals.topLevelApplication.isTabletLandscape();
 			FlexGlobals.topLevelApplication.profileBtn.visible = FlexGlobals.topLevelApplication.isTabletLandscape();
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS, _user);
+			}
 		}
 		
 		protected function onLockUser(event:MouseEvent):void {
@@ -139,6 +150,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			super.destroy();
 			view.showCameraButton.removeEventListener(MouseEvent.CLICK, onShowCameraButton);
 			view.showPrivateChat.removeEventListener(MouseEvent.CLICK, onShowPrivateChatButton);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			userSession.userList.userChangeSignal.remove(userChanged);
 			userSession.userList.userRemovedSignal.remove(userRemoved);
 			view.dispose();

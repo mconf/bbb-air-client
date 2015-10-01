@@ -1,8 +1,11 @@
 package org.bigbluebutton.view.navigation.pages.chatrooms {
 	
+	import flash.events.Event;
+	import flash.events.StageOrientationEvent;
 	import flash.utils.Dictionary;
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.model.IUserSession;
@@ -67,11 +70,42 @@ package org.bigbluebutton.view.navigation.pages.chatrooms {
 			chatMessagesSession.publicChat.chatMessageChangeSignal.add(refreshList);
 			userSession.userList.userRemovedSignal.add(userRemoved);
 			userSession.userList.userAddedSignal.add(userAdded);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			setPageTitle();
 			chatMessagesSession.chatMessageChangeSignal.add(newMessageReceived);
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
 			if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+				selectChat();
+			} else {
+				userUISession.pushPage(PagesENUM.CHATROOMS);
+			}
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.pushPage(PagesENUM.SPLITCHAT);
+			}
+		}
+		
+		private function selectChat() {
+			if (userUISession.currentPageDetails is User) {
+				//screen just rotated back to tablet mode from a user private chat.
+				var item:Object = getItemFromDataProvider(userUISession.currentPageDetails.userID);
+				if (item) {
+					view.list.setSelectedIndex(dataProvider.getItemIndex(item), true);
+				} else {
+					//private chat was not added in the list
+					eventDispatcher.dispatchEvent(new SplitViewEvent(SplitViewEvent.CHANGE_VIEW, PagesENUM.getClassfromName(PagesENUM.CHAT), userUISession.currentPageDetails, true))
+				}
+			} else if (userUISession.currentPageDetails && userUISession.currentPageDetails.hasOwnProperty("user") && userUISession.currentPageDetails.user) {
+				//screen also just rotated back to tablet mode from a user private chat.
+				view.list.setSelectedIndex(dataProvider.getItemIndex(getItemFromDataProvider(userUISession.currentPageDetails.user.userID)), true);
+			} else if (userUISession.currentPageDetails && userUISession.currentPageDetails.hasOwnProperty("button")) {
+				//screen just rotated back to tablet mode from selecparticipants.
+				view.list.setSelectedIndex(dataProvider.length - 1, true);
+			} else {
 				view.list.setSelectedIndex(0, true);
 			}
 		}
@@ -301,6 +335,7 @@ package org.bigbluebutton.view.navigation.pages.chatrooms {
 			userSession.userList.userAddedSignal.remove(userAdded);
 			chatMessagesSession.chatMessageChangeSignal.remove(newMessageReceived);
 			eventDispatcher.removeEventListener(SplitViewEvent.CHANGE_VIEW, userSelected);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			list.removeEventListener(IndexChangeEvent.CHANGE, onIndexChangeHandler);
 			//view.sendButton.removeEventListener(MouseEvent.CLICK, onSendButtonClick);
 			view.dispose();

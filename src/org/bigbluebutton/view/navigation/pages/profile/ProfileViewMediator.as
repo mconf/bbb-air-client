@@ -1,8 +1,11 @@
 package org.bigbluebutton.view.navigation.pages.profile {
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import mx.core.FlexGlobals;
 	import mx.events.ItemClickEvent;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.ClearUserStatusSignal;
 	import org.bigbluebutton.command.MoodSignal;
@@ -72,10 +75,19 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			userSession.userList.userChangeSignal.add(userChanged);
 			view.logoutButton.addEventListener(MouseEvent.CLICK, logoutClick);
 			view.handButton.addEventListener(MouseEvent.CLICK, raiseHandClick);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'profile.title');
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			addNavigationListeners();
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.popPage();
+				userUISession.pushPage(PagesENUM.SPLITSETTINGS);
+			}
 		}
 		
 		private function changeStatusIcon(status:String) {
@@ -242,6 +254,7 @@ package org.bigbluebutton.view.navigation.pages.profile {
 			view.logoutButton.removeEventListener(MouseEvent.CLICK, logoutClick);
 			userSession.lockSettings.disableCamSignal.remove(disableCamButton);
 			userSession.userList.userChangeSignal.remove(userChanged);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			removeNavigationListeners();
 			view.dispose();
 			view = null;

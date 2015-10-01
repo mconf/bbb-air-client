@@ -1,12 +1,15 @@
 package org.bigbluebutton.view.navigation.pages.participants {
 	
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import flash.utils.Dictionary;
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
 	import mx.events.CollectionEvent;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.model.IUserSession;
@@ -70,6 +73,7 @@ package org.bigbluebutton.view.navigation.pages.participants {
 			dataProviderGuests = new ArrayCollection();
 			view.guestsList.dataProvider = dataProviderGuests;
 			view.guestsList.addEventListener(GuestResponseEvent.GUEST_RESPONSE, onSelectGuest);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.allowAllButton.addEventListener(MouseEvent.CLICK, allowAllGuests);
 			view.denyAllButton.addEventListener(MouseEvent.CLICK, denyAllGuests);
 			dicUserIdtoGuest = new Dictionary();
@@ -86,7 +90,24 @@ package org.bigbluebutton.view.navigation.pages.participants {
 				view.allGuests.includeInLayout = true;
 			}
 			if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
-				view.list.setSelectedIndex(0, true);
+				if (userUISession.currentPageDetails is User) {
+					view.list.setSelectedIndex(dataProvider.getItemIndex(userUISession.currentPageDetails), true);
+				} else {
+					view.list.setSelectedIndex(0, true);
+				}
+			}
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS);
+			} else {
+				userUISession.pushPage(PagesENUM.PARTICIPANTS);
+			}
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS);
 			}
 		}
 		
@@ -186,6 +207,7 @@ package org.bigbluebutton.view.navigation.pages.participants {
 			super.destroy();
 			view.dispose();
 			view = null;
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			userSession.userList.userChangeSignal.remove(userChanged);
 			userSession.userList.userAddedSignal.remove(addUser);
 			userSession.userList.userRemovedSignal.remove(userRemoved);

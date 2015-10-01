@@ -1,8 +1,11 @@
 package org.bigbluebutton.view.navigation.pages.locksettings {
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import mx.core.FlexGlobals;
 	import mx.events.ItemClickEvent;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.ShareMicrophoneSignal;
 	import org.bigbluebutton.core.IUsersService;
@@ -11,6 +14,7 @@ package org.bigbluebutton.view.navigation.pages.locksettings {
 	import org.bigbluebutton.model.LockSettings;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class LockSettingsViewMediator extends Mediator {
@@ -41,8 +45,18 @@ package org.bigbluebutton.view.navigation.pages.locksettings {
 			loadLockSettings();
 			view.applyButton.addEventListener(MouseEvent.CLICK, onApply);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'lockSettings.title');
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.popPage();
+				userUISession.popPage();
+				userUISession.pushPage(PagesENUM.SPLITSETTINGS, PagesENUM.LOCKSETTINGS);
+			}
 		}
 		
 		private function onApply(event:MouseEvent):void {
@@ -69,6 +83,7 @@ package org.bigbluebutton.view.navigation.pages.locksettings {
 		
 		override public function destroy():void {
 			super.destroy();
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 		}
 	}
 }

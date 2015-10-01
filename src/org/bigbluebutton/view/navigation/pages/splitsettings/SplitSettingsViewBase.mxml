@@ -24,7 +24,7 @@
 		<s:ViewNavigator id="settingsnavigator0"
 						 width="100%"
 						 height="100%"
-						 firstView="org.bigbluebutton.view.navigation.pages.audiosettings.AudioSettingsView" />
+						 firstView="org.bigbluebutton.core.view.NoTabView" />
 
 
 	</s:SplitViewNavigator>

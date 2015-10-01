@@ -31,7 +31,7 @@ package org.bigbluebutton.view.navigation.pages {
 		
 		public static const PROFILE:String = "profile";
 		
-		public static const STATUS:String = "status";
+		public static const STATUS:String = "Status";
 		
 		public static const USER_DETAIS:String = "userdetais";
 		

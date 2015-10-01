@@ -1,6 +1,8 @@
 package org.bigbluebutton.view.navigation.pages.camerasettings {
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.media.Camera;
@@ -10,6 +12,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 	import mx.core.FlexGlobals;
 	import mx.events.IndexChangedEvent;
 	import mx.events.ItemClickEvent;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.CameraQualitySignal;
 	import org.bigbluebutton.command.ShareCameraSignal;
@@ -22,6 +25,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.model.UserSession;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.ui.SwapCameraButton;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import spark.events.IndexChangeEvent;
@@ -75,11 +79,21 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 			userSession.lockSettings.disableCamSignal.add(disableCam);
 			setQualityListEnable(!userSession.userList.me.hasStream);
 			setRotateCameraButtonEnable(!userMe.hasStream);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.startCameraButton.addEventListener(MouseEvent.CLICK, onShareCameraClick);
 			view.rotateCameraButton.addEventListener(MouseEvent.CLICK, onRotateCameraClick);
 			view.cameraProfilesList.addEventListener(IndexChangeEvent.CHANGE, onCameraQualitySelected);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'cameraSettings.title');
 			displayPreviewCamera();
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.popPage();
+				userUISession.popPage();
+				userUISession.pushPage(PagesENUM.SPLITSETTINGS, PagesENUM.CAMERASETTINGS);
+			}
 		}
 		
 		private function disableCam(disable:Boolean):void {
@@ -250,6 +264,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 			super.destroy();
 			userSession.lockSettings.disableCamSignal.remove(disableCam);
 			userSession.userList.userChangeSignal.remove(userChangeHandler);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.startCameraButton.removeEventListener(MouseEvent.CLICK, onShareCameraClick);
 			if (Camera.names.length > 1) {
 				view.swapCameraButton.addEventListener(MouseEvent.CLICK, mouseClickHandler);
