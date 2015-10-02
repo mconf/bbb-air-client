@@ -25,7 +25,9 @@
 			import com.juankpro.ane.localnotif.Notification;
 			import com.juankpro.ane.localnotif.NotificationManager;
 			import flash.system.Capabilities;
+			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
 			import mx.resources.ResourceManager;
 			import org.bigbluebutton.AppConfig;
 			import org.bigbluebutton.core.util.OrientationCalculator;
@@ -80,10 +82,7 @@
 			
 			public var currentOrientation:String;
 			
-			private var defaultIsLandscape:Boolean;
-			
 			protected function preinitializeHandler(event:FlexEvent):void {
-				defaultIsLandscape = (this.width > this.height);
 				setupContext();
 				setupLogger();
 				resizeForSoftKeyboard = true;
@@ -178,15 +177,14 @@
 			
 			protected function applicationCompleteHandler(event:FlexEvent):void {
 				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
-				stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGE, stageOrientationChangingHandler);
+				stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 				// setup a custom orientation calculator based on the accelerometer because the default one doesn't work
 				//_orientationCalc = new OrientationCalculator(pagesNavigatorView, accelerometerCallback);
 				//_orientationCalc.active = true;
 				//currentOrientation = _orientationCalc.currentOrientation;
 			}
 			
-			private function stageOrientationChangingHandler(e:StageOrientationEvent):void {
-				currentOrientation = e.afterOrientation;
+			private function stageOrientationChangingHandler(e:Event):void {
 				profileBtn.navigateTo = isTabletLandscape() ? [PagesENUM.SPLITSETTINGS] : [PagesENUM.PROFILE];
 			}
 			
@@ -198,25 +196,10 @@
 				(pagesNavigatorView.activeView as NoTabView).rotationHandler(_orientationCalc.currentOrientation);
 			}
 			
-			private function rotatedSideways(newOrientation:String) {
-				var landscapeRotated:Boolean = defaultIsLandscape && (newOrientation == 'rotatedLeft' || newOrientation == 'rotatedRight');
-				var portraitRotated:Boolean = !defaultIsLandscape && (newOrientation == 'default' || newOrientation == 'upsideDown');
-				return (landscapeRotated || portraitRotated);
-			}
-			
-			public function isTabletLandscape(newOrientation:String = null):Boolean {
-				var landscape:Boolean = defaultIsLandscape;
-				var width:Number = this.width
-				newOrientation = (newOrientation) ? newOrientation : currentOrientation;
-				if (rotatedSideways(newOrientation)) {
-					landscape = !landscape;
-					width = this.height
-				}
-				if (landscape) {
-					var screenInches:Number = Math.max(this.width, this.height) / Capabilities.screenDPI;
-					return (screenInches >= 7);
-				}
-				return false;
+			public function isTabletLandscape():Boolean {
+				var landscape:Boolean = (this.width > this.height);
+				var tablet:Boolean = ((Math.max(this.width, this.height) / Capabilities.screenDPI) >= 7)
+				return landscape && tablet;
 			}
 		]]>
 	</fx:Script>
