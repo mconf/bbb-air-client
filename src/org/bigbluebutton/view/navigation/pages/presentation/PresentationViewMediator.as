@@ -9,9 +9,12 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 	import org.bigbluebutton.command.LoadSlideSignal;
 	import org.bigbluebutton.core.IPresentationService;
 	import org.bigbluebutton.model.IUserSession;
+	import org.bigbluebutton.model.IUserUISession;
+	import org.bigbluebutton.model.UserUISession;
 	import org.bigbluebutton.model.presentation.Presentation;
 	import org.bigbluebutton.model.presentation.Slide;
 	import org.bigbluebutton.util.CursorIndicator;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.osmf.logging.Log;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
@@ -28,6 +31,9 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 		
 		[Inject]
 		public var presentationService:IPresentationService;
+		
+		[Inject]
+		public var userUISession:IUserUISession;
 		
 		private var _currentPresentation:Presentation;
 		
@@ -90,20 +96,24 @@ package org.bigbluebutton.view.navigation.pages.presentation {
 		}
 		
 		private function resizePresentation():void {
-			_slideModel.resetForNewSlide(view.slide.contentWidth, view.slide.contentHeight);
-			var currentSlide:Slide = userSession.presentationList.currentPresentation.getSlideAt(_currentSlideNum);
-			if (currentSlide) {
-				resetSize(currentSlide.x, currentSlide.y, currentSlide.widthPercent, currentSlide.heightPercent);
-				_cursor.draw(view.viewport, userSession.presentationList.cursorXPercent, userSession.presentationList.cursorYPercent);
-					//resetSize(_currentSlide.x, _currentSlide.y, _currentSlide.widthPercent, _currentSlide.heightPercent);
+			if (_slideModel && view && view.slide) {
+				_slideModel.resetForNewSlide(view.slide.contentWidth, view.slide.contentHeight);
+				var currentSlide:Slide = userSession.presentationList.currentPresentation.getSlideAt(_currentSlideNum);
+				if (currentSlide) {
+					resetSize(currentSlide.x, currentSlide.y, currentSlide.widthPercent, currentSlide.heightPercent);
+					_cursor.draw(view.viewport, userSession.presentationList.cursorXPercent, userSession.presentationList.cursorYPercent);
+						//resetSize(_currentSlide.x, _currentSlide.y, _currentSlide.widthPercent, _currentSlide.heightPercent);
+				}
 			}
 		}
 		
 		private function stageOrientationChangingHandler(e:Event):void {
-			var newWidth:Number = FlexGlobals.topLevelApplication.width;
-			var newHeight:Number = FlexGlobals.topLevelApplication.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
-			_slideModel.parentChange(newWidth, newHeight);
-			resizePresentation();
+			if (userUISession.currentPage == PagesENUM.PRESENTATION) { //apply rotation only if user didn´t change view at the same time
+				var newWidth:Number = FlexGlobals.topLevelApplication.width;
+				var newHeight:Number = FlexGlobals.topLevelApplication.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
+				_slideModel.parentChange(newWidth, newHeight);
+				resizePresentation();
+			}
 		}
 		
 		private function handleLoadingComplete(e:Event):void {
