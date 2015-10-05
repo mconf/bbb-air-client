@@ -79,7 +79,8 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		
 		private function stageOrientationChangingHandler(e:Event):void {
 			var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(userUISession.currentStreamName);
-			var newHeight:Number = FlexGlobals.topLevelApplication.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
+			var menusCombinedHeight:Number = FlexGlobals.topLevelApplication.topActionBar.height + FlexGlobals.topLevelApplication.bottomMenu.height + (FlexGlobals.topLevelApplication.stage.fullScreenHeight - FlexGlobals.topLevelApplication.height);
+			var newHeight:Number = FlexGlobals.topLevelApplication.stage.fullScreenHeight - menusCombinedHeight;
 			var newWidth:Number = FlexGlobals.topLevelApplication.width;
 			view.video.parent.width = newWidth;
 			view.video.parent.height = newHeight;
