@@ -78,14 +78,16 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		}
 		
 		private function stageOrientationChangingHandler(e:Event):void {
-			var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(userUISession.currentStreamName);
-			var newHeight:Number = FlexGlobals.topLevelApplication.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
-			newHeight = Math.min(newHeight, view.streamListScroller.height);
-			var newWidth:Number = FlexGlobals.topLevelApplication.width;
-			view.video.parent.width = newWidth;
-			view.video.parent.height = newHeight;
-			view.startStream(userSession.videoConnection.connection, currentUser.name, userUISession.currentStreamName, currentUser.userID, videoProfile.width, videoProfile.height, newHeight, newWidth);
-			view.videoGroup.height = view.video.height;
+			if (view.video) {
+				var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(userUISession.currentStreamName);
+				var newHeight:Number = FlexGlobals.topLevelApplication.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
+				newHeight = Math.min(newHeight, view.streamListScroller.height);
+				var newWidth:Number = FlexGlobals.topLevelApplication.width;
+				view.video.parent.width = newWidth;
+				view.video.parent.height = newHeight;
+				view.startStream(userSession.videoConnection.connection, currentUser.name, userUISession.currentStreamName, currentUser.userID, videoProfile.width, videoProfile.height, newHeight, newWidth);
+				view.videoGroup.height = view.video.height;
+			}
 		}
 		
 		private function resizeVideo(screenWidth:Number, screenHeight:Number, originalVideoWidth:Number, originalVideoHeight:Number):void {
