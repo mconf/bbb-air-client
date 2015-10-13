@@ -41,9 +41,9 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'audioSettings.title');
 			var userMe:User = userSession.userList.me;
 			view.applyBtn.addEventListener(MouseEvent.CLICK, onApplyClick);
-			view.enableAudio.addEventListener(MouseEvent.CLICK, onEnableAudioClick);
-			view.enableMic.addEventListener(MouseEvent.CLICK, onEnableMicClick);
-			view.enablePushToTalk.addEventListener(MouseEvent.CLICK, onEnablePushToTalkClick);
+			view.enableAudio.addEventListener(Event.CHANGE, onEnableAudioClick);
+			view.enableMic.addEventListener(Event.CHANGE, onEnableMicClick);
+			view.enablePushToTalk.addEventListener(Event.CHANGE, onEnablePushToTalkClick);
 			view.gainSlider.addEventListener(Event.CHANGE, gainChange);
 			userSession.lockSettings.disableMicSignal.add(disableMic);
 			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter && userMe.locked);
@@ -99,7 +99,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			}
 		}
 		
-		private function onApplyClick(event:MouseEvent):void {
+		private function onApplyClick(event:Event):void {
 			var audioOptions:Object = new Object();
 			audioOptions.shareMic = userSession.userList.me.voiceJoined = view.enableMic.selected && view.enableAudio.selected;
 			audioOptions.listenOnly = userSession.userList.me.listenOnly = !view.enableMic.selected && view.enableAudio.selected;
@@ -107,24 +107,24 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			userUISession.popPage();
 		}
 		
-		private function onEnableAudioClick(event:MouseEvent):void {
-			if (view.enableAudio.selected) {
+		private function onEnableAudioClick(event:Event):void {
+			if (!view.enableAudio.selected) {
 				view.enableMic.selected = false;
 				view.enablePushToTalk.enabled = false;
 				userSession.pushToTalk = false;
 			}
 		}
 		
-		private function onEnableMicClick(event:MouseEvent):void {
-			view.enablePushToTalk.enabled = !view.enableMic.selected;
-			if (!view.enableMic.selected) {
+		private function onEnableMicClick(event:Event):void {
+			view.enablePushToTalk.enabled = view.enableMic.selected;
+			if (view.enableMic.selected) {
 				view.enableAudio.selected = true;
 			}
 			userSession.pushToTalk = (view.enablePushToTalk.selected && view.enablePushToTalk.enabled);
 		}
 		
-		private function onEnablePushToTalkClick(event:MouseEvent):void {
-			userSession.pushToTalk = !view.enablePushToTalk.selected;
+		private function onEnablePushToTalkClick(event:Event):void {
+			userSession.pushToTalk = view.enablePushToTalk.selected;
 		}
 		
 		private function userChangeHandler(user:User, type:int):void {
