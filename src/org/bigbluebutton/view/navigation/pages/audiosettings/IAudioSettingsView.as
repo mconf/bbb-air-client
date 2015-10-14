@@ -10,7 +10,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		function get enableMic():ToggleSwitch;
 		function get enableAudio():ToggleSwitch;
 		function get enablePushToTalk():ToggleSwitch;
-		function get applyBtn():Button;
+		function get continueBtn():Button;
 		function get gainSlider():HSlider;
 		function get micActivityMask():Rect;
 		function get micActivity():Rect;

@@ -25,8 +25,8 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			return enablePushToTalk0;
 		}
 		
-		public function get applyBtn():Button {
-			return apply;
+		public function get continueBtn():Button {
+			return continueToMeeting;
 		}
 		
 		public function get gainSlider():HSlider {

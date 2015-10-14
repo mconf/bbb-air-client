@@ -40,7 +40,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			userSession.userList.userChangeSignal.add(userChangeHandler);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'audioSettings.title');
 			var userMe:User = userSession.userList.me;
-			view.applyBtn.addEventListener(MouseEvent.CLICK, onApplyClick);
+			view.continueBtn.addEventListener(MouseEvent.CLICK, onContinueClick);
 			view.enableAudio.addEventListener(Event.CHANGE, onEnableAudioClick);
 			view.enableMic.addEventListener(Event.CHANGE, onEnableMicClick);
 			view.enablePushToTalk.addEventListener(Event.CHANGE, onEnablePushToTalkClick);
@@ -53,11 +53,10 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 			loadMicGain();
-			if (userSession.voiceStreamManager && userSession.voiceStreamManager.mic) {
-				micActivityTimer = new Timer(100);
-				micActivityTimer.addEventListener(TimerEvent.TIMER, micActivity);
-				micActivityTimer.start();
-			}
+			micActivityTimer = new Timer(100);
+			micActivityTimer.addEventListener(TimerEvent.TIMER, micActivity);
+			micActivityTimer.start();
+			view.continueBtn.visible = userSession.phoneAutoJoin;
 		}
 		
 		private function loadMicGain() {
@@ -84,7 +83,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		}
 		
 		private function micActivity(e:TimerEvent):void {
-			if (userSession.voiceStreamManager.mic) {
+			if (userSession.voiceStreamManager && userSession.voiceStreamManager.mic) {
 				view.micActivityMask.width = view.gainSlider.width - (view.gainSlider.width * userSession.voiceStreamManager.mic.activityLevel / 100);
 				view.micActivityMask.x = view.micActivity.x + view.micActivity.width - view.micActivityMask.width;
 			}
@@ -99,11 +98,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			}
 		}
 		
-		private function onApplyClick(event:Event):void {
-			var audioOptions:Object = new Object();
-			audioOptions.shareMic = userSession.userList.me.voiceJoined = view.enableMic.selected && view.enableAudio.selected;
-			audioOptions.listenOnly = userSession.userList.me.listenOnly = !view.enableMic.selected && view.enableAudio.selected;
-			shareMicrophoneSignal.dispatch(audioOptions);
+		private function onContinueClick(event:Event):void {
 			userUISession.popPage();
 		}
 		
@@ -113,6 +108,10 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 				view.enablePushToTalk.enabled = false;
 				userSession.pushToTalk = false;
 			}
+			var audioOptions:Object = new Object();
+			audioOptions.shareMic = userSession.userList.me.voiceJoined = view.enableMic.selected && view.enableAudio.selected;
+			audioOptions.listenOnly = userSession.userList.me.listenOnly = !view.enableMic.selected && view.enableAudio.selected;
+			shareMicrophoneSignal.dispatch(audioOptions);
 		}
 		
 		private function onEnableMicClick(event:Event):void {
@@ -121,6 +120,10 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 				view.enableAudio.selected = true;
 			}
 			userSession.pushToTalk = (view.enablePushToTalk.selected && view.enablePushToTalk.enabled);
+			var audioOptions:Object = new Object();
+			audioOptions.shareMic = userSession.userList.me.voiceJoined = view.enableMic.selected && view.enableAudio.selected;
+			audioOptions.listenOnly = userSession.userList.me.listenOnly = !view.enableMic.selected && view.enableAudio.selected;
+			shareMicrophoneSignal.dispatch(audioOptions);
 		}
 		
 		private function onEnablePushToTalkClick(event:Event):void {
@@ -139,7 +142,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		override public function destroy():void {
 			super.destroy();
 			userSession.lockSettings.disableMicSignal.remove(disableMic);
-			view.applyBtn.removeEventListener(MouseEvent.CLICK, onApplyClick);
+			view.continueBtn.removeEventListener(MouseEvent.CLICK, onContinueClick);
 			view.enableAudio.removeEventListener(MouseEvent.CLICK, onEnableAudioClick);
 			view.enableMic.removeEventListener(MouseEvent.CLICK, onEnableMicClick);
 			if (micActivityTimer) {
