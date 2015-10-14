@@ -3,6 +3,7 @@ package org.bigbluebutton.command {
 	import flash.utils.setTimeout;
 	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
+	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.core.IVoiceConnection;
 	import org.bigbluebutton.core.VoiceConnection;
@@ -20,6 +21,9 @@ package org.bigbluebutton.command {
 		
 		[Inject]
 		public var conferenceParameters:IConferenceParameters;
+		
+		[Inject]
+		public var saveData:ISaveData;
 		
 		[Inject]
 		public var audioOptions:Object;
@@ -76,6 +80,10 @@ package org.bigbluebutton.command {
 			trace(LOG + "mediaSuccessConnected()");
 			if (!manager) {
 				var manager:VoiceStreamManager = new VoiceStreamManager();
+				var savedGain = saveData.read("micGain");
+				if (savedGain) {
+					manager.setDefaultMicGain(savedGain);
+				}
 			}
 			manager.play(voiceConnection.connection, playName);
 			if (publishName != null && publishName.length != 0) {

@@ -80,7 +80,6 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			var gain = saveData.read("micGain");
 			if (gain) {
 				view.gainSlider.value = gain / 10;
-				setMicGain(gain);
 			}
 		}
 		
