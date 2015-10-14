@@ -12,6 +12,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 	import flash.geom.Point;
 	import mx.core.FlexGlobals;
 	import mx.core.mx_internal;
+	import mx.events.FlexEvent;
 	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.DisconnectUserSignal;
@@ -56,8 +57,9 @@ package org.bigbluebutton.view.navigation.pages.common {
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, fl_Activate);
 			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, fl_Deactivate);
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvokeEvent);
-			view.pushToTalkButton.addEventListener(MouseEvent.MOUSE_DOWN, pushToTalkOn);
+			view.pushToTalkButton.addEventListener(FlexEvent.BUTTON_DOWN, pushToTalkOn);
 			view.pushToTalkButton.addEventListener(MouseEvent.MOUSE_UP, pushToTalkOff);
+			view.pushToTalkButton.addEventListener(MouseEvent.MOUSE_OUT, pushToTalkOff);
 			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			userUISession.loadingSignal.add(loadingFinished);
 			userUISession.pageChangedSignal.add(pageChanged);
@@ -101,7 +103,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 			}
 		}
 		
-		private function pushToTalkOn(e:MouseEvent):void {
+		private function pushToTalkOn(e:FlexEvent):void {
 			userSession.voiceStreamManager.muteMicGain(false);
 		}
 		
