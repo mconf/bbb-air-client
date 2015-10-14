@@ -80,7 +80,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 		}
 		
 		private function isPushToTalkOn() {
-			var micEnabled:Boolean = (userSession.voiceStreamManager && userSession.voiceStreamManager.mic) ? true : false;
+			var micEnabled:Boolean = (userSession.voiceStreamManager && userSession.voiceStreamManager.mic && userSession.voiceConnection.callActive) ? true : false;
 			return userSession.pushToTalk && micEnabled;
 		}
 		

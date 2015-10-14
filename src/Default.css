@@ -10,6 +10,10 @@ s|List.cameraProfilesListStyle
 	verticalScrollPolicy: off;
 }
 
+s|Button {
+	fontWeight: normal;	
+}
+
 s|Group.videoTextFieldStyle
 {
 	color: #FFFFFF;
