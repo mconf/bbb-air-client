@@ -47,7 +47,9 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			view.enableAudio.addEventListener(MouseEvent.CLICK, onEnableAudioClick);
 			view.enableMic.addEventListener(MouseEvent.CLICK, onEnableMicClick);
 			view.enablePushToTalk.addEventListener(MouseEvent.CLICK, onEnablePushToTalkClick);
-			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
+			if (!userSession.phoneAutoJoin) {
+				FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
+			}
 			view.gainSlider.addEventListener(Event.CHANGE, gainChange);
 			userSession.lockSettings.disableMicSignal.add(disableMic);
 			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter && userMe.locked);
