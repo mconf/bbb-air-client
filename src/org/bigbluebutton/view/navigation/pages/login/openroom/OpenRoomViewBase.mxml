@@ -51,12 +51,13 @@
 						  enabled="{inputRoom0.text!=''}"
 						  styleName="sendButtonStyle" />
 			</s:Group>
+			<s:Spacer height="5%" />
 
 			<ui:NavigationButton id="recentRoomsBtn"
 								 width="90%"
 								 label="{resourceManager.getString('resources', 'openRoom.showRecentRooms')}"
 								 navigateTo="{[PagesENUM.RECENTROOMS]}"
-								 styleName="videoAudioSettingStyle profileSettingsButtonStyle"
+								 styleName="userSettingsButtonStyle logoutButtonStyle contentFontSize"
 								 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
 		</s:Group>
 	</s:Group>
