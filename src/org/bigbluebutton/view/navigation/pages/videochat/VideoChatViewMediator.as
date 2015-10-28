@@ -1,6 +1,7 @@
 package org.bigbluebutton.view.navigation.pages.videochat {
 	
 	import flash.display.DisplayObject;
+	import flash.display.Screen;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.StageOrientationEvent;
@@ -80,8 +81,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		private function stageOrientationChangingHandler(e:Event):void {
 			if (view.video) {
 				var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(userUISession.currentStreamName);
-				var newHeight:Number = FlexGlobals.topLevelApplication.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
-				newHeight = Math.min(newHeight, view.streamListScroller.height);
+				var newHeight:Number = Screen.mainScreen.visibleBounds.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
 				var newWidth:Number = FlexGlobals.topLevelApplication.width;
 				view.video.parent.width = newWidth;
 				view.video.parent.height = newHeight;
