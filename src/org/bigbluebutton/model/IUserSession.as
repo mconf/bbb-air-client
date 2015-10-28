@@ -1,5 +1,6 @@
 package org.bigbluebutton.model {
 	
+	import flash.media.Video;
 	import flash.net.NetConnection;
 	import mx.collections.ArrayCollection;
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
@@ -7,6 +8,7 @@ package org.bigbluebutton.model {
 	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.core.IVoiceConnection;
 	import org.bigbluebutton.core.VideoConnection;
+	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.core.VoiceConnection;
 	import org.bigbluebutton.core.VoiceStreamManager;
 	import org.bigbluebutton.model.chat.ChatMessages;
@@ -62,8 +64,10 @@ package org.bigbluebutton.model {
 		function set meetingMuted(mute:Boolean):void;
 		function get meetingMuted():Boolean;
 		function get globalVideoStreamName():String;
+		function get globalVideoProfile():VideoProfile;
 		function dispatchLockSettings():void;
 		function set globalVideoStreamName(value:String):void;
+		function setGlobalVideoProfileDimensions(w:int, h:int):void;
 		function get pushToTalk():Boolean;
 		function set pushToTalk(value:Boolean):void;
 		function get pushToTalkSignal():ISignal;

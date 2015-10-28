@@ -89,7 +89,7 @@ package org.bigbluebutton.model {
 			if (_profiles.length > 0) {
 				return _profiles[0];
 			} else {
-				return null;
+				return fallbackVideoProfile;
 			}
 		}
 		

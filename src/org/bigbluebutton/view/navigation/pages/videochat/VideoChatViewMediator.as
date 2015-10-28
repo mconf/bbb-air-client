@@ -314,7 +314,8 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		
 		private function startStream(user:User, streamName:String):void {
 			if (view) {
-				var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(streamName);
+				var videoProfile:VideoProfile = (user == speaker) ? userSession.globalVideoProfile : userSession.videoProfileManager.getVideoProfileByStreamName(streamName);
+				trace(videoProfile.width + "x" + videoProfile.height);
 				view.startStream(userSession.videoConnection.connection, user.name, streamName, user.userID, videoProfile.width, videoProfile.height, view.streamListScroller.height, view.streamListScroller.width);
 				userUISession.currentStreamName = streamName;
 				currentUser = user;

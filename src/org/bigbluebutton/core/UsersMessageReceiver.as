@@ -126,7 +126,8 @@ package org.bigbluebutton.core {
 			if (lastSipEvent != map) {
 				if (map.isSipVideoPresent) {
 					if (userSession.globalVideoStreamName != map.sipVideoStreamName) {
-						userSession.globalVideoStreamName = map.sipVideoStreamName
+						userSession.setGlobalVideoProfileDimensions(map.width, map.height);
+						userSession.globalVideoStreamName = map.sipVideoStreamName;
 					}
 				} else {
 					userSession.globalVideoStreamName = "";

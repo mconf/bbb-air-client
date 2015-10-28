@@ -7,6 +7,7 @@ package org.bigbluebutton.model {
 	import org.bigbluebutton.core.IDeskshareConnection;
 	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.core.IVoiceConnection;
+	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.core.VoiceConnection;
 	import org.bigbluebutton.core.VoiceStreamManager;
 	import org.bigbluebutton.model.chat.ChatMessages;
@@ -85,6 +86,8 @@ package org.bigbluebutton.model {
 		protected var _pushToTalkSignal:ISignal = new Signal();
 		
 		protected var _videoProfileManager:VideoProfileManager = new VideoProfileManager();
+		
+		protected var _globalVideoProfile:VideoProfile = _videoProfileManager.defaultVideoProfile;
 		
 		public function get videoProfileManager():VideoProfileManager {
 			return _videoProfileManager;
@@ -307,6 +310,17 @@ package org.bigbluebutton.model {
 		
 		public function get globalVideoStreamName():String {
 			return _globalVideoStreamName;
+		}
+		
+		public function get globalVideoProfile():VideoProfile {
+			return _globalVideoProfile;
+		}
+		
+		public function setGlobalVideoProfileDimensions(w:int, h:int):void {
+			if (_globalVideoProfile) {
+				_globalVideoProfile.width = w;
+				_globalVideoProfile.height = h;
+			}
 		}
 		
 		private function userChangedHandler(user:User, type:int):void {
