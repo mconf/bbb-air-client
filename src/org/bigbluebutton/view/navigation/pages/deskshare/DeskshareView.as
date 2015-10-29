@@ -1,5 +1,6 @@
 package org.bigbluebutton.view.navigation.pages.deskshare {
 	
+	import flash.display.Screen;
 	import flash.display.StageOrientation;
 	import flash.net.NetConnection;
 	import mx.core.FlexGlobals;
@@ -26,6 +27,7 @@ package org.bigbluebutton.view.navigation.pages.deskshare {
 			deskshareVideoView.percentWidth = 100;
 			deskshareVideoView.percentHeight = 100;
 			this.addElement(deskshareVideoView);
+			var topbarHeight = Screen.mainScreen.bounds.height - this.height - FlexGlobals.topLevelApplication.bottomMenu.height;
 			deskshareVideoView.startStream(connection, name, streamName, userID, width, height, this.deskshareGroup.height, this.deskshareGroup.width, FlexGlobals.topLevelApplication.topActionBar.height, FlexGlobals.topLevelApplication.bottomMenu.height);
 			deskshareVideoView.addMouseToStage();
 			rotationHandler(FlexGlobals.topLevelApplication.currentOrientation);
