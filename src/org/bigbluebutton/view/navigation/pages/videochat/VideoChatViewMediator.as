@@ -58,7 +58,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			view.streamlist.dataProvider = dataProvider;
 			var users:ArrayCollection = userSession.userList.users;
 			for each (var u:User in users) {
-				if (u.hasStream && !dataProvider.contains(u)) {
+				if (u.streamName && u.streamName != "" && !dataProvider.contains(u)) {
 					addUserStreamNames(u);
 				}
 			}
@@ -221,7 +221,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		}
 		
 		private function userAddedHandler(user:User):void {
-			if (user.hasStream) {
+			if (user.streamName && user.streamName != "") {
 				var streamNames:Array = user.streamName.split("|");
 				for each (var streamName:String in streamNames) {
 					var userStreamName:UserStreamName = new UserStreamName(streamName, user);
@@ -313,6 +313,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		}
 		
 		private function startStream(user:User, streamName:String):void {
+			trace("++ start stream name " + streamName);
 			if (view) {
 				var videoProfile:VideoProfile = (user == speaker) ? userSession.globalVideoProfile : userSession.videoProfileManager.getVideoProfileByStreamName(streamName);
 				trace(videoProfile.width + "x" + videoProfile.height);

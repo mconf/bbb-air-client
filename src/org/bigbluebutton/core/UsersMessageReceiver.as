@@ -124,13 +124,9 @@ package org.bigbluebutton.core {
 			trace("handleSipVideoUpdate " + msg.msg);
 			var map:Object = JSON.parse(msg.msg);
 			if (lastSipEvent != map) {
-				if (map.isSipVideoPresent) {
-					if (userSession.globalVideoStreamName != map.sipVideoStreamName) {
-						userSession.setGlobalVideoProfileDimensions(map.width, map.height);
-						userSession.globalVideoStreamName = map.sipVideoStreamName;
-					}
-				} else {
-					userSession.globalVideoStreamName = "";
+				if (userSession.globalVideoStreamName != map.sipVideoStreamName) {
+					userSession.setGlobalVideoProfileDimensions(map.width, map.height);
+					userSession.globalVideoStreamName = map.sipVideoStreamName;
 				}
 				lastSipEvent = map;
 			}

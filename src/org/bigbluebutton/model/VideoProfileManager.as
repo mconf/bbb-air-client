@@ -102,12 +102,12 @@ package org.bigbluebutton.model {
 					<width>160</width>
 					<height>120</height>
 					<keyFrameInterval>5</keyFrameInterval>
-					<modeFps>10</modeFps>
+					<modeFps>15</modeFps>
 					<qualityBandwidth>0</qualityBandwidth>
 					<qualityPicture>90</qualityPicture>
 					<enableH264>true</enableH264>
 					<h264Level>2.1</h264Level>
-					<h264Profile>main</h264Profile>
+					<h264Profile>baseline</h264Profile>
 				</profile>
 				, DEFAULT_FALLBACK_LOCALE);
 		}
