@@ -55,7 +55,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			disableMic(userSession.lockSettings.disableMic && userMe.role != User.MODERATOR && !userMe.presenter && userMe.locked);
 			view.enableAudio.selected = (userMe.voiceJoined || userMe.listenOnly);
 			view.enablePushToTalk.enabled = view.enableMic.selected = userMe.voiceJoined;
-			view.enablePushToTalk.selected = userSession.pushToTalk;
+			view.enablePushToTalk.selected = (userSession.pushToTalk || userSession.phoneAutoJoin);
 			FlexGlobals.topLevelApplication.backBtn.visible = true;
 			FlexGlobals.topLevelApplication.profileBtn.visible = false;
 			loadMicGain();
