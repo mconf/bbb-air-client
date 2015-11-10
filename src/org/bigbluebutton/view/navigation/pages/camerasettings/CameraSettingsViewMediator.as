@@ -93,6 +93,9 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 				userUISession.popPage();
 				userUISession.popPage();
 				userUISession.pushPage(PagesENUM.SPLITSETTINGS, PagesENUM.CAMERASETTINGS);
+			} else {
+				userUISession.popPage();
+				userUISession.pushPage(PagesENUM.CAMERASETTINGS);
 			}
 		}
 		
