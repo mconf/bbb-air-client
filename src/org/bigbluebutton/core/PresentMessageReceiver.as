@@ -174,7 +174,11 @@ package org.bigbluebutton.core {
 			// Add all the slides to the presentation:
 			for (var i:int = 0; i < length; i++) {
 				var s:Object = presentationObject.pages[i];
-				presentation.add(new Slide(s.num, s.swfUri, s.thumbUri, s.txtUri, s.current, s.xOffset, s.yOffset, s.widthRatio, s.heightRatio));
+				if(s.swfUri){
+					presentation.add(new Slide(s.num, s.swfUri, s.thumbUri, s.txtUri, s.current, s.xOffset, s.yOffset, s.widthRatio, s.heightRatio));
+				} else if(s.swf_uri) {
+					presentation.add(new Slide(s.num, s.swf_uri, s.thumb_uri, s.txt_uri, s.current, s.x_offset, s.y_offset, s.width_ratio, s.height_ratio));
+				}
 			}
 			if (presentation.current) {
 				presentation.show();

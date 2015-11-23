@@ -170,8 +170,9 @@ package org.bigbluebutton.core {
 		private function updateLockSettings(msg:Object):void {
 			userSession.lockSettings.disableCam = msg.disableCam;
 			userSession.lockSettings.disableMic = msg.disableMic;
-			userSession.lockSettings.disablePrivateChat = msg.disablePrivChat;
-			userSession.lockSettings.disablePublicChat = msg.disablePubChat;
+			// bbb 1.0 compatibility: different variable names
+			userSession.lockSettings.disablePrivateChat = msg.hasOwnProperty( "disablePrivChat" ) ? msg.disablePrivChat : msg.disablePrivateChat;
+			userSession.lockSettings.disablePublicChat = msg.hasOwnProperty( "disablePubChat" ) ?  msg.disablePubChat : msg.disablePublicChat;
 			userSession.lockSettings.lockedLayout = msg.lockedLayout;
 			userSession.dispatchLockSettings();
 		}
