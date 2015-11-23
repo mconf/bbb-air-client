@@ -43,6 +43,7 @@ package org.bigbluebutton.view.navigation.pages.whiteboard {
 		
 		private function slideChangeHandler():void {
 			removeAllAnnotations();
+			drawAllAnnotations();
 		}
 		
 		private function onWhiteboardResize(zoom:Number):void {
