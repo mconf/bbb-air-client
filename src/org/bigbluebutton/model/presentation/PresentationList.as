@@ -48,7 +48,7 @@ package org.bigbluebutton.model.presentation {
 			trace("Adding presentation " + presentationName);
 			for (var i:int = 0; i < _presentations.length; i++) {
 				var p:Presentation = _presentations[i] as Presentation;
-				if (p.fileName == presentationName) {
+				if (p.id == id) {
 					return p;
 				}
 			}
