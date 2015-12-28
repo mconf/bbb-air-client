@@ -27,6 +27,8 @@ package org.bigbluebutton.core {
 		
 		protected var _joinUrl:String;
 		
+		protected var _config:Config;
+		
 		public function get successJoinedSignal():ISignal {
 			return _successJoinedSignal;
 		}
@@ -63,10 +65,6 @@ package org.bigbluebutton.core {
 			configSubservice.successSignal.add(onConfigResponse);
 			configSubservice.unsuccessSignal.add(fail);
 			configSubservice.getConfig(getServerUrl(responseUrl), _urlRequest);
-			var profilesService:ProfilesService = new ProfilesService();
-			profilesService.successSignal.add(onProfilesResponse);
-			profilesService.unsuccessSignal.add(fail);
-			profilesService.getProfiles(getServerUrl(responseUrl), _urlRequest);
 		}
 		
 		protected function getServerUrl(url:String):String {
@@ -75,64 +73,45 @@ package org.bigbluebutton.core {
 		}
 		
 		protected function onConfigResponse(xml:XML):void {
-			var config:Config = new Config(xml);
-			successGetConfigSignal.dispatch(config);
-			var enterSubservice:EnterService = new EnterService();
-			enterSubservice.successSignal.add(onEnterResponse);
-			enterSubservice.unsuccessSignal.add(fail);
-			enterSubservice.enter(config.application.host, _urlRequest);
+			_config = new Config(xml);
+			successGetConfigSignal.dispatch(_config);
+			var profilesService:ProfilesService = new ProfilesService();
+			profilesService.successSignal.add(onProfilesResponse);
+			profilesService.unsuccessSignal.add(failedLoadingProfiles);
+			profilesService.getProfiles(getServerUrl(_config.application.host), _urlRequest);
 		}
 		
 		protected function afterEnter(result:Object):void {
 			if (result.returncode == 'SUCCESS') {
 				trace("Join SUCCESS");
 				trace(ObjectUtil.toString(result));
-				var user:Object = {
-						username: result.fullname,
-						conference: result.conference,
-						conferenceName: result.confname,
-						externMeetingID: result.externMeetingID,
-						meetingID: result.meetingID,
-						externUserID: result.externUserID,
-						internalUserId: result.internalUserID,
-						role: result.role,
-						room: result.room,
-						authToken: result.room,
-						record: result.record,
-						webvoiceconf: result.webvoiceconf,
-						dialnumber: result.dialnumber,
-						voicebridge: result.voicebridge,
-						mode: result.mode,
-						welcome: result.welcome,
-						logoutUrl: result.logoutUrl,
-						defaultLayout: result.defaultLayout,
-						avatarURL: result.avatarURL,
-						guest: result.guest,
-						metadata: result.metadata,
-						muteOnStart: result.muteOnStart};
-				user.customdata = new Object();
-				if (result.customdata) {
-					for (var key:String in result.customdata) {
-						trace("checking user customdata: " + key + " = " + result.customdata[key]);
-						user.customdata[key] = result.customdata[key].toString();
-					}
-				}
-				successJoinedSignal.dispatch(user);
+				successJoinedSignal.dispatch(result);
 			} else {
 				trace("Join FAILED");
 				unsuccessJoinedSignal.dispatch("Add some reason here!");
 			}
 		}
 		
-		protected function onProfilesResponse(xml:XML):void {
-			trace("sucess video profile");
-			var prof:VideoProfileManager = new VideoProfileManager(xml);
-			prof.getProfileTypes();
-			successGetProfilesSignal.dispatch(prof);
+		protected function dispatchVideoProfileManager(manager:VideoProfileManager):void {
+			successGetProfilesSignal.dispatch(manager);
+			var enterSubservice:EnterService = new EnterService();
+			enterSubservice.successSignal.add(afterEnter);
+			enterSubservice.unsuccessSignal.add(fail);
+			enterSubservice.enter(_config.application.host, _urlRequest);
 		}
 		
-		protected function onEnterResponse(user:Object):void {
-			successJoinedSignal.dispatch(user);
+		protected function onProfilesResponse(xml:XML):void {
+			trace("sucess video profile");
+			var prof:VideoProfileManager = new VideoProfileManager();
+			prof.parseProfilesXml(xml);
+			dispatchVideoProfileManager(prof);
+		}
+		
+		protected function failedLoadingProfiles(reason:String):void {
+			trace("failed video profile: " + reason);
+			var prof:VideoProfileManager = new VideoProfileManager();
+			prof.parseConfigXml(_config.getConfigFor("VideoconfModule"));
+			dispatchVideoProfileManager(prof);
 		}
 	}
 }

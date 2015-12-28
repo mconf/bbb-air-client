@@ -1,6 +1,7 @@
 package org.bigbluebutton.core {
 	
 	import flash.events.AsyncErrorEvent;
+	import flash.events.Event;
 	import flash.events.NetDataEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.StatusEvent;
@@ -12,7 +13,10 @@ package org.bigbluebutton.core {
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.utils.Timer;
+	import mx.binding.utils.BindingUtils;
 	import mx.utils.ObjectUtil;
+	import org.osflash.signals.ISignal;
+	import org.osflash.signals.Signal;
 	
 	public class VoiceStreamManager {
 		protected var _incomingStream:NetStream = null;
@@ -23,7 +27,17 @@ package org.bigbluebutton.core {
 		
 		protected var _mic:Microphone = null;
 		
+		protected var _defaultMicGain = 50;
+		
 		protected var _heartbeat:Timer = new Timer(2000);
+		
+		public function setDefaultMicGain(value:Number) {
+			_defaultMicGain = value
+		}
+		
+		public function get mic():Microphone {
+			return _mic;
+		}
 		
 		public function VoiceStreamManager() {
 			_heartbeat.addEventListener(TimerEvent.TIMER, onHeartbeat);
@@ -32,6 +46,12 @@ package org.bigbluebutton.core {
 		protected function onHeartbeat(event:TimerEvent):void {
 			trace("+++ heartbeat +++");
 			trace(ObjectUtil.toString(_incomingStream.audioCodec));
+		}
+		
+		public function muteMicGain(value:Boolean):void {
+			if (_mic) {
+				_mic.gain = value ? 0 : _defaultMicGain;
+			}
 		}
 		
 		public function play(connection:NetConnection, streamName:String):void {
@@ -59,12 +79,12 @@ package org.bigbluebutton.core {
 			//			trace(ObjectUtil.toString(event));
 		}
 		
-		public function publish(connection:NetConnection, streamName:String, codec:String):void {
+		public function publish(connection:NetConnection, streamName:String, codec:String, pushToTalk:Boolean):void {
 			_outgoingStream = new NetStream(connection);
 			_outgoingStream.client = this;
 			_outgoingStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatusEvent);
 			_outgoingStream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEvent);
-			setupMicrophone(codec);
+			setupMicrophone(codec, pushToTalk);
 			if (_mic) {
 				_outgoingStream.attachAudio(_mic);
 				_outgoingStream.publish(streamName, "live");
@@ -76,12 +96,13 @@ package org.bigbluebutton.core {
 				|| ((Microphone.names.length == 1) && (Microphone.names[0] == "Unknown Microphone")));
 		}
 		
-		private function setupMicrophone(codec:String):void {
+		private function setupMicrophone(codec:String, pushToTalk:Boolean):void {
 			if (noMicrophone()) {
 				_mic = null;
 				return;
 			}
 			_mic = getMicrophone(codec);
+			_mic.gain = pushToTalk ? 0 : _defaultMicGain;
 		}
 		
 		/**

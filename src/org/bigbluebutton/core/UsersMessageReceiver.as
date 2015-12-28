@@ -2,11 +2,12 @@ package org.bigbluebutton.core {
 	
 	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.command.AuthenticationSignal;
-	import org.bigbluebutton.model.Guest;
+	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserSession;
+	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	import org.osmf.logging.Log;
@@ -17,6 +18,10 @@ package org.bigbluebutton.core {
 		public var userSession:IUserSession;
 		
 		public var authenticationSignal:AuthenticationSignal;
+		
+		public var disconnectUserSignal:DisconnectUserSignal;
+		
+		private var lastSipEvent:Object = null;
 		
 		public function UsersMessageReceiver() {
 		}
@@ -45,6 +50,7 @@ package org.bigbluebutton.core {
 					handleUserUnsharedWebcam(message);
 					break;
 				case "user_listening_only":
+				case "userListeningOnly":
 					handleUserListeningOnly(message);
 					break;
 				case "assignPresenterCallback":
@@ -66,14 +72,13 @@ package org.bigbluebutton.core {
 					handleGetRecordingStatusReply(message);
 					break;
 				case "meetingHasEnded":
-					handleMeetingHasEnded(message);
-					break;
 				case "meetingEnded":
-					handleLogout(message);
+					handleMeetingHasEnded(message);
 					break;
 				case "participantStatusChange":
 					handleStatusChange(message);
 					break;
+				case "guest_access_denied":
 				case "response_to_guest":
 					handleGuestResponse(message);
 					break;
@@ -89,9 +94,93 @@ package org.bigbluebutton.core {
 				case "participantRoleChange":
 					handleParticipantRoleChange(message);
 					break;
+				case "userRaisedHand":
+					handleParticipantRaisedHand(message);
+					break;
+				case "userLoweredHand":
+					handleParticipantLoweredHand(message);
+					break;
+				case "meetingState":
+					handleMeetingState(message);
+					break;
+				case "permissionsSettingsChanged":
+					handlePermissionsSettingsChanged(message);
+					break;
+				case "meetingMuted":
+					handleMeetingMuted(message);
+					break;
+				case "userLocked":
+					handleUserLocked(message);
+					break;
+				case "sipVideoUpdate":
+					handleSipVideoUpdate(message);
+					break;
 				default:
 					break;
 			}
+		}
+		
+		private function handleSipVideoUpdate(msg:Object) {
+			trace("handleSipVideoUpdate " + msg.msg);
+			var map:Object = JSON.parse(msg.msg);
+			if (lastSipEvent != map) {
+				if (userSession.globalVideoStreamName != map.sipVideoStreamName) {
+					userSession.setGlobalVideoProfileDimensions(map.width, map.height);
+					userSession.globalVideoStreamName = map.sipVideoStreamName;
+				}
+				lastSipEvent = map;
+			}
+		}
+		
+		private function handleUserLocked(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("handleUserLocked: " + ObjectUtil.toString(msg));
+			trace("your id: " + userSession.userList.me.userID)
+			var user:User = userSession.userList.getUserByUserId(msg.user);
+			user.locked = msg.lock;
+			if (userSession.userList.me.userID == msg.user) {
+				userSession.dispatchLockSettings();
+			}
+		}
+		
+		private function handleMeetingMuted(m:Object) {
+			var msg:Object = JSON.parse(m.msg);
+			trace("handleMeetingMuted: " + ObjectUtil.toString(msg));
+			userSession.meetingMuted = msg.meetingMuted;
+		}
+		
+		private function handleMeetingState(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			userSession.meetingMuted = msg.meetingMuted;
+			updateLockSettings(msg.permissions);
+		}
+		
+		private function handlePermissionsSettingsChanged(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("permissionsSettingsChanged: " + ObjectUtil.toString(msg));
+			updateLockSettings(msg);
+		}
+		
+		private function handleParticipantRaisedHand(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("ParticipantRaisedHand: " + ObjectUtil.toString(msg));
+			userSession.userList.statusChange(msg.userId, User.RAISE_HAND);
+		}
+		
+		private function updateLockSettings(msg:Object):void {
+			userSession.lockSettings.disableCam = msg.disableCam;
+			userSession.lockSettings.disableMic = msg.disableMic;
+			// bbb 1.0 compatibility: different variable names
+			userSession.lockSettings.disablePrivateChat = msg.hasOwnProperty( "disablePrivChat" ) ? msg.disablePrivChat : msg.disablePrivateChat;
+			userSession.lockSettings.disablePublicChat = msg.hasOwnProperty( "disablePubChat" ) ?  msg.disablePubChat : msg.disablePublicChat;
+			userSession.lockSettings.lockedLayout = msg.lockedLayout;
+			userSession.dispatchLockSettings();
+		}
+		
+		private function handleParticipantLoweredHand(m:Object):void {
+			var msg:Object = JSON.parse(m.msg);
+			trace("ParticipantLoweredHand: " + ObjectUtil.toString(msg));
+			userSession.userList.statusChange(msg.userId, User.NO_STATUS);
 		}
 		
 		private function handleParticipantRoleChange(m:Object):void {
@@ -123,6 +212,7 @@ package org.bigbluebutton.core {
 				case "RAISE_HAND":
 					userSession.userList.statusChange(msg.userID, User.RAISE_HAND);
 					break;
+				case "CLEAR_STATUS":
 				case "CLEAR_MOOD":
 				case "NO_STATUS":
 					userSession.userList.statusChange(msg.userID, User.NO_STATUS);
@@ -159,7 +249,7 @@ package org.bigbluebutton.core {
 		
 		private function handleVoiceUserTalking(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
-			trace(LOG + "handleVoiceUserTalking() -- user [" + +msg.voiceUserId + "," + msg.talking + "] ");
+			//trace(LOG + "handleVoiceUserTalking() -- user [" + +msg.voiceUserId + "," + msg.talking + "] ");
 			userSession.userList.userTalkingChange(msg.voiceUserId, msg.talking);
 		}
 		
@@ -196,41 +286,46 @@ package org.bigbluebutton.core {
 			user.guest = newUser.guest;
 			user.waitingForAcceptance = newUser.waitingForAcceptance;
 			var mood:String = newUser.mood;
-			switch (mood.substr(0, mood.indexOf(","))) {
-				case "AGREE":
-					user.status = User.AGREE;
-					break;
-				case "DISAGREE":
-					user.status = User.DISAGREE;
-					break;
-				case "SPEAK_LOUDER":
-					user.status = User.SPEAK_LOUDER;
-					break;
-				case "SPEAK_LOWER":
-					user.status = User.SPEAK_LOWER;
-					break;
-				case "SPEAK_FASTER":
-					user.status = User.SPEAK_FASTER;
-					break;
-				case "SPEAK_SLOWER":
-					user.status = User.SPEAK_SLOWER;
-					break;
-				case "BE_RIGHT_BACK":
-					user.status = User.BE_RIGHT_BACK;
-					break;
-				case "LAUGHTER":
-					user.status = User.LAUGHTER;
-					break;
-				case "SAD":
-					user.status = User.SAD;
-					break;
-				case "RAISE_HAND":
-					user.status = User.RAISE_HAND;
-					break;
-				case "":
-				case "CLEAR_MOOD":
-					user.status = User.NO_STATUS;
-					break;
+			if (newUser.raiseHand) {
+				user.status = User.RAISE_HAND;
+			}
+			if (mood) {
+				switch (mood.substr(0, mood.indexOf(","))) {
+					case "AGREE":
+						user.status = User.AGREE;
+						break;
+					case "DISAGREE":
+						user.status = User.DISAGREE;
+						break;
+					case "SPEAK_LOUDER":
+						user.status = User.SPEAK_LOUDER;
+						break;
+					case "SPEAK_LOWER":
+						user.status = User.SPEAK_LOWER;
+						break;
+					case "SPEAK_FASTER":
+						user.status = User.SPEAK_FASTER;
+						break;
+					case "SPEAK_SLOWER":
+						user.status = User.SPEAK_SLOWER;
+						break;
+					case "BE_RIGHT_BACK":
+						user.status = User.BE_RIGHT_BACK;
+						break;
+					case "LAUGHTER":
+						user.status = User.LAUGHTER;
+						break;
+					case "SAD":
+						user.status = User.SAD;
+						break;
+					case "RAISE_HAND":
+						user.status = User.RAISE_HAND;
+						break;
+					case "":
+					case "CLEAR_MOOD":
+						user.status = User.NO_STATUS;
+						break;
+				}
 			}
 			if (user.waitingForAcceptance) {
 				userSession.guestList.addUser(user);
@@ -299,6 +394,7 @@ package org.bigbluebutton.core {
 			var msg:Object = JSON.parse(m.msg);
 			trace(LOG + "handleMeetingHasEnded() -- meeting has ended");
 			userSession.logoutSignal.dispatch();
+			disconnectUserSignal.dispatch(DisconnectEnum.CONNECTION_STATUS_MEETING_ENDED);
 		}
 		
 		private function handleLogout(m:Object):void {

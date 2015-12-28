@@ -1,6 +1,7 @@
 package org.bigbluebutton.view.navigation.pages.userdetails {
 	
 	import org.bigbluebutton.core.view.IView;
+	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.User;
 	import spark.components.Button;
 	
@@ -15,5 +16,9 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 		function get clearStatusButton():Button;
 		function get makePresenterButton():Button;
 		function get promoteButton():Button;
+		function set conferenceParameters(c:IConferenceParameters):void;
+		function get lockButton():Button;
+		function get unlockButton():Button;
+		function updateLockButtons(isRoomLocked:Boolean);
 	}
 }

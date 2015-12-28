@@ -9,14 +9,19 @@ package org.bigbluebutton.view.navigation.pages.profile {
 	import spark.components.RadioButtonGroup;
 	
 	public interface IProfileView extends IView {
-		function get userNameButton():Button;
-		function get userStatusButton():Button;
-		function get clearStatusButton():Button;
 		function get shareCameraButton():Button;
 		function get shareCameraBtnLabel():String;
 		function get shareMicButton():Button;
 		function get shareMicBtnLabel():String;
 		function get statusButton():Button;
 		function get logoutButton():Button;
+		function get currentState():String;
+		function set currentState(value:String):void;
+		function get handButton():Button;
+		function get clearAllStatusButton():Button;
+		function get muteAllButton():Button;
+		function get muteAllExceptPresenterButton():Button;
+		function get lockViewersButton():Button;
+		function get unmuteAllButton():Button;
 	}
 }

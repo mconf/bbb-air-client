@@ -15,18 +15,6 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		public function dispose():void {
 		}
 		
-		public function get userNameButton():Button {
-			return userName0;
-		}
-		
-		public function get userStatusButton():Button {
-			return userStatus0;
-		}
-		
-		public function get clearStatusButton():Button {
-			return clearStatusButton0;
-		}
-		
 		public function get shareCameraButton():Button {
 			return shareCameraBtn0;
 		}
@@ -49,6 +37,30 @@ package org.bigbluebutton.view.navigation.pages.profile {
 		
 		public function get logoutButton():Button {
 			return logoutButton0;
+		}
+		
+		public function get handButton():Button {
+			return handBtn0;
+		}
+		
+		public function get clearAllStatusButton():Button {
+			return clearAllStatusBtn;
+		}
+		
+		public function get muteAllButton():Button {
+			return muteAllBtn;
+		}
+		
+		public function get muteAllExceptPresenterButton():Button {
+			return muteAllExceptPresenterBtn;
+		}
+		
+		public function get lockViewersButton():Button {
+			return lockViewersBtn;
+		}
+		
+		public function get unmuteAllButton():Button {
+			return unmuteAllBtn;
 		}
 	}
 }

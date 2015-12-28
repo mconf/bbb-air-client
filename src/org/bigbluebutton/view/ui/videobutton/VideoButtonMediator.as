@@ -49,7 +49,7 @@ package org.bigbluebutton.view.ui.videobutton {
 		 * Update the view when there is a chenge in the model
 		 */
 		private function userChangeHandler(user:User, type:int):void {
-			if (user.me) {
+			if (user && user.me) {
 				view.setVisibility(userSession.userList.me.hasStream);
 			}
 		}

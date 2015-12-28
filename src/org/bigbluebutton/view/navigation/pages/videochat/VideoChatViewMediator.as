@@ -1,9 +1,15 @@
 package org.bigbluebutton.view.navigation.pages.videochat {
 	
 	import flash.display.DisplayObject;
+	import flash.display.Screen;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.core.VideoProfile;
@@ -14,6 +20,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.mockito.integrations.currentMockito;
+	import org.osmf.events.TimeEvent;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import spark.events.IndexChangeEvent;
 	
@@ -32,12 +39,18 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		
 		private var manualSelection:Boolean = false;
 		
+		private var speaker:User = null;
+		
+		private var currentUser:User = null;
+		
 		override public function initialize():void {
 			userSession.userList.userRemovedSignal.add(userRemovedHandler);
 			userSession.userList.userAddedSignal.add(userAddedHandler);
 			userSession.userList.userChangeSignal.add(userChangeHandler);
 			userUISession.pageTransitionStartSignal.add(onPageTransitionStart);
+			userSession.globalVideoSignal.add(globalVideoStreamNameHandler);
 			view.streamlist.addEventListener(MouseEvent.CLICK, onSelectStream);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'video.title');
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
@@ -45,22 +58,95 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			view.streamlist.dataProvider = dataProvider;
 			var users:ArrayCollection = userSession.userList.users;
 			for each (var u:User in users) {
-				if (u.hasStream && !dataProvider.contains(u)) {
+				if (u.streamName && u.streamName != "" && !dataProvider.contains(u)) {
 					addUserStreamNames(u);
 				}
 			}
 			var selectedUserProfile:User = userUISession.currentPageDetails as User;
+			var displayUserStreamName:UserStreamName = null;
 			if (selectedUserProfile) {
-				manualSelection = true;
 				var userStreamNames:Array = getUserStreamNamesByUserID(selectedUserProfile.userID);
-				var displayUserStreamName:UserStreamName = userStreamNames[0];
+				displayUserStreamName = userStreamNames[0];
+			}
+			if (displayUserStreamName) {
+				manualSelection = true;
 				view.streamlist.selectedIndex = dataProvider.getItemIndex(displayUserStreamName);
 				startStream(selectedUserProfile, displayUserStreamName.streamName);
-				view.noVideoMessage.visible = false;
-				view.noVideoMessage.includeInLayout = false;
-				view.streamListScroller.visible = true;
-				view.streamListScroller.includeInLayout = true;
+				displayVideo(true);
 			} else {
+				globalVideoStreamNameHandler();
+			}
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			if (view.video) {
+				var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(userUISession.currentStreamName);
+				var newHeight:Number = Screen.mainScreen.visibleBounds.height - FlexGlobals.topLevelApplication.topActionBar.height - FlexGlobals.topLevelApplication.bottomMenu.height;
+				var newWidth:Number = FlexGlobals.topLevelApplication.width;
+				view.video.parent.width = newWidth;
+				view.video.parent.height = newHeight;
+				view.startStream(userSession.videoConnection.connection, currentUser.name, userUISession.currentStreamName, currentUser.userID, videoProfile.width, videoProfile.height, newHeight, newWidth);
+				view.videoGroup.height = view.video.height;
+			}
+		}
+		
+		private function resizeVideo(screenWidth:Number, screenHeight:Number, originalVideoWidth:Number, originalVideoHeight:Number):void {
+			// if we have device where screen width less than screen height e.g. phone
+			if (screenWidth < screenHeight) {
+				// make the video width full width of the screen 
+				view.video.width = screenWidth;
+				// calculate height based on a video width, it order to keep the same aspect ratio
+				view.video.height = (view.video.width / originalVideoWidth) * originalVideoHeight;
+				// if calculated height appeared to be bigger than screen height, recalculuate the video size based on width
+				if (screenHeight < view.video.height) {
+					// make the video height full height of the screen
+					view.video.height = screenHeight;
+					// calculate width based on a video height, it order to keep the same aspect ratio
+					view.video.width = ((originalVideoWidth * view.video.height) / originalVideoHeight);
+				}
+			} // if we have device where screen height less than screen width e.g. tablet
+			else {
+				// make the video height full height of the screen
+				view.video.height = screenHeight;
+				// calculate width based on a video height, it order to keep the same aspect ratio
+				view.video.width = ((originalVideoWidth * view.video.height) / originalVideoHeight);
+				// if calculated width appeared to be bigger than screen width, recalculuate the video size based on height
+				if (screenWidth < view.video.width) {
+					// make the video width full width of the screen 
+					view.video.width = screenWidth;
+					// calculate height based on a video width, it order to keep the same aspect ratio
+					view.video.height = (view.video.width / originalVideoWidth) * originalVideoHeight;
+				}
+			}
+		}
+		
+		private function displayVideo(value:Boolean) {
+			view.noVideoMessage.visible = !value;
+			view.noVideoMessage.includeInLayout = !value;
+			view.streamListScroller.visible = value;
+			view.streamListScroller.includeInLayout = value;
+		}
+		
+		private function globalVideoStreamNameHandler() {
+			if (userSession.globalVideoStreamName != "") {
+				speaker = new User();
+				speaker.name = ResourceManager.getInstance().getString('resources', 'videoChat.speaker');
+				speaker.userID = "sipVideoUser";
+				speaker.streamName = userSession.globalVideoStreamName;
+				speaker.hasStream = true;
+				var userStreamName:UserStreamName = new UserStreamName(speaker.streamName, speaker);
+				removeUserFromDataProvider(speaker.userID);
+				dataProvider.addItem(userStreamName);
+			} else {
+				if (speaker) {
+					removeUserFromDataProvider(speaker.userID);
+					speaker = null;
+				}
+			}
+			if (dataProvider.length == 0) {
+				displayVideo(false);
+			} else {
+				displayVideo(true);
 				checkVideo();
 			}
 		}
@@ -126,14 +212,16 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			userSession.userList.userRemovedSignal.remove(userRemovedHandler);
 			userSession.userList.userAddedSignal.remove(userAddedHandler);
 			userSession.userList.userChangeSignal.remove(userChangeHandler);
+			userSession.globalVideoSignal.remove(globalVideoStreamNameHandler);
 			userUISession.pageTransitionStartSignal.remove(onPageTransitionStart);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.dispose();
 			view = null;
 			super.destroy();
 		}
 		
 		private function userAddedHandler(user:User):void {
-			if (user.hasStream) {
+			if (user.streamName && user.streamName != "") {
 				var streamNames:Array = user.streamName.split("|");
 				for each (var streamName:String in streamNames) {
 					var userStreamName:UserStreamName = new UserStreamName(streamName, user);
@@ -142,30 +230,28 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			}
 		}
 		
-		private function userRemovedHandler(userID:String):void {
-			var displayedUser:User = getDisplayedUser();
-			if (displayedUser) {
-				if (displayedUser.userID == userID) {
-					stopStream(userID);
-				}
-			}
+		private function removeUserFromDataProvider(userID:String) {
 			for (var item:int; item < dataProvider.length; item++) {
 				if ((dataProvider.getItemAt(item).user as User).userID == userID) {
 					// -- in the end. see: http://stackoverflow.com/questions/4255226/how-to-remove-an-item-while-iterating-over-collection
 					dataProvider.removeItemAt(item--);
 				}
 			}
-			if (dataProvider.length == 0) {
-				view.noVideoMessage.visible = true;
-				view.noVideoMessage.includeInLayout = true;
-				view.streamListScroller.visible = false;
-				view.streamListScroller.includeInLayout = false;
-			} else {
-				view.noVideoMessage.visible = false;
-				view.noVideoMessage.includeInLayout = false;
-				view.streamListScroller.visible = true;
-				view.streamListScroller.includeInLayout = true;
-				checkVideo();
+		}
+		
+		private function userRemovedHandler(userID:String):void {
+			var displayedUser:User = getDisplayedUser();
+			removeUserFromDataProvider(userID);
+			if (displayedUser) {
+				if (displayedUser.userID == userID) {
+					stopStream(userID);
+					if (dataProvider.length == 0) {
+						displayVideo(false);
+					} else {
+						displayVideo(true);
+						checkVideo();
+					}
+				}
 			}
 		}
 		
@@ -193,7 +279,9 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 						dataProvider.removeItemAt(dataProvider.getItemIndex(userStreamName));
 						if (userUISession.currentStreamName == userStreamName.streamName) {
 							userUISession.currentStreamName = "";
-							checkVideo();
+							if (!speaker) {
+								checkVideo();
+							}
 						}
 					}
 				}
@@ -201,34 +289,37 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 					var camNumber:int = dataProvider.length;
 					addUserStreamNames(user);
 					if (userUISession.currentStreamName == userSession.userList.me.streamName && camNumber == 1) {
-						checkVideo();
+						if (!speaker) {
+							checkVideo();
+						}
 					}
 				}
 				if (userUISession.currentStreamName == "") {
-					checkVideo();
+					if (!speaker) {
+						checkVideo();
+					}
 				}
 				if (dataProvider.length == 0) {
-					view.noVideoMessage.visible = true;
-					view.noVideoMessage.includeInLayout = true;
-					view.streamListScroller.visible = false;
-					view.streamListScroller.includeInLayout = false;
+					displayVideo(false);
 				} else {
-					view.noVideoMessage.visible = false;
-					view.noVideoMessage.includeInLayout = false;
-					view.streamListScroller.visible = true;
-					view.streamListScroller.includeInLayout = true;
+					displayVideo(true);
 				}
 			} else if (property == UserList.PRESENTER) {
-				checkVideo();
+				if (!speaker) {
+					checkVideo();
+				}
 			}
 			dataProvider.refresh();
 		}
 		
 		private function startStream(user:User, streamName:String):void {
+			trace("++ start stream name " + streamName);
 			if (view) {
-				var videoProfile:VideoProfile = userSession.videoProfileManager.getVideoProfileByStreamName(streamName);
+				var videoProfile:VideoProfile = (user == speaker) ? userSession.globalVideoProfile : userSession.videoProfileManager.getVideoProfileByStreamName(streamName);
+				trace(videoProfile.width + "x" + videoProfile.height);
 				view.startStream(userSession.videoConnection.connection, user.name, streamName, user.userID, videoProfile.width, videoProfile.height, view.streamListScroller.height, view.streamListScroller.width);
 				userUISession.currentStreamName = streamName;
+				currentUser = user;
 				view.videoGroup.height = view.video.height;
 			}
 		}
@@ -250,7 +341,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		}
 		
 		private function checkVideo(changedUser:User = null):void {
-			if (!manualSelection || userUISession.currentStreamName == "") {
+			if (!manualSelection || userUISession.currentStreamName == "" && userSession.videoConnection.connection) {
 				// get id of the user that is currently displayed
 				var currentUser:User = getDisplayedUser();
 				// get presenter user
@@ -283,8 +374,9 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 					}
 				} else {
 					// Priority state machine
-					// if presenter is transmitting a video - put them in first priority
-					if (presenter != null && presenter.hasStream && !presenter.me) {
+					if (speaker) {
+						newUser = speaker;
+					} else if (presenter != null && presenter.hasStream && !presenter.me) { // if presenter is transmitting a video - put them in first priority
 						newUser = presenter;
 					} // current user is the second priority
 					else if (currentUser != null && currentUser.hasStream && !currentUser.me) {
@@ -308,10 +400,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 						if (view) {
 							view.stopStream();
 							startStream(newUser, displayUserStreamName.streamName);
-							view.noVideoMessage.visible = false;
-							view.noVideoMessage.includeInLayout = false;
-							view.streamListScroller.visible = true;
-							view.streamListScroller.includeInLayout = true;
+							displayVideo(true);
 						}
 					}
 				}

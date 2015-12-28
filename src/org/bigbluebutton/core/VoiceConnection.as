@@ -3,6 +3,7 @@ package org.bigbluebutton.core {
 	import flash.net.NetConnection;
 	import flash.net.Responder;
 	import mx.utils.ObjectUtil;
+	import org.bigbluebutton.command.ShareMicrophoneSignal;
 	import org.bigbluebutton.model.ConferenceParameters;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
@@ -18,17 +19,24 @@ package org.bigbluebutton.core {
 		[Inject]
 		public var userSession:IUserSession;
 		
+		[Inject]
+		public var shareMicrophoneSignal:ShareMicrophoneSignal;
+		
 		public var _callActive:Boolean = false;
 		
 		protected var _successConnected:ISignal = new Signal();
 		
 		protected var _unsuccessConnected:ISignal = new Signal();
 		
+		protected var _hangUpSuccessSignal:ISignal = new Signal();
+		
 		protected var _applicationURI:String;
 		
 		protected var _username:String;
 		
 		protected var _conferenceParameters:IConferenceParameters;
+		
+		protected var _listenOnly:Boolean;
 		
 		public function VoiceConnection() {
 		}
@@ -38,6 +46,16 @@ package org.bigbluebutton.core {
 			baseConnection.init(this);
 			baseConnection.successConnected.add(onConnectionSuccess);
 			baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
+			userSession.lockSettings.disableMicSignal.add(disableMic);
+		}
+		
+		private function disableMic(disable:Boolean):void {
+			if (disable && _callActive) {
+				var audioOptions:Object = new Object();
+				audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
+				audioOptions.listenOnly = userSession.userList.me.listenOnly = true;
+				shareMicrophoneSignal.dispatch(audioOptions);
+			}
 		}
 		
 		private function onConnectionUnsuccess(reason:String):void {
@@ -45,7 +63,8 @@ package org.bigbluebutton.core {
 		}
 		
 		private function onConnectionSuccess():void {
-			call(userSession.userList.me.listenOnly);
+			userSession.userList.me.listenOnly = _listenOnly;
+			call(_listenOnly);
 		}
 		
 		public function get unsuccessConnected():ISignal {
@@ -72,12 +91,17 @@ package org.bigbluebutton.core {
 			return _callActive;
 		}
 		
-		public function connect(confParams:IConferenceParameters):void {
+		public function get hangUpSuccessSignal():ISignal {
+			return _hangUpSuccessSignal;
+		}
+		
+		public function connect(confParams:IConferenceParameters, listenOnly:Boolean):void {
 			// we don't use scope in the voice communication (many hours lost on it)
 			_conferenceParameters = confParams;
+			_listenOnly = listenOnly;
 			trace(confParams.username + ", " + confParams.role + ", " + confParams.meetingName + ", " + confParams.externUserID);
 			_username = encodeURIComponent(confParams.externUserID + "-bbbID-" + confParams.username);
-			baseConnection.connect(_applicationURI, confParams.username, _username, confParams.externMeetingID);
+			baseConnection.connect(_applicationURI, confParams.conference, userSession.userId, _username, confParams.voicebridge);
 		}
 		
 		public function disconnect(onUserCommand:Boolean):void {
@@ -153,6 +177,7 @@ package org.bigbluebutton.core {
 		private function hangUpOnSucess(result:Object):void {
 			trace(LOG + "hangUpOnSucess(): " + ObjectUtil.toString(result));
 			_callActive = false;
+			_hangUpSuccessSignal.dispatch();
 		}
 		
 		private function hangUpUnsucess(status:Object):void {

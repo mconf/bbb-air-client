@@ -7,6 +7,7 @@ package org.bigbluebutton.model {
 	import org.bigbluebutton.core.IDeskshareConnection;
 	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.core.IVoiceConnection;
+	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.core.VoiceConnection;
 	import org.bigbluebutton.core.VoiceStreamManager;
 	import org.bigbluebutton.model.chat.ChatMessages;
@@ -52,9 +53,19 @@ package org.bigbluebutton.model {
 		
 		protected var _skipCamSettingsCheck:Boolean;
 		
+		protected var _meetingMuted:Boolean;
+		
 		protected var _joinUrl:String;
 		
+		protected var _globalVideoStreamName:String = "";
+		
+		protected var _lockSettings:LockSettings;
+		
+		protected var _pushToTalk:Boolean;
+		
 		protected var _guestPolicySignal:ISignal = new Signal();
+		
+		protected var _loadedMessageHistorySignal:ISignal = new Signal();
 		
 		protected var _guestEntranceSignal:ISignal = new Signal();
 		
@@ -62,13 +73,21 @@ package org.bigbluebutton.model {
 		
 		protected var _unsuccessJoiningMeetingSignal:ISignal = new Signal();
 		
+		protected var _assignedDeskshareSignal:ISignal = new Signal();
+		
 		protected var _recordingStatusChangedSignal:ISignal = new Signal();
 		
 		protected var _logoutSignal:Signal = new Signal();
 		
 		protected var _authTokenSignal:ISignal = new Signal();
 		
-		protected var _videoProfileManager:VideoProfileManager = null;
+		protected var _globalVideoSignal:ISignal = new Signal();
+		
+		protected var _pushToTalkSignal:ISignal = new Signal();
+		
+		protected var _videoProfileManager:VideoProfileManager = new VideoProfileManager();
+		
+		protected var _globalVideoProfile:VideoProfile = _videoProfileManager.defaultVideoProfile;
 		
 		public function get videoProfileManager():VideoProfileManager {
 			return _videoProfileManager;
@@ -108,6 +127,18 @@ package org.bigbluebutton.model {
 		
 		public function set phoneSkipCheck(value:Boolean):void {
 			_phoneSkipCheck = value;
+		}
+		
+		public function get lockSettings():LockSettings {
+			return _lockSettings;
+		}
+		
+		public function get meetingMuted():Boolean {
+			return _meetingMuted;
+		}
+		
+		public function set meetingMuted(mute:Boolean):void {
+			_meetingMuted = mute;
 		}
 		
 		public function get videoAutoStart():Boolean {
@@ -181,12 +212,24 @@ package org.bigbluebutton.model {
 		
 		public function set deskshareConnection(value:IDeskshareConnection):void {
 			_deskshareConnection = value;
+			_assignedDeskshareSignal.dispatch();
+		}
+		
+		public function get pushToTalk():Boolean {
+			return _pushToTalk;
+		}
+		
+		public function set pushToTalk(value:Boolean):void {
+			_pushToTalk = value;
+			_pushToTalkSignal.dispatch();
 		}
 		
 		public function UserSession() {
 			_userList = new UserList();
 			_guestList = new UserList();
 			_presentationList = new PresentationList();
+			_lockSettings = new LockSettings();
+			userList.userChangeSignal.add(userChangedHandler);
 		}
 		
 		public function get presentationList():PresentationList {
@@ -195,6 +238,10 @@ package org.bigbluebutton.model {
 		
 		public function get guestEntranceSignal():ISignal {
 			return _guestEntranceSignal;
+		}
+		
+		public function get loadedMessageHistorySignal():ISignal {
+			return _loadedMessageHistorySignal;
 		}
 		
 		public function get guestPolicySignal():ISignal {
@@ -209,6 +256,10 @@ package org.bigbluebutton.model {
 			return _unsuccessJoiningMeetingSignal;
 		}
 		
+		public function get assignedDeskshareSignal():ISignal {
+			return _assignedDeskshareSignal;
+		}
+		
 		public function joinMeetingResponse(msg:Object):void {
 			if (msg.user) {
 				_successJoiningMeetingSignal.dispatch();
@@ -219,6 +270,14 @@ package org.bigbluebutton.model {
 		
 		public function get logoutSignal():Signal {
 			return _logoutSignal;
+		}
+		
+		public function get globalVideoSignal():ISignal {
+			return _globalVideoSignal;
+		}
+		
+		public function get pushToTalkSignal():ISignal {
+			return _pushToTalkSignal;
 		}
 		
 		public function get recordingStatusChangedSignal():ISignal {
@@ -240,6 +299,43 @@ package org.bigbluebutton.model {
 		
 		public function set joinUrl(value:String):void {
 			_joinUrl = value;
+		}
+		
+		public function set globalVideoStreamName(value:String):void {
+			if (value != _globalVideoStreamName) {
+				_globalVideoStreamName = value;
+				globalVideoSignal.dispatch();
+			}
+		}
+		
+		public function get globalVideoStreamName():String {
+			return _globalVideoStreamName;
+		}
+		
+		public function get globalVideoProfile():VideoProfile {
+			return _globalVideoProfile;
+		}
+		
+		public function setGlobalVideoProfileDimensions(w:int, h:int):void {
+			if (_globalVideoProfile) {
+				_globalVideoProfile.width = w;
+				_globalVideoProfile.height = h;
+			}
+		}
+		
+		private function userChangedHandler(user:User, type:int):void {
+			if (user && user.me && (type == UserList.PRESENTER) || (type == UserList.MODERATOR)) {
+				dispatchLockSettings();
+			}
+		}
+		
+		public function dispatchLockSettings():void {
+			var userLocked:Boolean = (userList.me.role != User.MODERATOR && !userList.me.presenter && userList.me.locked);
+			lockSettings.loaded = true;
+			lockSettings.disableCamSignal.dispatch(lockSettings.disableCam && userLocked);
+			lockSettings.disableMicSignal.dispatch(lockSettings.disableMic && userLocked);
+			lockSettings.disablePrivateChatSignal.dispatch(lockSettings.disablePrivateChat && userLocked);
+			lockSettings.disablePublicChatSignal.dispatch(lockSettings.disablePublicChat && userLocked);
 		}
 	}
 }

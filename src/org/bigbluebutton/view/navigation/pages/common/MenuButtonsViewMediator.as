@@ -6,13 +6,21 @@ package org.bigbluebutton.view.navigation.pages.common {
 	import flash.desktop.SystemIdleMode;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
+	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
+	import flash.events.TouchEvent;
+	import flash.geom.Point;
 	import mx.core.FlexGlobals;
+	import mx.core.mx_internal;
+	import mx.events.FlexEvent;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
+	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.model.chat.IChatMessagesSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
@@ -49,6 +57,10 @@ package org.bigbluebutton.view.navigation.pages.common {
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, fl_Activate);
 			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, fl_Deactivate);
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvokeEvent);
+			view.pushToTalkButton.addEventListener(FlexEvent.BUTTON_DOWN, pushToTalkOn);
+			view.pushToTalkButton.addEventListener(MouseEvent.MOUSE_UP, pushToTalkOff);
+			view.pushToTalkButton.addEventListener(MouseEvent.MOUSE_OUT, pushToTalkOff);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			userUISession.loadingSignal.add(loadingFinished);
 			userUISession.pageChangedSignal.add(pageChanged);
 			userSession.guestList.userAddedSignal.add(guestAdded);
@@ -56,7 +68,47 @@ package org.bigbluebutton.view.navigation.pages.common {
 			userSession.userList.userChangeSignal.add(userChanged);
 			chatMessagesSession.newChatMessageSignal.add(updateMessagesNotification);
 			userSession.presentationList.presentationChangeSignal.add(presentationChanged);
+			userSession.userList.userChangeSignal.add(userChangeHandler);
 			userSession.logoutSignal.add(loggingOutHandler);
+			userSession.assignedDeskshareSignal.add(configDeskshare);
+			userSession.pushToTalkSignal.add(pushToTalkChange);
+			pushToTalkChange();
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			view.chatBtn0.navigateTo = FlexGlobals.topLevelApplication.isTabletLandscape() ? [PagesENUM.SPLITCHAT] : [PagesENUM.CHATROOMS, PagesENUM.CHAT, PagesENUM.SELECT_PARTICIPANT]
+			view.participantsBtn0.navigateTo = FlexGlobals.topLevelApplication.isTabletLandscape() ? [PagesENUM.SPLITPARTICIPANTS] : [PagesENUM.PARTICIPANTS, PagesENUM.USER_DETAIS]
+			//e.preventDefault();
+		}
+		
+		private function isPushToTalkOn() {
+			var micEnabled:Boolean = (userSession.voiceStreamManager && userSession.voiceStreamManager.mic && userSession.voiceConnection.callActive) ? true : false;
+			return userSession.pushToTalk && micEnabled;
+		}
+		
+		private function pushToTalkChange():void {
+			if (userSession.voiceConnection && userSession.voiceConnection.callActive) {
+				userSession.voiceStreamManager.muteMicGain(userSession.pushToTalk);
+			}
+			view.pushToTalkButton.visible = isPushToTalkOn();
+			view.pushToTalkSpacer.includeInLayout = isPushToTalkOn();
+		}
+		
+		/**
+		 * Update the view when there is a chenge in the model
+		 */
+		private function userChangeHandler(user:User, type:int):void {
+			if (user && user.me && type == UserList.MUTE) {
+				view.pushToTalkButton.enabled = !user.muted;
+			}
+		}
+		
+		private function pushToTalkOn(e:FlexEvent):void {
+			userSession.voiceStreamManager.muteMicGain(false);
+		}
+		
+		private function pushToTalkOff(e:MouseEvent):void {
+			userSession.voiceStreamManager.muteMicGain(true);
 		}
 		
 		private function onInvokeEvent(invocation:InvokeEvent):void {
@@ -97,15 +149,19 @@ package org.bigbluebutton.view.navigation.pages.common {
 		
 		private function updateMessagesNotification(userID:String, publicChat:Boolean):void {
 			var notification = (view.menuChatButton.skin as NavigationButtonSkin).notification;
-			var data = userUISession.currentPageDetails;
-			var currentPageIsPublicChat:Boolean = data && data.hasOwnProperty("user") && !data.user;
-			var currentPageIsPrivateChatOfTheSender:Boolean = (data is User && userID == data.userID) || (data && data.hasOwnProperty("user") && data.user && data.user.userID == userID);
-			var iAmSender = (userID == userSession.userId);
-			if (!iAmSender) {
-				if (userUISession.currentPage != PagesENUM.CHATROOMS && !(currentPageIsPrivateChatOfTheSender && !publicChat) && !(currentPageIsPublicChat && publicChat)) {
-					notification.visible = true;
-				} else {
-					notification.visible = false;
+			if (userUISession.currentPage == PagesENUM.SPLITCHAT) {
+				notification.visible = false;
+			} else {
+				var data = userUISession.currentPageDetails;
+				var currentPageIsPublicChat:Boolean = data && data.hasOwnProperty("user") && !data.user;
+				var currentPageIsPrivateChatOfTheSender:Boolean = (data is User && userID == data.userID) || (data && data.hasOwnProperty("user") && data.user && data.user.userID == userID);
+				var iAmSender = (userID == userSession.userId);
+				if (!iAmSender) {
+					if (userUISession.currentPage != PagesENUM.CHATROOMS && !(currentPageIsPrivateChatOfTheSender && !publicChat) && !(currentPageIsPublicChat && publicChat)) {
+						notification.visible = true;
+					} else {
+						notification.visible = false;
+					}
 				}
 			}
 		}
@@ -117,7 +173,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 			if (pageName == PagesENUM.PRESENTATION) {
 				updatePresentationNotification();
 			}
-			if (pageName == PagesENUM.CHATROOMS) {
+			if (pageName == PagesENUM.CHATROOMS || pageName == PagesENUM.SPLITCHAT) {
 				(view.menuChatButton.skin as NavigationButtonSkin).notification.visible = false;
 			}
 		}
@@ -150,22 +206,13 @@ package org.bigbluebutton.view.navigation.pages.common {
 		private function loadingFinished(loading:Boolean):void {
 			if (!loading) {
 				updateGuestsNotification();
-				/*var users:ArrayCollection = userSession.userList.users;*/
 				userUISession.loadingSignal.remove(loadingFinished);
-				if (userSession.deskshareConnection) {
-					view.menuDeskshareButton.visible = view.menuDeskshareButton.includeInLayout = userSession.deskshareConnection.isStreaming;
-					userSession.deskshareConnection.isStreamingSignal.add(onDeskshareStreamChange);
-				}
-				/*userSession.userList.userChangeSignal.add(userChangeHandler);
-				   for each(var u:User in users)
-				   {
-				   if(u.hasStream)
-				   {
-				   view.menuVideoChatButton.visible = view.menuVideoChatButton.includeInLayout = true;
-				   break;
-				   }
-				   }*/
 			}
+		}
+		
+		private function configDeskshare() {
+			view.menuDeskshareButton.visible = view.menuDeskshareButton.includeInLayout = userSession.deskshareConnection.isStreaming;
+			userSession.deskshareConnection.isStreamingSignal.add(onDeskshareStreamChange);
 		}
 		
 		/**
@@ -221,6 +268,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 				notification.fireDate = new Date((new Date()).time);
 				notification.ongoing = true;
 				notification.vibrate = false;
+				notification.playSound = false;
 				notificationManager.notifyUser("running", notification);
 			}
 		}

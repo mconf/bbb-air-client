@@ -7,6 +7,8 @@ package org.bigbluebutton.model {
 	import spark.collections.Sort;
 	
 	public class UserList {
+		public static const MODERATOR:int = 0;
+		
 		public static const HAS_STREAM:int = 1;
 		
 		public static const PRESENTER:int = 2;
@@ -177,6 +179,7 @@ package org.bigbluebutton.model {
 					//TODO check if this is correct
 					// if we don't set _me to the just added user, _me won't get any update ever, it wouldn't be
 					// possible to use me.isModerator(), for instance
+					newuser.listenOnly = _me.listenOnly;
 					_me = newuser;
 				}
 				_users.addItem(newuser);
@@ -306,6 +309,7 @@ package org.bigbluebutton.model {
 		private function clearPresenter():void {
 			for each (var user:User in _users) {
 				user.presenter = false;
+				userChangeSignal.dispatch(user, PRESENTER);
 			}
 		}
 		
@@ -321,19 +325,21 @@ package org.bigbluebutton.model {
 						user.streamName += "|" + streamName;
 					}
 				} else {
-					var newStreamNAme:String = "";
+					var newStreamName:String = "";
 					var streamNames:Array = user.streamName.split("|");
-					for each (var sN:String in streamNames) {
-						if (streamName != sN) {
-							if (newStreamNAme == "") {
-								newStreamNAme += sN;
-							} else {
-								newStreamNAme += "|" + sN;
+					if (streamName) {
+						for each (var sN:String in streamNames) {
+							if (streamName != sN) {
+								if (newStreamName == "") {
+									newStreamName += sN;
+								} else {
+									newStreamName += "|" + sN;
+								}
 							}
 						}
 					}
-					user.streamName = newStreamNAme;
-					if (newStreamNAme != "") {
+					user.streamName = newStreamName;
+					if (newStreamName != "") {
 						user.hasStream = true;
 					} else {
 						user.hasStream = false;
@@ -402,7 +408,6 @@ package org.bigbluebutton.model {
 				user.voiceJoined = true;
 				user.muted = muted;
 				user.talking = talking;
-				user.locked = locked;
 				userChangeSignal.dispatch(user, JOIN_AUDIO);
 			} else {
 				trace("UserList: User join audio failed - user not found");

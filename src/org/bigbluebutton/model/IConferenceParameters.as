@@ -9,6 +9,7 @@ package org.bigbluebutton.model {
 		function set meetingName(meetingName:String):void;
 		function get externMeetingID():String;
 		function set externMeetingID(externMeetingID:String):void;
+		function get meetingID():String;
 		function get conference():String;
 		function set conference(conference:String):void;
 		function get username():String;
@@ -45,5 +46,6 @@ package org.bigbluebutton.model {
 		function load(obj:Object):void;
 		function get muteOnStart():Boolean;
 		function set muteOnStart(mute:Boolean):void;
+		function get serverIsMconf():Boolean;
 	}
 }

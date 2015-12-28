@@ -1,6 +1,8 @@
 package org.bigbluebutton.view.navigation.pages.camerasettings {
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.media.Camera;
@@ -10,17 +12,20 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 	import mx.core.FlexGlobals;
 	import mx.events.IndexChangedEvent;
 	import mx.events.ItemClickEvent;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.command.CameraQualitySignal;
 	import org.bigbluebutton.command.ShareCameraSignal;
 	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.core.VideoConnection;
 	import org.bigbluebutton.core.VideoProfile;
+	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.model.UserSession;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.ui.SwapCameraButton;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import spark.events.IndexChangeEvent;
@@ -45,9 +50,13 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		[Inject]
 		public var saveData:ISaveData;
 		
+		[Inject]
+		public var conferenceParameters:IConferenceParameters;
+		
 		protected var dataProvider:ArrayCollection;
 		
 		override public function initialize():void {
+			view.currentState = (conferenceParameters.serverIsMconf) ? "mconf" : "bbb";
 			dataProvider = new ArrayCollection();
 			view.cameraProfilesList.dataProvider = dataProvider;
 			displayCameraProfiles();
@@ -63,18 +72,39 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 			if (Camera.names.length <= 1) {
 				setSwapCameraButtonEnable(false);
 			} else {
-				if (!userMe.hasStream) {
-					setSwapCameraButtonEnable(false);
-				}
+				setSwapCameraButtonEnable(!userMe.hasStream);
 				view.swapCameraButton.addEventListener(MouseEvent.CLICK, mouseClickHandler);
 				userSession.userList.userChangeSignal.add(userChangeHandler);
 			}
+			userSession.lockSettings.disableCamSignal.add(disableCam);
+			setQualityListEnable(!userSession.userList.me.hasStream);
 			setRotateCameraButtonEnable(!userMe.hasStream);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.startCameraButton.addEventListener(MouseEvent.CLICK, onShareCameraClick);
 			view.rotateCameraButton.addEventListener(MouseEvent.CLICK, onRotateCameraClick);
 			view.cameraProfilesList.addEventListener(IndexChangeEvent.CHANGE, onCameraQualitySelected);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'cameraSettings.title');
 			displayPreviewCamera();
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.popPage();
+				userUISession.popPage();
+				userUISession.pushPage(PagesENUM.SPLITSETTINGS, PagesENUM.CAMERASETTINGS);
+			} else {
+				userUISession.popPage();
+				userUISession.pushPage(PagesENUM.CAMERASETTINGS);
+			}
+		}
+		
+		private function disableCam(disable:Boolean):void {
+			if (disable) {
+				view.startCameraButton.enabled = false;
+			} else {
+				view.startCameraButton.enabled = true;
+			}
 		}
 		
 		private function displayCameraProfiles():void {
@@ -99,6 +129,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		
 		protected function onShareCameraClick(event:MouseEvent):void {
 			setRotateCameraButtonEnable(userSession.userList.me.hasStream);
+			setQualityListEnable(userSession.userList.me.hasStream);
 			view.cameraProfilesList.selectedIndex = dataProvider.getItemIndex(userSession.videoConnection.selectedCameraQuality);
 			shareCameraSignal.dispatch(!userSession.userList.me.hasStream, userSession.videoConnection.cameraPosition);
 			displayPreviewCamera();
@@ -125,6 +156,10 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 			view.rotateCameraButton.enabled = enabled;
 		}
 		
+		protected function setQualityListEnable(enabled:Boolean):void {
+			view.cameraProfilesList.enabled = enabled;
+		}
+		
 		protected function onCameraQualitySelected(event:IndexChangeEvent):void {
 			if (event.newIndex >= 0) {
 				var profile:VideoProfile = dataProvider.getItemAt(event.newIndex) as VideoProfile;
@@ -147,13 +182,13 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 			var camera:Camera = getCamera(userSession.videoConnection.cameraPosition);
 			if (camera) {
 				var myCam:Video = new Video();
-				var screenAspectRatio:Number = FlexGlobals.topLevelApplication.width / view.cameraSettingsScroller.height;
+				var screenAspectRatio:Number = (view.cameraSettingsScroller.width / profile.width) / (view.cameraSettingsScroller.height / profile.height);
 				if (screenAspectRatio > 1) { //landscape
 					myCam.height = view.cameraSettingsScroller.height;
 					myCam.width = profile.width * view.cameraSettingsScroller.height / profile.height;
 				} else { //portrait
-					myCam.width = FlexGlobals.topLevelApplication.width;
-					myCam.height = profile.height * FlexGlobals.topLevelApplication.width / profile.width;
+					myCam.width = view.cameraSettingsScroller.width;
+					myCam.height = profile.height * view.cameraSettingsScroller.width / profile.width;
 				}
 				if (isCamRotatedSideways()) {
 					camera.setMode(profile.height, profile.width, profile.modeFps);
@@ -164,14 +199,14 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 					camera.setMode(profile.width, profile.height, profile.modeFps);
 				}
 				rotateObjectAroundInternalPoint(myCam, myCam.x + myCam.width / 2, myCam.y + myCam.height / 2, userSession.videoConnection.selectedCameraRotation);
-				myCam.x = (FlexGlobals.topLevelApplication.width - myCam.width) / 2;
+				myCam.x = (view.cameraSettingsScroller.width - myCam.width) / 2;
 				if (userSession.videoConnection.selectedCameraRotation == 90) {
 					myCam.y = 0;
-					myCam.x = (FlexGlobals.topLevelApplication.width + myCam.width) / 2;
+					myCam.x = (view.cameraSettingsScroller.width + myCam.width) / 2;
 				} else if (userSession.videoConnection.selectedCameraRotation == 270) {
 					myCam.y = myCam.height;
 				} else if (userSession.videoConnection.selectedCameraRotation == 180) {
-					myCam.x = (FlexGlobals.topLevelApplication.width + myCam.width) / 2;
+					myCam.x = (view.cameraSettingsScroller.width + myCam.width) / 2;
 					myCam.y = myCam.height;
 				}
 				myCam.attachCamera(camera);
@@ -230,7 +265,9 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		
 		override public function destroy():void {
 			super.destroy();
+			userSession.lockSettings.disableCamSignal.remove(disableCam);
 			userSession.userList.userChangeSignal.remove(userChangeHandler);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.startCameraButton.removeEventListener(MouseEvent.CLICK, onShareCameraClick);
 			if (Camera.names.length > 1) {
 				view.swapCameraButton.addEventListener(MouseEvent.CLICK, mouseClickHandler);

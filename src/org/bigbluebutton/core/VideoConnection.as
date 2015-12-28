@@ -9,6 +9,7 @@ package org.bigbluebutton.core {
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import mx.utils.ObjectUtil;
+	import org.bigbluebutton.command.ShareCameraSignal;
 	import org.bigbluebutton.model.ConferenceParameters;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
@@ -29,6 +30,9 @@ package org.bigbluebutton.core {
 		
 		[Inject]
 		public var saveData:ISaveData;
+		
+		[Inject]
+		public var shareCameraSignal:ShareCameraSignal;
 		
 		private var _ns:NetStream;
 		
@@ -52,11 +56,22 @@ package org.bigbluebutton.core {
 			userSession.successJoiningMeetingSignal.add(loadCameraSettings);
 			baseConnection.successConnected.add(onConnectionSuccess);
 			baseConnection.unsuccessConnected.add(onConnectionUnsuccess);
+			userSession.lockSettings.disableCamSignal.add(disableCam);
+		}
+		
+		private function disableCam(disable:Boolean) {
+			if (disable && userSession.userList.me.locked && !userSession.userList.me.presenter) {
+				shareCameraSignal.dispatch(false, null);
+			}
 		}
 		
 		private function loadCameraSettings():void {
 			if (saveData.read("cameraQuality") != null) {
 				_selectedCameraQuality = userSession.videoProfileManager.getVideoProfileById(saveData.read("cameraQuality") as String);
+				if (!_selectedCameraQuality) {
+					_selectedCameraQuality = userSession.videoProfileManager.defaultVideoProfile;
+					trace("selected camera quality " + _selectedCameraQuality)
+				}
 			} else {
 				_selectedCameraQuality = userSession.videoProfileManager.defaultVideoProfile;
 			}
@@ -102,7 +117,7 @@ package org.bigbluebutton.core {
 		}
 		
 		public function connect():void {
-			baseConnection.connect(uri, conferenceParameters.externMeetingID, conferenceParameters.username);
+			baseConnection.connect(uri, conferenceParameters.meetingID, userSession.userId);
 		}
 		
 		public function disconnect(onUserCommand:Boolean):void {
@@ -134,7 +149,7 @@ package org.bigbluebutton.core {
 		}
 		
 		public function get selectedCameraRotation():int {
-			return _selectedCameraRotation;
+			return (conferenceParameters.serverIsMconf) ? _selectedCameraRotation : 0;
 		}
 		
 		public function set selectedCameraRotation(rotation:int):void {
@@ -146,7 +161,6 @@ package org.bigbluebutton.core {
 		 **/
 		public function selectCameraQuality(profile:VideoProfile):void {
 			if (selectedCameraRotation == 90 || selectedCameraRotation == 270) {
-				trace("camera de lado... inverter");
 				camera.setMode(profile.height, profile.width, profile.modeFps);
 			} else {
 				camera.setMode(profile.width, profile.height, profile.modeFps);

@@ -5,6 +5,7 @@ package org.bigbluebutton.model {
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import mx.core.FlexGlobals;
+	import mx.utils.ObjectUtil;
 	import mx.utils.URLUtil;
 	import org.bigbluebutton.command.JoinMeetingCommand;
 	import org.bigbluebutton.core.ILoginService;
@@ -17,18 +18,33 @@ package org.bigbluebutton.model {
 		
 		private var _profiles:Array = new Array();
 		
-		private var _profileXML:XML;
-		
-		public function VideoProfileManager(profileXML:XML) {
-			_profileXML = profileXML;
-		}
-		
-		public function getProfileTypes():void {
+		public function parseProfilesXml(profileXML:XML):void {
 			// first clear the array
 			_profiles.splice(0);
-			var fallbackLocale:String = _profileXML.@fallbackLocale != undefined ? _profileXML.@fallbackLocale.toString() : DEFAULT_FALLBACK_LOCALE;
-			for each (var profile:XML in _profileXML.children()) {
+			var fallbackLocale:String = profileXML.@fallbackLocale != undefined ? profileXML.@fallbackLocale.toString() : DEFAULT_FALLBACK_LOCALE;
+			for each (var profile:XML in profileXML.children()) {
 				_profiles.push(new VideoProfile(profile, fallbackLocale));
+			}
+		}
+		
+		public function parseConfigXml(configXML:XML):void {
+			var resolutionsString:String = configXML.@resolutions;
+			var resolutions:Array = resolutionsString.split(",");
+			for (var resolution in resolutions) {
+				var profileXml:XML = <profile></profile>
+				profileXml.@['id'] = resolutions[resolution];
+				profileXml.locale.en_US = resolutions[resolution];
+				profileXml.width = resolutions[resolution].split("x")[0];
+				profileXml.height = resolutions[resolution].split("x")[1];
+				profileXml.keyFrameInterval = configXML.@camKeyFrameInterval;
+				profileXml.modeFps = configXML.@camModeFps;
+				profileXml.qualityBandwidth = configXML.@camQualityBandwidth;
+				profileXml.qualityPicture = configXML.@camQualityPicture;
+				profileXml.enableH264 = configXML.@enableH264;
+				profileXml.h264Level = configXML.@h264Level;
+				profileXml.h264Profile = configXML.@h264Profile;
+				var profile:VideoProfile = new VideoProfile(profileXml, DEFAULT_FALLBACK_LOCALE);
+				_profiles.push(profile);
 			}
 		}
 		
@@ -50,7 +66,7 @@ package org.bigbluebutton.model {
 		}
 		
 		public function getVideoProfileByStreamName(streamName:String):VideoProfile {
-			var pattern:RegExp = new RegExp("([a-z]+)-([A-Za-z0-9_]+)-\\d+", "");
+			var pattern:RegExp = new RegExp("(\\w+)-(\\w+)-(\\d+)", "");
 			if (pattern.test(streamName)) {
 				var profileID:String = pattern.exec(streamName)[1]
 				for each (var profile:VideoProfile in _profiles) {
@@ -58,9 +74,9 @@ package org.bigbluebutton.model {
 						return profile;
 					}
 				}
-				return null;
+				return defaultVideoProfile;
 			} else {
-				return null;
+				return defaultVideoProfile;
 			}
 		}
 		
@@ -73,7 +89,7 @@ package org.bigbluebutton.model {
 			if (_profiles.length > 0) {
 				return _profiles[0];
 			} else {
-				return null;
+				return fallbackVideoProfile;
 			}
 		}
 		
@@ -86,12 +102,12 @@ package org.bigbluebutton.model {
 					<width>160</width>
 					<height>120</height>
 					<keyFrameInterval>5</keyFrameInterval>
-					<modeFps>10</modeFps>
+					<modeFps>15</modeFps>
 					<qualityBandwidth>0</qualityBandwidth>
 					<qualityPicture>90</qualityPicture>
 					<enableH264>true</enableH264>
 					<h264Level>2.1</h264Level>
-					<h264Profile>main</h264Profile>
+					<h264Profile>baseline</h264Profile>
 				</profile>
 				, DEFAULT_FALLBACK_LOCALE);
 		}

@@ -6,16 +6,21 @@ package org.bigbluebutton.view.navigation.pages {
 	import org.bigbluebutton.view.navigation.pages.chat.ChatView;
 	import org.bigbluebutton.view.navigation.pages.chatrooms.ChatRoomsView;
 	import org.bigbluebutton.view.navigation.pages.deskshare.DeskshareView;
-	import org.bigbluebutton.view.navigation.pages.exit.ExitPageView;
 	import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageView;
+	import org.bigbluebutton.view.navigation.pages.exit.ExitPageView;
 	import org.bigbluebutton.view.navigation.pages.guest.GuestPageView;
+	import org.bigbluebutton.view.navigation.pages.locksettings.LockSettingsView;
 	import org.bigbluebutton.view.navigation.pages.login.LoginPageView;
-	import org.bigbluebutton.view.navigation.pages.login.rooms.RoomsView;
+	import org.bigbluebutton.view.navigation.pages.login.openroom.OpenRoomView;
+	import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.RecentRoomsView;
 	import org.bigbluebutton.view.navigation.pages.participants.ParticipantsView;
 	import org.bigbluebutton.view.navigation.pages.presentation.PresentationView;
 	import org.bigbluebutton.view.navigation.pages.profile.ProfileView;
-	import org.bigbluebutton.view.navigation.pages.status.StatusView;
 	import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantView;
+	import org.bigbluebutton.view.navigation.pages.splitchat.SplitChatView;
+	import org.bigbluebutton.view.navigation.pages.splitparticipants.SplitParticipantsView;
+	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitSettingsView;
+	import org.bigbluebutton.view.navigation.pages.status.StatusView;
 	import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisView;
 	import org.bigbluebutton.view.navigation.pages.videochat.VideoChatView;
 	
@@ -26,7 +31,7 @@ package org.bigbluebutton.view.navigation.pages {
 		
 		public static const PROFILE:String = "profile";
 		
-		public static const STATUS:String = "status";
+		public static const STATUS:String = "Status";
 		
 		public static const USER_DETAIS:String = "userdetais";
 		
@@ -52,7 +57,17 @@ package org.bigbluebutton.view.navigation.pages {
 		
 		public static const EXIT:String = "Exit";
 		
-		public static const ROOMS:String = "Rooms";
+		public static const OPENROOM:String = "OpenRoom";
+		
+		public static const RECENTROOMS:String = "RecentRoom";
+		
+		public static const LOCKSETTINGS:String = "LockSettings";
+		
+		public static const SPLITSETTINGS:String = "SplitSettings";
+		
+		public static const SPLITPARTICIPANTS:String = "SplitParticipants";
+		
+		public static const SPLITCHAT:String = "SplitChat";
 		
 		/**
 		 * Especials
@@ -77,7 +92,12 @@ package org.bigbluebutton.view.navigation.pages {
 				dic[CAMERASETTINGS] = CameraSettingsView;
 				dic[AUDIOSETTINGS] = AudioSettingsView;
 				dic[EXIT] = ExitPageView;
-				dic[ROOMS] = RoomsView;
+				dic[OPENROOM] = OpenRoomView;
+				dic[RECENTROOMS] = RecentRoomsView;
+				dic[LOCKSETTINGS] = LockSettingsView;
+				dic[SPLITSETTINGS] = SplitSettingsView;
+				dic[SPLITPARTICIPANTS] = SplitParticipantsView;
+				dic[SPLITCHAT] = SplitChatView;
 				dicInitiated = true;
 			}
 		}

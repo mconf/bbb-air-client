@@ -11,7 +11,7 @@ package org.bigbluebutton.model {
 	 *
 	 */
 	public class ConferenceParameters implements IConferenceParameters {
-		private var _changedSignal:Signal = new Signal();
+		private var _changedSignal:Signal;
 		
 		private var _meetingName:String;
 		
@@ -89,7 +89,14 @@ package org.bigbluebutton.model {
 		
 		private var _muteOnStart:Boolean;
 		
-		public function ConferenceParameters() {
+		private var _serverIsMconf:Boolean;
+		
+		public function ConferenceParameters(signal:Signal = null) {
+			if (signal) {
+				_changedSignal = signal;
+			} else {
+				_changedSignal = new Signal();
+			}
 		}
 		
 		/**
@@ -111,6 +118,10 @@ package org.bigbluebutton.model {
 		
 		public function get externMeetingID():String {
 			return _externMeetingID;
+		}
+		
+		public function get meetingID():String {
+			return _meetingID;
 		}
 		
 		public function set externMeetingID(externMeetingID:String):void {
@@ -260,6 +271,10 @@ package org.bigbluebutton.model {
 			_changedSignal.dispatch();
 		}
 		
+		public function get serverIsMconf():Boolean {
+			return _serverIsMconf;
+		}
+		
 		public function isGuestDefined():Boolean {
 			return _guestDefined;
 		}
@@ -280,6 +295,7 @@ package org.bigbluebutton.model {
 			_logoutUrl = obj.logoutUrl;
 			_record = !(obj.record == "false");
 			_guest = (obj.guest == "true");
+			_serverIsMconf = (obj.guest) ? true : false;
 			_guestDefined = (obj.guest != undefined);
 			_authToken = obj.authToken;
 			_changedSignal.dispatch();

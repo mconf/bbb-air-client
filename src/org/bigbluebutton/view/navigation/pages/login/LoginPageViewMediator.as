@@ -18,7 +18,7 @@ package org.bigbluebutton.view.navigation.pages.login {
 	import org.bigbluebutton.model.UserUISession;
 	import org.bigbluebutton.view.navigation.IPagesNavigatorView;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
-	import org.bigbluebutton.view.navigation.pages.login.rooms.Room;
+	import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.Room;
 	import org.flexunit.internals.namespaces.classInternal;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import spark.components.Application;
@@ -106,9 +106,7 @@ package org.bigbluebutton.view.navigation.pages.login {
 			if (url.lastIndexOf("://") != -1) {
 				url = getEndURL(url);
 			} else {
-				if (saveData.read("rooms")) {
-					userUISession.pushPage(PagesENUM.ROOMS);
-				}
+				userUISession.pushPage(PagesENUM.OPENROOM);
 			}
 			joinMeetingSignal.dispatch(url);
 		}

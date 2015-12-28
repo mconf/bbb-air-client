@@ -1,9 +1,13 @@
 package org.bigbluebutton.view.navigation.pages.chatrooms {
 	
+	import flash.events.Event;
+	import flash.events.StageOrientationEvent;
 	import flash.utils.Dictionary;
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
+	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
@@ -11,6 +15,7 @@ package org.bigbluebutton.view.navigation.pages.chatrooms {
 	import org.bigbluebutton.model.chat.PrivateChatMessage;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
+	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitViewEvent;
 	import org.osflash.signals.ISignal;
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import spark.components.List;
@@ -65,10 +70,44 @@ package org.bigbluebutton.view.navigation.pages.chatrooms {
 			chatMessagesSession.publicChat.chatMessageChangeSignal.add(refreshList);
 			userSession.userList.userRemovedSignal.add(userRemoved);
 			userSession.userList.userAddedSignal.add(userAdded);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			setPageTitle();
 			chatMessagesSession.chatMessageChangeSignal.add(newMessageReceived);
 			FlexGlobals.topLevelApplication.backBtn.visible = false;
 			FlexGlobals.topLevelApplication.profileBtn.visible = true;
+			if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+				selectChat();
+			} else {
+				userUISession.pushPage(PagesENUM.CHATROOMS);
+			}
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.pushPage(PagesENUM.SPLITCHAT);
+			}
+		}
+		
+		private function selectChat() {
+			if (userUISession.currentPageDetails is User) {
+				//screen just rotated back to tablet mode from a user private chat.
+				var item:Object = getItemFromDataProvider(userUISession.currentPageDetails.userID);
+				if (item) {
+					view.list.setSelectedIndex(dataProvider.getItemIndex(item), true);
+				} else {
+					//private chat was not added in the list
+					eventDispatcher.dispatchEvent(new SplitViewEvent(SplitViewEvent.CHANGE_VIEW, PagesENUM.getClassfromName(PagesENUM.CHAT), userUISession.currentPageDetails, true))
+				}
+			} else if (userUISession.currentPageDetails && userUISession.currentPageDetails.hasOwnProperty("user") && userUISession.currentPageDetails.user) {
+				//screen also just rotated back to tablet mode from a user private chat.
+				view.list.setSelectedIndex(dataProvider.getItemIndex(getItemFromDataProvider(userUISession.currentPageDetails.user.userID)), true);
+			} else if (userUISession.currentPageDetails && userUISession.currentPageDetails.hasOwnProperty("button")) {
+				//screen just rotated back to tablet mode from selecparticipants.
+				view.list.setSelectedIndex(dataProvider.length - 1, true);
+			} else {
+				view.list.setSelectedIndex(0, true);
+			}
 		}
 		
 		/**
@@ -80,6 +119,10 @@ package org.bigbluebutton.view.navigation.pages.chatrooms {
 			pcm.privateChat.chatMessageChangeSignal.add(populateList);
 			if (pcm.privateChat.messages.length > 0) {
 				addChat({name: pcm.userName, publicChat: false, user: user, chatMessages: pcm.privateChat, userID: pcm.userID, online: true}, dataProvider.length - 1);
+				if (FlexGlobals.topLevelApplication.isTabletLandscape() && userUISession.currentPageDetails.userID == pcm.userID) {
+					pcm.privateChat.resetNewMessages();
+					view.list.setSelectedIndex(dataProvider.length - 2);
+				}
 			}
 		}
 		
@@ -121,7 +164,12 @@ package org.bigbluebutton.view.navigation.pages.chatrooms {
 		   When new message is being added to public chat, we only need to refresh data provider
 		 */
 		public function refreshList(UserID:String = null):void {
-			dataProvider.refresh();
+			if (userUISession.currentPageDetails.publicChat) {
+				// split view with public chat open: no new messages to show
+				chatMessagesSession.publicChat.resetNewMessages();
+			} else {
+				dataProvider.refresh();
+			}
 		}
 		
 		/**
@@ -208,13 +256,34 @@ package org.bigbluebutton.view.navigation.pages.chatrooms {
 			var item:Object = dataProvider.getItemAt(event.newIndex);
 			if (item) {
 				if (item.hasOwnProperty("button")) {
-					userUISession.pushPage(PagesENUM.SELECT_PARTICIPANT, item, TransitionAnimationENUM.SLIDE_LEFT)
+					if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+						eventDispatcher.dispatchEvent(new SplitViewEvent(SplitViewEvent.CHANGE_VIEW, PagesENUM.getClassfromName(PagesENUM.SELECT_PARTICIPANT), item, true));
+						eventDispatcher.addEventListener(SplitViewEvent.CHANGE_VIEW, userSelected);
+						view.list.selectedIndex = -1;
+					} else {
+						userUISession.pushPage(PagesENUM.SELECT_PARTICIPANT, item, TransitionAnimationENUM.SLIDE_LEFT)
+					}
 				} else {
-					userUISession.pushPage(PagesENUM.CHAT, item, TransitionAnimationENUM.SLIDE_LEFT)
+					if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+						item.chatMessages.resetNewMessages();
+						dataProvider.refresh();
+						view.list.selectedIndex = event.newIndex;
+						eventDispatcher.dispatchEvent(new SplitViewEvent(SplitViewEvent.CHANGE_VIEW, PagesENUM.getClassfromName(PagesENUM.CHAT), item, true))
+					} else {
+						userUISession.pushPage(PagesENUM.CHAT, item, TransitionAnimationENUM.SLIDE_LEFT)
+					}
 				}
 			} else {
 				throw new Error("item null on ChatRoomsViewMediator");
 			}
+		}
+		
+		private function userSelected(event:SplitViewEvent) {
+			if (userUISession.currentPageDetails is User) {
+				var item:Object = getItemFromDataProvider(userUISession.currentPageDetails.userID);
+				view.list.selectedItem = item;
+			}
+			eventDispatcher.removeEventListener(SplitViewEvent.CHANGE_VIEW, userSelected);
 		}
 		
 		/*
@@ -265,6 +334,8 @@ package org.bigbluebutton.view.navigation.pages.chatrooms {
 			userSession.userList.userRemovedSignal.remove(userRemoved);
 			userSession.userList.userAddedSignal.remove(userAdded);
 			chatMessagesSession.chatMessageChangeSignal.remove(newMessageReceived);
+			eventDispatcher.removeEventListener(SplitViewEvent.CHANGE_VIEW, userSelected);
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			list.removeEventListener(IndexChangeEvent.CHANGE, onIndexChangeHandler);
 			//view.sendButton.removeEventListener(MouseEvent.CLICK, onSendButtonClick);
 			view.dispose();

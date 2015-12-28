@@ -25,7 +25,9 @@
 			import com.juankpro.ane.localnotif.Notification;
 			import com.juankpro.ane.localnotif.NotificationManager;
 			import flash.system.Capabilities;
+			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
 			import mx.resources.ResourceManager;
 			import org.bigbluebutton.AppConfig;
 			import org.bigbluebutton.core.util.OrientationCalculator;
@@ -44,21 +46,27 @@
 			import org.bigbluebutton.view.navigation.pages.disconnect.DisconnectPageConfig;
 			import org.bigbluebutton.view.navigation.pages.exit.ExitPageConfig;
 			import org.bigbluebutton.view.navigation.pages.guest.GuestPageConfig;
+			import org.bigbluebutton.view.navigation.pages.locksettings.LockSettingsConfig;
 			import org.bigbluebutton.view.navigation.pages.login.LoginPageConfig;
-			import org.bigbluebutton.view.navigation.pages.login.rooms.RoomsConfig;
+			import org.bigbluebutton.view.navigation.pages.login.openroom.OpenRoomConfig;
+			import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.RecentRoomsConfig;
 			import org.bigbluebutton.view.navigation.pages.participants.ParticipantsConfig;
 			import org.bigbluebutton.view.navigation.pages.presentation.PresentationConfig;
 			import org.bigbluebutton.view.navigation.pages.profile.ProfileConfig;
 			import org.bigbluebutton.view.navigation.pages.selectparticipant.SelectParticipantConfig;
+			import org.bigbluebutton.view.navigation.pages.splitchat.SplitChatConfig;
+			import org.bigbluebutton.view.navigation.pages.splitparticipants.SplitParticipantsConfig;
+			import org.bigbluebutton.view.navigation.pages.splitsettings.SplitSettingsConfig;
 			import org.bigbluebutton.view.navigation.pages.status.StatusConfig;
 			import org.bigbluebutton.view.navigation.pages.userdetails.UserDetaisConfig;
 			import org.bigbluebutton.view.navigation.pages.videochat.VideoChatConfig;
-			import org.bigbluebutton.view.ui.micbutton.MicButtonConfig;
-			import org.bigbluebutton.view.ui.videobutton.VideoButtonConfig;
+			import org.bigbluebutton.view.navigation.pages.whiteboard.WhiteboardConfig;
 			import org.bigbluebutton.view.ui.NavigationButtonConfig;
 			import org.bigbluebutton.view.ui.RecordingStatusConfig;
 			import org.bigbluebutton.view.ui.SwapCameraConfig;
 			import org.bigbluebutton.view.ui.loading.LoadingScreenConfig;
+			import org.bigbluebutton.view.ui.micbutton.MicButtonConfig;
+			import org.bigbluebutton.view.ui.videobutton.VideoButtonConfig;
 			import org.osmf.logging.Log;
 			import org.osmf.logging.Logger;
 			import robotlegs.bender.bundles.mvcs.MVCSBundle;
@@ -114,12 +122,17 @@
 					.configure(PagesNavigatorConfig)
 					.configure(PresentationConfig)
 					.configure(LoginPageConfig)
+					.configure(LockSettingsConfig)
 					.configure(ChatConfig)
 					.configure(ChatRoomsConfig)
 					.configure(VideoChatConfig)
 					.configure(ProfileConfig)
+					.configure(SplitSettingsConfig)
+					.configure(SplitParticipantsConfig)
+					.configure(SplitChatConfig)
 					.configure(StatusConfig)
-					.configure(RoomsConfig)
+					.configure(RecentRoomsConfig)
+					.configure(OpenRoomConfig)
 					.configure(UserDetaisConfig)
 					.configure(ParticipantsConfig)
 					.configure(SelectParticipantConfig)
@@ -135,7 +148,7 @@
 					.configure(CameraSettingsConfig)
 					.configure(AudioSettingsConfig)
 					.configure(MenuButtonsConfig)
-					
+					.configure(WhiteboardConfig)
 					.configure(new ContextView(this));
 				// If you wish to change the log level then uncomment the line below and set 
 				// the logLevel to the value you desire. The default logLevel is DEBUG, which 
@@ -164,20 +177,29 @@
 			
 			protected function applicationCompleteHandler(event:FlexEvent):void {
 				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
-				stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGING, stageOrientationChangingHandler);
+				stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 				// setup a custom orientation calculator based on the accelerometer because the default one doesn't work
-				_orientationCalc = new OrientationCalculator(pagesNavigatorView, accelerometerCallback);
-				_orientationCalc.active = true;
-				currentOrientation = _orientationCalc.currentOrientation;
+				//_orientationCalc = new OrientationCalculator(pagesNavigatorView, accelerometerCallback);
+				//_orientationCalc.active = true;
+				//currentOrientation = _orientationCalc.currentOrientation;
 			}
 			
-			private function stageOrientationChangingHandler(e:StageOrientationEvent):void {
-				e.preventDefault();
+			private function stageOrientationChangingHandler(e:Event):void {
+				profileBtn.navigateTo = isTabletLandscape() ? [PagesENUM.SPLITSETTINGS] : [PagesENUM.PROFILE];
 			}
 			
 			private function accelerometerCallback():void {
+				trace("++ accelerometer callback");
+				stage.setOrientation(_orientationCalc.currentOrientation);
+				stage.dispatchEvent(new StageOrientationEvent(StageOrientationEvent.ORIENTATION_CHANGE, true, true, currentOrientation, _orientationCalc.currentOrientation));
 				currentOrientation = _orientationCalc.currentOrientation;
 				(pagesNavigatorView.activeView as NoTabView).rotationHandler(_orientationCalc.currentOrientation);
+			}
+			
+			public function isTabletLandscape():Boolean {
+				var landscape:Boolean = (this.width > this.height);
+				var tablet:Boolean = ((Math.max(this.width, this.height) / Capabilities.screenDPI) >= 7)
+				return landscape && tablet;
 			}
 		]]>
 	</fx:Script>
@@ -206,7 +228,7 @@
 				<s:Group>
 					<ui:NavigationButton id="profileBtn"
 										 styleName="profileButtonStyle topButtonStyle"
-										 navigateTo="{[PagesENUM.PROFILE]}"
+										 navigateTo="{isTabletLandscape() ? [PagesENUM.SPLITSETTINGS] : [PagesENUM.PROFILE]}"
 										 transitionAnimation="{TransitionAnimationENUM.SLIDE_LEFT}" />
 					<ui:NavigationButton id="backBtn"
 										 styleName="backButtonStyle topButtonStyle"

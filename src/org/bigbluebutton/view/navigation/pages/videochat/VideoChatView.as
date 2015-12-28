@@ -44,10 +44,6 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			return videoGroup0;
 		}
 		
-		public function get videoStreamsGroup():Group {
-			return videoStreamsGroup0;
-		}
-		
 		public function get streamListScroller():Scroller {
 			return streamListScroller0;
 		}
@@ -69,7 +65,11 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 		}
 		
 		public function get video():Video {
-			return webcam.videoViewVideo;
+			if (webcam) {
+				return webcam.videoViewVideo;
+			} else {
+				return null;
+			}
 		}
 		
 		public function getDisplayedUserID():String {

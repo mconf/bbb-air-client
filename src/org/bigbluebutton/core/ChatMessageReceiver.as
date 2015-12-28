@@ -1,5 +1,7 @@
 package org.bigbluebutton.core {
 	
+	import mx.collections.ArrayCollection;
+	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.chat.ChatMessageVO;
@@ -9,6 +11,9 @@ package org.bigbluebutton.core {
 		public var userSession:IUserSession;
 		
 		public var chatMessagesSession:IChatMessagesSession;
+		
+		[Inject]
+		public var chatService:IChatMessageService;
 		
 		public function ChatMessageReceiver(userSession:IUserSession, chatMessagesSession:IChatMessagesSession) {
 			this.userSession = userSession;
@@ -32,10 +37,14 @@ package org.bigbluebutton.core {
 		}
 		
 		private function handleChatRequestMessageHistoryReply(message:Object):void {
-			var msgCount:Number = message.count as Number;
+			var messages = JSON.parse(message.msg as String);
+			var msgCount:Number = messages.length;
+			chatMessagesSession.publicChat.messages = new ArrayCollection();
+			chatMessagesSession.publicChat.resetNewMessages();
 			for (var i:int = 0; i < msgCount; i++) {
-				handleChatReceivePublicMessageCommand(message.messages[i]);
+				handleChatReceivePublicMessageCommand(messages[i]);
 			}
+			userSession.loadedMessageHistorySignal.dispatch();
 		}
 		
 		private function handleChatReceivePublicMessageCommand(message:Object):void {

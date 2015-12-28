@@ -49,13 +49,11 @@ package org.bigbluebutton.core {
 			var fetcher:URLFetcher = new URLFetcher();
 			fetcher.successSignal.add(onSuccess);
 			fetcher.unsuccessSignal.add(onUnsuccess);
-			fetcher.fetch(joinUrl, null, URLLoaderDataFormat.TEXT, false);
+			fetcher.fetch(joinUrl, null, URLLoaderDataFormat.TEXT, true);
 		}
 		
 		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest, httpStatusCode:Number):void {
-			if (httpStatusCode == 302) {
-				successSignal.dispatch(urlRequest, responseUrl);
-			} else if (httpStatusCode == 200) {
+			if (httpStatusCode == 200) {
 				try {
 					var xml:XML = new XML(data);
 					switch (xml.returncode) {
@@ -70,8 +68,8 @@ package org.bigbluebutton.core {
 							break;
 					}
 				} catch (e:Error) {
-					trace("The response is probably not a XML. " + e.message);
-					onUnsuccess(URL_REQUEST_GENERIC_ERROR);
+					trace("The response is probably not a XML, but a HTML page." + e.message);
+					successSignal.dispatch(urlRequest, responseUrl);
 					return;
 				}
 			} else {

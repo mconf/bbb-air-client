@@ -1,16 +1,17 @@
 package org.bigbluebutton.view.navigation.pages.participants {
 	
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.StageOrientationEvent;
 	import flash.utils.Dictionary;
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
 	import mx.events.CollectionEvent;
+	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
 	import org.bigbluebutton.core.IUsersService;
-	import org.bigbluebutton.model.Guest;
-	import org.bigbluebutton.model.GuestList;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
@@ -18,6 +19,7 @@ package org.bigbluebutton.view.navigation.pages.participants {
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
 	import org.bigbluebutton.view.navigation.pages.participants.guests.GuestResponseEvent;
+	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitViewEvent;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	import robotlegs.bender.bundles.mvcs.Mediator;
@@ -71,6 +73,7 @@ package org.bigbluebutton.view.navigation.pages.participants {
 			dataProviderGuests = new ArrayCollection();
 			view.guestsList.dataProvider = dataProviderGuests;
 			view.guestsList.addEventListener(GuestResponseEvent.GUEST_RESPONSE, onSelectGuest);
+			FlexGlobals.topLevelApplication.stage.addEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			view.allowAllButton.addEventListener(MouseEvent.CLICK, allowAllGuests);
 			view.denyAllButton.addEventListener(MouseEvent.CLICK, denyAllGuests);
 			dicUserIdtoGuest = new Dictionary();
@@ -85,6 +88,26 @@ package org.bigbluebutton.view.navigation.pages.participants {
 				view.guestsList.includeInLayout = true;
 				view.allGuests.visible = true;
 				view.allGuests.includeInLayout = true;
+			}
+			if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+				if (userUISession.currentPageDetails is User) {
+					view.list.setSelectedIndex(dataProvider.getItemIndex(userUISession.currentPageDetails), true);
+				} else {
+					view.list.setSelectedIndex(0, true);
+				}
+			}
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS);
+			} else {
+				userUISession.pushPage(PagesENUM.PARTICIPANTS);
+			}
+		}
+		
+		private function stageOrientationChangingHandler(e:Event):void {
+			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			if (tabletLandscape) {
+				userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS);
 			}
 		}
 		
@@ -113,6 +136,9 @@ package org.bigbluebutton.view.navigation.pages.participants {
 			dataProvider.removeItemAt(index);
 			dicUserIdtoUser[user.userID] = null;
 			setPageTitle();
+			if (FlexGlobals.topLevelApplication.isTabletLandscape() && userUISession.currentPageDetails == user) {
+				view.list.setSelectedIndex(0, true);
+			}
 		}
 		
 		private function guestRemoved(userID:String):void {
@@ -148,7 +174,11 @@ package org.bigbluebutton.view.navigation.pages.participants {
 		protected function onSelectParticipant(event:IndexChangeEvent):void {
 			if (event.newIndex >= 0) {
 				var user:User = dataProvider.getItemAt(event.newIndex) as User;
-				userUISession.pushPage(PagesENUM.USER_DETAIS, user, TransitionAnimationENUM.SLIDE_LEFT);
+				if (FlexGlobals.topLevelApplication.isTabletLandscape()) {
+					eventDispatcher.dispatchEvent(new SplitViewEvent(SplitViewEvent.CHANGE_VIEW, PagesENUM.getClassfromName(PagesENUM.USER_DETAIS), user, true))
+				} else {
+					userUISession.pushPage(PagesENUM.USER_DETAIS, user, TransitionAnimationENUM.SLIDE_LEFT);
+				}
 			}
 		}
 		
@@ -177,6 +207,7 @@ package org.bigbluebutton.view.navigation.pages.participants {
 			super.destroy();
 			view.dispose();
 			view = null;
+			FlexGlobals.topLevelApplication.stage.removeEventListener(ResizeEvent.RESIZE, stageOrientationChangingHandler);
 			userSession.userList.userChangeSignal.remove(userChanged);
 			userSession.userList.userAddedSignal.remove(addUser);
 			userSession.userList.userRemovedSignal.remove(userRemoved);

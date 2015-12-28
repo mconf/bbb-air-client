@@ -1,6 +1,7 @@
 package org.bigbluebutton.core {
 	
 	import org.bigbluebutton.command.AuthenticationSignal;
+	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
@@ -19,6 +20,9 @@ package org.bigbluebutton.core {
 		[Inject]
 		public var authenticationSignal:AuthenticationSignal;
 		
+		[Inject]
+		public var disconnectUserSignal:DisconnectUserSignal;
+		
 		public var usersMessageSender:UsersMessageSender;
 		
 		public var usersMessageReceiver:UsersMessageReceiver;
@@ -31,6 +35,7 @@ package org.bigbluebutton.core {
 		public function setupMessageSenderReceiver():void {
 			usersMessageReceiver.userSession = userSession;
 			usersMessageReceiver.authenticationSignal = authenticationSignal;
+			usersMessageReceiver.disconnectUserSignal = disconnectUserSignal;
 			usersMessageSender.userSession = userSession;
 			userSession.mainConnection.addMessageListener(usersMessageReceiver as IMessageListener);
 			userSession.logoutSignal.add(logout);
@@ -77,6 +82,13 @@ package org.bigbluebutton.core {
 		
 		public function changeMood(mood:String):void {
 			usersMessageSender.changeMood(userSession.userList.me.userID, mood);
+			if (!conferenceParameters.serverIsMconf) {
+				if (mood == User.RAISE_HAND) {
+					usersMessageSender.raiseHand();
+				} else if (mood == User.NO_STATUS) {
+					usersMessageSender.lowerHand(userSession.userList.me.userID, userSession.userList.me.userID);
+				}
+			}
 		}
 		
 		public function clearUserStatus(userID:String):void {
@@ -103,8 +115,12 @@ package org.bigbluebutton.core {
 			usersMessageSender.changeRecordingStatus(userID, recording);
 		}
 		
-		public function muteAllUsers(mute:Boolean, dontMuteThese:Array = null):void {
-			usersMessageSender.muteAllUsers(mute, dontMuteThese);
+		public function muteAllUsers(mute:Boolean):void {
+			usersMessageSender.muteAllUsers(mute);
+		}
+		
+		public function muteAllUsersExceptPresenter(mute:Boolean):void {
+			usersMessageSender.muteAllUsersExceptPresenter(mute);
 		}
 		
 		public function muteUnmuteUser(userid:String, mute:Boolean):void {
@@ -149,6 +165,10 @@ package org.bigbluebutton.core {
 		
 		public function responseToGuest(userId:String, response:Boolean):void {
 			usersMessageSender.responseToGuest(userId, response);
+		}
+		
+		public function lowerHand(userID:String, loweredBy:String):void {
+			usersMessageSender.lowerHand(userID, loweredBy);
 		}
 		
 		public function responseToAllGuests(response:Boolean):void {
