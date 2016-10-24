@@ -29,6 +29,8 @@ package org.bigbluebutton.core {
 		
 		protected var _config:Config;
 		
+		protected var _version:String;
+		
 		public function get successJoinedSignal():ISignal {
 			return _successJoinedSignal;
 		}
@@ -61,6 +63,15 @@ package org.bigbluebutton.core {
 		
 		protected function afterJoin(urlRequest:URLRequest, responseUrl:String, httpStatusCode:Number = 0):void {
 			_urlRequest = urlRequest;
+			var apiSubservice:ApiService = new ApiService();
+			apiSubservice.successSignal.add(onApiResponse);
+			apiSubservice.unsuccessSignal.add(fail);
+			apiSubservice.getApi(getServerUrl(responseUrl), _urlRequest);
+		}
+		
+		protected function onApiResponse(version:String, urlRequest:URLRequest, responseUrl:String, httpStatusCode:Number = 0):void {
+			_version = version;
+			
 			var configSubservice:ConfigService = new ConfigService();
 			configSubservice.successSignal.add(onConfigResponse);
 			configSubservice.unsuccessSignal.add(fail);

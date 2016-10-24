@@ -100,7 +100,7 @@ package org.bigbluebutton.core {
 			_conferenceParameters = confParams;
 			_listenOnly = listenOnly;
 			trace(confParams.username + ", " + confParams.role + ", " + confParams.meetingName + ", " + confParams.externUserID);
-			_username = encodeURIComponent(confParams.externUserID + "-bbbID-" + confParams.username);
+			_username = encodeURIComponent(confParams.internalUserID + "-bbbID-" + confParams.username);
 			baseConnection.connect(_applicationURI, confParams.conference, userSession.userId, _username, confParams.voicebridge);
 		}
 		
