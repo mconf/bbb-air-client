@@ -99,9 +99,18 @@ package org.bigbluebutton.core {
 			// we don't use scope in the voice communication (many hours lost on it)
 			_conferenceParameters = confParams;
 			_listenOnly = listenOnly;
-			trace(confParams.username + ", " + confParams.role + ", " + confParams.meetingName + ", " + confParams.externUserID);
-			_username = encodeURIComponent(confParams.internalUserID + "-bbbID-" + confParams.username);
-			baseConnection.connect(_applicationURI, confParams.conference, userSession.userId, _username, confParams.voicebridge);
+			var userId:String;
+			switch (userSession.version) {
+				case "0.9":
+					userId = confParams.externUserID;
+					break;
+				case "1.0":
+				default:
+					userId = confParams.internalUserID;
+			}
+			trace(confParams.username + ", " + confParams.role + ", " + confParams.meetingName + ", " + userId);
+			_username = encodeURIComponent(userId + "-bbbID-" + confParams.username);
+			baseConnection.connect(_applicationURI, confParams.conference, userId, _username, confParams.voicebridge);
 		}
 		
 		public function disconnect(onUserCommand:Boolean):void {

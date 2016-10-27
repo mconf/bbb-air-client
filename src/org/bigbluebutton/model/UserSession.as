@@ -89,6 +89,8 @@ package org.bigbluebutton.model {
 		
 		protected var _globalVideoProfile:VideoProfile = _videoProfileManager.defaultVideoProfile;
 		
+		protected var _version:String = "";
+		
 		public function get videoProfileManager():VideoProfileManager {
 			return _videoProfileManager;
 		}
@@ -336,6 +338,14 @@ package org.bigbluebutton.model {
 			lockSettings.disableMicSignal.dispatch(lockSettings.disableMic && userLocked);
 			lockSettings.disablePrivateChatSignal.dispatch(lockSettings.disablePrivateChat && userLocked);
 			lockSettings.disablePublicChatSignal.dispatch(lockSettings.disablePublicChat && userLocked);
+		}
+		
+		public function get version():String {
+			return _version;
+		}
+		
+		public function set version(value:String):void {
+			_version = value;
 		}
 	}
 }

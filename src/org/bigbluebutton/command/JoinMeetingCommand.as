@@ -46,7 +46,8 @@ package org.bigbluebutton.command {
 			loginService.load(url);
 		}
 		
-		protected function successJoined(userObject:Object):void {
+		protected function successJoined(userObject:Object, version:String):void {
+			userSession.version = version;
 			conferenceParameters.load(userObject);
 			connectSignal.dispatch(new String(userSession.config.application.uri));
 		}

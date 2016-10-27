@@ -27,11 +27,11 @@ package org.bigbluebutton.core {
 		
 		protected var _mic:Microphone = null;
 		
-		protected var _defaultMicGain = 50;
+		protected var _defaultMicGain:Number = 50;
 		
 		protected var _heartbeat:Timer = new Timer(2000);
 		
-		public function setDefaultMicGain(value:Number) {
+		public function setDefaultMicGain(value:Number):void {
 			_defaultMicGain = value
 		}
 		

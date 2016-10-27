@@ -96,7 +96,7 @@ package org.bigbluebutton.core {
 			if (result.returncode == 'SUCCESS') {
 				trace("Join SUCCESS");
 				trace(ObjectUtil.toString(result));
-				successJoinedSignal.dispatch(result);
+				successJoinedSignal.dispatch(result, _version);
 			} else {
 				trace("Join FAILED");
 				unsuccessJoinedSignal.dispatch("Add some reason here!");
