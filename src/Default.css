@@ -627,7 +627,7 @@ s|Image.bigbbbLogoStyle
 	
 	s|Image.userIconStyle, s|Button.noStatusButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_account_circle_black_72dip.png");
+		backgroundImage: Embed(source="assets/res/drawable-mdpi/ic_account_circle_black_32dip.png");
 	}
 	
 	s|Image.arrowRightStyle
@@ -1106,7 +1106,7 @@ s|Image.bigbbbLogoStyle
 	
 	s|Image.userIconStyle, s|Button.noStatusButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_account_circle_black_72dip.png");
+		backgroundImage: Embed(source="assets/res/drawable-hdpi/ic_account_circle_black_32dip.png");
 	}
 	
 	s|Image.arrowRightStyle
@@ -1585,7 +1585,7 @@ s|Image.bigbbbLogoStyle
 	
 	s|Image.userIconStyle, s|Button.noStatusButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_account_circle_black_72dip.png");
+		backgroundImage: Embed(source="assets/res/drawable-xhdpi/ic_account_circle_black_32dip.png");
 	}
 	
 	s|Image.arrowRightStyle
@@ -2066,7 +2066,7 @@ s|Image.bigbbbLogoStyle
 	
 	s|Image.userIconStyle, s|Button.noStatusButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_account_circle_black_72dip.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxhdpi/ic_account_circle_black_32dip.png");
 	}
 	
 	s|Image.arrowRightStyle
@@ -2544,7 +2544,7 @@ s|Image.bigbbbLogoStyle
 	
 	s|Image.userIconStyle, s|Button.noStatusButtonStyle
 	{
-		backgroundImage: Embed(source="assets/res/drawable-xxxhdpi/ic_account_circle_black_72dip.png");
+		backgroundImage: Embed(source="assets/res/drawable-xxxhdpi/ic_account_circle_black_32dip.png");
 	}
 	
 	s|Image.arrowRightStyle
