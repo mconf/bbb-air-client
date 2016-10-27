@@ -1,6 +1,7 @@
 package {
 	
 	import flash.system.Capabilities;
+	
 	import mx.core.DPIClassification;
 	import mx.core.RuntimeDPIProvider;
 	
@@ -19,9 +20,9 @@ package {
 				return DPIClassification.DPI_320;
 			}
 			if (Capabilities.screenDPI <= 560) {
-				return 480;
+				return DPIClassification.DPI_480;
 			}
-			return 640;
+			return DPIClassification.DPI_640;
 		}
 	}
 }
