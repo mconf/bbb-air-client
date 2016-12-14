@@ -130,9 +130,13 @@
 	specify the path to a PNG file included in the AIR package. Optional. -->
 	<icon>
 		<image48x48>assets/res/mipmap-mdpi/ic_launcher.png</image48x48>
+		<image57x57>assets/res/ic_launcher_57px.png</image57x57>
 		<image72x72>assets/res/mipmap-hdpi/ic_launcher.png</image72x72>
+		<image76x76>assets/res/ic_launcher_76px.png</image76x76>
 		<image96x96>assets/res/mipmap-xhdpi/ic_launcher.png</image96x96>
+		<image120x120>assets/res/ic_launcher_120px.png</image120x120>
 		<image144x144>assets/res/mipmap-xxhdpi/ic_launcher.png</image144x144>
+		<image152x152>assets/res/ic_launcher_152px.png</image152x152>
 		<image192x192>assets/res/mipmap-xxxhdpi/ic_launcher.png</image192x192>
 	</icon>
 
