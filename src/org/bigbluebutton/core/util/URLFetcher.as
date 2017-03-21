@@ -6,6 +6,7 @@ package org.bigbluebutton.core.util {
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
@@ -51,6 +52,7 @@ package org.bigbluebutton.core.util {
 			urlLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
 			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
 			urlLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, httpResponseStatusHandler);
+			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
 			urlLoader.dataFormat = dataFormat;
 			urlLoader.load(_urlRequest);
 		}
@@ -91,12 +93,15 @@ package org.bigbluebutton.core.util {
 			trace("HTTP_STATUS responseURL " + e.responseURL + ", status " + e.status + ", redirected " + e.redirected + ", responseHeaders " + ObjectUtil.toString(e.responseHeaders));
 		}
 		
+		private function securityErrorHandler(e:SecurityErrorEvent):void {
+			trace("SECURITY_ERROR errorID " + e.errorID + ": " + e.text);
+		}
+		
 		private function handleComplete(e:Event):void {
 			successSignal.dispatch(e.target.data, _responseUrl, _urlRequest, _httpStatusCode);
 		}
 		
 		private function ioErrorHandler(e:IOErrorEvent):void {
-			trace(ObjectUtil.toString(e));
 			unsuccessSignal.dispatch(e.text);
 		}
 	}
