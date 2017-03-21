@@ -49,7 +49,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			this.styleName = "videoTextFieldStyle";
 			var nameFormat:TextFormat = new TextFormat();
 			nameFormat.size = this.getStyle("fontSize");
-			nameFormat.font = this.getStyle("font-family");
+			nameFormat.font = this.getStyle("fontFamily");
 			nameFormat.indent = this.getStyle("indent");
 			_userName = new TextField();
 			_userName.autoSize = TextFieldAutoSize.LEFT;
