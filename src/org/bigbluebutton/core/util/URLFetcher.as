@@ -79,17 +79,16 @@ package org.bigbluebutton.core.util {
 			var ns:Namespace = appXML.namespace();
 			// append client name and version to the end of the user agent
 			_urlRequest.userAgent += " " + appXML.ns::name + "/" + appXML.ns::versionNumber;
-			trace(_urlRequest.userAgent);
 		}
 		
 		private function httpResponseStatusHandler(e:HTTPStatusEvent):void {
 			_responseUrl = e.responseURL;
 			_httpStatusCode = e.status;
-			trace("Redirected to " + _responseUrl);
+			trace("HTTP_RESPONSE_STATUS responseURL " + e.responseURL + ", status " + e.status + ", redirected " + e.redirected + ", responseHeaders " + ObjectUtil.toString(e.responseHeaders));
 		}
 		
 		private function httpStatusHandler(e:HTTPStatusEvent):void {
-			// do nothing here
+			trace("HTTP_STATUS responseURL " + e.responseURL + ", status " + e.status + ", redirected " + e.redirected + ", responseHeaders " + ObjectUtil.toString(e.responseHeaders));
 		}
 		
 		private function handleComplete(e:Event):void {

@@ -84,26 +84,17 @@ package org.bigbluebutton.view.navigation.pages.login {
 		}
 		
 		public function joinRoom(url:String):void {
-			if (!url) {
+			if (url == null || url.length == 0) {
 				if (Capabilities.isDebugger) {
 					url = "bigbluebutton://test-install.blindsidenetworks.com/bigbluebutton/api/join?fullName=Air&meetingID=Demo+Meeting&password=ap&checksum=512620179852dadd6fe0665a48bcb852a3c0afac";
 				} else {
 					url = "";
 				}
 			}
-			if (url.lastIndexOf("://") != -1) {
-				url = getEndURL(url);
-			} else {
+			if (url.lastIndexOf("://") == -1) {
 				userUISession.pushPage(PagesENUM.OPENROOM);
 			}
 			joinMeetingSignal.dispatch(url);
-		}
-		
-		/**
-		 * Replace the schema with "http"
-		 */
-		protected function getEndURL(origin:String):String {
-			return origin.replace('bigbluebutton://', 'http://');
 		}
 		
 		override public function destroy():void {

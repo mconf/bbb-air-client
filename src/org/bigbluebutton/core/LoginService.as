@@ -51,10 +51,25 @@ package org.bigbluebutton.core {
 		
 		public function load(joinUrl:String):void {
 			_joinUrl = joinUrl;
+			// always try https first
+			loadHttps();
+		}
+		
+		protected function loadHttps():void {
+			var joinSubservice:JoinService = new JoinService();
+			joinSubservice.successSignal.add(afterJoin);
+			joinSubservice.unsuccessSignal.add(loadHttp);
+			var url:String = getJoinUrl("https");
+			joinSubservice.join(url);
+		}
+		
+		protected function loadHttp(failReason:String = ""):void {
+			trace("Couldn't load JOIN URL using HTTPS, trying HTTP. Reason: " + failReason);
 			var joinSubservice:JoinService = new JoinService();
 			joinSubservice.successSignal.add(afterJoin);
 			joinSubservice.unsuccessSignal.add(fail);
-			joinSubservice.join(_joinUrl);
+			var url:String = getJoinUrl("http");
+			joinSubservice.join(url);
 		}
 		
 		protected function afterJoin(urlRequest:URLRequest, responseUrl:String, httpStatusCode:Number = 0):void {
@@ -74,9 +89,17 @@ package org.bigbluebutton.core {
 			configSubservice.getConfig(getServerUrl(responseUrl), _urlRequest);
 		}
 		
+		private function getJoinUrl(protocol:String):String {
+			var parser:URLParser = new URLParser(_joinUrl);
+			parser.protocol = protocol;
+			return parser.toString();
+		}
+		
 		protected function getServerUrl(url:String):String {
 			var parser:URLParser = new URLParser(url);
-			return parser.protocol + "://" + parser.host + ":" + parser.port;
+			parser.path = "";
+			parser.parameters = "";
+			return parser.toString();
 		}
 		
 		protected function onConfigResponse(xml:XML):void {
