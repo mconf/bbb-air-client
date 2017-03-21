@@ -27,7 +27,7 @@ package org.bigbluebutton.core {
 			fetcher.fetch(ProfileUrl, urlRequest);
 		}
 		
-		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest, httpStatusCode):void {
+		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest, httpStatusCode:Number):void {
 			try {
 				successSignal.dispatch(new XML(data));
 			} catch (e:Error) {
