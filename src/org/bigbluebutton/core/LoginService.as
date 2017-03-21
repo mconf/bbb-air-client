@@ -1,13 +1,9 @@
 package org.bigbluebutton.core {
 	
-	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.net.URLRequestHeader;
-	import flash.net.URLRequestMethod;
+	
 	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.core.util.URLParser;
 	import org.bigbluebutton.model.Config;
 	import org.bigbluebutton.model.VideoProfileManager;

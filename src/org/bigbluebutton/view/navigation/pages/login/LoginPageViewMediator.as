@@ -1,27 +1,19 @@
 package org.bigbluebutton.view.navigation.pages.login {
 	
-	import flash.desktop.NativeApplication;
 	import flash.events.Event;
-	import flash.events.InvokeEvent;
 	import flash.events.MouseEvent;
-	import flash.filesystem.File;
-	import flash.net.URLVariables;
 	import flash.system.Capabilities;
-	import mx.collections.ArrayCollection;
+	
 	import mx.core.FlexGlobals;
+	
 	import org.bigbluebutton.command.JoinMeetingSignal;
 	import org.bigbluebutton.core.ILoginService;
 	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.model.UserSession;
-	import org.bigbluebutton.model.UserUISession;
-	import org.bigbluebutton.view.navigation.IPagesNavigatorView;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
-	import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.Room;
-	import org.flexunit.internals.namespaces.classInternal;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.components.Application;
 	
 	public class LoginPageViewMediator extends Mediator {
 		private const LOG:String = "LoginPageViewMediator::";

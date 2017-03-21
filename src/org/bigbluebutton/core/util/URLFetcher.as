@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.util {
 	
 	import com.freshplanet.nativeExtensions.AirCapabilities;
+	
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
@@ -8,9 +9,10 @@ package org.bigbluebutton.core.util {
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
-	import flash.net.URLRequestHeader;
 	import flash.net.URLRequestMethod;
+	
 	import mx.utils.ObjectUtil;
+	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
