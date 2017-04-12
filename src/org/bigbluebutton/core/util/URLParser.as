@@ -1,7 +1,7 @@
 package org.bigbluebutton.core.util {
 	
 	public class URLParser {
-		protected const reg:RegExp = /(?P<protocol>[a-zA-Z]+) : \/\/  (?P<host>[^:\/]*) (:(?P<port>\d+))?  ((?P<path>[^?]*))? ((?P<parameters>.*))? /x;
+		protected const reg:RegExp = /(?P<protocol>[a-zA-Z]+) : \/\/  (?P<host>[^:\/]*) (:(?P<port>\d+))?  (\/(?P<path>[^?]*))? (\?(?P<parameters>.*))? /x;
 		
 		private var _protocol:String;
 		
@@ -38,13 +38,17 @@ package org.bigbluebutton.core.util {
 				case "rtmp":
 					return "1935";
 				default:
-					throw("Protocol " + protocol + " has no default port");
-					// include your default port here!
+					return "";
 			}
 		}
 		
 		public function get protocol():String {
 			return _protocol;
+		}
+		
+		public function set protocol(value:String):void {
+			_protocol = value;
+			_port = getDefaultPortByProtocol(_protocol);
 		}
 		
 		public function get host():String {
@@ -59,8 +63,33 @@ package org.bigbluebutton.core.util {
 			return _path;
 		}
 		
+		public function set path(value:String):void {
+			_path = value;
+		}
+		
 		public function get parameters():String {
 			return _parameters;
+		}
+		
+		public function set parameters(value:String):void {
+			_parameters = value;
+		}
+		
+		public function toString():String {
+			var s:String = protocol + "://" + host;
+			if (port.length > 0) {
+				s += ":" + port;
+			}
+			if (path.length > 0 || parameters.length > 0) {
+				s += "/";
+			}
+			if (path.length > 0) {
+				s += path;
+			}
+			if (parameters.length > 0) {
+				s += "?" + parameters;
+			}
+			return s;
 		}
 	}
 }

@@ -1,16 +1,19 @@
 package org.bigbluebutton.core.util {
 	
 	import com.freshplanet.nativeExtensions.AirCapabilities;
+	
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
-	import flash.net.URLRequestHeader;
 	import flash.net.URLRequestMethod;
+	
 	import mx.utils.ObjectUtil;
+	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
@@ -49,6 +52,7 @@ package org.bigbluebutton.core.util {
 			urlLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
 			urlLoader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
 			urlLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, httpResponseStatusHandler);
+			urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
 			urlLoader.dataFormat = dataFormat;
 			urlLoader.load(_urlRequest);
 		}
@@ -57,10 +61,11 @@ package org.bigbluebutton.core.util {
 			// AirCapabilities ANE to get the device information
 			var airCap:AirCapabilities = new AirCapabilities();
 			var deviceName:String = airCap.getMachineName();
+			var userAgent:Array;
 			if (deviceName != "") {
 				// include device name in the user agent looking for the first ")" character as follows:
 				// Mozilla/5.0 (Android; U; pt-BR<; DEVICE NAME>) AppleWebKit/533.19.4 (KHTML, like Gecko) AdobeAIR/16.0
-				var userAgent:Array = _urlRequest.userAgent.split(")");
+				userAgent = _urlRequest.userAgent.split(")");
 				userAgent[0] += "; " + deviceName;
 				_urlRequest.userAgent = userAgent.join(")");
 			}
@@ -68,7 +73,7 @@ package org.bigbluebutton.core.util {
 			if (OSVersion != "") {
 				// include os version in the user agent looking for the first ";" character as follows:
 				// Mozilla/5.0 (Android< OSVERSION>; U; pt-BR) AppleWebKit/533.19.4 (KHTML, like Gecko) AdobeAIR/16.0
-				var userAgent:Array = _urlRequest.userAgent.split(";");
+				userAgent = _urlRequest.userAgent.split(";");
 				userAgent[0] += " " + OSVersion;
 				_urlRequest.userAgent = userAgent.join(";");
 			}
@@ -76,17 +81,20 @@ package org.bigbluebutton.core.util {
 			var ns:Namespace = appXML.namespace();
 			// append client name and version to the end of the user agent
 			_urlRequest.userAgent += " " + appXML.ns::name + "/" + appXML.ns::versionNumber;
-			trace(_urlRequest.userAgent);
 		}
 		
 		private function httpResponseStatusHandler(e:HTTPStatusEvent):void {
 			_responseUrl = e.responseURL;
 			_httpStatusCode = e.status;
-			trace("Redirected to " + _responseUrl);
+			trace("HTTP_RESPONSE_STATUS responseURL " + e.responseURL + ", status " + e.status + ", redirected " + e.redirected + ", responseHeaders " + ObjectUtil.toString(e.responseHeaders));
 		}
 		
 		private function httpStatusHandler(e:HTTPStatusEvent):void {
-			// do nothing here
+			trace("HTTP_STATUS responseURL " + e.responseURL + ", status " + e.status + ", redirected " + e.redirected + ", responseHeaders " + ObjectUtil.toString(e.responseHeaders));
+		}
+		
+		private function securityErrorHandler(e:SecurityErrorEvent):void {
+			trace("SECURITY_ERROR errorID " + e.errorID + ": " + e.text);
 		}
 		
 		private function handleComplete(e:Event):void {
@@ -94,7 +102,6 @@ package org.bigbluebutton.core.util {
 		}
 		
 		private function ioErrorHandler(e:IOErrorEvent):void {
-			trace(ObjectUtil.toString(e));
 			unsuccessSignal.dispatch(e.text);
 		}
 	}

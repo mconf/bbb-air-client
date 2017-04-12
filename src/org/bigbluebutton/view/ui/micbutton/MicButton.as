@@ -15,9 +15,7 @@ package org.bigbluebutton.view.ui.micbutton {
 			super.childrenCreated();
 			var muted:State = new State({name: "muted"});
 			var unmuted:State = new State({name: "unmuted"});
-			muted.overrides = [new SetStyle(this, "gradientColorTop", this.getStyle('selectedGradientColorTop')),
-							   new SetStyle(this, "gradientColorBottom", this.getStyle('selectedGradientColorBottom')),
-							   new SetStyle(this, "backgroundImage", this.getStyle('mutedBackgroundImage'))];
+			muted.overrides = [new SetStyle(this, "backgroundImage", this.getStyle('mutedBackgroundImage'))];
 			this.states.push(muted);
 			this.states.push(unmuted);
 		}

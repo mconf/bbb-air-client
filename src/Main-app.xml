@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/22.0">
+<application xmlns="http://ns.adobe.com/air/application/23.0">
 
 	<!-- Adobe AIR Application Descriptor File Template.
 
@@ -26,7 +26,7 @@
 	<!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
 	Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
 	An updated version of application must have a versionNumber value higher than the previous version. Required for namespace >= 2.5 . -->
-	<versionNumber>0.6.8</versionNumber>
+	<versionNumber>1.0.3</versionNumber>
 
 	<!-- Whether the application can be launched when the user clicks a link in a web browser. Optional. Default false. -->
 	<allowBrowserInvocation>true</allowBrowserInvocation>
@@ -129,19 +129,15 @@
 	<!-- The icon the system uses for the application. For at least one resolution,
 	specify the path to a PNG file included in the AIR package. Optional. -->
 	<icon>
-		<!-- http://help.adobe.com/en_US/air/build/WSfffb011ac560372f2fea1812938a6e463-8000.html#WSfffb011ac560372f-6fd06f0f1293d3b33ea-7ffc -->
-		<image16x16>assets/icons/sizes/icon-16.png</image16x16>
-		<image29x29>assets/icons/sizes/icon-29.png</image29x29>
-		<image32x32>assets/icons/sizes/icon-32.png</image32x32>
-		<image48x48>assets/icons/sizes/icon-48.png</image48x48>
-		<image57x57>assets/icons/sizes/icon-57.png</image57x57>
-		<image72x72>assets/icons/sizes/icon-72.png</image72x72>
-		<image76x76>assets/icons/sizes/icon-76.png</image76x76>
-		<image114x114>assets/icons/sizes/icon-114.png</image114x114>
-		<image120x120>assets/icons/sizes/icon-120.png</image120x120>
-		<image128x128>assets/icons/sizes/icon-128.png</image128x128>
-		<image152x152>assets/icons/sizes/icon-152.png</image152x152>
-		<image512x512>assets/icons/sizes/icon-512.png</image512x512>
+		<image48x48>assets/res/mipmap-mdpi/ic_launcher.png</image48x48>
+		<image57x57>assets/res/ic_launcher_57px.png</image57x57>
+		<image72x72>assets/res/mipmap-hdpi/ic_launcher.png</image72x72>
+		<image76x76>assets/res/ic_launcher_76px.png</image76x76>
+		<image96x96>assets/res/mipmap-xhdpi/ic_launcher.png</image96x96>
+		<image120x120>assets/res/ic_launcher_120px.png</image120x120>
+		<image144x144>assets/res/mipmap-xxhdpi/ic_launcher.png</image144x144>
+		<image152x152>assets/res/ic_launcher_152px.png</image152x152>
+		<image192x192>assets/res/mipmap-xxxhdpi/ic_launcher.png</image192x192>
 	</icon>
 
 	<!-- Whether the application handles the update when a user double-clicks an update version
@@ -270,15 +266,13 @@
 					        <category android:name="android.intent.category.LAUNCHER" />
 					    </intent-filter>
 					
-					    <!-- Test for URL scheme -->
 					    <intent-filter>
 					        <action android:name="android.intent.action.VIEW" />
 					        <category android:name="android.intent.category.DEFAULT" />
 					        <category android:name="android.intent.category.BROWSABLE" />
-					        <!-- <data android:scheme="http" android:host="mconf.mobi" android:pathPattern=".*" />-->
 					        <data android:scheme="bigbluebutton" />
+					        <data android:scheme="mconf" />
 					    </intent-filter>
-					    <!-- End Test for URL scheme -->
 					</activity>
 					<service android:name="com.juankpro.ane.localnotif.LocalNotificationIntentService"/>
                     <receiver android:name="com.juankpro.ane.localnotif.AlarmIntentService" />
@@ -308,6 +302,7 @@
 					<key>CFBundleURLSchemes</key>
 					<array>
 						<string>bigbluebutton</string>
+						<string>mconf</string>
 					</array>
 					<key>CFBundleURLName</key>
 					<string>org.bigbluebutton</string>

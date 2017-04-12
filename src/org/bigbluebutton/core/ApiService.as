@@ -1,14 +1,7 @@
 package org.bigbluebutton.core {
-	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.net.URLRequestHeader;
-	import flash.net.URLRequestMethod;
-	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.core.util.URLFetcher;
-	import org.bigbluebutton.core.util.URLParser;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
@@ -26,20 +19,20 @@ package org.bigbluebutton.core {
 		}
 		
 		public function getApi(serverUrl:String, urlRequest:URLRequest):void {
-			var configUrl:String = serverUrl + "/bigbluebutton/api";
+			var apiUrl:String = serverUrl + "/bigbluebutton/api";
 			var fetcher:URLFetcher = new URLFetcher;
 			fetcher.successSignal.add(onSuccess);
 			fetcher.unsuccessSignal.add(onUnsuccess);
-			fetcher.fetch(configUrl, urlRequest);
+			fetcher.fetch(apiUrl, urlRequest);
 		}
 		
 		protected function onSuccess(data:Object, responseUrl:String, urlRequest:URLRequest, httpStatusCode:Number):void {
 			if (httpStatusCode == 200) {
 				var xml:XML = new XML(data);
-				if (xml.response.returncode == "SUCCESS") {
-					successSignal.dispatch(xml.response.version, urlRequest, responseUrl);
+				if (xml.returncode == "SUCCESS") {
+					successSignal.dispatch(xml.version, urlRequest, responseUrl);
 				} else {
-					onUnsuccess(xml.response.returncode);
+					onUnsuccess(xml.returncode);
 				}
 			} else {
 				onUnsuccess("INVALID_RETURN_CODE");
