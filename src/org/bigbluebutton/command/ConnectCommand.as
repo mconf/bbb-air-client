@@ -22,6 +22,7 @@ package org.bigbluebutton.command {
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
 	import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.Room;
+	import org.bigbluebutton.core.SessionToken;
 	import robotlegs.bender.bundles.mvcs.Command;
 	
 	public class ConnectCommand extends Command {
@@ -145,6 +146,7 @@ package org.bigbluebutton.command {
 		}
 		
 		private function successJoiningMeeting():void {
+			var sessionToken = SessionToken.getSessionToken();
 			updateRooms();
 			// Set up remaining message sender and receivers:
 			presentationService.setupMessageSenderReceiver();
@@ -169,10 +171,12 @@ package org.bigbluebutton.command {
 				audioOptions.listenOnly = userSession.userList.me.listenOnly = true;
 				shareMicrophoneSignal.dispatch(audioOptions);
 			}
+			if (!sessionToken) {
 			deskshareConnection.applicationURI = userSession.config.getConfigFor("DeskShareModule").@uri;
 			deskshareConnection.room = conferenceParameters.room;
 			deskshareConnection.connect();
 			userSession.deskshareConnection = deskshareConnection;
+			}
 			// Query the server for chat, users, and presentation info
 			chatService.sendWelcomeMessage();
 			userSession.userList.allUsersAddedSignal.add(successUsersAdded);
