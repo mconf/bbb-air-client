@@ -12,7 +12,8 @@ package org.bigbluebutton.core {
 	import org.bigbluebutton.core.util.URLParser;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	
+	import org.bigbluebutton.core.SessionToken;
+
 	public class ConfigService {
 		protected var _successSignal:Signal = new Signal();
 		
@@ -27,7 +28,12 @@ package org.bigbluebutton.core {
 		}
 		
 		public function getConfig(serverUrl:String, urlRequest:URLRequest):void {
-			var configUrl:String = serverUrl + "/bigbluebutton/api/configXML?a=" + new Date().time;
+			var sessionToken = SessionToken.getSessionToken();
+			if (sessionToken) {
+				var configUrl:String = serverUrl + "/bigbluebutton/api/configXML?" + sessionToken;
+			} else {
+				var configUrl:String = serverUrl + "/bigbluebutton/api/configXML?a=" + new Date().time;
+			}
 			var fetcher:URLFetcher = new URLFetcher;
 			fetcher.successSignal.add(onSuccess);
 			fetcher.unsuccessSignal.add(onUnsuccess);

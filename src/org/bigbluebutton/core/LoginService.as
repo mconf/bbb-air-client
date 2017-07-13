@@ -9,6 +9,7 @@ package org.bigbluebutton.core {
 	import org.bigbluebutton.model.VideoProfileManager;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
+	import org.bigbluebutton.core.SessionToken;
 	
 	public class LoginService implements ILoginService {
 		protected var _urlRequest:URLRequest = null;
@@ -82,7 +83,6 @@ package org.bigbluebutton.core {
 		
 		protected function onApiResponse(version:String, urlRequest:URLRequest, responseUrl:String, httpStatusCode:Number = 0):void {
 			_version = version;
-			
 			var configSubservice:ConfigService = new ConfigService();
 			configSubservice.successSignal.add(onConfigResponse);
 			configSubservice.unsuccessSignal.add(fail);
@@ -105,10 +105,15 @@ package org.bigbluebutton.core {
 		protected function onConfigResponse(xml:XML):void {
 			_config = new Config(xml);
 			successGetConfigSignal.dispatch(_config);
+			var sessionToken = SessionToken.getSessionToken();
 			var profilesService:ProfilesService = new ProfilesService();
 			profilesService.successSignal.add(onProfilesResponse);
 			profilesService.unsuccessSignal.add(failedLoadingProfiles);
-			profilesService.getProfiles(getServerUrl(_config.application.host), _urlRequest);
+			if (sessionToken) {
+				profilesService.getProfiles(getServerUrl(_config.application.host + sessionToken), _urlRequest);
+			} else  {
+				profilesService.getProfiles(getServerUrl(_config.application.host), _urlRequest);
+			}
 		}
 		
 		protected function afterEnter(result:Object):void {
@@ -123,11 +128,16 @@ package org.bigbluebutton.core {
 		}
 		
 		protected function dispatchVideoProfileManager(manager:VideoProfileManager):void {
+			var sessionToken = SessionToken.getSessionToken();
 			successGetProfilesSignal.dispatch(manager);
 			var enterSubservice:EnterService = new EnterService();
 			enterSubservice.successSignal.add(afterEnter);
 			enterSubservice.unsuccessSignal.add(fail);
-			enterSubservice.enter(_config.application.host, _urlRequest);
+			if (sessionToken) {
+				enterSubservice.enter(_config.application.host + "?" + sessionToken, _urlRequest);
+			} else {
+				enterSubservice.enter(_config.application.host, _urlRequest);
+			}
 		}
 		
 		protected function onProfilesResponse(xml:XML):void {

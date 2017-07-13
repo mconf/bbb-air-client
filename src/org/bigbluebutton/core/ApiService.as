@@ -1,6 +1,5 @@
 package org.bigbluebutton.core {
 	import flash.net.URLRequest;
-	
 	import org.bigbluebutton.core.util.URLFetcher;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;

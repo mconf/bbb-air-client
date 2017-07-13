@@ -1,4 +1,5 @@
 package org.bigbluebutton.core.util {
+	import org.bigbluebutton.core.SessionToken;
 	
 	public class URLParser {
 		protected const reg:RegExp = /(?P<protocol>[a-zA-Z]+) : \/\/  (?P<host>[^:\/]*) (:(?P<port>\d+))?  (\/(?P<path>[^?]*))? (\?(?P<parameters>.*))? /x;
@@ -27,6 +28,9 @@ package org.bigbluebutton.core.util {
 			}
 			_path = results.path;
 			_parameters = results.parameters;
+			if (_parameters.indexOf("sessionToken") >= 0 ) {
+				SessionToken.setSessionToken(_parameters);
+			}
 		}
 		
 		private function getDefaultPortByProtocol(protocol:String):String {
