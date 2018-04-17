@@ -77,7 +77,7 @@ package org.bigbluebutton.core {
 		}
 		
 		private function handleScreenShareStoppedMessage(message:Object):void {
-			var map:Object = JSON.parse(message.msg);      
+			var map:Object = JSON.parse(message.msg);
 			if (map.hasOwnProperty("session") &&
 					map.hasOwnProperty("reason") &&
 					userSession.deskshareConnection.session == map.session) {

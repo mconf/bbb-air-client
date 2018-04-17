@@ -8,6 +8,5 @@ package org.bigbluebutton.core {
 		function get sendMessageOnFailureSignal():ISignal;
 		function setupMessageSenderReceiver():void;
 		function sendPong(session:String, timestamp: Number):void;
-		function sendIsSharingScreen():void;
 	}
 }

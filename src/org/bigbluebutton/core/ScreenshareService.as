@@ -41,15 +41,15 @@ package org.bigbluebutton.core {
 			messageSender = new ScreenshareMessageSender(userSession, _sendMessageOnSuccessSignal, _sendMessageOnFailureSignal);
 			messageReceiver = new ScreenshareMessageReceiver(userSession);
 			userSession.deskshareConnection.addMessageListener(messageReceiver as IMessageListener);
-			sendIsSharingScreen();
+			sendSetUserId();
 		}
 		
 		public function sendPong(session:String, timestamp: Number):void {
 			messageSender.sendPong(conferenceParameters.meetingID, session, timestamp);
 		}
-		
-		public function sendIsSharingScreen():void {
-			messageSender.sendIsSharingScreen(conferenceParameters.meetingID);
+
+		public function sendSetUserId():void {
+			messageSender.sendSetUserId(conferenceParameters.internalUserID);
 		}
 	}
 }

@@ -34,12 +34,21 @@ package org.bigbluebutton.core {
             }, message);
 		}
 		
-		public function sendIsSharingScreen(meetingId:String):void {
-			var message:Object = new Object();
-			message["meetingId"] = meetingId;
-			
+		public function sendIsSharingScreen():void {			
 			userSession.deskshareConnection.sendMessage("screenshare.isScreenSharing", function(result:String):void { // On successful result
 				trace(result);
+			}, function(status:String):void { // status - On error occurred
+				trace(status);
+			}, null);
+		}
+		
+		public function sendSetUserId(userId:String):void {
+			var message:Object = new Object();
+			message["userId"] = userId;
+			
+			userSession.deskshareConnection.sendMessage("screenshare.setUserId", function(result:String):void { // On successful result
+				trace(result);
+				sendIsSharingScreen();
 			}, function(status:String):void { // status - On error occurred
 				trace(status);
 			}, message);
