@@ -2,7 +2,9 @@ package org.bigbluebutton.model {
 	
 	import flash.media.Video;
 	import flash.net.NetConnection;
+	
 	import mx.collections.ArrayCollection;
+	
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
 	import org.bigbluebutton.core.IDeskshareConnection;
 	import org.bigbluebutton.core.IVideoConnection;

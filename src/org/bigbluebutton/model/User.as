@@ -181,6 +181,17 @@ package org.bigbluebutton.model {
 			_locked = value;
 		}
 		
+		private var _lockBeingEnforced:Boolean;
+
+		[Bindable]
+		public function get lockBeingEnforced():Boolean {
+			return _lockBeingEnforced;
+			verifyUserStatus();
+		}
+		
+		public function set lockBeingEnforced(value:Boolean):void {
+			_lockBeingEnforced = value;
+		}		
 		public var streamName:String = "";
 		
 		// This used to only be used for accessibility and doesn't need to be filled in yet. - Chad

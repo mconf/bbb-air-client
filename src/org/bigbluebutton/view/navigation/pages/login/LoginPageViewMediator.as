@@ -86,7 +86,7 @@ package org.bigbluebutton.view.navigation.pages.login {
 		public function joinRoom(url:String):void {
 			if (url == null || url.length == 0) {
 				if (Capabilities.isDebugger) {
-					url = "bigbluebutton://test-install.blindsidenetworks.com/bigbluebutton/api/join?fullName=Air&meetingID=Demo+Meeting&password=ap&checksum=512620179852dadd6fe0665a48bcb852a3c0afac";
+					url = "bigbluebutton://sip-dev.mconf.com/bigbluebutton/api/join?fullName=android&meetingID=random-4047404&password=ap&redirect=true&checksum=47ec8f1d03e13c8ae73fbb7da950298ad4e80c24";
 				} else {
 					url = "";
 				}

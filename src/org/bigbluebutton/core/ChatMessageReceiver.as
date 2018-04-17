@@ -2,6 +2,7 @@ package org.bigbluebutton.core {
 	
 	import mx.collections.ArrayCollection;
 	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.chat.ChatMessageVO;
@@ -37,7 +38,7 @@ package org.bigbluebutton.core {
 		}
 		
 		private function handleChatRequestMessageHistoryReply(message:Object):void {
-			var messages = JSON.parse(message.msg as String);
+			var messages:Object = JSON.parse(message.msg as String);
 			var msgCount:Number = messages.length;
 			chatMessagesSession.publicChat.messages = new ArrayCollection();
 			chatMessagesSession.publicChat.resetNewMessages();

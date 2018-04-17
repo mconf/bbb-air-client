@@ -94,7 +94,7 @@ package org.bigbluebutton.model {
 			}
 		}
 		
-		public function set lockedLayout(disable:Boolean) {
+		public function set lockedLayout(disable:Boolean):void {
 			_lockedLayout = disable;
 		}
 	}

@@ -26,8 +26,11 @@ package org.bigbluebutton.core {
 			return _unsuccessSignal;
 		}
 		
-		public function getConfig(serverUrl:String, urlRequest:URLRequest):void {
+		public function getConfig(serverUrl:String, sessionToken:String, urlRequest:URLRequest):void {
 			var configUrl:String = serverUrl + "/bigbluebutton/api/configXML?a=" + new Date().time;
+			if (sessionToken) {
+				configUrl += "&sessionToken="+ sessionToken;
+			}
 			var fetcher:URLFetcher = new URLFetcher;
 			fetcher.successSignal.add(onSuccess);
 			fetcher.unsuccessSignal.add(onUnsuccess);

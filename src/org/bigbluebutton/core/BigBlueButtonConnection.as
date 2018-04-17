@@ -47,18 +47,19 @@ package org.bigbluebutton.core {
 		
 		private function getMyUserId():void {
 			baseConnection.connection.call("participants.getMyUserId",
-										   new Responder(function(result:String):void {
-											   trace("Success connected: My user ID is [" + result + "]");
-											   _userId = result as String;
-											   successConnected.dispatch();
-										   },
-										   function(status:Object):void {
-											   trace("Error occurred");
-											   trace(ObjectUtil.toString(status));
-											   unsuccessConnected.dispatch("Failed to get the userId");
-										   }
-										   )
-										   );
+			   new Responder(
+				   function(result:String):void {
+					   trace("Success connected: My user ID is [" + result + "]");
+					   _userId = result as String;
+					   successConnected.dispatch();
+				   },
+				   function(status:Object):void {
+					   trace("Error occurred");
+					   trace(ObjectUtil.toString(status));
+					   unsuccessConnected.dispatch("Failed to get the userId");
+				   }
+			   )
+		   );
 		}
 		
 		public function get unsuccessConnected():ISignal {

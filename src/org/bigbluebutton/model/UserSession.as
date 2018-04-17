@@ -1,8 +1,10 @@
 package org.bigbluebutton.model {
 	
 	import flash.net.NetConnection;
+	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
+	
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
 	import org.bigbluebutton.core.IDeskshareConnection;
 	import org.bigbluebutton.core.IVideoConnection;
@@ -36,7 +38,7 @@ package org.bigbluebutton.model {
 		protected var _videoConnection:IVideoConnection;
 		
 		protected var _deskshareConnection:IDeskshareConnection;
-		
+				
 		protected var _userList:UserList;
 		
 		protected var _guestList:UserList;
@@ -332,8 +334,13 @@ package org.bigbluebutton.model {
 		}
 		
 		public function dispatchLockSettings():void {
-			var userLocked:Boolean = (userList.me.role != User.MODERATOR && !userList.me.presenter && userList.me.locked);
+			var userLocked:Boolean = (userList.me.role != User.MODERATOR && ! userList.me.presenter && userList.me.locked);
 			lockSettings.loaded = true;
+			userList.me.lockBeingEnforced = userLocked && (
+				lockSettings.disableCam ||
+				lockSettings.disableMic ||
+				lockSettings.disablePrivateChat ||
+				lockSettings.disablePublicChat);
 			lockSettings.disableCamSignal.dispatch(lockSettings.disableCam && userLocked);
 			lockSettings.disableMicSignal.dispatch(lockSettings.disableMic && userLocked);
 			lockSettings.disablePrivateChatSignal.dispatch(lockSettings.disablePrivateChat && userLocked);

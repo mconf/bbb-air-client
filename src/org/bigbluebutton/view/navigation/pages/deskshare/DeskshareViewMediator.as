@@ -39,7 +39,14 @@ package org.bigbluebutton.view.navigation.pages.deskshare {
 		 */
 		private function showDeskshare(width:Number, height:Number):void {
 			view.noDeskshareMessage.visible = view.noDeskshareMessage.includeInLayout = false;
-			view.startStream(userSession.deskshareConnection.connection, null, params.room, null, userSession.deskshareConnection.streamWidth, userSession.deskshareConnection.streamHeight);
+			switch (userSession.version) {
+				case "0.9":
+				case "1.0":
+					view.startStream(userSession.deskshareConnection.connection, null, params.room, null, userSession.deskshareConnection.streamWidth, userSession.deskshareConnection.streamHeight);
+					break;
+				default:
+					view.startStream(userSession.deskshareConnection.connection, null, userSession.deskshareConnection.streamId, null, userSession.deskshareConnection.streamWidth, userSession.deskshareConnection.streamHeight);
+			}			
 		}
 		
 		private function stageOrientationChangingHandler(e:Event):void {

@@ -5,7 +5,7 @@ package org.bigbluebutton.core {
 	import org.bigbluebutton.model.IMessageListener;
 	import org.osflash.signals.ISignal;
 	
-	public interface IDeskshareConnection {
+	public interface IScreenshareConnection {
 		function get unsuccessConnected():ISignal
 		function get successConnected():ISignal
 		function get isStreamingSignal():ISignal

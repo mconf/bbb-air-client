@@ -27,6 +27,8 @@ package org.bigbluebutton.core {
 		
 		protected var _version:String;
 		
+		protected var _sessionToken:String;
+		
 		public function get successJoinedSignal():ISignal {
 			return _successJoinedSignal;
 		}
@@ -77,6 +79,8 @@ package org.bigbluebutton.core {
 			var apiSubservice:ApiService = new ApiService();
 			apiSubservice.successSignal.add(onApiResponse);
 			apiSubservice.unsuccessSignal.add(fail);
+			var parser:URLParser = new URLParser(responseUrl);
+			_sessionToken = parser.getParameter("sessionToken");
 			apiSubservice.getApi(getServerUrl(responseUrl), _urlRequest);
 		}
 		
@@ -86,7 +90,7 @@ package org.bigbluebutton.core {
 			var configSubservice:ConfigService = new ConfigService();
 			configSubservice.successSignal.add(onConfigResponse);
 			configSubservice.unsuccessSignal.add(fail);
-			configSubservice.getConfig(getServerUrl(responseUrl), _urlRequest);
+			configSubservice.getConfig(getServerUrl(responseUrl), _sessionToken, _urlRequest);
 		}
 		
 		private function getJoinUrl(protocol:String):String {
@@ -127,7 +131,11 @@ package org.bigbluebutton.core {
 			var enterSubservice:EnterService = new EnterService();
 			enterSubservice.successSignal.add(afterEnter);
 			enterSubservice.unsuccessSignal.add(fail);
-			enterSubservice.enter(_config.application.host, _urlRequest);
+			var enterUrl:String = _config.application.host;
+			if (_sessionToken) {
+				enterUrl += "?sessionToken=" + _sessionToken;
+			}
+			enterSubservice.enter(enterUrl, _urlRequest);
 		}
 		
 		protected function onProfilesResponse(xml:XML):void {

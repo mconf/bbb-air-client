@@ -25,6 +25,8 @@ package org.bigbluebutton {
 	import org.bigbluebutton.core.ILoginService;
 	import org.bigbluebutton.core.IPresentationService;
 	import org.bigbluebutton.core.ISaveData;
+	import org.bigbluebutton.core.IScreenshareConnection;
+	import org.bigbluebutton.core.IScreenshareService;
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.core.IVoiceConnection;
@@ -32,6 +34,8 @@ package org.bigbluebutton {
 	import org.bigbluebutton.core.LoginService;
 	import org.bigbluebutton.core.PresentationService;
 	import org.bigbluebutton.core.SaveData;
+	import org.bigbluebutton.core.ScreenshareConnection;
+	import org.bigbluebutton.core.ScreenshareService;
 	import org.bigbluebutton.core.UsersService;
 	import org.bigbluebutton.core.VideoConnection;
 	import org.bigbluebutton.core.VoiceConnection;
@@ -68,6 +72,8 @@ package org.bigbluebutton {
 			injector.map(IWhiteboardService).toSingleton(WhiteboardService);
 			injector.map(IChatMessagesSession).toSingleton(ChatMessagesSession);
 			injector.map(IDeskshareConnection).toSingleton(DeskshareConnection);
+			injector.map(IScreenshareConnection).toSingleton(ScreenshareConnection);
+			injector.map(IScreenshareService).toSingleton(ScreenshareService);
 			injector.map(ISaveData).toSingleton(SaveData);
 			// Type mapping
 			injector.map(IBaseConnection).toType(BaseConnection);

@@ -1,20 +1,26 @@
 package org.bigbluebutton.command {
 	
 	import flash.media.Camera;
+	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
 	import mx.messaging.management.Attribute;
 	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.command.DisconnectUserSignal;
+	import org.bigbluebutton.core.DeskshareConnection;
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
 	import org.bigbluebutton.core.IChatMessageService;
 	import org.bigbluebutton.core.IDeskshareConnection;
 	import org.bigbluebutton.core.IPresentationService;
 	import org.bigbluebutton.core.ISaveData;
+	import org.bigbluebutton.core.IScreenshareConnection;
+	import org.bigbluebutton.core.IScreenshareService;
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.core.IVoiceConnection;
 	import org.bigbluebutton.core.IWhiteboardService;
+	import org.bigbluebutton.core.ScreenshareConnection;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
@@ -22,6 +28,7 @@ package org.bigbluebutton.command {
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
 	import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.Room;
+	
 	import robotlegs.bender.bundles.mvcs.Command;
 	
 	public class ConnectCommand extends Command {
@@ -49,6 +56,9 @@ package org.bigbluebutton.command {
 		public var deskshareConnection:IDeskshareConnection;
 		
 		[Inject]
+		public var screenshareConnection:IScreenshareConnection;
+		
+		[Inject]
 		public var uri:String;
 		
 		[Inject]
@@ -62,6 +72,9 @@ package org.bigbluebutton.command {
 		
 		[Inject]
 		public var whiteboardService:IWhiteboardService;
+		
+		[Inject]
+		public var screenshareService:IScreenshareService;
 		
 		[Inject]
 		public var disconnectUserSignal:DisconnectUserSignal;
@@ -157,22 +170,32 @@ package org.bigbluebutton.command {
 			userSession.videoConnection = videoConnection;
 			voiceConnection.uri = userSession.config.getConfigFor("PhoneModule").@uri;
 			userSession.voiceConnection = voiceConnection;
+			var audioOptions:Object = new Object();
 			if (userSession.phoneAutoJoin && userSession.phoneSkipCheck) {
 				var forceListenOnly:Boolean = (userSession.config.getConfigFor("PhoneModule").@forceListenOnly.toString().toUpperCase() == "TRUE") ? true : false;
-				var audioOptions:Object = new Object();
 				audioOptions.shareMic = userSession.userList.me.voiceJoined = !forceListenOnly;
 				audioOptions.listenOnly = userSession.userList.me.listenOnly = forceListenOnly;
 				shareMicrophoneSignal.dispatch(audioOptions);
 			} else {
-				var audioOptions:Object = new Object();
 				audioOptions.shareMic = userSession.userList.me.voiceJoined = false;
 				audioOptions.listenOnly = userSession.userList.me.listenOnly = true;
 				shareMicrophoneSignal.dispatch(audioOptions);
 			}
-			deskshareConnection.applicationURI = userSession.config.getConfigFor("DeskShareModule").@uri;
-			deskshareConnection.room = conferenceParameters.room;
-			deskshareConnection.connect();
-			userSession.deskshareConnection = deskshareConnection;
+			switch (userSession.version) {
+				case "0.9":
+				case "1.0":
+					deskshareConnection.applicationURI = userSession.config.getConfigFor("DeskShareModule").@uri;
+					deskshareConnection.room = conferenceParameters.room;
+					deskshareConnection.connect();
+					userSession.deskshareConnection = deskshareConnection;
+					break;
+				default:
+					screenshareConnection.applicationURI = userSession.config.getConfigFor("ScreenshareModule").@uri + "/" + conferenceParameters.room;
+					screenshareConnection.successConnected.add(successScreenshareConnected);
+					screenshareConnection.unsuccessConnected.add(unsuccessScreenshareConnected);
+					screenshareConnection.connect();
+					userSession.deskshareConnection = screenshareConnection as IDeskshareConnection;
+			}
 			// Query the server for chat, users, and presentation info
 			chatService.sendWelcomeMessage();
 			userSession.userList.allUsersAddedSignal.add(successUsersAdded);
@@ -203,7 +226,7 @@ package org.bigbluebutton.command {
 					}
 				}
 				if (!roomExists) {
-					var room = new Room(new Date(), roomUrl, roomName);
+					var room:Room = new Room(new Date(), roomUrl, roomName);
 					rooms.addItem(room);
 					if (rooms.length > 5) {
 						rooms.removeItemAt(0);
@@ -240,7 +263,7 @@ package org.bigbluebutton.command {
 			userSession.userList.allUsersAddedSignal.remove(successUsersAdded);
 		}
 		
-		private function displayAudioSettings(micLocked:Boolean = false) {
+		private function displayAudioSettings(micLocked:Boolean = false):void {
 			userSession.lockSettings.disableMicSignal.remove(displayAudioSettings);
 			if (userSession.phoneAutoJoin && !userSession.phoneSkipCheck && (userSession.userList.me.isModerator() || !userSession.lockSettings.disableMic)) {
 				userUISession.pushPage(PagesENUM.AUDIOSETTINGS);
@@ -277,6 +300,19 @@ package org.bigbluebutton.command {
 			trace(LOG + "unsuccessVideoConnected()");
 			videoConnection.unsuccessConnected.remove(unsuccessVideoConnected);
 			videoConnection.successConnected.remove(successVideoConnected);
+		}
+		
+		private function successScreenshareConnected():void {
+			trace(LOG + "successScreenshareConnected()");
+			screenshareService.setupMessageSenderReceiver();
+			screenshareConnection.successConnected.remove(successScreenshareConnected);
+			screenshareConnection.unsuccessConnected.remove(unsuccessScreenshareConnected);
+		}
+		
+		private function unsuccessScreenshareConnected(reason:String):void {
+			trace(LOG + "unsuccessScreenshareConnected()");
+			screenshareConnection.successConnected.remove(successScreenshareConnected);
+			screenshareConnection.unsuccessConnected.remove(unsuccessScreenshareConnected);
 		}
 	}
 }

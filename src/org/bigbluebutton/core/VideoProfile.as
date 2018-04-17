@@ -126,11 +126,11 @@ package org.bigbluebutton.core {
 			return _height;
 		}
 		
-		public function set width(value:int) {
+		public function set width(value:int):void {
 			_width = value;
 		}
 		
-		public function set height(value:int) {
+		public function set height(value:int):void {
 			_height = value;
 		}
 		

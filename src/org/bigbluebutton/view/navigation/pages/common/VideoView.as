@@ -56,7 +56,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 			video.smoothing = true;
 			video.attachNetStream(ns);
 			// Users on iOS devices cannot watch H.264 video, http://dev.mconf.org/redmine/issues/1483
-			if (connection.uri.indexOf("/video/") != -1 && Capabilities.version.indexOf('IOS') >= 0) {
+			if (Capabilities.version.indexOf('IOS') >= 0) {
 				ns.play("h263/" + streamName);
 			} else {
 				ns.play(streamName);

@@ -17,7 +17,7 @@
 					profileIcon.includeInLayout = (!obj.presenter) && (obj.status == User.NO_STATUS);
 					cameraIcon.visible = obj.hasStream;
 					micIcon.visible = micIcon.includeInLayout = (obj.voiceJoined && !obj.muted);
-					lockIcon.visible = obj.locked;
+					lockIcon.visible = obj.lockBeingEnforced;
 					micOffIcon.visible = micOffIcon.includeInLayout = (obj.voiceJoined && obj.muted);
 					listenOnlyIcon.includeInLayout = (!micIcon.visible && !micOffIcon.visible);
 					listenOnlyIcon.visible = (!obj.voiceJoined && obj.listenOnly);

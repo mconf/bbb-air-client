@@ -75,6 +75,16 @@ package org.bigbluebutton.core.util {
 			_parameters = value;
 		}
 		
+		public function getParameter(value:String):String {
+			var params:Array = _parameters.split("&");
+			for (var i:int = 0; i < params.length; ++i) {
+				if (params[i].indexOf(value + "=") != -1) {
+					return params[i].split("=")[1];
+				}
+			}
+			return null;
+		}
+		
 		public function toString():String {
 			var s:String = protocol + "://" + host;
 			if (port.length > 0) {

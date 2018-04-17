@@ -8,8 +8,8 @@ package org.bigbluebutton.core {
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
-	public class DeskshareConnection extends DefaultConnectionCallback implements IDeskshareConnection {
-		private const LOG:String = "DeskshareConnection::";
+	public class ScreenshareConnection extends DefaultConnectionCallback implements IScreenshareConnection, IDeskshareConnection {
+		private const LOG:String = "ScreenshareConnection::";
 		
 		[Inject]
 		public var baseConnection:IBaseConnection;
@@ -37,9 +37,13 @@ package org.bigbluebutton.core {
 		
 		private var _room:String;
 		
-		private var _deskSO:SharedObject;
+		private var _session:String;
+
+		private var _url:String;
 		
-		public function DeskshareConnection() {
+		private var _streamId:String;
+
+		public function ScreenshareConnection() {
 		}
 		
 		[PostConstruct]
@@ -50,35 +54,10 @@ package org.bigbluebutton.core {
 		}
 		
 		public function onConnectionSuccess():void {
-			_deskSO = SharedObject.getRemote(room + "-deskSO", applicationURI, false);
-			_deskSO.client = this;
-			_deskSO.connect(baseConnection.connection);
-			checkIfStreamIsPublishing();
 			_successConnected.dispatch();
 		}
 		
 		private function checkIfStreamIsPublishing():void {
-			baseConnection.connection.call("deskshare.checkIfStreamIsPublishing",
-										   new Responder(
-										   function(result:Object):void {
-											   if (result != null && (result.publishing as Boolean)) {
-												   streamHeight = result.height as Number;
-												   streamWidth = result.width as Number;
-												   
-												   trace("Deskshare stream is streaming [" + streamWidth + "," + streamHeight + "]");
-												   
-												   // if we receive result from the server, then somebody is sharing their desktop - dispatch the notification signal
-												   isStreaming = true;
-											   } else {
-												   trace("No deskshare stream being published");
-											   }
-										   },
-										   function(status:Object):void {
-											   trace("Error while trying to call remote method on the server");
-										   }
-										   ),
-										   _room
-										   );
 		}
 		
 		public function onConnectionUnsuccess(reason:String):void {
@@ -184,33 +163,33 @@ package org.bigbluebutton.core {
 		public function mouseLocationCallback(x:Number, y:Number):void {
 			_mouseLocationChangedSignal.dispatch(x, y);
 		}
-		
+
 		public function sendMessage(service:String, onSuccess:Function, onFailure:Function, message:Object = null):void {
-			
+			baseConnection.sendMessage(service, onSuccess, onFailure, message);
 		}
 		
 		public function get session():String {
-			return null;
+			return _session;
 		}
 		
 		public function set session(value:String):void {
-			
+			_session = value;
 		}
 		
 		public function get streamId():String {
-			return null;
+			return _streamId;
 		}
 		
 		public function set streamId(value:String):void {
-			
+			_streamId = value;
 		}
 		
 		public function get url():String {
-			return null;
+			return _url;
 		}
 		
 		public function set url(value:String):void {
-			
+			_url = value;
 		}
 	}
 }

@@ -120,7 +120,7 @@ package org.bigbluebutton.core {
 			}
 		}
 		
-		private function handleSipVideoUpdate(msg:Object) {
+		private function handleSipVideoUpdate(msg:Object):void {
 			trace("handleSipVideoUpdate " + msg.msg);
 			var map:Object = JSON.parse(msg.msg);
 			if (lastSipEvent != map) {
@@ -143,7 +143,7 @@ package org.bigbluebutton.core {
 			}
 		}
 		
-		private function handleMeetingMuted(m:Object) {
+		private function handleMeetingMuted(m:Object):void {
 			var msg:Object = JSON.parse(m.msg);
 			trace("handleMeetingMuted: " + ObjectUtil.toString(msg));
 			userSession.meetingMuted = msg.meetingMuted;

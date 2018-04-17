@@ -59,7 +59,7 @@ package org.bigbluebutton.core {
 			userSession.lockSettings.disableCamSignal.add(disableCam);
 		}
 		
-		private function disableCam(disable:Boolean) {
+		private function disableCam(disable:Boolean):void {
 			if (disable && userSession.userList.me.locked && !userSession.userList.me.presenter) {
 				shareCameraSignal.dispatch(false, null);
 			}

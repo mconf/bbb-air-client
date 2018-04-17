@@ -86,11 +86,11 @@ package org.bigbluebutton.core.util {
 		private function httpResponseStatusHandler(e:HTTPStatusEvent):void {
 			_responseUrl = e.responseURL;
 			_httpStatusCode = e.status;
-			trace("HTTP_RESPONSE_STATUS responseURL " + e.responseURL + ", status " + e.status + ", redirected " + e.redirected + ", responseHeaders " + ObjectUtil.toString(e.responseHeaders));
+			trace("HTTP_RESPONSE_STATUS responseURL " + e.responseURL + ", status " + e.status + ", redirected " + e.redirected);// + ", responseHeaders " + ObjectUtil.toString(e.responseHeaders));
 		}
 		
 		private function httpStatusHandler(e:HTTPStatusEvent):void {
-			trace("HTTP_STATUS responseURL " + e.responseURL + ", status " + e.status + ", redirected " + e.redirected + ", responseHeaders " + ObjectUtil.toString(e.responseHeaders));
+			trace("HTTP_STATUS responseURL " + e.responseURL + ", status " + e.status + ", redirected " + e.redirected);// + ", responseHeaders " + ObjectUtil.toString(e.responseHeaders));
 		}
 		
 		private function securityErrorHandler(e:SecurityErrorEvent):void {
