@@ -76,11 +76,16 @@ package org.bigbluebutton.core {
 		
 		protected function afterJoin(urlRequest:URLRequest, responseUrl:String, httpStatusCode:Number = 0):void {
 			_urlRequest = urlRequest;
+			var parser:URLParser = new URLParser(responseUrl);
+			if (parser.getParameter("errors")) {
+				fail("");
+				return;
+			}
+
+			_sessionToken = parser.getParameter("sessionToken");
 			var apiSubservice:ApiService = new ApiService();
 			apiSubservice.successSignal.add(onApiResponse);
 			apiSubservice.unsuccessSignal.add(fail);
-			var parser:URLParser = new URLParser(responseUrl);
-			_sessionToken = parser.getParameter("sessionToken");
 			apiSubservice.getApi(getServerUrl(responseUrl), _urlRequest);
 		}
 		
