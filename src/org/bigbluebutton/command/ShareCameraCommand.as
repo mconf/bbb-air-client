@@ -1,17 +1,12 @@
 package org.bigbluebutton.command {
 	
 	import flash.media.Camera;
-	import flash.media.CameraPosition;
-	import mx.utils.ObjectUtil;
-	import org.bigbluebutton.core.IBigBlueButtonConnection;
-	import org.bigbluebutton.core.IChatMessageService;
+	
 	import org.bigbluebutton.core.IUsersService;
-	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
-	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.view.navigation.pages.PagesENUM;
+	
 	import robotlegs.bender.bundles.mvcs.Command;
 	
 	public class ShareCameraCommand extends Command {
@@ -28,6 +23,9 @@ package org.bigbluebutton.command {
 		[Inject]
 		public var usersService:IUsersService;
 		
+		[Inject]
+		public var conferenceParameters: IConferenceParameters;
+
 		override public function execute():void {
 			if (enabled) {
 				userSession.videoConnection.cameraPosition = position;
@@ -46,7 +44,18 @@ package org.bigbluebutton.command {
 			var videoProfile:VideoProfile = userSession.videoConnection.selectedCameraQuality;
 			var res:String = videoProfile.id;
 			// streamName format is 'low-userid-timestamp'
-			return res.concat("-" + uid) + "-" + curTime;
+			var streamName:String = res.concat("-" + uid) + "-" + curTime;
+			// on 1.1, if the session is recorded, we need to add the suffix -recorded to the streamName
+			if (conferenceParameters.record) {
+				switch (userSession.version) {
+					case "0.9":
+					case "1.0":
+						break;
+					default:
+						streamName += "-recorded";
+				}
+			}
+			return streamName;
 		}
 		
 		private function setupCamera(position:String):Camera {
