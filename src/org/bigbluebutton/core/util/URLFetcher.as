@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.util {
 	
-	import com.freshplanet.nativeExtensions.AirCapabilities;
+	import com.freshplanet.ane.AirCapabilities.AirCapabilities;
 	
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
@@ -11,8 +11,6 @@ package org.bigbluebutton.core.util {
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
-	
-	import mx.utils.ObjectUtil;
 	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;

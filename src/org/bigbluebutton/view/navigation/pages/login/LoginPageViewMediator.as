@@ -85,7 +85,7 @@ package org.bigbluebutton.view.navigation.pages.login {
 		
 		public function joinRoom(url:String):void {
 			if (url == null || url.length == 0) {
-				if (Capabilities.isDebugger) {
+				if (isDebugBuild()) {
 					url = "bigbluebutton://test-install.blindsidenetworks.com/bigbluebutton/api/join?fullName=Air&meetingID=Demo+Meeting&password=ap&checksum=512620179852dadd6fe0665a48bcb852a3c0afac";
 				} else {
 					url = "";
@@ -95,6 +95,22 @@ package org.bigbluebutton.view.navigation.pages.login {
 				userUISession.pushPage(PagesENUM.OPENROOM);
 			}
 			joinMeetingSignal.dispatch(url);
+		}
+		
+		/**
+		 * Returns true if the swf is built in debug mode
+		 **/
+		private function isDebugBuild() : Boolean
+		{
+			var stackTrace:String = new Error().getStackTrace();
+			if(stackTrace == null || stackTrace.length == 0)
+			{
+				//in Release the stackTrace is null
+				return false;
+			}
+			//The code searches for line numbers of errors in StackTrace result. 
+			//Only StackTrace result of a debug SWF file contains line numbers.
+			return stackTrace.search(/:[0-9]+]$/m) > -1;
 		}
 		
 		override public function destroy():void {
