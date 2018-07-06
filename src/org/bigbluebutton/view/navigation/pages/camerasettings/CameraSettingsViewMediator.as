@@ -183,7 +183,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 				return;
 			}
 			
-			var camera:Camera = getCamera(userSession.videoConnection.cameraPosition);
+			var camera:Camera = Camera.getCamera();
 			if (Camera.permissionStatus == PermissionStatus.GRANTED) {
 				onPermissionGranted();
 			} else {

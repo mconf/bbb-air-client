@@ -145,7 +145,7 @@ package org.bigbluebutton.core {
 		//												//
 		//**********************************************//
 		public function call(listenOnly:Boolean = false):void {
-			if (!callActive) {
+			if (! callActive) {
 				trace(LOG + "call(): starting voice call");
 				baseConnection.connection.call(
 					"voiceconf.call",

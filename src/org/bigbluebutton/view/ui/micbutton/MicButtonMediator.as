@@ -1,10 +1,12 @@
 package org.bigbluebutton.view.ui.micbutton {
 	
 	import flash.events.MouseEvent;
+	
 	import org.bigbluebutton.command.MicrophoneMuteSignal;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class MicButtonMediator extends Mediator {
@@ -24,7 +26,8 @@ package org.bigbluebutton.view.ui.micbutton {
 		override public function initialize():void {
 			(view as MicButton).addEventListener(MouseEvent.CLICK, mouseEventClickHandler);
 			userSession.userList.userChangeSignal.add(userChangeHandler);
-			view.setVisibility(userSession.userList.me.voiceJoined);
+			userSession.micEnabledSignal.add(micEnabledHandler);
+			view.setVisibility(userSession.userList.me.voiceJoined && userSession.micEnabled);
 			view.muted = userSession.userList.me.muted;
 		}
 		
@@ -34,6 +37,7 @@ package org.bigbluebutton.view.ui.micbutton {
 		override public function destroy():void {
 			(view as MicButton).removeEventListener(MouseEvent.CLICK, mouseEventClickHandler);
 			userSession.userList.userChangeSignal.remove(userChangeHandler);
+			userSession.micEnabledSignal.remove(micEnabledHandler);
 			super.destroy();
 			view.dispose();
 			view = null;
@@ -57,6 +61,10 @@ package org.bigbluebutton.view.ui.micbutton {
 					view.muted = user.muted;
 				}
 			}
+		}
+		
+		private function micEnabledHandler(enabled:Boolean):void {
+			view.setVisibility(userSession.userList.me.voiceJoined && enabled);
 		}
 	}
 }

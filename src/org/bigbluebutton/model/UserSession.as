@@ -79,6 +79,14 @@ package org.bigbluebutton.model {
 		
 		protected var _pushToTalkSignal:ISignal = new Signal();
 		
+		protected var _micEnabled:Boolean = false;
+		
+		protected var _micEnabledSignal:ISignal = new Signal();
+		
+		protected var _audioEnabled:Boolean = false;
+		
+		protected var _audioEnabledSignal:ISignal = new Signal();
+		
 		protected var _videoProfileManager:VideoProfileManager = new VideoProfileManager();
 		
 		protected var _globalVideoProfile:VideoProfile = _videoProfileManager.defaultVideoProfile;
@@ -345,6 +353,32 @@ package org.bigbluebutton.model {
 		
 		public function set version(value:String):void {
 			_version = value;
+		}
+		
+		public function get micEnabledSignal():ISignal {
+			return _micEnabledSignal;
+		}
+		
+		public function get micEnabled():Boolean {
+			return _micEnabled;
+		}
+		
+		public function set micEnabled(enabled:Boolean):void {
+			_micEnabled = enabled;
+			micEnabledSignal.dispatch(enabled);
+		}
+
+		public function get audioEnabledSignal():ISignal {
+			return _audioEnabledSignal;
+		}
+		
+		public function get audioEnabled():Boolean {
+			return _audioEnabled;
+		}
+		
+		public function set audioEnabled(enabled:Boolean):void {
+			_audioEnabled = enabled;
+			audioEnabledSignal.dispatch(enabled);
 		}
 	}
 }

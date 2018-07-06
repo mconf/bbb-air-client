@@ -5,7 +5,6 @@ package org.bigbluebutton.core {
 	import flash.events.NetStatusEvent;
 	import flash.events.PermissionEvent;
 	import flash.events.StatusEvent;
-	import flash.events.TimerEvent;
 	import flash.media.Microphone;
 	import flash.media.MicrophoneEnhancedMode;
 	import flash.media.MicrophoneEnhancedOptions;
@@ -13,9 +12,11 @@ package org.bigbluebutton.core {
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.permissions.PermissionStatus;
-	import flash.utils.Timer;
 	
 	import mx.utils.ObjectUtil;
+	
+	import org.osflash.signals.ISignal;
+	import org.osflash.signals.Signal;
 	
 	public class VoiceStreamManager {
 		protected var _incomingStream:NetStream = null;
@@ -28,39 +29,124 @@ package org.bigbluebutton.core {
 		
 		protected var _defaultMicGain:Number = 50;
 		
-		protected var _heartbeat:Timer = new Timer(2000);
+		protected var _enhancedMic:Boolean = false;
 		
-		protected var _streamName:String = null;
+		protected var _successConnectedIn:ISignal = new Signal();
 		
-		public function setDefaultMicGain(value:Number):void {
-			_defaultMicGain = value;
+		protected var _successConnectedOut:ISignal = new Signal();
+		
+		protected var _unsuccessConnectedIn:ISignal = new Signal();
+		
+		protected var _unsuccessConnectedOut:ISignal = new Signal();
+		
+		protected var _disconnectedIn:ISignal = new Signal();
+		
+		protected var _disconnectedOut:ISignal = new Signal();
+		
+		protected var _connectedIn:Boolean = false;
+		protected var _connectingIn:Boolean = false;
+		protected var _connectedOut:Boolean = false;
+		protected var _connectingOut:Boolean = false;
+		
+		public function get unsuccessConnectedIn():ISignal {
+			return _unsuccessConnectedIn;
 		}
 		
-		public function get mic():Microphone {
-			return _mic;
+		public function get successConnectedIn():ISignal {
+			return _successConnectedIn;
 		}
 		
-		public function VoiceStreamManager() {
-			_heartbeat.addEventListener(TimerEvent.TIMER, onHeartbeat);
+		public function get unsuccessConnectedOut():ISignal {
+			return _unsuccessConnectedOut;
 		}
 		
-		protected function onHeartbeat(event:TimerEvent):void {
-			trace("+++ heartbeat +++");
-			trace(ObjectUtil.toString(_incomingStream.audioCodec));
+		public function get successConnectedOut():ISignal {
+			return _successConnectedOut;
 		}
 		
-		public function muteMicGain(value:Boolean):void {
+		public function get disconnectedIn():ISignal {
+			return _disconnectedIn;
+		}
+		
+		public function get disconnectedOut():ISignal {
+			return _disconnectedOut;
+		}
+		
+		public function set connectedIn(connected:Boolean):void {
+			if (_connectingIn) {
+				if (connected) {
+					successConnectedIn.dispatch();
+				} else {
+					unsuccessConnectedIn.dispatch();
+				}
+			} else {
+				if (! connected) {
+					disconnectedIn.dispatch();
+				}
+			}
+			_connectingIn = false;
+			_connectedIn = connected;
+		}
+		
+		public function set connectingIn(value:Boolean):void {
+			_connectingIn = value;
+		}
+		
+		public function set connectedOut(connected:Boolean):void {
+			if (_connectingOut) {
+				if (connected) {
+					successConnectedOut.dispatch();
+				} else {
+					unsuccessConnectedOut.dispatch();
+				}
+			} else {
+				if (! connected) {
+					disconnectedOut.dispatch();
+				}
+			}
+			_connectingOut = false;
+			_connectedOut = connected;
+		}
+		
+		public function set connectingOut(value:Boolean):void {
+			_connectingOut = value;
+		}
+		
+		public function muteMic(mute:Boolean = true):void {
 			if (_mic) {
-				_mic.gain = value ? 0 : _defaultMicGain;
+				_mic.gain = mute? 0 : _defaultMicGain;
 			}
 		}
 		
+		public function unmuteMic():void {
+			if (_mic) {
+				_mic.gain = _defaultMicGain;
+			}
+		}
+		
+		public function setMicGain(value:Number):void {
+			if (_mic) {
+				_mic.gain = value;
+			}
+			_defaultMicGain = value;
+		}
+		
+		public function getMicActivityLevel():Number {
+			return _mic ? _mic.activityLevel : 0;
+		}
+		
+		public function isMicEnabled():Boolean {
+			return _mic != null;
+		}
+		
 		public function play(connection:NetConnection, streamName:String):void {
+			connectingIn = true;
+			
 			_incomingStream = new NetStream(connection);
 			_incomingStream.client = this;
-			_incomingStream.addEventListener(NetDataEvent.MEDIA_TYPE_DATA, onNetDataEvent);
-			_incomingStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatusEvent);
-			_incomingStream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEvent);
+			_incomingStream.addEventListener(NetDataEvent.MEDIA_TYPE_DATA, onNetDataEventIn);
+			_incomingStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatusEventIn);
+			_incomingStream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEventIn);
 			/*
 			 * Set the bufferTime to 0 (zero) for live stream as suggested in the doc.
 			 * http://help.adobe.com/en_US/FlashPlatform/beta/reference/actionscript/3/flash/net/NetStream.html#bufferTime
@@ -73,52 +159,59 @@ package org.bigbluebutton.core {
 			_incomingStream.receiveAudio(true);
 			_incomingStream.receiveVideo(false);
 			_incomingStream.play(streamName);
-			//			_heartbeat.start();
 		}
 		
-		protected function onNetDataEvent(event:NetDataEvent):void {
+		protected function onNetDataEventIn(event:NetDataEvent):void {
 			//			trace(ObjectUtil.toString(event));
 		}
 		
 		public function publish(connection:NetConnection, streamName:String, codec:String, pushToTalk:Boolean):void {
-			_streamName = streamName;
+			connectingOut = true;
+			
+			if (! Microphone.isSupported || noMicrophone()) {
+				connectedOut = false;
+				return;
+			}
+			
+			var mic:Microphone = getMicrophone();
+			
+			if (! mic) {
+				connectedOut = false;
+				return;
+			}
+			
 			_outgoingStream = new NetStream(connection);
 			_outgoingStream.client = this;
-			_outgoingStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatusEvent);
-			_outgoingStream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEvent);
-			
-			if (! Microphone.isSupported) {
-				return;
-			}
-			
-			setupMicrophone(codec, pushToTalk);
-			
-			if (! _mic) {
-				return;
-			}
+			_outgoingStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatusEventOut);
+			_outgoingStream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEventOut);
 			
 			if (Microphone.permissionStatus == PermissionStatus.GRANTED) {
-				attachAndPublish();
+				setupMicrophone(mic, codec, pushToTalk);
+				attachAndPublish(mic, streamName);
 			} else {
-				_mic.addEventListener(PermissionEvent.PERMISSION_STATUS, function(e:PermissionEvent):void {
+				mic.addEventListener(PermissionEvent.PERMISSION_STATUS, function(e:PermissionEvent):void {
 					if (e.status == PermissionStatus.GRANTED) {
-						attachAndPublish();
+						setupMicrophone(mic, codec, pushToTalk);
+						attachAndPublish(mic, streamName);
 					} else {
 						// permission denied
+						connectedOut = false;
 					}
 				});
 				try {
-					_mic.requestPermission();
+					mic.requestPermission();
 				} catch(e:Error) {
 					// another request is in progress
+					connectedOut = false;
 				}
 			}
 		}
 		
-		private function attachAndPublish():void {
-			if (_mic) {
+		private function attachAndPublish(mic:Microphone, streamName:String):void {
+			if (mic) {
+				_mic = mic;
 				_outgoingStream.attachAudio(_mic);
-				_outgoingStream.publish(_streamName, "live");
+				_outgoingStream.publish(streamName, "live");
 			}
 		}
 		
@@ -127,23 +220,8 @@ package org.bigbluebutton.core {
 				|| ((Microphone.names.length == 1) && (Microphone.names[0] == "Unknown Microphone")));
 		}
 		
-		private function setupMicrophone(codec:String, pushToTalk:Boolean):void {
-			if (noMicrophone()) {
-				_mic = null;
-				return;
-			}
-			_mic = getMicrophone(codec);
-			_mic.gain = pushToTalk ? 0 : _defaultMicGain;
-		}
-		
-		/**
-		 * first try to use the enhanced microphone
-		 * if it doesn't work, get the regular one
-		 */
-		private function getMicrophone(codec:String):Microphone {
-			var mic:Microphone = null;
-			mic = Microphone.getEnhancedMicrophone();
-			if (mic) {
+		private function setupMicrophone(mic:Microphone, codec:String, pushToTalk:Boolean):void {
+			if (_enhancedMic) {
 				var options:MicrophoneEnhancedOptions = new MicrophoneEnhancedOptions();
 				options.mode = MicrophoneEnhancedMode.FULL_DUPLEX;
 				options.autoGain = false;
@@ -151,30 +229,41 @@ package org.bigbluebutton.core {
 				options.nonLinearProcessing = true;
 				mic['enhancedOptions'] = options;
 				mic.setUseEchoSuppression(true);
-			} else {
-				mic = Microphone.getMicrophone();
 			}
-			if (mic == null) {
-				trace("No microphone! <o>");
+			
+			mic.addEventListener(StatusEvent.STATUS, onMicStatusEvent);
+			mic.setLoopBack(false);
+			mic.setSilenceLevel(0, 20000);
+			if (codec == "SPEEX") {
+				mic.encodeQuality = 6;
+				mic.codec = SoundCodec.SPEEX;
+				mic.framesPerPacket = 1;
+				mic.rate = 16;
+				trace("Using SPEEX wideband codec");
 			} else {
-				mic.requestPermission();
-				mic.addEventListener(StatusEvent.STATUS, onMicStatusEvent);
-				mic.setLoopBack(false);
-				mic.setSilenceLevel(0, 20000);
-				mic.gain = 60;
-				if (codec == "SPEEX") {
-					mic.encodeQuality = 6;
-					mic.codec = SoundCodec.SPEEX;
-					mic.framesPerPacket = 1;
-					mic.rate = 16;
-					trace("Using SPEEX wideband codec");
-				} else {
-					mic.codec = SoundCodec.NELLYMOSER;
-					mic.rate = 8;
-					trace("Using Nellymoser codec");
-				}
+				mic.codec = SoundCodec.NELLYMOSER;
+				mic.rate = 8;
+				trace("Using Nellymoser codec");
 			}
-			return mic;
+
+			mic.gain = pushToTalk ? 0 : _defaultMicGain;
+		}
+		
+		private function getMicrophone():Microphone {
+			var mic:Microphone = null;
+			mic = Microphone.getEnhancedMicrophone();
+			if (mic) {
+				_enhancedMic = true;
+				return mic;
+			}
+			
+			mic = Microphone.getMicrophone();
+			if (mic) {
+				_enhancedMic = false;
+				return mic;
+			}
+			
+			return null;
 		}
 		
 		protected function onMicStatusEvent(event:StatusEvent):void {
@@ -191,50 +280,78 @@ package org.bigbluebutton.core {
 		}
 		
 		public function close():void {
+			closeIn();
+			closeOut();
+		}
+		
+		private function closeIn():void {
 			if (_incomingStream) {
-				_incomingStream.removeEventListener(NetDataEvent.MEDIA_TYPE_DATA, onNetDataEvent);
-				_incomingStream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatusEvent);
-				_incomingStream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEvent);
+				_incomingStream.removeEventListener(NetDataEvent.MEDIA_TYPE_DATA, onNetDataEventIn);
+				_incomingStream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatusEventIn);
+				_incomingStream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEventIn);
 				_incomingStream.close();
 				_incomingStream = null;
 			}
+			connectedIn = false;
+		}
+		
+		private function closeOut():void {
 			if (_outgoingStream) {
-				_outgoingStream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatusEvent);
-				_outgoingStream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEvent);
+				_outgoingStream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatusEventOut);
+				_outgoingStream.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEventOut);
 				_outgoingStream.attachAudio(null);
 				_outgoingStream.close();
 				_outgoingStream = null;
 			}
+			_mic = null;
+			connectedOut = false;
 		}
 		
-		protected function onNetStatusEvent(event:NetStatusEvent):void {
-			trace("VoiceStreamManager: onNetStatusEvent - " + event.info.code);
+		protected function onNetStatusEventIn(event:NetStatusEvent):void {
+			trace("VoiceStreamManager: onNetStatusEventIn - " + event.info.code);
 			switch (event.info.code) {
-				case "NetStream.Play.Reset":
-					break;
-				case "NetStream.Play.StreamNotFound":
-					break;
-				case "NetStream.Play.Failed":
-					break;
 				case "NetStream.Play.Start":
+					connectedIn = true;
 					break;
 				case "NetStream.Play.Stop":
-					break;
-				case "NetStream.Publish.Start":
-					break;
-				case "NetStream.Buffer.Full":
+					connectedIn = false;
 					break;
 				default:
 					break;
 			}
+			
+			if (event.info.level == "error") {
+				connectedIn = false;
+			}
 		}
 		
-		protected function onAsyncErrorEvent(event:AsyncErrorEvent):void {
+		protected function onAsyncErrorEventIn(event:AsyncErrorEvent):void {
 			trace(ObjectUtil.toString(event));
+			connectedIn = false;
 		}
 		
-		public function onPlayStatus(... rest):void {
+		public function onPlayStatusIn(... rest):void {
 			trace("onPlayStatus() " + ObjectUtil.toString(rest));
+		}
+		
+		protected function onNetStatusEventOut(event:NetStatusEvent):void {
+			trace("VoiceStreamManager: onNetStatusEventOut - " + event.info.code);
+			switch (event.info.code) {
+				case "NetStream.Publish.Start":
+					connectedOut = true;
+					break;
+				default:
+					break;
+			}
+			
+			if (event.info.level == "error") {
+				connectedOut = false;
+			}
+		}
+		
+		protected function onAsyncErrorEventOut(event:AsyncErrorEvent):void {
+			trace(ObjectUtil.toString(event));
+			connectedOut = false;
 		}
 		
 		public function onMetaData(... rest):void {

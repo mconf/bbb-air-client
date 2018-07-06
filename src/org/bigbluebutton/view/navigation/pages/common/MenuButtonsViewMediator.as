@@ -83,13 +83,13 @@ package org.bigbluebutton.view.navigation.pages.common {
 		}
 		
 		private function isPushToTalkOn():Boolean {
-			var micEnabled:Boolean = (userSession.voiceStreamManager && userSession.voiceStreamManager.mic && userSession.voiceConnection.callActive) ? true : false;
+			var micEnabled:Boolean = (userSession.voiceStreamManager && userSession.voiceStreamManager.isMicEnabled() && userSession.voiceConnection.callActive) ? true : false;
 			return userSession.pushToTalk && micEnabled;
 		}
 		
 		private function pushToTalkChange():void {
 			if (userSession.voiceConnection && userSession.voiceConnection.callActive) {
-				userSession.voiceStreamManager.muteMicGain(userSession.pushToTalk);
+				userSession.voiceStreamManager.muteMic(userSession.pushToTalk);
 			}
 			view.pushToTalkButton.visible = isPushToTalkOn();
 			view.pushToTalkSpacer.includeInLayout = isPushToTalkOn();
@@ -105,11 +105,11 @@ package org.bigbluebutton.view.navigation.pages.common {
 		}
 		
 		private function pushToTalkOn(e:FlexEvent):void {
-			userSession.voiceStreamManager.muteMicGain(false);
+			userSession.voiceStreamManager.unmuteMic();
 		}
 		
 		private function pushToTalkOff(e:MouseEvent):void {
-			userSession.voiceStreamManager.muteMicGain(true);
+			userSession.voiceStreamManager.muteMic();
 		}
 		
 		private function onInvokeEvent(invocation:InvokeEvent):void {

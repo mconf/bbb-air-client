@@ -42,6 +42,8 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		
 		override public function initialize():void {
 			userSession.userList.userChangeSignal.add(userChangeHandler);
+			userSession.micEnabledSignal.add(micEnabledHandler);
+			userSession.audioEnabledSignal.add(audioEnabledHandler);
 			FlexGlobals.topLevelApplication.pageName.text = ResourceManager.getInstance().getString('resources', 'audioSettings.title');
 			var userMe:User = userSession.userList.me;
 			view.continueBtn.addEventListener(MouseEvent.CLICK, onContinueClick);
@@ -78,18 +80,15 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		}
 		
 		private function loadMicGain():void {
-			var gain:Number = saveData.read("micGain") as Number;
+			var gain:Object = saveData.read("micGain");
 			if (gain) {
-				view.gainSlider.value = gain / 10;
+				view.gainSlider.value = (gain as Number) / 10;
 			}
 		}
 		
 		private function setMicGain(gain:Number):void {
 			if (userSession.voiceStreamManager) {
-				userSession.voiceStreamManager.setDefaultMicGain(gain);
-				if (!userSession.pushToTalk && userSession.voiceStreamManager.mic) {
-					userSession.voiceStreamManager.mic.gain = gain;
-				}
+				userSession.voiceStreamManager.setMicGain(gain);
 			}
 		}
 		
@@ -100,8 +99,8 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		}
 		
 		private function micActivity(e:TimerEvent):void {
-			if (userSession.voiceStreamManager && userSession.voiceStreamManager.mic) {
-				view.micActivityMask.width = view.gainSlider.width - (view.gainSlider.width * userSession.voiceStreamManager.mic.activityLevel / 100);
+			if (userSession.voiceStreamManager) {
+				view.micActivityMask.width = view.gainSlider.width - (view.gainSlider.width * userSession.voiceStreamManager.getMicActivityLevel() / 100);
 				view.micActivityMask.x = view.micActivity.x + view.micActivity.width - view.micActivityMask.width;
 			}
 		}
@@ -125,10 +124,14 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 				view.enablePushToTalk.enabled = false;
 				userSession.pushToTalk = false;
 			}
+			shareMicrophoneSignal.dispatch(getAudioOptions());
+		}
+		
+		private function getAudioOptions():Object {
 			var audioOptions:Object = new Object();
 			audioOptions.shareMic = userSession.userList.me.voiceJoined = view.enableMic.selected && view.enableAudio.selected;
 			audioOptions.listenOnly = userSession.userList.me.listenOnly = !view.enableMic.selected && view.enableAudio.selected;
-			shareMicrophoneSignal.dispatch(audioOptions);
+			return audioOptions;
 		}
 		
 		private function onEnableMicClick(event:Event):void {
@@ -137,10 +140,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 				view.enableAudio.selected = true;
 			}
 			userSession.pushToTalk = (view.enablePushToTalk.selected && view.enablePushToTalk.enabled);
-			var audioOptions:Object = new Object();
-			audioOptions.shareMic = userSession.userList.me.voiceJoined = view.enableMic.selected && view.enableAudio.selected;
-			audioOptions.listenOnly = userSession.userList.me.listenOnly = !view.enableMic.selected && view.enableAudio.selected;
-			shareMicrophoneSignal.dispatch(audioOptions);
+			shareMicrophoneSignal.dispatch(getAudioOptions());
 		}
 		
 		private function onEnablePushToTalkClick(event:Event):void {
@@ -156,6 +156,14 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			}
 		}
 		
+		private function micEnabledHandler(enabled:Boolean):void {
+			view.enableMic.selected = enabled;
+		}
+		
+		private function audioEnabledHandler(enabled:Boolean):void {
+			view.enableAudio.selected = enabled;
+		}
+		
 		override public function destroy():void {
 			super.destroy();
 			userSession.lockSettings.disableMicSignal.remove(disableMic);
@@ -168,6 +176,8 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			}
 			view.enablePushToTalk.removeEventListener(MouseEvent.CLICK, onEnablePushToTalkClick);
 			userSession.userList.userChangeSignal.remove(userChangeHandler);
+			userSession.micEnabledSignal.remove(micEnabledHandler);
+			userSession.audioEnabledSignal.remove(audioEnabledHandler);
 			userSession.phoneAutoJoin = false;
 		}
 	}

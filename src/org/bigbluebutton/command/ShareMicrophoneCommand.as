@@ -27,8 +27,6 @@ package org.bigbluebutton.command {
 		
 		private var _listenOnly:Boolean;
 		
-		private var voiceConnection:IVoiceConnection;
-		
 		override public function execute():void {
 			getAudioOption(audioOptions);
 			if (_shareMic || _listenOnly) {
@@ -45,57 +43,115 @@ package org.bigbluebutton.command {
 			}
 		}
 		
+		private function get voiceConnection():IVoiceConnection {
+			return userSession.voiceConnection;
+		}
+		
 		private function enableAudio():void {
-			voiceConnection = userSession.voiceConnection;
 			voiceConnection.hangUpSuccessSignal.remove(enableAudio);
 			if (!voiceConnection.connection.connected) {
-				voiceConnection.successConnected.add(mediaSuccessConnected);
-				voiceConnection.unsuccessConnected.add(mediaUnsuccessConnected);
+				voiceConnection.successConnected.add(voiceSuccessConnected);
+				voiceConnection.unsuccessConnected.add(voiceUnsuccessConnected);
 				voiceConnection.connect(conferenceParameters, _listenOnly);
 			} else if (!voiceConnection.callActive) {
-				voiceConnection.successConnected.add(mediaSuccessConnected);
-				voiceConnection.unsuccessConnected.add(mediaUnsuccessConnected);
+				voiceConnection.successConnected.add(voiceSuccessConnected);
+				voiceConnection.unsuccessConnected.add(voiceUnsuccessConnected);
 				voiceConnection.call(_listenOnly);
 			} else {
-				disableAudio();
 				voiceConnection.hangUpSuccessSignal.add(enableAudio);
+				disableAudio();
 			}
 		}
 		
 		private function disableAudio():void {
 			var manager:VoiceStreamManager = userSession.voiceStreamManager;
-			voiceConnection = userSession.voiceConnection;
 			if (manager != null) {
 				manager.close();
 				voiceConnection.hangUp();
 			}
 		}
 		
-		private function mediaSuccessConnected(publishName:String, playName:String, codec:String, manager:VoiceStreamManager = null):void {
-			trace(LOG + "mediaSuccessConnected()");
-			if (!manager) {
-				var manager:VoiceStreamManager = new VoiceStreamManager();
-				var savedGain:Number = saveData.read("micGain") as Number;
+		private function voiceSuccessConnected(publishName:String, playName:String, codec:String, manager:VoiceStreamManager = null):void {
+			trace(LOG + "voiceSuccessConnected()");
+			voiceConnection.successConnected.remove(voiceSuccessConnected);
+			voiceConnection.unsuccessConnected.remove(voiceUnsuccessConnected);
+			if (! manager) {
+				manager = new VoiceStreamManager();
+				var savedGain:Object = saveData.read("micGain");
 				if (savedGain) {
-					manager.setDefaultMicGain(savedGain);
+					manager.setMicGain(savedGain as Number);
 				}
 			}
+			
+			manager.successConnectedIn.add(mediaInSuccessConnected);
+			manager.unsuccessConnectedIn.add(mediaInUnsuccessConnected);
+			manager.successConnectedOut.add(mediaOutSuccessConnected);
+			manager.unsuccessConnectedOut.add(mediaOutUnsuccessConnected);
+			manager.disconnectedIn.add(mediaInDisconnected);
+			manager.disconnectedOut.add(mediaOutDisconnected);
+			
 			manager.play(voiceConnection.connection, playName);
 			if (publishName != null && publishName.length != 0) {
 				manager.publish(voiceConnection.connection, publishName, codec, userSession.pushToTalk);
 			}
 			userSession.voiceStreamManager = manager;
-			voiceConnection.successConnected.remove(mediaSuccessConnected);
-			voiceConnection.unsuccessConnected.remove(mediaUnsuccessConnected);
+		}
+		
+		private function mediaInSuccessConnected():void {
+			trace(LOG + "mediaInSuccessConnected()");
+			userSession.voiceStreamManager.successConnectedIn.remove(mediaInSuccessConnected);
+			userSession.voiceStreamManager.unsuccessConnectedIn.remove(mediaInUnsuccessConnected);
+			
+			userSession.audioEnabled = true;
+		}
+		
+		private function mediaInUnsuccessConnected():void {
+			trace(LOG + "mediaInUnsuccessConnected()");
+			userSession.voiceStreamManager.successConnectedIn.remove(mediaInSuccessConnected);
+			userSession.voiceStreamManager.unsuccessConnectedIn.remove(mediaInUnsuccessConnected);
+			
+			userSession.audioEnabled = false;
+			disableAudio();
+		}
+		
+		private function mediaOutSuccessConnected():void {
+			trace(LOG + "mediaOutSuccessConnected()");
+			userSession.voiceStreamManager.successConnectedOut.remove(mediaOutSuccessConnected);
+			userSession.voiceStreamManager.unsuccessConnectedOut.remove(mediaOutUnsuccessConnected);
+
 			if (userSession.pushToTalk) {
 				userSession.pushToTalkSignal.dispatch();
 			}
+			
+			userSession.micEnabled = true;
 		}
 		
-		private function mediaUnsuccessConnected(reason:String):void {
-			trace(LOG + "mediaUnsuccessConnected()");
-			voiceConnection.successConnected.remove(mediaSuccessConnected);
-			voiceConnection.unsuccessConnected.remove(mediaUnsuccessConnected);
+		private function mediaOutUnsuccessConnected():void {
+			trace(LOG + "mediaOutUnsuccessConnected()");
+			userSession.voiceStreamManager.successConnectedOut.remove(mediaOutSuccessConnected);
+			userSession.voiceStreamManager.unsuccessConnectedOut.remove(mediaOutUnsuccessConnected);
+			
+			userSession.micEnabled = false;
+		}
+		
+		private function mediaInDisconnected():void {
+			trace(LOG + "mediaInDisconnected()");
+			userSession.voiceStreamManager.disconnectedIn.remove(mediaInDisconnected);
+			
+			userSession.audioEnabled = false;
+		}
+		
+		private function mediaOutDisconnected():void {
+			trace(LOG + "mediaOutDisconnected()");
+			userSession.voiceStreamManager.disconnectedOut.remove(mediaOutDisconnected);
+			
+			userSession.micEnabled = false;
+		}
+		
+		private function voiceUnsuccessConnected(reason:String):void {
+			trace(LOG + "voiceUnsuccessConnected()");
+			voiceConnection.successConnected.remove(voiceSuccessConnected);
+			voiceConnection.unsuccessConnected.remove(voiceUnsuccessConnected);
 		}
 	}
 }

@@ -65,6 +65,12 @@ package org.bigbluebutton.model {
 		function get pushToTalk():Boolean;
 		function set pushToTalk(value:Boolean):void;
 		function get pushToTalkSignal():ISignal;
+		function get micEnabledSignal():ISignal;
+		function get micEnabled():Boolean;
+		function set micEnabled(enabled:Boolean):void
+		function get audioEnabledSignal():ISignal;
+		function get audioEnabled():Boolean;
+		function set audioEnabled(enabled:Boolean):void
 		function get version():String;
 		function set version(value:String):void;
 	}
