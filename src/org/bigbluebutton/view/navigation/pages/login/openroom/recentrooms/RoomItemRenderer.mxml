@@ -8,7 +8,6 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.formatters.DateFormatter;
-			import org.bigbluebutton.model.User;
 			
 			override public function set data(obj:Object):void {
 				super.data = obj;

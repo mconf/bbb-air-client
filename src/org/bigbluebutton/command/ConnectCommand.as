@@ -1,14 +1,8 @@
 package org.bigbluebutton.command {
 	
-	import flash.media.Camera;
-	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
-	import mx.messaging.management.Attribute;
-	import mx.utils.ObjectUtil;
 	
-	import org.bigbluebutton.command.DisconnectUserSignal;
-	import org.bigbluebutton.core.DeskshareConnection;
 	import org.bigbluebutton.core.IBigBlueButtonConnection;
 	import org.bigbluebutton.core.IChatMessageService;
 	import org.bigbluebutton.core.IDeskshareConnection;
@@ -20,7 +14,6 @@ package org.bigbluebutton.command {
 	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.core.IVoiceConnection;
 	import org.bigbluebutton.core.IWhiteboardService;
-	import org.bigbluebutton.core.ScreenshareConnection;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;

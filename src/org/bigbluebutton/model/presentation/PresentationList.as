@@ -1,10 +1,9 @@
 package org.bigbluebutton.model.presentation {
 	
 	import mx.collections.ArrayCollection;
-	import org.bigbluebutton.model.ConferenceParameters;
+	
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
-	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.model.whiteboard.IAnnotation;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
@@ -99,7 +98,7 @@ package org.bigbluebutton.model.presentation {
 		}
 		
 		public function addAnnotationHistory(whiteboardID:String, annotationArray:Array):void {
-			var whiteboardIDParts = whiteboardID.split("/");
+			var whiteboardIDParts:Array = whiteboardID.split("/");
 			var presentationID:String = whiteboardIDParts[0];
 			var pageNumber:int = parseInt(whiteboardIDParts[1]) - 1;
 			var presentation:Presentation = getPresentationByID(presentationID);

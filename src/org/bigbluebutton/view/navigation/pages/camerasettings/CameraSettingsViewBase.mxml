@@ -10,12 +10,6 @@
 		<s:State name="bbb" />
 		<s:State name="mconf" />
 	</view:states>
-	<fx:Script>
-		<![CDATA[
-			import org.bigbluebutton.view.navigation.pages.PagesENUM;
-			import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
-		]]>
-	</fx:Script>
 
 	<s:VGroup width="100%"
 			  height="100%"

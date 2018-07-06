@@ -1,6 +1,5 @@
 package org.bigbluebutton.core {
 	
-	import flash.net.Responder;
 	import org.bigbluebutton.model.IUserSession;
 	
 	public class PresentMessageSender {

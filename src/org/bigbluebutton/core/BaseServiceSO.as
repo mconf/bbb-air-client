@@ -4,15 +4,11 @@ package org.bigbluebutton.core
 	import flash.events.NetStatusEvent;
 	import flash.events.SyncEvent;
 	import flash.net.NetConnection;
-	import flash.net.Responder;
 	import flash.net.SharedObject;
 	
 	import mx.utils.ObjectUtil;
 	
-	import org.bigbluebutton.model.ConnectionFailedEvent;
 	import org.bigbluebutton.model.IConferenceParameters;
-	import org.bigbluebutton.model.IUserSession;
-	import org.bigbluebutton.model.User;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	

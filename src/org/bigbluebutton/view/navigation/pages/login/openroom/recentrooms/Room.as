@@ -1,7 +1,5 @@
 package org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms {
 	
-	import org.bigbluebutton.model.User;
-	
 	public class Room {
 		public var url:String;
 		

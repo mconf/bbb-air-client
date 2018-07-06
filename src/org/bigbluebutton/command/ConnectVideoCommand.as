@@ -1,13 +1,10 @@
 package org.bigbluebutton.command {
 	
-	import org.bigbluebutton.core.IBigBlueButtonConnection;
-	import org.bigbluebutton.core.IChatMessageService;
-	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.core.IVideoConnection;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.view.navigation.pages.PagesENUM;
+	
 	import robotlegs.bender.bundles.mvcs.Command;
 	
 	public class ConnectVideoCommand extends Command {
@@ -20,9 +17,6 @@ package org.bigbluebutton.command {
 		
 		[Inject]
 		public var conferenceParameters:IConferenceParameters;
-		
-		[Inject]
-		public var joinVoiceSignal:JoinVoiceSignal;
 		
 		[Inject]
 		public var videoConnection:IVideoConnection;
@@ -38,7 +32,6 @@ package org.bigbluebutton.command {
 		
 		private function successConnected():void {
 			userSession.videoConnection = videoConnection;
-			joinVoiceSignal.dispatch();
 		}
 		
 		private function unsuccessConnected(reason:String):void {

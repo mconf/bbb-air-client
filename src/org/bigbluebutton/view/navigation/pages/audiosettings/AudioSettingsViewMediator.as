@@ -2,13 +2,13 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.StageOrientationEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	
 	import mx.core.FlexGlobals;
-	import mx.events.ItemClickEvent;
 	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
+	
 	import org.bigbluebutton.command.ShareMicrophoneSignal;
 	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.model.IUserSession;
@@ -16,6 +16,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class AudioSettingsViewMediator extends Mediator {
@@ -66,7 +67,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 		}
 		
 		private function stageOrientationChangingHandler(e:Event):void {
-			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			var tabletLandscape:Boolean = FlexGlobals.topLevelApplication.isTabletLandscape();
 			if (tabletLandscape) {
 				userUISession.popPage();
 				if (userUISession.currentPage == PagesENUM.PROFILE) {
@@ -76,14 +77,14 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			}
 		}
 		
-		private function loadMicGain() {
-			var gain = saveData.read("micGain");
+		private function loadMicGain():void {
+			var gain:Number = saveData.read("micGain") as Number;
 			if (gain) {
 				view.gainSlider.value = gain / 10;
 			}
 		}
 		
-		private function setMicGain(gain:Number) {
+		private function setMicGain(gain:Number):void {
 			if (userSession.voiceStreamManager) {
 				userSession.voiceStreamManager.setDefaultMicGain(gain);
 				if (!userSession.pushToTalk && userSession.voiceStreamManager.mic) {
@@ -92,7 +93,7 @@ package org.bigbluebutton.view.navigation.pages.audiosettings {
 			}
 		}
 		
-		private function gainChange(e:Event) {
+		private function gainChange(e:Event):void {
 			var gain:Number = e.target.value * 10
 			saveData.save("micGain", gain);
 			setMicGain(gain);

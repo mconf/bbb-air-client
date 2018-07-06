@@ -1,12 +1,7 @@
 package org.bigbluebutton.core {
 	
-	import mx.collections.ArrayCollection;
-	import mx.utils.ObjectUtil;
-	
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
-	import org.bigbluebutton.model.chat.ChatMessageVO;
-	import org.bigbluebutton.model.chat.IChatMessagesSession;
 	
 	public class ScreenshareMessageReceiver implements IMessageListener {
 		[Inject]

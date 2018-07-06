@@ -1,11 +1,8 @@
 package org.bigbluebutton.view.ui {
 	
-	import mx.core.FlexGlobals;
-	import mx.core.UIComponent;
 	import org.bigbluebutton.command.NavigateToSignal;
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.view.navigation.pages.PagesENUM;
-	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class NavigationButtonMediator extends Mediator {

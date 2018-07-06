@@ -1,28 +1,22 @@
 package org.bigbluebutton.view.navigation.pages.videochat {
 	
-	import flash.display.DisplayObject;
 	import flash.display.Screen;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.StageOrientationEvent;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
+	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
 	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
-	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
-	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
-	import org.mockito.integrations.currentMockito;
-	import org.osmf.events.TimeEvent;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.events.IndexChangeEvent;
 	
 	public class VideoChatViewMediator extends Mediator {
 		
@@ -120,14 +114,14 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			}
 		}
 		
-		private function displayVideo(value:Boolean) {
+		private function displayVideo(value:Boolean):void {
 			view.noVideoMessage.visible = !value;
 			view.noVideoMessage.includeInLayout = !value;
 			view.streamListScroller.visible = value;
 			view.streamListScroller.includeInLayout = value;
 		}
 		
-		private function globalVideoStreamNameHandler() {
+		private function globalVideoStreamNameHandler():void {
 			if (userSession.globalVideoStreamName != "") {
 				speaker = new User();
 				speaker.name = ResourceManager.getInstance().getString('resources', 'videoChat.speaker');
@@ -230,7 +224,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			}
 		}
 		
-		private function removeUserFromDataProvider(userID:String) {
+		private function removeUserFromDataProvider(userID:String):void {
 			for (var item:int; item < dataProvider.length; item++) {
 				if ((dataProvider.getItemAt(item).user as User).userID == userID) {
 					// -- in the end. see: http://stackoverflow.com/questions/4255226/how-to-remove-an-item-while-iterating-over-collection
@@ -349,8 +343,9 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 				// get any user that has video stream
 				var userWithCamera:User = getUserWithCamera();
 				var newUser:User;
+				var userStreamNames:Array;
 				if (changedUser) {
-					var userStreamNames:Array = getUserStreamNamesByUserID(changedUser.userID);
+					userStreamNames = getUserStreamNamesByUserID(changedUser.userID);
 					// Priority state machine
 					if (changedUser.presenter && changedUser.hasStream) {
 						if (view)
@@ -366,7 +361,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 								view.stopStream();
 							startStream(changedUser, userStreamNames[0].streamName);
 						} else if (!changedUser.hasStream && userWithCamera.me) {
-							var userStreamNames:Array = getUserStreamNamesByUserID(userWithCamera.userID);
+							userStreamNames = getUserStreamNamesByUserID(userWithCamera.userID);
 							if (view)
 								view.stopStream();
 							startStream(userWithCamera, userStreamNames[0].streamName);
@@ -389,7 +384,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 						return;
 					}
 					if (newUser) {
-						var userStreamNames:Array = getUserStreamNamesByUserID(newUser.userID);
+						userStreamNames = getUserStreamNamesByUserID(newUser.userID);
 						var displayUserStreamName:UserStreamName = userStreamNames[0];
 						for each (var userStreamName:UserStreamName in userStreamNames) {
 							if (userStreamName.user.hasStream && userUISession.currentStreamName == userStreamName.streamName) {

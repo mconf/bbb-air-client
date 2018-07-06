@@ -1,6 +1,5 @@
 package org.bigbluebutton.view.ui {
 	
-	import mx.core.IUIComponent;
 	import org.bigbluebutton.core.view.IView;
 	import org.osflash.signals.ISignal;
 	

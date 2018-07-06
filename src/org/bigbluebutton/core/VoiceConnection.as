@@ -2,9 +2,10 @@ package org.bigbluebutton.core {
 	
 	import flash.net.NetConnection;
 	import flash.net.Responder;
+	
 	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.command.ShareMicrophoneSignal;
-	import org.bigbluebutton.model.ConferenceParameters;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.osflash.signals.ISignal;

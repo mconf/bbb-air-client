@@ -1,8 +1,5 @@
 package org.bigbluebutton.view.navigation.pages.login {
 	
-	import flash.events.MouseEvent;
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
 	import spark.components.Button;
 	import spark.components.Label;
 	

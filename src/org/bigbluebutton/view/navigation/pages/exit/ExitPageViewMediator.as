@@ -3,20 +3,17 @@ package org.bigbluebutton.view.navigation.pages.exit {
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
-	import flash.system.Capabilities;
+	
 	import mx.core.FlexGlobals;
+	
 	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.view.navigation.pages.common.MenuButtons;
-	import org.bigbluebutton.view.navigation.pages.disconnect.IDisconnectPageView;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectType;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.components.Application;
 	
 	public class ExitPageViewMediator extends Mediator {
 		

@@ -2,33 +2,34 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.StageOrientationEvent;
+	import flash.events.PermissionEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.media.Camera;
 	import flash.media.CameraPosition;
 	import flash.media.Video;
+	import flash.permissions.PermissionStatus;
+	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
-	import mx.events.IndexChangedEvent;
 	import mx.events.ItemClickEvent;
 	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
+	
+	import spark.events.IndexChangeEvent;
+	
 	import org.bigbluebutton.command.CameraQualitySignal;
 	import org.bigbluebutton.command.ShareCameraSignal;
 	import org.bigbluebutton.core.ISaveData;
-	import org.bigbluebutton.core.VideoConnection;
 	import org.bigbluebutton.core.VideoProfile;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
-	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
-	import org.bigbluebutton.view.ui.SwapCameraButton;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.events.IndexChangeEvent;
 	
 	public class CameraSettingsViewMediator extends Mediator {
 		
@@ -88,7 +89,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		}
 		
 		private function stageOrientationChangingHandler(e:Event):void {
-			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			var tabletLandscape:Boolean = FlexGlobals.topLevelApplication.isTabletLandscape();
 			if (tabletLandscape) {
 				userUISession.popPage();
 				userUISession.popPage();
@@ -178,7 +179,31 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 		}
 		
 		private function displayPreviewCamera():void {
-			var profile:VideoProfile = userSession.videoConnection.selectedCameraQuality
+			if (! Camera.isSupported) {
+				return;
+			}
+			
+			var camera:Camera = getCamera(userSession.videoConnection.cameraPosition);
+			if (Camera.permissionStatus == PermissionStatus.GRANTED) {
+				onPermissionGranted();
+			} else {
+				camera.addEventListener(PermissionEvent.PERMISSION_STATUS, function(e:PermissionEvent):void {
+					if (e.status == PermissionStatus.GRANTED) {
+						onPermissionGranted();
+					} else {
+						// permission denied
+					}
+				});
+				try {
+					camera.requestPermission();
+				} catch(e:Error) {
+					// another request is in progress
+				}
+			}
+		}
+		
+		private function onPermissionGranted():void {
+			var profile:VideoProfile = userSession.videoConnection.selectedCameraQuality;
 			var camera:Camera = getCamera(userSession.videoConnection.cameraPosition);
 			if (camera) {
 				var myCam:Video = new Video();
@@ -192,7 +217,7 @@ package org.bigbluebutton.view.navigation.pages.camerasettings {
 				}
 				if (isCamRotatedSideways()) {
 					camera.setMode(profile.height, profile.width, profile.modeFps);
-					var temp = myCam.width;
+					var temp:Number = myCam.width;
 					myCam.width = myCam.height;
 					myCam.height = temp;
 				} else {

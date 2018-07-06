@@ -1,7 +1,7 @@
 package org.bigbluebutton.core {
 	
 	import flash.net.NetConnection;
-	import org.bigbluebutton.model.ConferenceParameters;
+	
 	import org.osflash.signals.ISignal;
 	
 	public interface IBaseConnection {

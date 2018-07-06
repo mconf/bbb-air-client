@@ -1,6 +1,5 @@
 package org.bigbluebutton.core {
 	
-	import mx.utils.ObjectUtil;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.whiteboard.IAnnotation;

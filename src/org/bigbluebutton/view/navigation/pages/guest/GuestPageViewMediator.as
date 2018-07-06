@@ -4,9 +4,11 @@ package org.bigbluebutton.view.navigation.pages.guest {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.system.Capabilities;
+	
 	import mx.core.FlexGlobals;
+	
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.view.navigation.pages.common.MenuButtons;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class GuestPageViewMediator extends Mediator {

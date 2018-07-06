@@ -19,6 +19,6 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 		function set conferenceParameters(c:IConferenceParameters):void;
 		function get lockButton():Button;
 		function get unlockButton():Button;
-		function updateLockButtons(isRoomLocked:Boolean);
+		function updateLockButtons(isRoomLocked:Boolean):void;
 	}
 }

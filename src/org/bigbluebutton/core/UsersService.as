@@ -6,8 +6,6 @@ package org.bigbluebutton.core {
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
 	
 	public class UsersService implements IUsersService {
 		

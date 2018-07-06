@@ -1,9 +1,9 @@
 package org.bigbluebutton.core {
 	
 	import flash.net.NetConnection;
+	
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
 	
 	public interface IVoiceConnection {
 		function get unsuccessConnected():ISignal

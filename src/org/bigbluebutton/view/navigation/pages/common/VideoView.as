@@ -6,7 +6,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.system.Capabilities;
-	import mx.utils.ObjectUtil;
+	
 	import spark.components.Group;
 	
 	public class VideoView extends Group {

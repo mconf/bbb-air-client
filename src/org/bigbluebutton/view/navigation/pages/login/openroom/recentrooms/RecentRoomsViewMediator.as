@@ -1,27 +1,20 @@
 package org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms {
 	
-	import flash.desktop.NativeApplication;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-	import flash.ui.Keyboard;
-	import flash.utils.describeType;
+	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
-	import mx.events.ItemClickEvent;
 	import mx.resources.ResourceManager;
+	
+	import spark.events.IndexChangeEvent;
+	
 	import org.bigbluebutton.core.ISaveData;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.model.User;
-	import org.bigbluebutton.model.UserList;
-	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.components.View;
-	import spark.events.IndexChangeEvent;
-	import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.IRecentRoomsView;
 	
 	public class RecentRoomsViewMediator extends Mediator {
 		
@@ -59,7 +52,7 @@ package org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms {
 			if (view.roomsList.selectedIndex >= 0) {
 				trace(dataProvider[view.roomsList.selectedIndex].url);
 				if (dataProvider[view.roomsList.selectedIndex].url) {
-					var urlReq = new URLRequest(dataProvider[view.roomsList.selectedIndex].url);
+					var urlReq:URLRequest = new URLRequest(dataProvider[view.roomsList.selectedIndex].url);
 					navigateToURL(urlReq);
 				}
 			}

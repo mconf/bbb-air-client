@@ -53,8 +53,12 @@ package org.bigbluebutton.core {
 		
 		public function load(joinUrl:String):void {
 			_joinUrl = joinUrl;
-			// always try https first
-			loadHttps();
+			if (joinUrl.length == 0) {
+				fail("emptyJoinUrl");
+			} else {
+				// always try https first
+				loadHttps();
+			}
 		}
 		
 		protected function loadHttps():void {

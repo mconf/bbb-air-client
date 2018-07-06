@@ -4,8 +4,6 @@ package org.bigbluebutton.view.navigation.pages.splitparticipants {
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
-	import org.bigbluebutton.command.MoodCommand;
-	import org.bigbluebutton.command.MoodSignal;
 	
 	public class SplitParticipantsConfig implements IConfig {
 		

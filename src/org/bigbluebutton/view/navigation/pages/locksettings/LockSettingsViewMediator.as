@@ -2,19 +2,16 @@ package org.bigbluebutton.view.navigation.pages.locksettings {
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.StageOrientationEvent;
+	
 	import mx.core.FlexGlobals;
-	import mx.events.ItemClickEvent;
 	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
-	import org.bigbluebutton.command.ShareMicrophoneSignal;
+	
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.model.LockSettings;
-	import org.bigbluebutton.model.User;
-	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class LockSettingsViewMediator extends Mediator {
@@ -51,7 +48,7 @@ package org.bigbluebutton.view.navigation.pages.locksettings {
 		}
 		
 		private function stageOrientationChangingHandler(e:Event):void {
-			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			var tabletLandscape:Boolean = FlexGlobals.topLevelApplication.isTabletLandscape();
 			if (tabletLandscape) {
 				userUISession.popPage();
 				userUISession.popPage();
@@ -73,7 +70,7 @@ package org.bigbluebutton.view.navigation.pages.locksettings {
 			}
 		}
 		
-		private function loadLockSettings() {
+		private function loadLockSettings():void {
 			view.cameraSwitch.selected = !userSession.lockSettings.disableCam;
 			view.micSwitch.selected = !userSession.lockSettings.disableMic;
 			view.publicChatSwitch.selected = !userSession.lockSettings.disablePublicChat;

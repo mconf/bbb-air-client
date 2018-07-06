@@ -1,12 +1,12 @@
 package org.bigbluebutton.view.navigation.pages.presentation {
 	
 	import mx.controls.SWFLoader;
+	
+	import spark.components.Group;
+	
 	import org.bigbluebutton.core.view.IView;
 	import org.bigbluebutton.model.presentation.Slide;
 	import org.bigbluebutton.view.navigation.pages.whiteboard.WhiteboardCanvas;
-	import org.osflash.signals.ISignal;
-	import spark.components.Group;
-	import spark.primitives.Rect;
 	
 	public interface IPresentationView extends IView {
 		function get content():Group;

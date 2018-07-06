@@ -1,7 +1,6 @@
 package org.bigbluebutton.view.navigation.pages.locksettings {
 	
 	import spark.components.Button;
-	import spark.components.Label;
 	import spark.components.ToggleSwitch;
 	
 	public class LockSettingsView extends LockSettingsViewBase implements ILockSettingsView {

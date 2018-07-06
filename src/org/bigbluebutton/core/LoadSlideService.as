@@ -1,19 +1,13 @@
 package org.bigbluebutton.core {
 	
 	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.events.Event;
-	import flash.events.SecurityErrorEvent;
-	import flash.net.URLLoader;
-	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.system.SecurityDomain;
 	import flash.system.Security;
-	import flash.system.System;
-	import flash.utils.ByteArray;
-	import mx.controls.SWFLoader;
+	import flash.system.SecurityDomain;
+	
 	import org.bigbluebutton.model.presentation.Slide;
 	
 	public class LoadSlideService {

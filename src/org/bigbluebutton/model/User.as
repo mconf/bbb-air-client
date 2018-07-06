@@ -1,8 +1,5 @@
 package org.bigbluebutton.model {
 	
-	import org.bigbluebutton.model.chat.ChatMessages;
-	import org.osflash.signals.ISignal;
-	
 	public class User {
 		public static const MODERATOR:String = "MODERATOR";
 		

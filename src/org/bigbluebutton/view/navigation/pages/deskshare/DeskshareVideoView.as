@@ -2,17 +2,10 @@ package org.bigbluebutton.view.navigation.pages.deskshare {
 	
 	import flash.display.Bitmap;
 	import flash.display.Loader;
-	import flash.events.AsyncErrorEvent;
 	import flash.events.Event;
-	import flash.events.NetStatusEvent;
-	import flash.media.Video;
-	import flash.net.NetConnection;
-	import flash.net.NetStream;
 	import flash.net.URLRequest;
+	
 	import org.bigbluebutton.view.navigation.pages.common.VideoView;
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-	import spark.components.Group;
 	
 	public class DeskshareVideoView extends VideoView {
 		private var _mouse:Bitmap;

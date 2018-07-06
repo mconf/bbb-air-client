@@ -1,11 +1,9 @@
 package org.bigbluebutton.view.ui {
 	
-	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
-	import org.bigbluebutton.view.ui.SwapCameraMediator;
 	
 	public class SwapCameraConfig implements IConfig {
 		

@@ -5,8 +5,8 @@ package org.bigbluebutton.view.ui {
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
+	
 	import spark.components.Group;
-	import spark.components.VideoDisplay;
 	
 	public class Video extends Group {
 		private static var _connection:NetConnection;

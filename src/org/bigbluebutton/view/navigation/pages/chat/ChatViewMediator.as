@@ -1,33 +1,31 @@
 package org.bigbluebutton.view.navigation.pages.chat {
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
-	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.events.StageOrientationEvent;
 	import flash.ui.Keyboard;
-	import flash.utils.Dictionary;
+	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
 	import mx.events.FlexEvent;
 	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
+	
+	import spark.components.List;
+	import spark.components.View;
+	import spark.events.ViewNavigatorEvent;
+	
 	import org.bigbluebutton.core.IChatMessageService;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
-	import org.bigbluebutton.model.UserSession;
-	import org.bigbluebutton.model.chat.ChatMessage;
 	import org.bigbluebutton.model.chat.ChatMessageVO;
 	import org.bigbluebutton.model.chat.ChatMessages;
 	import org.bigbluebutton.model.chat.IChatMessagesSession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.osflash.signals.ISignal;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.components.List;
-	import spark.components.View;
-	import spark.events.ViewNavigatorEvent;
 	
 	public class ChatViewMediator extends Mediator {
 		
@@ -88,8 +86,8 @@ package org.bigbluebutton.view.navigation.pages.chat {
 			adjustForScreenRotation();
 		}
 		
-		private function adjustForScreenRotation() {
-			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+		private function adjustForScreenRotation():void {
+			var tabletLandscape:Boolean = FlexGlobals.topLevelApplication.isTabletLandscape();
 			if (tabletLandscape) {
 				userUISession.pushPage(PagesENUM.SPLITCHAT, userUISession.currentPageDetails);
 			}
@@ -99,7 +97,7 @@ package org.bigbluebutton.view.navigation.pages.chat {
 			adjustForScreenRotation();
 		}
 		
-		private function disableChat(disable:Boolean) {
+		private function disableChat(disable:Boolean):void {
 			if (disable) {
 				view.inputMessage.enabled = false;
 				view.sendButton.enabled = false;

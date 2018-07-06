@@ -2,13 +2,15 @@ package org.bigbluebutton.core.ui {
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	
 	import mx.core.FlexGlobals;
 	import mx.core.UIComponent;
 	import mx.managers.PopUpManager;
+	
 	import org.bigbluebutton.core.ui.api.IPopup;
 	import org.bigbluebutton.core.view.IView;
+	
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
-	import spark.components.Application;
 	
 	/**
 	 * Wrapper class for the PopUpManager that

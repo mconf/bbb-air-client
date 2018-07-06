@@ -2,6 +2,7 @@ package org.bigbluebutton.model {
 	
 	import flash.net.NetConnection;
 	import flash.utils.describeType;
+	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
@@ -300,8 +301,9 @@ package org.bigbluebutton.model {
 			_authToken = obj.authToken;
 			_changedSignal.dispatch();
 			_metadata = new Object();
+			var id:String;
 			for (var n:String in obj.metadata) {
-				for (var id:String in obj.metadata[n]) {
+				for (id in obj.metadata[n]) {
 					_metadata[id] = obj.metadata[n][id];
 				}
 			}
@@ -310,7 +312,7 @@ package org.bigbluebutton.model {
 			} catch (e:Error) {
 				_muteOnStart = false;
 			}
-			for (var id:String in obj) {
+			for (id in obj) {
 				var value:Object = obj[id];
 				trace(id + " = " + value);
 			}

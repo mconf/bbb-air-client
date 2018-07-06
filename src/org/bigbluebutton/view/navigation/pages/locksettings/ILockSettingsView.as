@@ -1,9 +1,9 @@
 package org.bigbluebutton.view.navigation.pages.locksettings {
 	
-	import org.bigbluebutton.core.view.IView;
 	import spark.components.Button;
-	import spark.components.Label;
 	import spark.components.ToggleSwitch;
+	
+	import org.bigbluebutton.core.view.IView;
 	
 	public interface ILockSettingsView extends IView {
 		function get cameraSwitch():ToggleSwitch;

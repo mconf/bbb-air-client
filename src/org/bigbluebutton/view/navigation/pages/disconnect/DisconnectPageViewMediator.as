@@ -3,16 +3,16 @@ package org.bigbluebutton.view.navigation.pages.disconnect {
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
 	import flash.system.Capabilities;
+	
 	import mx.core.FlexGlobals;
+	
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
-	import org.bigbluebutton.view.navigation.pages.common.MenuButtons;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectType;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class DisconnectPageViewMediator extends Mediator {

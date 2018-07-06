@@ -1,13 +1,11 @@
 package org.bigbluebutton.view.navigation.pages.userdetails {
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.StageOrientationEvent;
+	
 	import mx.core.FlexGlobals;
 	import mx.events.ResizeEvent;
-	import mx.resources.ResourceManager;
-	import mx.states.Transition;
+	
 	import org.bigbluebutton.command.ChangeRoleSignal;
 	import org.bigbluebutton.command.ClearUserStatusSignal;
 	import org.bigbluebutton.command.LockUserSignal;
@@ -18,6 +16,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class UserDetaisViewMediator extends Mediator {
@@ -72,7 +71,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 		}
 		
 		private function stageOrientationChangingHandler(e:Event):void {
-			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			var tabletLandscape:Boolean = FlexGlobals.topLevelApplication.isTabletLandscape();
 			if (tabletLandscape) {
 				userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS, _user);
 			}
@@ -90,7 +89,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			popPage();
 		}
 		
-		private function isRoomLocked() {
+		private function isRoomLocked():Boolean {
 			return userSession.lockSettings.disableCam ||
 				userSession.lockSettings.disableMic ||
 				userSession.lockSettings.disablePrivateChat ||
@@ -133,7 +132,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			}
 		}
 		
-		private function popPage() {
+		private function popPage():void {
 			if (!FlexGlobals.topLevelApplication.isTabletLandscape()) {
 				userUISession.popPage();
 			}

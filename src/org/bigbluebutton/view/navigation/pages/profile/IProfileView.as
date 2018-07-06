@@ -1,12 +1,8 @@
 package org.bigbluebutton.view.navigation.pages.profile {
 	
-	import org.bigbluebutton.core.view.IView;
 	import spark.components.Button;
-	import spark.components.Group;
-	import spark.components.HGroup;
-	import spark.components.Label;
-	import spark.components.List;
-	import spark.components.RadioButtonGroup;
+	
+	import org.bigbluebutton.core.view.IView;
 	
 	public interface IProfileView extends IView {
 		function get shareCameraButton():Button;

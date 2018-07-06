@@ -1,9 +1,8 @@
 package org.bigbluebutton.view.navigation.pages.chatrooms {
 	
-	import org.bigbluebutton.core.view.IView;
-	import spark.components.Button;
 	import spark.components.List;
-	import spark.components.TextInput;
+	
+	import org.bigbluebutton.core.view.IView;
 	
 	public interface IChatRoomsView extends IView {
 		function get list():List;

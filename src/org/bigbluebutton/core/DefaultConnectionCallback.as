@@ -1,16 +1,8 @@
 package org.bigbluebutton.core {
 	
-	import flash.events.AsyncErrorEvent;
-	import flash.events.IOErrorEvent;
-	import flash.events.NetStatusEvent;
-	import flash.events.SecurityErrorEvent;
-	import flash.net.NetConnection;
-	import flash.net.Responder;
 	import mx.utils.ObjectUtil;
-	import org.bigbluebutton.model.ConnectionFailedEvent;
+	
 	import org.bigbluebutton.model.IMessageListener;
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
 	
 	public class DefaultConnectionCallback implements IDefaultConnectionCallback {
 		private const LOG:String = "DefaultConnectionCallback::";

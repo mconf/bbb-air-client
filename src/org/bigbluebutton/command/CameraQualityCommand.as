@@ -1,11 +1,9 @@
 package org.bigbluebutton.command {
 	
-	import org.bigbluebutton.model.IUserSession;
-	import org.bigbluebutton.core.VideoConnection;
 	import org.bigbluebutton.core.VideoProfile;
+	import org.bigbluebutton.model.IUserSession;
+	
 	import robotlegs.bender.bundles.mvcs.Command;
-	import flash.utils.Timer;
-	import flash.events.TimerEvent;
 	
 	public class CameraQualityCommand extends Command {
 		

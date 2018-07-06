@@ -1,8 +1,8 @@
 package org.bigbluebutton.view.navigation {
 	
-	import org.bigbluebutton.core.view.IView;
-	import org.osflash.signals.ISignal;
 	import spark.transitions.ViewTransitionBase;
+	
+	import org.bigbluebutton.core.view.IView;
 	
 	public interface IPagesNavigatorView extends IView {
 		function pushView(viewClass:Class,

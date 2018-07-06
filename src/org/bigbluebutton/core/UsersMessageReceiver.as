@@ -1,16 +1,13 @@
 package org.bigbluebutton.core {
 	
 	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.command.AuthenticationSignal;
 	import org.bigbluebutton.command.DisconnectUserSignal;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
-	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.view.navigation.pages.disconnect.enum.DisconnectEnum;
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
-	import org.osmf.logging.Log;
 	
 	public class UsersMessageReceiver implements IMessageListener {
 		private const LOG:String = "UsersMessageReceiver::";

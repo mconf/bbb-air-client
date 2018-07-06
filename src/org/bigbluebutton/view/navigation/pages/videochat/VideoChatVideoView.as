@@ -41,7 +41,7 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			identifyVideoStream(video.x, video.height + video.y, name);
 		}
 		
-		public function get videoViewVideo() {
+		public function get videoViewVideo():Video {
 			return video;
 		}
 		

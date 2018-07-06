@@ -1,14 +1,13 @@
 package org.bigbluebutton.view.navigation.pages.camerasettings {
 	
-	import org.bigbluebutton.core.view.IView;
-	import org.bigbluebutton.view.navigation.pages.camerasettings.cameraprofiles.CameraProfilesList;
 	import spark.components.Button;
 	import spark.components.Group;
 	import spark.components.Label;
 	import spark.components.List;
-	import spark.components.RadioButtonGroup;
 	import spark.components.Scroller;
 	import spark.components.VideoDisplay;
+	
+	import org.bigbluebutton.core.view.IView;
 	
 	public interface ICameraSettingsView extends IView {
 		function get cameraProfilesList():List;

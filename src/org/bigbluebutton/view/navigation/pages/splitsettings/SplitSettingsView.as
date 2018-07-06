@@ -1,11 +1,5 @@
 package org.bigbluebutton.view.navigation.pages.splitsettings {
 	
-	import flash.events.MouseEvent;
-	import spark.components.Button;
-	import spark.components.Group;
-	import spark.components.Label;
-	import spark.components.List;
-	import spark.components.RadioButtonGroup;
 	import spark.components.ViewNavigator;
 	
 	public class SplitSettingsView extends SplitSettingsViewBase implements ISplitSettingsView {

@@ -44,11 +44,11 @@ package org.bigbluebutton {
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.model.LockSettings;
 	import org.bigbluebutton.model.UserSession;
 	import org.bigbluebutton.model.UserUISession;
 	import org.bigbluebutton.model.chat.ChatMessagesSession;
 	import org.bigbluebutton.model.chat.IChatMessagesSession;
+	
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;

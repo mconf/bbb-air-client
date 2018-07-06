@@ -5,7 +5,6 @@
 
 	<fx:Script>
 		<![CDATA[
-			import mx.events.FlexEvent;
 			import org.bigbluebutton.model.User;
 			
 			override public function set data(obj:Object):void {

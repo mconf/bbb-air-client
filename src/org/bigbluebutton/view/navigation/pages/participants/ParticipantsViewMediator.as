@@ -1,30 +1,27 @@
 package org.bigbluebutton.view.navigation.pages.participants {
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.StageOrientationEvent;
 	import flash.utils.Dictionary;
-	import mx.binding.utils.BindingUtils;
+	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
-	import mx.events.CollectionEvent;
 	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
+	
+	import spark.events.IndexChangeEvent;
+	
 	import org.bigbluebutton.core.IUsersService;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
-	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
 	import org.bigbluebutton.view.navigation.pages.participants.guests.GuestResponseEvent;
 	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitViewEvent;
 	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.components.Button;
-	import spark.events.IndexChangeEvent;
 	
 	public class ParticipantsViewMediator extends Mediator {
 		
@@ -96,7 +93,7 @@ package org.bigbluebutton.view.navigation.pages.participants {
 					view.list.setSelectedIndex(0, true);
 				}
 			}
-			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			var tabletLandscape:Boolean = FlexGlobals.topLevelApplication.isTabletLandscape();
 			if (tabletLandscape) {
 				userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS);
 			} else {
@@ -105,7 +102,7 @@ package org.bigbluebutton.view.navigation.pages.participants {
 		}
 		
 		private function stageOrientationChangingHandler(e:Event):void {
-			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			var tabletLandscape:Boolean = FlexGlobals.topLevelApplication.isTabletLandscape();
 			if (tabletLandscape) {
 				userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS);
 			}

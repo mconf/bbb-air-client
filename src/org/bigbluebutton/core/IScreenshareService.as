@@ -1,6 +1,5 @@
 package org.bigbluebutton.core {
 	
-	import org.bigbluebutton.model.chat.ChatMessageVO;
 	import org.osflash.signals.ISignal;
 	
 	public interface IScreenshareService {

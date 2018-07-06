@@ -1,7 +1,6 @@
 package org.bigbluebutton.view.ui.micbutton {
 	
 	import org.bigbluebutton.core.view.IView;
-	import org.osflash.signals.ISignal;
 	
 	public interface IMicButton extends IView {
 		function setVisibility(val:Boolean):void;

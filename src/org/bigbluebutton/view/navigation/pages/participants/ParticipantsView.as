@@ -1,7 +1,7 @@
 package org.bigbluebutton.view.navigation.pages.participants {
 	
-	import flash.events.MouseEvent;
 	import spark.components.Button;
+	import spark.components.List;
 	import spark.components.supportClasses.SkinnableComponent;
 	
 	public class ParticipantsView extends ParticipantsViewBase implements IParticipantsView {
@@ -14,7 +14,6 @@ package org.bigbluebutton.view.navigation.pages.participants {
 			super.childrenCreated();
 			//this.addEventListener(MouseEvent.CLICK, onClick);
 		}
-		import spark.components.List;
 		
 		public function get list():List {
 			return participantslist;

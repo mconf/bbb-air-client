@@ -4,7 +4,6 @@ package org.bigbluebutton.view.navigation.pages.login.openroom {
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IInjector;
-	import org.bigbluebutton.view.navigation.pages.login.openroom.recentrooms.IRecentRoomsView;
 	
 	public class OpenRoomConfig implements IConfig {
 		

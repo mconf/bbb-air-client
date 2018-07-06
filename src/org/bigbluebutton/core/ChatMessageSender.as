@@ -1,9 +1,7 @@
 package org.bigbluebutton.core {
 	
-	import flash.net.NetConnection;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.chat.ChatMessageVO;
-	import org.bigbluebutton.model.chat.IChatMessagesSession;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	

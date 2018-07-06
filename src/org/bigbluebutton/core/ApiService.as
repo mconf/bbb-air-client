@@ -1,4 +1,5 @@
 package org.bigbluebutton.core {
+
 	import flash.net.URLRequest;
 	
 	import org.bigbluebutton.core.util.URLFetcher;

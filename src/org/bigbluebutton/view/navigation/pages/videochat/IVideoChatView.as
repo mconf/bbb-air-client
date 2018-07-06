@@ -2,13 +2,14 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 	
 	import flash.media.Video;
 	import flash.net.NetConnection;
-	import org.bigbluebutton.core.view.IView;
-	import org.osflash.signals.ISignal;
+	
 	import spark.components.Group;
 	import spark.components.Label;
 	import spark.components.List;
 	import spark.components.Scroller;
 	import spark.components.VideoDisplay;
+	
+	import org.bigbluebutton.core.view.IView;
 	
 	public interface IVideoChatView extends IView {
 		function stopStream():void

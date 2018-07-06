@@ -3,18 +3,19 @@ package org.bigbluebutton.view.navigation {
 	import flash.desktop.NativeApplication;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	
 	import mx.events.FlexEvent;
-	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.util.NoTransition;
-	import org.bigbluebutton.view.navigation.pages.PagesENUM;
-	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
-	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.components.ViewNavigator;
-	import spark.effects.CrossFade;
+	
 	import spark.transitions.CrossFadeViewTransition;
 	import spark.transitions.SlideViewTransition;
 	import spark.transitions.ViewTransitionBase;
 	import spark.transitions.ViewTransitionDirection;
+	
+	import org.bigbluebutton.model.IUserUISession;
+	import org.bigbluebutton.view.navigation.pages.PagesENUM;
+	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
+	
+	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class PagesNavigatorViewMediator extends Mediator {
 		

@@ -1,9 +1,9 @@
 package org.bigbluebutton.core {
 	
 	import flash.events.AsyncErrorEvent;
-	import flash.events.Event;
 	import flash.events.NetDataEvent;
 	import flash.events.NetStatusEvent;
+	import flash.events.PermissionEvent;
 	import flash.events.StatusEvent;
 	import flash.events.TimerEvent;
 	import flash.media.Microphone;
@@ -12,11 +12,10 @@ package org.bigbluebutton.core {
 	import flash.media.SoundCodec;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
+	import flash.permissions.PermissionStatus;
 	import flash.utils.Timer;
-	import mx.binding.utils.BindingUtils;
+	
 	import mx.utils.ObjectUtil;
-	import org.osflash.signals.ISignal;
-	import org.osflash.signals.Signal;
 	
 	public class VoiceStreamManager {
 		protected var _incomingStream:NetStream = null;
@@ -31,8 +30,10 @@ package org.bigbluebutton.core {
 		
 		protected var _heartbeat:Timer = new Timer(2000);
 		
+		protected var _streamName:String = null;
+		
 		public function setDefaultMicGain(value:Number):void {
-			_defaultMicGain = value
+			_defaultMicGain = value;
 		}
 		
 		public function get mic():Microphone {
@@ -80,14 +81,44 @@ package org.bigbluebutton.core {
 		}
 		
 		public function publish(connection:NetConnection, streamName:String, codec:String, pushToTalk:Boolean):void {
+			_streamName = streamName;
 			_outgoingStream = new NetStream(connection);
 			_outgoingStream.client = this;
 			_outgoingStream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatusEvent);
 			_outgoingStream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncErrorEvent);
+			
+			if (! Microphone.isSupported) {
+				return;
+			}
+			
 			setupMicrophone(codec, pushToTalk);
+			
+			if (! _mic) {
+				return;
+			}
+			
+			if (Microphone.permissionStatus == PermissionStatus.GRANTED) {
+				attachAndPublish();
+			} else {
+				_mic.addEventListener(PermissionEvent.PERMISSION_STATUS, function(e:PermissionEvent):void {
+					if (e.status == PermissionStatus.GRANTED) {
+						attachAndPublish();
+					} else {
+						// permission denied
+					}
+				});
+				try {
+					_mic.requestPermission();
+				} catch(e:Error) {
+					// another request is in progress
+				}
+			}
+		}
+		
+		private function attachAndPublish():void {
 			if (_mic) {
 				_outgoingStream.attachAudio(_mic);
-				_outgoingStream.publish(streamName, "live");
+				_outgoingStream.publish(_streamName, "live");
 			}
 		}
 		
@@ -126,6 +157,7 @@ package org.bigbluebutton.core {
 			if (mic == null) {
 				trace("No microphone! <o>");
 			} else {
+				mic.requestPermission();
 				mic.addEventListener(StatusEvent.STATUS, onMicStatusEvent);
 				mic.setLoopBack(false);
 				mic.setSilenceLevel(0, 20000);

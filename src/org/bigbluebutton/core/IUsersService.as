@@ -1,7 +1,6 @@
 package org.bigbluebutton.core {
 	
 	import org.bigbluebutton.model.User;
-	import org.osflash.signals.ISignal;
 	
 	public interface IUsersService {
 		function setupMessageSenderReceiver():void;

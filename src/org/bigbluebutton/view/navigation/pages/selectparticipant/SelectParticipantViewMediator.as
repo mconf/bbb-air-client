@@ -1,15 +1,15 @@
 package org.bigbluebutton.view.navigation.pages.selectparticipant {
 	
 	import flash.events.Event;
-	import flash.events.StageOrientationEvent;
 	import flash.utils.Dictionary;
+	
 	import mx.collections.ArrayCollection;
 	import mx.core.FlexGlobals;
-	import mx.events.CollectionEvent;
-	import mx.events.IndexChangedEvent;
 	import mx.events.ResizeEvent;
 	import mx.resources.ResourceManager;
-	import mx.utils.ObjectUtil;
+	
+	import spark.events.IndexChangeEvent;
+	
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
 	import org.bigbluebutton.model.User;
@@ -17,9 +17,8 @@ package org.bigbluebutton.view.navigation.pages.selectparticipant {
 	import org.bigbluebutton.view.navigation.pages.TransitionAnimationENUM;
 	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitViewEvent;
 	import org.osflash.signals.ISignal;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.events.IndexChangeEvent;
-	import spark.events.ListEvent;
 	
 	public class SelectParticipantViewMediator extends Mediator {
 		
@@ -61,8 +60,8 @@ package org.bigbluebutton.view.navigation.pages.selectparticipant {
 			adjustForScreenRotation();
 		}
 		
-		private function adjustForScreenRotation() {
-			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+		private function adjustForScreenRotation():void {
+			var tabletLandscape:Boolean = FlexGlobals.topLevelApplication.isTabletLandscape();
 			if (tabletLandscape) {
 				userUISession.pushPage(PagesENUM.SPLITCHAT, userUISession.currentPageDetails);
 			}

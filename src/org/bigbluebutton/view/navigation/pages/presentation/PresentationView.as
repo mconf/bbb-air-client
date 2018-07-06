@@ -1,24 +1,18 @@
 package org.bigbluebutton.view.navigation.pages.presentation {
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.StageOrientation;
-	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.SecurityErrorEvent;
-	import flash.events.StageOrientationEvent;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.utils.ByteArray;
+	
 	import mx.controls.SWFLoader;
 	import mx.core.FlexGlobals;
-	import mx.resources.ResourceManager;
+	
+	import spark.components.Group;
+	
 	import org.bigbluebutton.model.presentation.Slide;
 	import org.bigbluebutton.view.navigation.pages.whiteboard.WhiteboardCanvas;
-	import spark.components.Group;
-	import spark.components.Image;
-	import spark.primitives.Rect;
 	
 	public class PresentationView extends PresentationViewBase implements IPresentationView {
 		override protected function childrenCreated():void {

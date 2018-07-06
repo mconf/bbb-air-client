@@ -1,6 +1,5 @@
 package org.bigbluebutton.core.ui.api {
 	
-	import flash.display.DisplayObject;
 	import org.bigbluebutton.core.view.IView;
 	
 	public interface IPopup {

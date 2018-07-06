@@ -1,14 +1,13 @@
 package org.bigbluebutton.model.whiteboard {
 	
 	import org.bigbluebutton.view.navigation.pages.whiteboard.IWhiteboardCanvas;
-	import spark.primitives.supportClasses.GraphicElement;
 	
 	public class Annotation implements IAnnotation {
 		private var _type:String = "undefined";
 		
 		private var _anID:String = "undefined";
 		
-		private var _whiteboardID = "undefined";
+		private var _whiteboardID:String = "undefined";
 		
 		private var _status:String = AnnotationStatus.DRAW_START;
 		

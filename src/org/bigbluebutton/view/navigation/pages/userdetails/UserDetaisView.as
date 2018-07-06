@@ -1,11 +1,11 @@
 package org.bigbluebutton.view.navigation.pages.userdetails {
 	
-	import flash.events.MouseEvent;
 	import mx.core.FlexGlobals;
-	import org.bigbluebutton.model.IConferenceParameters;
-	import org.bigbluebutton.model.IUserSession;
-	import org.bigbluebutton.model.User;
+	
 	import spark.components.Button;
+	
+	import org.bigbluebutton.model.IConferenceParameters;
+	import org.bigbluebutton.model.User;
 	
 	public class UserDetaisView extends UserDetaisViewBase implements IUserDetaisView {
 		public function UserDetaisView():void {
@@ -97,7 +97,7 @@ package org.bigbluebutton.view.navigation.pages.userdetails {
 			}
 		}
 		
-		public function updateLockButtons(isRoomLocked:Boolean) {
+		public function updateLockButtons(isRoomLocked:Boolean):void {
 			if (_userMe.role == User.MODERATOR && isRoomLocked && _user.role != User.MODERATOR) {
 				if (_user.locked) {
 					unlockButton.visible = true;

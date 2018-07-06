@@ -1,14 +1,7 @@
 package org.bigbluebutton.model {
 	
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import mx.core.FlexGlobals;
-	import mx.utils.ObjectUtil;
-	import mx.utils.URLUtil;
-	import org.bigbluebutton.command.JoinMeetingCommand;
-	import org.bigbluebutton.core.ILoginService;
+	
 	import org.bigbluebutton.core.VideoProfile;
 	
 	public class VideoProfileManager extends EventDispatcher {
@@ -30,7 +23,7 @@ package org.bigbluebutton.model {
 		public function parseConfigXml(configXML:XML):void {
 			var resolutionsString:String = configXML.@resolutions;
 			var resolutions:Array = resolutionsString.split(",");
-			for (var resolution in resolutions) {
+			for (var resolution:String in resolutions) {
 				var profileXml:XML = <profile></profile>
 				profileXml.@['id'] = resolutions[resolution];
 				profileXml.locale.en_US = resolutions[resolution];

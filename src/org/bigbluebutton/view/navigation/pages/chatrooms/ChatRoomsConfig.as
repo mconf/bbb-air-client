@@ -1,6 +1,5 @@
 package org.bigbluebutton.view.navigation.pages.chatrooms {
 	
-	import org.bigbluebutton.view.navigation.pages.videochat.VideoChatViewMediator;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
 	import robotlegs.bender.framework.api.IConfig;

@@ -3,11 +3,12 @@ package org.bigbluebutton.view.ui {
 	import flash.events.MouseEvent;
 	import flash.media.Camera;
 	import flash.media.CameraPosition;
-	import mx.events.DragEvent;
+	
 	import org.bigbluebutton.command.ShareCameraSignal;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.User;
 	import org.bigbluebutton.model.UserList;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class SwapCameraMediator extends Mediator {

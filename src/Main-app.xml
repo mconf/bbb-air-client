@@ -26,7 +26,7 @@
 	<!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
 	Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
 	An updated version of application must have a versionNumber value higher than the previous version. Required for namespace >= 2.5 . -->
-	<versionNumber>1.1.1</versionNumber>
+	<versionNumber>1.1.2</versionNumber>
 
 	<!-- Whether the application can be launched when the user clicks a link in a web browser. Optional. Default false. -->
 	<allowBrowserInvocation>true</allowBrowserInvocation>
@@ -255,6 +255,7 @@
 		together in order to use AIR's NetworkInfo APIs-->
 			    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 			    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+			    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 			    
 			    <uses-feature android:name="android.hardware.camera" android:required="false"/>
 			    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>			    
@@ -309,6 +310,10 @@
 				</dict>
 			</array>
 	 
+			<key>NSCameraUsageDescription</key>
+			<string>You need camera permission to start broadcasting.</string>
+			<key>NSMicrophoneUsageDescription</key>
+			<string>You need microphone permission to start broadcasting.</string>
 		]]>
 		</InfoAdditions>
 		<requestedDisplayResolution>high</requestedDisplayResolution>

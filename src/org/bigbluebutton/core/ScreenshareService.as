@@ -3,10 +3,6 @@ package org.bigbluebutton.core {
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IMessageListener;
 	import org.bigbluebutton.model.IUserSession;
-	import org.bigbluebutton.model.User;
-	import org.bigbluebutton.model.chat.ChatMessageVO;
-	import org.bigbluebutton.model.chat.IChatMessagesSession;
-	import org.flexunit.internals.namespaces.classInternal;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	

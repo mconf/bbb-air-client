@@ -29,7 +29,7 @@ package org.bigbluebutton.view.navigation.pages.deskshare {
 			deskshareVideoView.percentHeight = 100;
 			this.addElement(deskshareVideoView);
 			//if system is iOS, add the taskbar as part of the topbar for proper alignment 
-			var topbarHeight = (Capabilities.version.indexOf('IOS') >= 0) ? Screen.mainScreen.bounds.height - this.height - FlexGlobals.topLevelApplication.bottomMenu.height : FlexGlobals.topLevelApplication.topActionBar.height;
+			var topbarHeight:Number = (Capabilities.version.indexOf('IOS') >= 0) ? Screen.mainScreen.bounds.height - this.height - FlexGlobals.topLevelApplication.bottomMenu.height : FlexGlobals.topLevelApplication.topActionBar.height;
 			deskshareVideoView.startStream(connection, name, streamName, userID, width, height, this.deskshareGroup.height, this.deskshareGroup.width, topbarHeight, FlexGlobals.topLevelApplication.bottomMenu.height);
 			deskshareVideoView.addMouseToStage();
 			rotationHandler(FlexGlobals.topLevelApplication.currentOrientation);

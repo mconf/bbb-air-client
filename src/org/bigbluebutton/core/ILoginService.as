@@ -1,8 +1,5 @@
 package org.bigbluebutton.core {
 	
-	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
-	import flash.events.IOErrorEvent;
 	import org.osflash.signals.ISignal;
 	
 	public interface ILoginService {

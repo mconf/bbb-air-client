@@ -3,7 +3,7 @@ package org.bigbluebutton.core {
 	import flash.net.NetConnection;
 	import flash.net.Responder;
 	import flash.net.SharedObject;
-	import org.bigbluebutton.model.ConferenceParameters;
+	
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;

@@ -1,6 +1,6 @@
 package org.bigbluebutton.view.navigation.pages.selectparticipant {
 	
-	import flash.events.MouseEvent;
+	import spark.components.List;
 	
 	public class SelectParticipantView extends SelectParticipantViewBase implements ISelectParticipantView {
 		//private var _buttonTestSignal: Signal = new Signal();
@@ -12,7 +12,6 @@ package org.bigbluebutton.view.navigation.pages.selectparticipant {
 			super.childrenCreated();
 			//this.addEventListener(MouseEvent.CLICK, onClick);
 		}
-		import spark.components.List;
 		
 		public function get list():List {
 			return participantslist;

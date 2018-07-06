@@ -1,10 +1,11 @@
 package org.bigbluebutton.model {
 	
 	import mx.collections.ArrayCollection;
+	
+	import spark.collections.Sort;
+	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
-	import robotlegs.bender.extensions.signalCommandMap.api.ISignalCommandMap;
-	import spark.collections.Sort;
 	
 	public class UserList {
 		public static const MODERATOR:int = 0;
@@ -477,7 +478,7 @@ package org.bigbluebutton.model {
 			}
 		}
 		
-		public function removeAllUsers() {
+		public function removeAllUsers():void {
 			_users = new ArrayCollection();
 		}
 	}

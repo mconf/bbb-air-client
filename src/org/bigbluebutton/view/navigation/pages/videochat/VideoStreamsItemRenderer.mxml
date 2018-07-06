@@ -6,8 +6,6 @@
 
 	<fx:Script>
 		<![CDATA[
-			import org.bigbluebutton.model.User;
-			
 			override public function set data(obj:Object):void {
 				super.data = obj;
 				if (obj) {

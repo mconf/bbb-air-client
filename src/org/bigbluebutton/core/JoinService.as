@@ -1,18 +1,9 @@
 package org.bigbluebutton.core {
 	
-	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
-	import flash.events.IOErrorEvent;
-	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
-	import flash.net.URLRequestHeader;
-	import flash.net.URLRequestMethod;
-	import mx.graphics.shaderClasses.ExclusionShader;
-	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.core.util.URLFetcher;
-	import org.bigbluebutton.model.Config;
-	import org.flexunit.internals.events.ExecutionCompleteEvent;
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	

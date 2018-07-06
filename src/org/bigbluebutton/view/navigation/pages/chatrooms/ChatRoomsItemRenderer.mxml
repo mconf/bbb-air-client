@@ -6,7 +6,6 @@
 
 	<fx:Script>
 		<![CDATA[
-			import org.bigbluebutton.model.chat.ChatMessage;
 			import org.bigbluebutton.model.chat.ChatMessages;
 			
 			override public function set data(obj:Object):void {

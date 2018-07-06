@@ -3,11 +3,8 @@ package org.bigbluebutton.util
 	import mx.graphics.SolidColor;
 	import mx.graphics.SolidColorStroke;
 	
-	import org.bigbluebutton.view.navigation.pages.whiteboard.IWhiteboardCanvas;
-	
 	import spark.components.Group;
 	import spark.primitives.Ellipse;
-	import spark.primitives.supportClasses.GraphicElement;
 	
 	public class CursorIndicator
 	{

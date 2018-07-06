@@ -1,25 +1,15 @@
 package org.bigbluebutton.view.navigation.pages.splitparticipants {
 	
 	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.events.StageOrientationEvent;
-	import flash.utils.setTimeout;
+	
 	import mx.core.FlexGlobals;
-	import mx.events.ItemClickEvent;
 	import mx.events.ResizeEvent;
-	import mx.resources.ResourceManager;
-	import org.bigbluebutton.command.ClearUserStatusSignal;
-	import org.bigbluebutton.command.MoodSignal;
-	import org.bigbluebutton.core.IUsersService;
-	import org.bigbluebutton.model.IConferenceParameters;
-	import org.bigbluebutton.model.IUserSession;
+	
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.model.User;
-	import org.bigbluebutton.model.UserList;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
 	import org.bigbluebutton.view.navigation.pages.splitsettings.SplitViewEvent;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
-	import spark.events.IndexChangeEvent;
 	
 	public class SplitParticipantsViewMediator extends Mediator {
 		
@@ -38,7 +28,7 @@ package org.bigbluebutton.view.navigation.pages.splitparticipants {
 		}
 		
 		private function stageOrientationChangingHandler(e:Event):void {
-			var tabletLandscape = FlexGlobals.topLevelApplication.isTabletLandscape();
+			var tabletLandscape:Boolean = FlexGlobals.topLevelApplication.isTabletLandscape();
 			if (currentParticipant) {
 				if (tabletLandscape) {
 					userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS, currentParticipant);
@@ -50,7 +40,7 @@ package org.bigbluebutton.view.navigation.pages.splitparticipants {
 			}
 		}
 		
-		private function changeView(event:SplitViewEvent) {
+		private function changeView(event:SplitViewEvent):void {
 			view.participantDetails.pushView(event.view);
 			currentParticipant = event.details
 			userUISession.pushPage(PagesENUM.SPLITPARTICIPANTS, event.details);

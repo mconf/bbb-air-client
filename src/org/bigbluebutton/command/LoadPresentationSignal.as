@@ -1,5 +1,5 @@
 package org.bigbluebutton.command {
-	
+
 	import org.osflash.signals.Signal;
 	
 	public class LoadPresentationSignal extends Signal {
@@ -11,4 +11,4 @@ package org.bigbluebutton.command {
 		}
 	}
 }
-f
+

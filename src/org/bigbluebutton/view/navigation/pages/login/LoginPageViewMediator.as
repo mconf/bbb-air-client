@@ -2,7 +2,6 @@ package org.bigbluebutton.view.navigation.pages.login {
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.system.Capabilities;
 	
 	import mx.core.FlexGlobals;
 	
@@ -86,12 +85,14 @@ package org.bigbluebutton.view.navigation.pages.login {
 		public function joinRoom(url:String):void {
 			if (url == null || url.length == 0) {
 				if (isDebugBuild()) {
-					url = "bigbluebutton://test-install.blindsidenetworks.com/bigbluebutton/api/join?fullName=Air&meetingID=Demo+Meeting&password=ap&checksum=512620179852dadd6fe0665a48bcb852a3c0afac";
+					url = "https://live-pa01.mconf.rnp.br/bigbluebutton/api/join?fullName=User+3542281&meetingID=990a5cd0-f685-430c-942e-b021ec78f3bc-1397501921&password=dc78fe3a-bf9f-42e9-872f-46c6934e691c&redirect=true&checksum=b917b7b456bf244cbb88e2f59c7751f5486b320f";
+					// url = "";
 				} else {
 					url = "";
 				}
 			}
 			if (url.lastIndexOf("://") == -1) {
+				userUISession.popPage();
 				userUISession.pushPage(PagesENUM.OPENROOM);
 			}
 			joinMeetingSignal.dispatch(url);

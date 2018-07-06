@@ -3,14 +3,12 @@ package org.bigbluebutton.core {
 	import flash.events.AsyncErrorEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
-	import flash.events.SecurityErrorEvent;
 	import flash.media.Camera;
 	import flash.media.CameraPosition;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
-	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.command.ShareCameraSignal;
-	import org.bigbluebutton.model.ConferenceParameters;
 	import org.bigbluebutton.model.IConferenceParameters;
 	import org.bigbluebutton.model.IUserSession;
 	import org.osflash.signals.ISignal;
@@ -181,13 +179,13 @@ package org.bigbluebutton.core {
 					streamName = "rotate_right/" + streamName;
 					break;
 				case 180:
-					streamName = "rotate_left/rotate_left/" + streamName;
+					streamName = "rotate_upsidedown/" + streamName;
 					break;
 				case 270:
 					streamName = "rotate_left/" + streamName;
 					break;
 			}
-			trace(streamName)
+			trace(streamName);
 			_ns.publish(streamName);
 		}
 		

@@ -1,7 +1,7 @@
 package org.bigbluebutton.view.navigation.pages.deskshare {
 	
 	import flash.net.NetConnection;
-	import org.bigbluebutton.view.navigation.pages.common.MenuButtonsView;
+	
 	import spark.components.Group;
 	import spark.components.Label;
 	

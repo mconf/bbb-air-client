@@ -1,21 +1,20 @@
 package org.bigbluebutton.view.navigation.pages.presentation {
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.TransformGestureEvent;
-	import flash.geom.Point;
+	
 	import mx.core.FlexGlobals;
 	import mx.events.ResizeEvent;
+	
 	import org.bigbluebutton.command.LoadSlideSignal;
 	import org.bigbluebutton.core.IPresentationService;
 	import org.bigbluebutton.model.IUserSession;
 	import org.bigbluebutton.model.IUserUISession;
-	import org.bigbluebutton.model.UserUISession;
 	import org.bigbluebutton.model.presentation.Presentation;
 	import org.bigbluebutton.model.presentation.Slide;
 	import org.bigbluebutton.util.CursorIndicator;
 	import org.bigbluebutton.view.navigation.pages.PagesENUM;
-	import org.osmf.logging.Log;
+	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
 	public class PresentationViewMediator extends Mediator {
