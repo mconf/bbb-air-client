@@ -15,6 +15,7 @@ bin-release-temp/
 *.p12
 *.mobileprovision
 *.apk
+*.ipa
 *.log
 resources.swf
 Thumbs.db
