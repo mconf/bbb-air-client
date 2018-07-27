@@ -48,7 +48,6 @@ package org.bigbluebutton.command {
 		}
 		
 		private function enableAudio():void {
-			voiceConnection.hangUpSuccessSignal.remove(enableAudio);
 			if (!voiceConnection.connection.connected) {
 				voiceConnection.successConnected.add(voiceSuccessConnected);
 				voiceConnection.unsuccessConnected.add(voiceUnsuccessConnected);
@@ -58,17 +57,30 @@ package org.bigbluebutton.command {
 				voiceConnection.unsuccessConnected.add(voiceUnsuccessConnected);
 				voiceConnection.call(_listenOnly);
 			} else {
-				voiceConnection.hangUpSuccessSignal.add(enableAudio);
-				disableAudio();
+				voiceConnection.hangUpSuccessSignal.add(onHangupSuccessBeforeEnable);
+				voiceConnection.hangUp();
+			}
+		}
+		
+		private function onHangupSuccess():void {
+			voiceConnection.hangUpSuccessSignal.remove(onHangupSuccess);
+			if (userSession.voiceStreamManager != null) {
+				userSession.voiceStreamManager.close();
+				userSession.voiceStreamManager = null;
 			}
 		}
 		
 		private function disableAudio():void {
-			var manager:VoiceStreamManager = userSession.voiceStreamManager;
-			if (manager != null) {
-				manager.close();
+			if (voiceConnection.callActive) {
+				voiceConnection.hangUpSuccessSignal.add(onHangupSuccess);
 				voiceConnection.hangUp();
 			}
+		}
+		
+		private function onHangupSuccessBeforeEnable():void {
+			voiceConnection.hangUpSuccessSignal.remove(onHangupSuccessBeforeEnable);
+			onHangupSuccess();
+			enableAudio();
 		}
 		
 		private function voiceSuccessConnected(publishName:String, playName:String, codec:String, manager:VoiceStreamManager = null):void {
