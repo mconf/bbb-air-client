@@ -57,7 +57,7 @@ package org.bigbluebutton.core.util {
 		
 		private function setUserAgent():void {
 			// AirCapabilities ANE to get the device information
-			var airCap:AirCapabilities = new AirCapabilities();
+			var airCap:AirCapabilities = AirCapabilities.instance;
 			var deviceName:String = airCap.getMachineName();
 			var userAgent:Array;
 			if (deviceName != "") {

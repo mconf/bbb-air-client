@@ -186,7 +186,7 @@ package org.bigbluebutton.core {
 					break;
 			}
 			trace(streamName);
-			_ns.publish(streamName);
+			_ns.publish(streamName, "live");
 		}
 		
 		private function onNetStatus(e:NetStatusEvent):void {

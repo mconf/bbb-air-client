@@ -83,12 +83,10 @@ package org.bigbluebutton.view.navigation.pages.exit {
 		}
 		
 		private function backToApplication(event:Event):void {
-			userUISession.popPage();
-		}
-		
-		public override function destroy():void {
 			FlexGlobals.topLevelApplication.topActionBar.visible = _topBar;
 			FlexGlobals.topLevelApplication.bottomMenu.visible = _bottomMenu;
+
+			userUISession.popPage();
 		}
 	}
 }
