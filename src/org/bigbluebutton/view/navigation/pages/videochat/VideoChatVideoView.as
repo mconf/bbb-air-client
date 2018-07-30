@@ -8,14 +8,16 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 	import flash.display.Shape;
 	import flash.display.SpreadMethod;
 	import flash.events.Event;
-	import flash.geom.*;
+	import flash.events.IOErrorEvent;
+	import flash.geom.Matrix;
 	import flash.media.Video;
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
+	
 	import mx.core.FlexGlobals;
-	import mx.utils.ObjectUtil;
+	
 	import org.bigbluebutton.view.navigation.pages.common.VideoView;
 	
 	public class VideoChatVideoView extends VideoView {
@@ -105,6 +107,8 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			var url:URLRequest = new URLRequest(this.getStyle("loadingImageSource"));
 			_loader = new Loader();
 			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoaded);
+			_loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+
 			_loader.load(url);
 		}
 		
@@ -116,9 +120,9 @@ package org.bigbluebutton.view.navigation.pages.videochat {
 			_loader.alpha = 0.5;
 			_loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onImageLoaded);
 		}
-		
-		public function onMetaData(... rest):void {
-			trace("onMetaData() " + ObjectUtil.toString(rest));
+
+		private function ioErrorHandler(e:IOErrorEvent):void {
+			trace("VideoChatVideoView::onIOError " + e.toString());
 		}
 	}
 }

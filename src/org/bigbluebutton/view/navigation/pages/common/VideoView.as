@@ -1,11 +1,14 @@
 package org.bigbluebutton.view.navigation.pages.common {
 	
 	import flash.events.AsyncErrorEvent;
+	import flash.events.IOErrorEvent;
 	import flash.events.NetStatusEvent;
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.system.Capabilities;
+	
+	import mx.utils.ObjectUtil;
 	
 	import spark.components.Group;
 	
@@ -48,6 +51,7 @@ package org.bigbluebutton.view.navigation.pages.common {
 			this.connection = connection;
 			ns = new NetStream(connection);
 			ns.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);
+			ns.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncError);
 			ns.client = this;
 			ns.bufferTime = 0;
@@ -171,9 +175,17 @@ package org.bigbluebutton.view.navigation.pages.common {
 					break;
 			}
 		}
+
+		private function onIOError(e:IOErrorEvent):void {
+			trace("VideoWindow::onIOError " + e.toString());
+		}
 		
 		private function onAsyncError(e:AsyncErrorEvent):void {
 			trace("VideoWindow::asyncerror " + e.toString());
+		}
+		
+		public function onMetaData(... rest):void {
+			trace("VideoWindow::onMetaData " + ObjectUtil.toString(rest));
 		}
 		
 		public function close():void {
